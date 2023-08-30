@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 import Auth from "../components/Auth";
 import Account from "../components/Account";
+import Navbar from "../components/Navbar";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -40,12 +41,21 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="container" style={{ padding: "50px 0 100px 0" }}>
-      {!session ? (
-        <Auth />
-      ) : (
-        <Account key={session.user.id} session={session} />
-      )}
-    </div>
+    <>
+      <Navbar />
+
+      <div className="container" style={{ padding: "50px 0 100px 0" }}>
+        {!session ? (
+          // <Auth />
+           <></>
+        ) : (
+          <Account key={session.user.id} session={session} />
+        )}
+        <div>
+          Aqui o Site Normal abaixo - auth e account estão como componentes
+          importados
+        </div>
+      </div>
+    </>
   );
 }

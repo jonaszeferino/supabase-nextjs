@@ -33,8 +33,7 @@ export default function Auth() {
       <Center height="100vh">
         <Box width="md" p={6} borderWidth={1} borderRadius="lg" shadow="lg">
           <Heading as="h1" size="xl" mb={4}>
-            Supabase + Next.js
-          </Heading>
+Acesso por meio do e-mail          </Heading>
           <Text mb={4}>
             Coloque seu e-mail aqui para receber um e-mail de confirmação
           </Text>
