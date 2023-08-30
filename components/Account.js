@@ -27,10 +27,15 @@ export default function Account({ session }) {
   const [username, setUsername] = useState(null);
   const [website, setWebsite] = useState(null);
   const [avatar_url, setAvatarUrl] = useState(null);
+  const [email, setEmail] = useState(null)
 
   useEffect(() => {
     getProfile();
+    if (session?.user?.email) {
+      setEmail(session.user.email); // Set email state when session changes
+    }
   }, [session]);
+
 
   async function getCurrentUser() {
     const {
@@ -101,12 +106,13 @@ export default function Account({ session }) {
     }
   }
 
+  
+
   return (
     <ChakraProvider theme={theme}>
 
          Print session abaixo JSON
-         <pre>{JSON.stringify(session, null, 2)}</pre>
-    <Box p={4} borderWidth={1} borderRadius="lg" shadow="lg">
+<Texr>Quem Está logado: {email}</Texr>    <Box p={4} borderWidth={1} borderRadius="lg" shadow="lg">
       <FormControl mb={4}>
         <FormLabel htmlFor="email">Email</FormLabel>
         <Input id="email" type="email" value={session.user.email} isDisabled />
