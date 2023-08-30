@@ -8,6 +8,7 @@ import {
   FormLabel,
   ChakraProvider,
   extendTheme,
+  Text
 } from "@chakra-ui/react";
 
 const theme = extendTheme({
@@ -34,7 +35,7 @@ export default function Account({ session }) {
     if (session?.user?.email) {
       setEmail(session.user.email); // Set email state when session changes
     }
-  }, [session]);
+  }, [session, getProfile]);
 
   async function getCurrentUser() {
     const {
