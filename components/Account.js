@@ -7,16 +7,16 @@ import {
   FormControl,
   FormLabel,
   ChakraProvider,
-  extendTheme
-} from '@chakra-ui/react';
+  extendTheme,
+} from "@chakra-ui/react";
 
 const theme = extendTheme({
   styles: {
     global: {
-      'html, body': {
-        width: '100%',
-        margin: '0 auto',
-        maxWidth: '600px', // Set maximum width here
+      "html, body": {
+        width: "100%",
+        margin: "0 auto",
+        maxWidth: "600px", // Set maximum width here
       },
     },
   },
@@ -27,7 +27,7 @@ export default function Account({ session }) {
   const [username, setUsername] = useState(null);
   const [website, setWebsite] = useState(null);
   const [avatar_url, setAvatarUrl] = useState(null);
-  const [email, setEmail] = useState(null)
+  const [email, setEmail] = useState(null);
 
   useEffect(() => {
     getProfile();
@@ -35,7 +35,6 @@ export default function Account({ session }) {
       setEmail(session.user.email); // Set email state when session changes
     }
   }, [session]);
-
 
   async function getCurrentUser() {
     const {
@@ -106,52 +105,55 @@ export default function Account({ session }) {
     }
   }
 
-  
-
   return (
     <ChakraProvider theme={theme}>
-
-         Print session abaixo JSON
-<Texr>Quem Está logado: {email}</Texr>    <Box p={4} borderWidth={1} borderRadius="lg" shadow="lg">
-      <FormControl mb={4}>
-        <FormLabel htmlFor="email">Email</FormLabel>
-        <Input id="email" type="email" value={session.user.email} isDisabled />
-      </FormControl>
-      <FormControl mb={4}>
-        <FormLabel htmlFor="username">Name</FormLabel>
-        <Input
-          id="username"
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </FormControl>
-      <FormControl mb={4}>
-        <FormLabel htmlFor="website">Website</FormLabel>
-        <Input
-          id="website"
-          type="text"
-          value={website}
-          onChange={(e) => setWebsite(e.target.value)}
-        />
-      </FormControl>
-      <Button
-        colorScheme="blue"
-        isLoading={loading}
-        onClick={updateProfile}
-        isFullWidth
-        mb={4}
-      >
-        {loading ? "Loading ..." : "Salvar"}
-      </Button>
-      <Button
-        colorScheme="gray"
-        onClick={() => supabase.auth.signOut()}
-        isFullWidth
-      >
-        Deslogar
-      </Button>
-    </Box>
+      Print session abaixo JSON
+      <Text>Quem Está logado: {email}</Text>{" "}
+      <Box p={4} borderWidth={1} borderRadius="lg" shadow="lg">
+        <FormControl mb={4}>
+          <FormLabel htmlFor="email">Email</FormLabel>
+          <Input
+            id="email"
+            type="email"
+            value={session.user.email}
+            isDisabled
+          />
+        </FormControl>
+        <FormControl mb={4}>
+          <FormLabel htmlFor="username">Name</FormLabel>
+          <Input
+            id="username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </FormControl>
+        <FormControl mb={4}>
+          <FormLabel htmlFor="website">Website</FormLabel>
+          <Input
+            id="website"
+            type="text"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+          />
+        </FormControl>
+        <Button
+          colorScheme="blue"
+          isLoading={loading}
+          onClick={updateProfile}
+          isFullWidth
+          mb={4}
+        >
+          {loading ? "Loading ..." : "Salvar"}
+        </Button>
+        <Button
+          colorScheme="gray"
+          onClick={() => supabase.auth.signOut()}
+          isFullWidth
+        >
+          Deslogar
+        </Button>
+      </Box>
     </ChakraProvider>
   );
 }
