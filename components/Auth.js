@@ -8,12 +8,13 @@ import {
   Heading,
   Text,
   ChakraProvider,
+  Link
 } from "@chakra-ui/react";
 
 export default function Auth() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
-  const [message, setMessage] =  useState(null)
+  const [message, setMessage] = useState(null);
 
   const handleLogin = async (email) => {
     try {
@@ -33,7 +34,8 @@ export default function Auth() {
       <Center height="100vh">
         <Box width="md" p={6} borderWidth={1} borderRadius="lg" shadow="lg">
           <Heading as="h1" size="xl" mb={4}>
-Acesso por meio do e-mail          </Heading>
+            Acesso por meio do e-mail{" "}
+          </Heading>
           <Text mb={4}>
             Coloque seu e-mail aqui para receber um e-mail de confirmação
           </Text>
@@ -55,11 +57,22 @@ Acesso por meio do e-mail          </Heading>
           >
             Envie o Link de Acesso
           </Button>
+
+          <br/>
+       
+          <Link href="/">
+            <Button variant="link">Home</Button> {/* Transforma o link em botão */}
+          </Link>
+       
+       
           {message && (
-          <Text mt={4} color={message.includes("error") ? 'red.500' : 'green.500'}>
-            {message}
-          </Text>
-        )}
+            <Text
+              mt={4}
+              color={message.includes("error") ? "red.500" : "green.500"}
+            >
+              {message}
+            </Text>
+          )}
         </Box>
       </Center>
     </ChakraProvider>
