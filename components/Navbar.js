@@ -1,11 +1,24 @@
 import Link from "next/link";
 import styles from "../styles/Navbar.module.css";
-import Auth from "./Auth"; 
+import Auth from "./Auth";
 import { useState } from "react";
+import { FaTimes } from "react-icons/fa";
 
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  IconButton,
+  Button,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router"; // Importe o hook useRouter
 
-export default function Navbar({ isLoading }) {
+export default function Navbar({ isLoading, onAuthenticated }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchText, setSearchText] = useState("");
   const [showAuth, setShowAuth] = useState(false);
 
@@ -15,11 +28,10 @@ export default function Navbar({ isLoading }) {
     <>
       <div style={{ maxWidth: "600px", margin: "0 auto" }}>
         {showAuth && <Auth />}{" "}
-        {/* Renderiza o componente Auth se showAuth for verdadeiro */}
       </div>
       <ul className={styles.navbar}>
         <li>
-          <button onClick={() => setShowAuth(true)}>Fazer Login</button>
+          <button onClick={onOpen}>Fazer Login</button>
         </li>
         <li>
           <Link href="/">
@@ -46,6 +58,45 @@ export default function Navbar({ isLoading }) {
             <a>| Onde Está Meu Filme? |</a>
           </Link>
         </li>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent style={{ background: "white" }}>
+            <ModalHeader>
+              Acesso por meio do e-mail
+              <IconButton
+                icon={<FaTimes />}
+                colorScheme="gray"
+                variant="ghost"
+                ml="auto"
+                onClick={onClose}
+              />
+            </ModalHeader>
+            <ModalBody>
+              <Auth onClose={onClose} />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent style={{ background: "white" }}>
+            <ModalHeader>
+              Acesso por meio do e-mail
+              <IconButton
+                icon={<FaTimes />}
+                colorScheme="gray"
+                variant="ghost"
+                position="absolute"
+                top="0"
+                right="0"
+                onClick={onClose}
+              />
+            </ModalHeader>
+            <ModalBody>
+              <Auth onAuthenticated={onAuthenticated} onClose={onClose} />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+
         <br />
       </ul>
       <div style={{ maxWidth: "600px", margin: "0 auto" }}></div>

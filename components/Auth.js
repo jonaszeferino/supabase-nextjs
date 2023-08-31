@@ -8,10 +8,10 @@ import {
   Heading,
   Text,
   ChakraProvider,
-  Link
+  Link,
 } from "@chakra-ui/react";
 
-export default function Auth() {
+export default function Auth({ onAuthenticated, onClose }) {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
@@ -22,6 +22,13 @@ export default function Auth() {
       const { error } = await supabase.auth.signInWithOtp({ email });
       if (error) throw error;
       setMessage("Verifique seu e-Mail para o Login!");
+
+      // Assuming authentication was successful
+      const { session } = await supabase.auth.getSession(); // Get the session
+      if (session) {
+        onAuthenticated(session); // Pass the session back to the Navbar
+        onClose(); // Close the modal
+      }
     } catch (error) {
       setMessage(error.error_description || error.message);
     } finally {
@@ -58,13 +65,12 @@ export default function Auth() {
             Envie o Link de Acesso
           </Button>
 
-          <br/>
-       
+          <br />
+
           <Link href="/">
-            <Button variant="link">Home</Button> {/* Transforma o link em botão */}
+            <Button variant="link">Home</Button>
           </Link>
-       
-       
+
           {message && (
             <Text
               mt={4}
