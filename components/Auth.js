@@ -41,10 +41,10 @@ export default function Auth({ onAuthenticated, onClose }) {
       <Center height="100vh">
         <Box width="md" p={6} borderWidth={1} borderRadius="lg" shadow="lg">
           <Heading as="h1" size="xl" mb={4}>
-            Acesso por meio do e-mail{" "}
+            Acesso por e-mail{" "}
           </Heading>
           <Text mb={4}>
-            Coloque seu e-mail aqui para receber um e-mail de confirmação
+            Informe seu e-mail para acesso. Aguarde a confirmação em sua caixa de entrada.{" "}
           </Text>
           <Input
             type="email"

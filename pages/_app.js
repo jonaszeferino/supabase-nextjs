@@ -1,15 +1,12 @@
-import Navbar from "../components/Navbar";
-
-import Footer from "../components/Footer";
+// _app.js
+import MainContainer from "../components/MainContainer";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <>
-      <Navbar /> {/* Adicione o Navbar aqui */}
+    <MainContainer>
       <Component {...pageProps} />
-      <Footer />
-    </>
+    </MainContainer>
   );
 }
 

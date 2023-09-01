@@ -1,117 +1,87 @@
-import { useState, useEffect, useRef } from "react";
-import { supabase } from "../utils/supabaseClient";
-import Auth from "../components/Auth";
-import Account from "../components/Account";
-import Navbar from "../components/Navbar";
-import styles from "../styles/Home.module.css";
-import Head from "next/head";
 import Link from "next/link";
-import { Rate } from "antd";
+import Image from "next/image";
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
+import { useEffect, useState } from "react";
+import ErrorPage from "./error-page";
+import { ChakraProvider, Progress, Button } from "@chakra-ui/react";
 import { BiSolidUpArrow } from "react-icons/bi";
-import TranslationComponent from "../components/translateComponent";
-import TranslationComponentCountryName from "../components/translateComponentCountryName";
-import {
-  ChakraProvider,
-  Progress,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
-  Box,
-  Button,
-  Tab,
-  Tabs,
-  TabList,
-  TabPanels,
-  TabPanel,
-  IconButton,
-  Skeleton,
-  Image,
-} from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
-import ErrorPage from "./error-page";
+import { supabase } from "../utils/supabaseClient"; // Importe o supabase aqui
 
 export default function Home() {
+  let [movieId, setMovieId] = useState();
+  let [searchMovies, setSearchMovies] = useState([]);
+  let [page, setPage] = useState(1);
+  let [isError, setError] = useState(false);
+  let [isLoading, setIsLoading] = useState(false);
+  let [searchTv, setSearchTv] = useState([]);
   const [session, setSession] = useState(null);
-  const [isError, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const [movieData, setMovieData] = useState({});
-  const [randomMovieId, setRandomMovieId] = useState(null);
-
-  const [like, setLike] = useState(0);
-  const [isLikeDisabled, setLikeDisable] = useState(false);
-  const [likeThanks, setLikeThanks] = useState(false);
-  const [dateNow, setDatenow] = useState(new Date());
-
-  const [starValue, setStarValue] = useState(0); // Estado para armazenar o valor das estrelas
-  const [isRatingSubmitted, setIsRatingSubmitted] = useState(false); // Estado para controlar se a avaliação foi enviada
   const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
 
-  const handleAuthenticated = (authenticatedSession) => {
-    setSession(authenticatedSession);
-  };
+  const urlString =
+    "https://api.themoviedb.org/3/trending/movie/week?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c";
 
-  useEffect(() => {
-    if (isError) {
-      apiCall();
-    }
-  }, [isError]);
-  const posterRef = useRef(null);
-
-  const apiCall = () => {
-    if (!isError && posterRef.current) {
-      posterRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-    setRandomMovieId(Math.floor(Math.random() * 560000));
+  const apiCall = (currentPage) => {
+    const url = urlString;
     setIsLoading(true);
-    setError(false);
-    setLikeDisable(false);
-    setLikeThanks(false);
-    setIsRatingSubmitted(false);
-    setStarValue(0);
 
-    const url = `https://api.themoviedb.org/3/movie/${randomMovieId}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`;
-
-    fetch(url)
+    fetch(url, {
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    })
       .then((response) => {
-        if (response.ok) {
+        if (response.status === 200) {
+          setError(false);
           return response.json();
         } else {
-          setError(true);
-          throw new Error(response.statusText);
+          throw new Error("Dados Incorretos");
         }
       })
       .then((result) => {
-        setMovieData({
-          budget: result.budget,
-          originalTitle: result.original_title,
-          portugueseTitle: result.title,
-          overview: result.overview,
-          average: result.vote_average,
-          releaseDate: result.release_date,
-          image: result.poster_path,
-          country: result.production_countries[0].name,
-          ratingCount: result.vote_count,
-          popularity: result.popularity,
-          gender: result.genres.map((genre) => genre.name),
-          languages: result.spoken_languages[0].name,
-          adult: result.adult,
-          movieId: result.id,
-          originalLanguage: result.original_language,
-          statusMovie: result.status,
-        });
+        setSearchMovies(result.results);
+        setPage(result.page);
         setIsLoading(false);
-        setError(false);
       })
-      .catch((error) => setError(true), setIsLoading(false));
+      .catch((error) => setError(true));
   };
 
-  // let destino = `/movie-page?movieId=${movieData.movieId}`;
+  useEffect(() => {
+    apiCall(page);
+  }, [page]);
+
+  const urlStringTv =
+    "https://api.themoviedb.org/3/trending/tv/week?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c";
+
+  const apiCallTv = (currentPage) => {
+    const urlTv = urlStringTv;
+    setIsLoading(true);
+
+    fetch(urlTv, {
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          setError(false);
+          return response.json();
+        } else {
+          throw new Error("Dados Incorretos");
+        }
+      })
+      .then((result) => {
+        setSearchTv(result.results);
+        setIsLoading(false);
+      })
+      .catch((error) => setError(true));
+  };
+  useEffect(() => {
+    apiCallTv(page);
+  }, [page]);
 
   function getProgressColor(progressValue) {
     if (progressValue >= 0.1 && progressValue <= 3.999) {
@@ -127,354 +97,207 @@ export default function Home() {
     }
   }
 
-  const inserLike = async () => {
-    try {
-      const response = await fetch("/api/v1/postRateRandomMovie", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          movie_id: movieData.movieId,
-          poster_path: movieData.image,
-          original_title: movieData.originalTitle,
-          portuguese_title: movieData.portugueseTitle,
-          vote_average_by_provider: movieData.average,
-          rating_by_user: starValue,
-          user_email: session?.user?.email || "movietoday@gmail.com",
-        }),
-      });
-      return;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // Estrelas:
-  const handleRateChange = (value) => {
-    setStarValue(value); // Atualiza o estado com o novo valor das estrelas
-  };
-  const handleRatingSubmit = () => {
-    // AColar aqui a chamada na api para enviar o valor das estrelas ao banco de dados
-    setIsRatingSubmitted(true);
-  };
-
-  const isLoadingPage =
-    isError || movieData.adult || movieData.portugueseTitle === null;
-  console.log(isLoadingPage);
-
-  //sessao e afins abaixo
-
+  //verificar a sessão
   useEffect(() => {
     let mounted = true;
-
     async function getInitialSession() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-
       if (mounted) {
         if (session) {
           setSession(session);
         }
-
         setIsLoading(false);
       }
     }
-
     getInitialSession();
-
     const { subscription } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setSession(session);
       }
     );
-
     return () => {
       mounted = false;
-
       subscription?.unsubscribe();
     };
   }, []);
 
   return (
-    <>
-      <>
-        {session ? (
-          <p>
-            Usuário: {session.user.email}{" "}
-            <br/>
-            <Button
-              onClick={() => supabase.auth.signOut()}
-              colorScheme="red"
-              size="sm"
-            >
-              Sair
-            </Button>
-          </p>
-        ) : null}
-        {/* Resto do seu código */}
-      </>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "100vh",
-        }}
-      >
-        {/* <div className="container" style={{ padding: "50px 0 100px 0" }}>
-        {!session ? (
-          // <Auth />
-          <></>
-        ) : (
-          <Account key={session.user.id} session={session} />
-        )} */}
-        <div style={{ maxWidth: "480px", margin: "0 auto" }}>
-          <ChakraProvider>
-            <Box maxW="32rem">
-              <div className={styles.top}>
-                <h3 className={styles.title}> O que ver hoje?</h3>
-                <span>
-                  {" "}
-                  Clique e veja as possibilidades até que um seja do seu agrado!
-                </span>
-              </div>
+    <div>
+      <Head>
+        <title>Home</title>
+        <meta name="keywords" content="movies,tvshows,"></meta>
+        <meta name="description" content="movies,tvshows"></meta>
+      </Head>
+      {/* <SearchBar isLoading={isLoading} /> */}
+
+      <div>
+        <ChakraProvider>
+          {session ? (
+            <p>
+              Usuário: {session.user.email} <br />
               <Button
-                size="md"
-                bg="white"
-                color="black"
-                borderColor="gray"
-                borderWidth="1px"
-                mt="24px"
-                onClick={apiCall}
+                onClick={() => supabase.auth.signOut()}
+                colorScheme="red"
+                size="sm"
               >
-                Verificar
+                Sair
               </Button>
-            </Box>
-          </ChakraProvider>
-        </div>
-        {isLoading ? <Progress size="xs" isIndeterminate /> : null}
-        <br />
-        {isError === true ? (
-          <ErrorPage message={`- Filme Deletado`}></ErrorPage>
-        ) : (
-          <div>
-            {movieData.adult === false ? (
-              <div>
-                <h1>
-                  <br />
-                  <span className={styles.title}>
-                    {movieData.originalTitle ? (
-                      <span
-                        className={styles.title}
-                      >{`${movieData.originalTitle}`}</span>
-                    ) : (
-                      <ChakraProvider>
-                        {/* <Box bg="green.100" p={4}>
-                        <Alert
-                        </Alert>
-                      </Box> */}
-                      </ChakraProvider>
-                    )}
-                  </span>
-                  <br />
-                  {movieData.portugueseTitle ? (
-                    <span>{movieData.average}/10</span>
-                  ) : null}
-                  <br />
-                </h1>
-                {movieData.portugueseTitle ? (
-                  <div style={{ maxWidth: "480px", margin: "0 auto" }}>
-                    <ChakraProvider>
-                      <Progress
-                        hasStripe
-                        value={movieData.average}
-                        max={10}
-                        colorScheme={getProgressColor(movieData.average)}
-                      />
-                    </ChakraProvider>
-                    <br />
-                  </div>
-                ) : null}
+            </p>
+          ) : null}
+          {/* Resto do seu código */}
+        </ChakraProvider>
+        <div>
+          <div className={styles.top}>
+            <h3 className={styles.title}> Filmes Destaques da Semana</h3>
 
-                <h1>
-                  <ChakraProvider>
-                    {isLoadingPage === false ? (
-                      <Image
-                        className={styles.card_image_big}
-                        src={
-                          movieData.image
-                            ? "https://image.tmdb.org/t/p/original" +
-                              movieData.image
-                            : "/callback_gray.png"
-                        }
-                        alt="poster"
-                        width="480"
-                        height="720"
-                      />
-                    ) : (
-                      <Skeleton width="480px" height="720px" />
-                    )}
-                  </ChakraProvider>
-                </h1>
-
-                {movieData.portugueseTitle && (
-                  <div style={{ maxWidth: "480px", margin: "0 auto" }}>
-                    <ChakraProvider>
-                      <TableContainer>
-                        <Table size="sm">
-                          <Thead>
-                            <Tr>
-                              <Td
-                                style={{
-                                  fontFamily: "Helvetica Neue, sans-serif",
-                                }}
-                              >
-                                Título Em Português
-                              </Td>
-                              <Td
-                                style={{
-                                  fontFamily: "Helvetica Neue, sans-serif",
-                                }}
-                              >
-                                {movieData.portugueseTitle}
-                              </Td>
-                            </Tr>
-                          </Thead>
-                          <Tbody></Tbody>
-                        </Table>
-                        <Tabs size="md" variant="enclosed">
-                          <TabList>
-                            <Tab
-                              style={{
-                                fontFamily: "Helvetica Neue, sans-serif",
-                              }}
-                            >
-                              Nota Média
-                            </Tab>
-                            <Tab
-                              style={{
-                                fontFamily: "Helvetica Neue, sans-serif",
-                              }}
-                            >
-                              País de Origem
-                            </Tab>
-                            <Tab
-                              style={{
-                                fontFamily: "Helvetica Neue, sans-serif",
-                              }}
-                            >
-                              Idioma
-                            </Tab>
-                            <Tab
-                              style={{
-                                fontFamily: "Helvetica Neue, sans-serif",
-                              }}
-                            >
-                              Genero
-                            </Tab>
-                          </TabList>
-                          <TabPanels>
-                            <TabPanel
-                              style={{
-                                fontFamily: "Helvetica Neue, sans-serif",
-                              }}
-                            >
-                              {`${movieData.average} / ${movieData.ratingCount} votos`}
-                            </TabPanel>
-                            <TabPanel>
-                              <TranslationComponentCountryName
-                                text={movieData.country}
-                                language="pt"
-                              />
-                            </TabPanel>
-                            <TabPanel>
-                              <TranslationComponent
-                                text={movieData.originalLanguage}
-                                language="pt"
-                              />
-                            </TabPanel>
-                            <TabPanel
-                              style={{
-                                fontFamily: "Helvetica Neue, sans-serif",
-                              }}
-                            >
-                              {" "}
-                              {movieData.gender &&
-                                movieData.gender.length > 0 &&
-                                movieData.gender.map((gender, index) => (
-                                  <span key={gender}>
-                                    {gender}
-                                    {index !== movieData.gender.length - 1
-                                      ? ", "
-                                      : ""}
-                                  </span>
-                                ))}
-                            </TabPanel>
-                          </TabPanels>
-                        </Tabs>
-                      </TableContainer>
-                    </ChakraProvider>
-                  </div>
-                )}
-                {movieData.portugueseTitle && (
-                  <></>
-                  // <Link href={destino}>
-                  //   <a className={styles.button}>Detalhes</a>
-                  // </Link>
-                )}
-                <br />
-                {movieData.portugueseTitle && (
-                  <span>
-                    <div>
-                      <h1>Avalie Essa Dica:</h1>
-
-                      <Rate
-                        onChange={handleRateChange}
-                        value={starValue}
-                        disabled={isRatingSubmitted}
-                        count={10}
-                      />
-                      <br />
-                      <Button
-                        onClick={() => {
-                          handleRatingSubmit();
-                          inserLike();
-                        }}
-                        disabled={isRatingSubmitted}
-                      >
-                        Enviar Avaliação
-                      </Button>
-                      {isRatingSubmitted && (
-                        <p>Avaliação enviada com sucesso!</p>
-                      )}
-                    </div>
-                  </span>
-                )}
-                <br />
-                {likeThanks && <span>Obrigado pela Resposta!! 😀 </span>}
-                {showBackToTopButton && (
-                  <BackToTopButton onClick={scrollToTop} />
-                )}
-                {movieData.portugueseTitle && (
-                  <button onClick={apiCall} className={styles.button}>
-                    Verificar Novo
-                  </button>
-                )}
-              </div>
-            ) : null}
+            <h3 className={styles.title}>
+              <br />
+              <span></span>
+            </h3>
           </div>
-        )}
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
+          <h2 className={styles.label}>
+            <br />
+            <span className={styles.spantext}>
+              {isLoading ? <div>Carregando...</div> : " "}
+            </span>
+          </h2>
 
-        {/* </div> */}
+          {isError === true ? (
+            <ErrorPage message={`Verifique as Credenciais`}></ErrorPage>
+          ) : (
+            <div className={styles.grid}>
+              {searchMovies.map((search) => (
+                <div key={search.id}>
+                  <span className={styles.spantext}>{search.title}</span> <br />
+                  <span className={styles.spantext}>
+                    {search.vote_average}
+                    <div style={{ maxWidth: "240px", margin: "0 auto" }}>
+                      <ChakraProvider>
+                        <Progress
+                          hasStripe
+                          value={search.vote_average}
+                          max={10}
+                          colorScheme={getProgressColor(search.vote_average)}
+                        />
+                      </ChakraProvider>
+                    </div>
+                  </span>{" "}
+                  <br />
+                  <span className={styles.spantext}>
+                    {search.poster_path != null ? (
+                      <span className={styles.spantext}>
+                        {" "}
+                        <Image
+                          className={styles.card_image}
+                          src={
+                            "https://image.tmdb.org/t/p/original" +
+                            search.poster_path
+                          }
+                          alt="poster"
+                          width="240"
+                          height="360"
+                        />{" "}
+                      </span>
+                    ) : (
+                      <span className={styles.spantext}>
+                        {" "}
+                        <Image
+                          className={styles.card_image}
+                          src="/callback.png"
+                          alt="poster"
+                          width="240"
+                          height="360"
+                        />{" "}
+                      </span>
+                    )}
+                  </span>
+                  <br />
+                  <Link
+                    href={{
+                      pathname: "/movie-page",
+                      query: { movieId: search.id },
+                    }}
+                  >
+                    <a className={styles.button}>Detalhes</a>
+                  </Link>
+                  <br />
+                  <br />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className={styles.top}>
+          <h3 className={styles.title}>
+            <h3 className={styles.title}> Series Destaques da Semana</h3>
+
+            <span></span>
+          </h3>
+        </div>
+        <div className={styles.grid}>
+          {searchTv.map((searchtv) => (
+            <div key={searchTv.id}>
+              <br />
+              <span className={styles.spantext}>
+                {searchtv.original_name}
+              </span>{" "}
+              <br />
+              <span className={styles.spantext}>{searchtv.vote_average}</span>
+              <div style={{ maxWidth: "240px", margin: "0 auto" }}>
+                <ChakraProvider>
+                  <Progress
+                    hasStripe
+                    value={searchtv.vote_average}
+                    max={10}
+                    colorScheme={getProgressColor(searchtv.vote_average)}
+                  />
+                </ChakraProvider>
+              </div>
+              <br />
+              <span>
+                {searchtv.poster_path != null ? (
+                  <span className={styles.spantext}>
+                    {" "}
+                    <Image
+                      className={styles.card_image}
+                      src={
+                        "https://image.tmdb.org/t/p/original" +
+                        searchtv.poster_path
+                      }
+                      alt="poster"
+                      width="240"
+                      height="360"
+                    />{" "}
+                  </span>
+                ) : (
+                  <span className={styles.spantext}>
+                    {" "}
+                    <Image
+                      className={styles.card_image}
+                      src="/callback.png"
+                      alt="poster"
+                      width="240"
+                      height="360"
+                    />{" "}
+                  </span>
+                )}
+                <br />
+                <Link
+                  href={{
+                    pathname: "/tvshow-page",
+                    query: { tvShowId: searchtv.id },
+                  }}
+                >
+                  <a className={styles.button}>Detalhes</a>
+                </Link>
+              </span>
+            </div>
+          ))}
+        </div>
+        {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
       </div>
-    </>
+    </div>
   );
 }

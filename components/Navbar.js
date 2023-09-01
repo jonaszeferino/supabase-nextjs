@@ -1,8 +1,9 @@
 import Link from "next/link";
 import styles from "../styles/Navbar.module.css";
 import Auth from "./Auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
+import { supabase } from "../utils/supabaseClient";
 
 import {
   Modal,
@@ -21,8 +22,37 @@ export default function Navbar({ isLoading, onAuthenticated }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchText, setSearchText] = useState("");
   const [showAuth, setShowAuth] = useState(false);
+  const [session, setSession] = useState(null);
+  const [isError, setError] = useState(false); // You can keep this line if it's used somewhere
+  const [loading, setIsLoading] = useState(false); // Remove this line
 
   const router = useRouter();
+
+  // Verificar sessão
+  useEffect(() => {
+    let mounted = true;
+    async function getInitialSession() {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (mounted) {
+        if (session) {
+          setSession(session);
+        }
+        setIsLoading(false);
+      }
+    }
+    getInitialSession();
+    const { subscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
+    return () => {
+      mounted = false;
+      subscription?.unsubscribe();
+    };
+  }, []);
 
   return (
     <>
@@ -31,19 +61,17 @@ export default function Navbar({ isLoading, onAuthenticated }) {
       </div>
       <ul className={styles.navbar}>
         <li>
-          <button onClick={onOpen}>Fazer Login</button>
-        </li>
-        <li>
           <Link href="/">
             <a>| Home</a>
           </Link>
         </li>
         <li>
           <Link href="/watch-today">
-            <a>| O que Ver Hoje?</a>
+            <a>| O que Ver Hoje? |</a>
           </Link>
         </li>
-        <li>
+ 
+        {/* <li>
           <Link href="/search-movies">
             <a>| Descobrir Filmes</a>
           </Link>
@@ -57,6 +85,17 @@ export default function Navbar({ isLoading, onAuthenticated }) {
           <Link href="/where-is-my-movie">
             <a>| Onde Está Meu Filme? |</a>
           </Link>
+        </li> */}
+
+        <br />
+        <li>
+          <button onClick={onOpen}>Login</button>
+
+          {session ? (
+            <Link href="/my-movies-page">
+              <a>| Minhas Avaliações |</a>
+            </Link>
+          ) : null}
         </li>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
