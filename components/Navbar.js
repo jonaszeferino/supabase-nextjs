@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styles from "../styles/Navbar.module.css";
-import Auth from "./Auth";
+import Auth from "./Auth_old_funciona_com_magic";
 import { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 import { supabase } from "../utils/supabaseClient";

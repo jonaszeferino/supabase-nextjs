@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "../utils/supabaseClient";
-import Auth from "../components/Auth";
+import Auth from "../components/Auth_old_funciona_com_magic";
 import Account from "../components/Account";
 import Navbar from "../components/Navbar";
 import styles from "../styles/Home.module.css";
