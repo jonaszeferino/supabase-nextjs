@@ -11,10 +11,10 @@ import {
   Center,
   Alert,
   AlertIcon,
-  CloseButton,
   Link,
-  Text,
+  Divider,
 } from "@chakra-ui/react";
+import { FaGoogle } from "react-icons/fa";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
@@ -78,6 +78,28 @@ export default function Auth() {
   const changeForm = () => {
     setIsSignUp((value) => !value);
   };
+
+  const handleGoogleSignIn = async () => {
+    setAlertMessage("");
+    try {
+      const { user, session, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+      });
+      console.log("User:", user);
+      console.log("Session:", session);
+      console.log("Error:", error);
+      if (error) {
+        throw error;
+      }
+      setAlertMessage("Usuário Logado");
+      console.log(user);
+      console.log(session);
+    } catch (e) {
+      setAlertMessage(e.message);
+    }
+  };
+
+  // verificar as sessões
   useEffect(() => {
     let mounted = true;
     async function getInitialSession() {
@@ -148,7 +170,7 @@ export default function Auth() {
               value={password}
             />
           </FormControl>
-
+          <Center>
           {isSignUp && (
             <Button mt={4} colorScheme="teal" size="md" onClick={handleSignUp}>
               Cadastre-Se
@@ -159,7 +181,7 @@ export default function Auth() {
               Login
             </Button>
           )}
-          <br />
+          </Center>
           <br />
           {alertMessage && (
             <ChakraProvider>
@@ -172,17 +194,24 @@ export default function Auth() {
             </ChakraProvider>
           )}
           <br />
-          <br />
-          {/* Link para alternar entre Sign In e Sign Up */}
+          
 
-          <Link
-            position="absolute"
-            bottom="16px"
-            left="50%"
-            transform="translateX(-50%)"
-            onClick={changeForm}
-            cursor="pointer"
+          {/* Link para alternar entre Sign In e Sign Up */}
+          <Divider my={4} />
+          <Center>
+          <Button
+            mt={4}
+            colorScheme="blue"
+            size="md"
+            leftIcon={<FaGoogle />} // Adicione o ícone do Google aqui
+            onClick={handleGoogleSignIn}
           >
+            Login com Google
+          </Button>
+          </Center>
+          <br />
+
+          <Link onClick={changeForm} cursor="pointer">
             {isSignUp
               ? "Você já tem uma Conta? Faça o Login!"
               : "Você é Novo? Cadastre-se!"}
