@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styles from "../styles/Navbar.module.css";
-import Auth from "./Auth_old_funciona_com_magic";
+import Auth from "./Auth";
 import { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 import { supabase } from "../utils/supabaseClient";
@@ -101,7 +101,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
           <ModalOverlay />
           <ModalContent style={{ background: "white" }}>
             <ModalHeader>
-              Acesso por meio do e-mail
+                Login
               <IconButton
                 icon={<FaTimes />}
                 colorScheme="gray"
@@ -119,8 +119,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
           <ModalOverlay />
           <ModalContent style={{ background: "white" }}>
             <ModalHeader>
-              Acesso por meio do e-mail
-              <IconButton
+Login              <IconButton
                 icon={<FaTimes />}
                 colorScheme="gray"
                 variant="ghost"

@@ -24,60 +24,26 @@ export default function Auth() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
 
-  const handleSignUp = async () => {
-    setAlertMessage("");
+  const resetPassword = async (email) => {
+    console.log(email);
     try {
-      const { user, error, status } = await supabase.auth.signUp({
-        email: email,
-        password: password,
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: "https://supabase-nextjs-gamma.vercel.app/",
       });
-      console.log("User:", user);
-      console.log("Session:", session);
-      console.log("Error:", error);
-      setAlertMessage("Verifique seu E-mail");
-      if (user) {
-        console.log("Usuário cadastrado com sucesso:", user);
-        setAlertMessage("Verifique seu E-mail");
-      } else if (error) {
-        if (status === 429) {
-          console.log("Status 429 - Muitas solicitações recentes");
-          setAlertMessage(
-            "Você fez muitas solicitações recentemente. Aguarde um momento."
-          );
-        } else {
-          console.error("Erro durante o cadastro:", error);
-          setAlertMessage(error.message);
-        }
+
+      if (!error) {
+        console.log("Password reset email sent successfully");
+        // Additional logic, such as displaying a success message
+      } else {
+        console.error("Error sending password reset email:", error);
+        // Handle the error according to your app's needs
       }
-    } catch (e) {
-      console.error("Erro completo:", e);
-      setAlertMessage(e.message);
+    } catch (error) {
+      console.error("Error sending password reset email:", error);
+      // Handle the error according to your app's needs
     }
   };
 
-  const handleSignIn = async () => {
-    setAlertMessage("");
-    try {
-      const { user, session, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-      });
-      console.log("User:", user);
-      console.log("Session:", session);
-      console.log("Error:", error);
-      if (error) {
-        throw error;
-      }
-      setAlertMessage("Usuário Logado");
-      console.log(user);
-      console.log(session);
-    } catch (e) {
-      setAlertMessage(e.message);
-    }
-  };
-  const changeForm = () => {
-    setIsSignUp((value) => !value);
-  };
   useEffect(() => {
     let mounted = true;
     async function getInitialSession() {
@@ -121,6 +87,7 @@ export default function Auth() {
           ) : null}
         </ChakraProvider>
       </>
+
       <Center height="100vh">
         <Box
           p={4}
@@ -130,8 +97,9 @@ export default function Auth() {
           position="relative"
         >
           <Heading as="h1" size="xl" textAlign="center" mb={4}>
-            {isSignUp ? "Cadastre-se" : "Login"}
+            Reset de Senha
           </Heading>
+
           <FormControl>
             <FormLabel>Email</FormLabel>
             <Input
@@ -140,25 +108,7 @@ export default function Auth() {
               value={email}
             />
           </FormControl>
-          <FormControl mt={4}>
-            <FormLabel>Senha</FormLabel>
-            <Input
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
-          </FormControl>
 
-          {isSignUp && (
-            <Button mt={4} colorScheme="teal" size="md" onClick={handleSignUp}>
-              Cadastre-Se
-            </Button>
-          )}
-          {!isSignUp && (
-            <Button mt={4} colorScheme="teal" size="md" onClick={handleSignIn}>
-              Login
-            </Button>
-          )}
           <br />
           <br />
           {alertMessage && (
@@ -171,22 +121,13 @@ export default function Auth() {
               </Alert>
             </ChakraProvider>
           )}
+          <Button mt={4} colorScheme="teal" size="md" onClick={resetPassword}>
+            Esqueci a senha
+          </Button>
+
           <br />
           <br />
           {/* Link para alternar entre Sign In e Sign Up */}
-
-          <Link
-            position="absolute"
-            bottom="16px"
-            left="50%"
-            transform="translateX(-50%)"
-            onClick={changeForm}
-            cursor="pointer"
-          >
-            {isSignUp
-              ? "Você já tem uma Conta? Faça o Login!"
-              : "Você é Novo? Cadastre-se!"}
-          </Link>
         </Box>
       </Center>
     </ChakraProvider>
