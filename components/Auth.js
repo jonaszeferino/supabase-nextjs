@@ -13,53 +13,57 @@ import {
   AlertIcon,
   CloseButton,
   Link,
+  Text,
 } from "@chakra-ui/react";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertMessage, setAlertMessage] = useState(""); // Estado para a mensagem do Alert
-  const [isAlertOpen, setIsAlertOpen] = useState(false); // Estado para controlar a visibilidade do Alert
   const [session, setSession] = useState(null);
-  const [isLoading, setIsLoading] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
 
   const handleSignUp = async () => {
+    setAlertMessage("");
     try {
-      const { user, signUpError } = await supabase.auth.signUp({
+      const { user, error, status } = await supabase.auth.signUp({
         email: email,
         password: password,
       });
 
+      console.log("User:", user);
+      console.log("Session:", session);
+      console.log("Error:", error);
+      setAlertMessage("Verifique seu E-mail")
+
       if (user) {
         console.log("Usuário cadastrado com sucesso:", user);
-        setAlertMessage("Check your email to confirm sign up");
-        setIsAlertOpen(true);
-
-        // setTimeout(() => {
-        setAlertMessage("");
-        setIsAlertOpen(false);
-        // }, 10000);
-      } else if (signUpError) {
-        console.log("Erro durante o cadastro:", signUpError);
-        setAlertMessage(signUpError.message);
-        setIsAlertOpen(true);
+        setAlertMessage("Verifique seu E-mail");
+      } else if (error) {
+        if (status === 429) {
+          console.log("Status 429 - Muitas solicitações recentes");
+          setAlertMessage(
+            "Você fez muitas solicitações recentemente. Aguarde um momento."
+          );
+        } else {
+          console.error("Erro durante o cadastro:", error);
+          setAlertMessage(error.message);
+        }
       }
     } catch (e) {
       console.error("Erro completo:", e);
       setAlertMessage(e.message);
-      setIsAlertOpen(true);
     }
   };
 
   const handleSignIn = async () => {
+    setAlertMessage("");
     try {
       const { user, session, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
       });
-
       console.log("User:", user);
       console.log("Session:", session);
       console.log("Error:", error);
@@ -68,22 +72,32 @@ export default function Auth() {
         throw error;
       }
       setAlertMessage("Usuário Logado");
-      setIsAlertOpen(true);
       console.log(user);
       console.log(session);
-
-      setTimeout(() => {
-        setAlertMessage("");
-        setIsAlertOpen(false);
-      }, 10000);
     } catch (e) {
       setAlertMessage(e.message);
-      setIsAlertOpen(true);
     }
   };
 
   const changeForm = () => {
     setIsSignUp((value) => !value);
+  };
+
+  const resetPassword = async (email) => {
+    try {
+      const { error } = await supabase.auth.api.resetPasswordForEmail(email);
+  
+      if (!error) {
+        console.log("E-mail de redefinição de senha enviado com sucesso.");
+        // Lógica adicional, como exibir uma mensagem de sucesso.
+      } else {
+        console.error("Erro ao enviar e-mail de redefinição de senha:", error);
+        // Trate o erro de acordo com as necessidades do seu aplicativo.
+      }
+    } catch (error) {
+      console.error("Erro ao enviar e-mail de redefinição de senha:", error);
+      // Trate o erro de acordo com as necessidades do seu aplicativo.
+    }
   };
 
   useEffect(() => {
@@ -127,7 +141,6 @@ export default function Auth() {
               </Button>
             </p>
           ) : null}
-          {/* Resto do seu código */}
         </ChakraProvider>
       </>
       <Center height="100vh">
@@ -168,25 +181,24 @@ export default function Auth() {
               Login
             </Button>
           )}
-
-          {isAlertOpen && (
-            <Alert status="success" mt={4}>
-              <AlertIcon />
-              {alertMessage}
-              <CloseButton
-                position="absolute"
-                right="8px"
-                top="8px"
-                onClick={() => setIsAlertOpen(false)}
-              />
-            </Alert>
+          <br />
+          <br />
+          {alertMessage && (
+            <ChakraProvider>
+              <Alert status="info">
+                <AlertIcon />
+                {alertMessage === "Email not confirmed" ? "E-mail Não Confirmado" : alertMessage}
+              </Alert>
+            </ChakraProvider>
           )}
+            <Button mt={4} colorScheme="teal" size="md" onClick={resetPassword}>
+              Esqueci a senha
+            </Button>
 
-          <br />
-          <br />
           <br />
           <br />
           {/* Link para alternar entre Sign In e Sign Up */}
+
           <Link
             position="absolute"
             bottom="16px"
