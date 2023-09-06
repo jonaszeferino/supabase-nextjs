@@ -13,8 +13,10 @@ import {
   AlertIcon,
   Link,
   Divider,
+  InputGroup,
+  InputRightElement
 } from "@chakra-ui/react";
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaEyeSlash, FaEye } from "react-icons/fa";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
@@ -23,6 +25,11 @@ export default function Auth() {
   const [session, setSession] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar a visibilidade da senha
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSignUp = async () => {
     setAlertMessage("");
@@ -164,23 +171,45 @@ export default function Auth() {
           </FormControl>
           <FormControl mt={4}>
             <FormLabel>Senha</FormLabel>
-            <Input
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
+            <InputGroup>
+              <Input
+                type={showPassword ? "text" : "password"}
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+              />
+              <InputRightElement width="3rem">
+                <Button
+                  h="1.5rem"
+                  size="sm"
+                  onClick={togglePasswordVisibility}
+                  tabIndex="-1"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
           </FormControl>
           <Center>
-          {isSignUp && (
-            <Button mt={4} colorScheme="teal" size="md" onClick={handleSignUp}>
-              Cadastre-Se
-            </Button>
-          )}
-          {!isSignUp && (
-            <Button mt={4} colorScheme="teal" size="md" onClick={handleSignIn}>
-              Login
-            </Button>
-          )}
+            {isSignUp && (
+              <Button
+                mt={4}
+                colorScheme="teal"
+                size="md"
+                onClick={handleSignUp}
+              >
+                Cadastre-Se
+              </Button>
+            )}
+            {!isSignUp && (
+              <Button
+                mt={4}
+                colorScheme="teal"
+                size="md"
+                onClick={handleSignIn}
+              >
+                Login
+              </Button>
+            )}
           </Center>
           <br />
           {alertMessage && (
@@ -194,20 +223,19 @@ export default function Auth() {
             </ChakraProvider>
           )}
           <br />
-          
 
           {/* Link para alternar entre Sign In e Sign Up */}
           <Divider my={4} />
           <Center>
-          <Button
-            mt={4}
-            colorScheme="blue"
-            size="md"
-            leftIcon={<FaGoogle />} // Adicione o ícone do Google aqui
-            onClick={handleGoogleSignIn}
-          >
-            Login com Google
-          </Button>
+            <Button
+              mt={4}
+              colorScheme="blue"
+              size="md"
+              leftIcon={<FaGoogle />} // Adicione o ícone do Google aqui
+              onClick={handleGoogleSignIn}
+            >
+              Login com Google
+            </Button>
           </Center>
           <br />
 
