@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { supabase } from "../utils/supabaseClient"; // Importe o 'supabase' desta forma
+import { supabase } from "../utils/supabaseClient";
 import {
   Box,
   Heading,
@@ -17,17 +17,17 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 
-export default function passwordReset() {
+export default function PasswordResetPage() {
   const [email, setEmail] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
 
-  console.log(email)
-  
+  console.log(email);
+
   const handlePasswordLinkReset = async () => {
     setAlertMessage("");
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: "http://localhost:3000/passwordReset",
+        redirectTo: "https://supabase-nextjs-gamma.vercel.app/password-reset",
       });
       if (error) {
         throw error;
@@ -41,8 +41,7 @@ export default function passwordReset() {
 
   return (
     <ChakraProvider>
-      <>
-      </>
+      <></>
       <Center height="100vh">
         <Box
           p={4}
@@ -62,10 +61,9 @@ export default function passwordReset() {
               value={email}
             />
           </FormControl>
-    
+
           <br />
           <Center>
-            
             <Button
               onClick={() => handlePasswordLinkReset()}
               colorScheme="green"

@@ -189,7 +189,7 @@ export default function Auth() {
             </InputGroup>
           </FormControl>
 
-          <Link href="https://supabase-nextjs-gamma.vercel.app/sendEmailPasswordReset">
+          <Link href="https://supabase-nextjs-gamma.vercel.app/send-email-password-reset">
             Esqueci minha senha
           </Link>
 

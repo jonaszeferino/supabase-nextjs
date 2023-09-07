@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "../utils/supabaseClient";
-import Auth from "../components/Auth_old_funciona_com_magic";
-import Account from "../components/Account";
+import Auth from "../components/Auth";
 import Navbar from "../components/Navbar";
 import styles from "../styles/Home.module.css";
 import Head from "next/head";
@@ -51,6 +50,12 @@ export default function Home() {
   const [starValue, setStarValue] = useState(0); // Estado para armazenar o valor das estrelas
   const [isRatingSubmitted, setIsRatingSubmitted] = useState(false); // Estado para controlar se a avaliação foi enviada
   const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
+
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar a visibilidade da senha
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleAuthenticated = (authenticatedSession) => {
     setSession(authenticatedSession);
@@ -111,8 +116,6 @@ export default function Home() {
       .catch((error) => setError(true), setIsLoading(false));
   };
 
-  // let destino = `/movie-page?movieId=${movieData.movieId}`;
-
   function getProgressColor(progressValue) {
     if (progressValue >= 0.1 && progressValue <= 3.999) {
       return "red";
@@ -161,10 +164,7 @@ export default function Home() {
 
   const isLoadingPage =
     isError || movieData.adult || movieData.portugueseTitle === null;
-  
-
   //sessao e afins abaixo
-
   useEffect(() => {
     let mounted = true;
     async function getInitialSession() {

@@ -1,5 +1,5 @@
 import react, { useState, useEffect } from "react";
-import { supabase } from "../utils/supabaseClient"; // Importe o 'supabase' desta forma
+import { supabase } from "../utils/supabaseClient";
 import {
   Box,
   Heading,
@@ -18,15 +18,12 @@ import {
 } from "@chakra-ui/react";
 import { FaGoogle, FaEyeSlash, FaEye } from "react-icons/fa";
 
-export default function passwordReset() {
+function PasswordReset() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [alertMessage, setAlertMessage] = useState(""); // Estado para a mensagem do Alert
+  const [alertMessage, setAlertMessage] = useState("");
   const [session, setSession] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // Estado para controlar a visibilidade da senha
+  const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -46,31 +43,6 @@ export default function passwordReset() {
       setAlertMessage(e.message);
     }
   };
-
-  useEffect(() => {
-    let mounted = true;
-    async function getInitialSession() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (mounted) {
-        if (session) {
-          setSession(session);
-        }
-        setIsLoading(false);
-      }
-    }
-    getInitialSession();
-    const { subscription } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-      }
-    );
-    return () => {
-      mounted = false;
-      subscription?.unsubscribe();
-    };
-  }, []);
 
   return (
     <ChakraProvider>
@@ -131,7 +103,6 @@ export default function passwordReset() {
           </FormControl>
           <br />
           <Center>
-            
             <Button
               onClick={() => handlePasswordReset()}
               colorScheme="green"
@@ -152,12 +123,12 @@ export default function passwordReset() {
             </ChakraProvider>
           )}
           <br />
-
           <Divider my={4} />
-
           <br />
         </Box>
       </Center>
     </ChakraProvider>
   );
 }
+
+export default PasswordReset;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, Input, Text, ChakraProvider } from "@chakra-ui/react";
+import { Box, Button, Input, Text, ChakraProvider, Center } from "@chakra-ui/react";
 import { supabase } from "../utils/supabaseClient";
 import Auth from "../components/Auth";
 
