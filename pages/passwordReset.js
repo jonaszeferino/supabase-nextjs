@@ -18,89 +18,30 @@ import {
 } from "@chakra-ui/react";
 import { FaGoogle, FaEyeSlash, FaEye } from "react-icons/fa";
 
-export default function Auth() {
+export default function passwordReset() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [alertMessage, setAlertMessage] = useState(""); // Estado para a mensagem do Alert
   const [session, setSession] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar a visibilidade da senha
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSignUp = async () => {
+  const handlePasswordReset = async () => {
     setAlertMessage("");
     try {
-      const { user, error, status } = await supabase.auth.signUp({
-        email: email,
-        password: password,
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
       });
-      console.log("User:", user);
-      console.log("Session:", session);
-      console.log("Error:", error);
-      setAlertMessage("Verifique seu E-mail");
-      if (user) {
-        console.log("Usuário cadastrado com sucesso:", user);
-        setAlertMessage("Verifique seu E-mail");
-      } else if (error) {
-        if (status === 429) {
-          console.log("Status 429 - Muitas solicitações recentes");
-          setAlertMessage(
-            "Você fez muitas solicitações recentemente. Aguarde um momento."
-          );
-        } else {
-          console.error("Erro durante o cadastro:", error);
-          setAlertMessage(error.message);
-        }
-      }
-    } catch (e) {
-      console.error("Erro completo:", e);
-      setAlertMessage(e.message);
-    }
-  };
-
-  const handleSignIn = async () => {
-    setAlertMessage("");
-    try {
-      const { user, session, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-      });
-      console.log("User:", user);
-      console.log("Session:", session);
-      console.log("Error:", error);
       if (error) {
         throw error;
       }
-      setAlertMessage("Usuário Logado");
-      console.log(user);
-      console.log(session);
-    } catch (e) {
-      setAlertMessage(e.message);
-    }
-  };
-  const changeForm = () => {
-    setIsSignUp((value) => !value);
-  };
-
-  const handleGoogleSignIn = async () => {
-    setAlertMessage("");
-    try {
-      const { user, session, error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-      });
-      console.log("User:", user);
-      console.log("Session:", session);
-      console.log("Error:", error);
-      if (error) {
-        throw error;
-      }
-      setAlertMessage("Usuário Logado");
-      console.log(user);
-      console.log(session);
+      setAlertMessage("Senha Trocada");
     } catch (e) {
       setAlertMessage(e.message);
     }
@@ -158,7 +99,7 @@ export default function Auth() {
           position="relative"
         >
           <Heading as="h1" size="xl" textAlign="center" mb={4}>
-            {isSignUp ? "Cadastre-se" : "Login"}
+            Reset de Senha
           </Heading>
           <FormControl>
             <FormLabel>Email</FormLabel>
@@ -173,8 +114,8 @@ export default function Auth() {
             <InputGroup>
               <Input
                 type={showPassword ? "text" : "password"}
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
+                onChange={(e) => setNewPassword(e.target.value)}
+                value={newPassword}
               />
               <InputRightElement width="3rem">
                 <Button
@@ -188,32 +129,16 @@ export default function Auth() {
               </InputRightElement>
             </InputGroup>
           </FormControl>
-
-          <Link href="https://supabase-nextjs-gamma.vercel.app/sendEmailPasswordReset">
-            Esqueci minha senha
-          </Link>
-
+          <br />
           <Center>
-            {isSignUp && (
-              <Button
-                mt={4}
-                colorScheme="teal"
-                size="md"
-                onClick={handleSignUp}
-              >
-                Cadastre-Se
-              </Button>
-            )}
-            {!isSignUp && (
-              <Button
-                mt={4}
-                colorScheme="teal"
-                size="md"
-                onClick={handleSignIn}
-              >
-                Login
-              </Button>
-            )}
+            
+            <Button
+              onClick={() => handlePasswordReset()}
+              colorScheme="green"
+              size="sm"
+            >
+              Reset
+            </Button>
           </Center>
           <br />
           {alertMessage && (
@@ -228,26 +153,9 @@ export default function Auth() {
           )}
           <br />
 
-          {/* Link para alternar entre Sign In e Sign Up */}
           <Divider my={4} />
-          <Center>
-            <Button
-              mt={4}
-              colorScheme="blue"
-              size="md"
-              leftIcon={<FaGoogle />} // Adicione o ícone do Google aqui
-              onClick={handleGoogleSignIn}
-            >
-              Login com Google
-            </Button>
-          </Center>
-          <br />
 
-          <Link onClick={changeForm} cursor="pointer">
-            {isSignUp
-              ? "Você já tem uma Conta? Faça o Login!"
-              : "Você é Novo? Cadastre-se!"}
-          </Link>
+          <br />
         </Box>
       </Center>
     </ChakraProvider>

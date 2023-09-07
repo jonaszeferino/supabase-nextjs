@@ -10,6 +10,7 @@ export default function SignUp() {
     <ChakraProvider>
       <>
         <ChakraProvider>
+          <Center>
           {session ? (
             <p>
               Usuário: {session.user.email} <br />
@@ -23,6 +24,7 @@ export default function SignUp() {
             </p>
           ) : null}
           {/* Resto do seu código */}
+          </Center>
         </ChakraProvider>
       </>
       <Auth />

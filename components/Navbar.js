@@ -70,7 +70,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
             <a>| O que Ver Hoje? |</a>
           </Link>
         </li>
- 
+
         {/* <li>
           <Link href="/search-movies">
             <a>| Descobrir Filmes</a>
@@ -88,20 +88,37 @@ export default function Navbar({ isLoading, onAuthenticated }) {
         </li> */}
 
         <br />
-        <li>
-          <button onClick={onOpen}>Login</button>
 
+        
+          <li>
+          <button onClick={onOpen}>Login</button>
+          </li>
           {session ? (
-            <Link href="/my-movies-page">
-              <a>| Minhas Avaliações |</a>
-            </Link>
+            
+              <li className={styles.profileItem}>
+                <a>| Meu Perfil |</a>
+                <ul className={styles.submenu}>
+                  <li>
+                    <Link href="/profile/settings">
+                      <a>Dados</a>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/my-movies-page">
+                      <a>Minhas Avaliações</a>
+                    </Link>
+                  </li>
+                  {/* Adicione mais sublinks conforme necessário */}
+                </ul>
+              </li>
+            
           ) : null}
-        </li>
+
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent style={{ background: "white" }}>
             <ModalHeader>
-                Login
+              Login
               <IconButton
                 icon={<FaTimes />}
                 colorScheme="gray"
@@ -119,7 +136,8 @@ export default function Navbar({ isLoading, onAuthenticated }) {
           <ModalOverlay />
           <ModalContent style={{ background: "white" }}>
             <ModalHeader>
-Login              <IconButton
+              Login{" "}
+              <IconButton
                 icon={<FaTimes />}
                 colorScheme="gray"
                 variant="ghost"
