@@ -33,7 +33,7 @@ import {
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import ErrorPage from "./error-page";
-
+//teste
 export default function Home() {
   const [session, setSession] = useState(null);
   const [isError, setError] = useState(false);
