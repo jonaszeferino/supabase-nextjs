@@ -26,7 +26,7 @@ export default function Auth() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+//teste
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
