@@ -3,6 +3,7 @@ import styles from "../styles/Navbar.module.css";
 import Auth from "./Auth";
 import { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
+
 import { supabase } from "../utils/supabaseClient";
 
 import {
@@ -15,9 +16,14 @@ import {
   useDisclosure,
   IconButton,
   Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router"; // Importe o hook useRouter
 
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import { useRouter } from "next/router"; 
 export default function Navbar({ isLoading, onAuthenticated }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchText, setSearchText] = useState("");
@@ -89,30 +95,39 @@ export default function Navbar({ isLoading, onAuthenticated }) {
 
         <br />
 
-        
+        <li>
+          <button onClick={onOpen}>Login |</button>
+        </li>
+        {session ? (
           <li>
-          <button onClick={onOpen}>Login</button>
+            Perfil
+            <Menu>
+              {({ isOpen }) => (
+                <>
+                  <MenuButton
+                    isActive={isOpen}
+                    as={Button}
+                    rightIcon={<ChevronDownIcon />}
+                  >
+                    {""}
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>
+                      <Link href="/profile">
+                        <a>Dados</a>
+                      </Link>
+                    </MenuItem>
+                    <MenuItem>
+                      <Link href="/my-movies-page">
+                        <a>Minhas Avaliações</a>
+                      </Link>
+                    </MenuItem>
+                  </MenuList>
+                </>
+              )}
+            </Menu>
           </li>
-          {session ? (
-            
-              <li className={styles.profileItem}>
-                <a>| Meu Perfil |</a>
-                <ul className={styles.submenu}>
-                  <li>
-                    <Link href="/profile/settings">
-                      <a>Dados</a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/my-movies-page">
-                      <a>Minhas Avaliações</a>
-                    </Link>
-                  </li>
-                  {/* Adicione mais sublinks conforme necessário */}
-                </ul>
-              </li>
-            
-          ) : null}
+        ) : null}
 
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
