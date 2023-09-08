@@ -9,6 +9,9 @@ import {
   Button,
   VStack,
   ChakraProvider,
+  Divider,
+  Text,
+  Center
 } from "@chakra-ui/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -62,53 +65,61 @@ const Profile = () => {
 
   return (
     <ChakraProvider>
-      <Box p={4}>
+      <Box p={4} style={{ maxWidth: "400px", margin: "0 auto" }}>
         <Heading size="lg" mb={4}>
-          Perfil
+          Dados do Perfil
         </Heading>
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="start">
             <FormControl>
-              <FormLabel>Nome:</FormLabel>
+              <FormLabel style={{ fontWeight: "bold" }}>Nome:</FormLabel>
               <Input
                 type="text"
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
+                style={{ width: "100%" }}
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Sobrenome:</FormLabel>
+              <FormLabel style={{ fontWeight: "bold" }}>Sobrenome:</FormLabel>
               <Input
                 type="text"
-                name="firstName"
+                name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
+                style={{ width: "100%" }}
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Origem:</FormLabel>
+              <FormLabel style={{ fontWeight: "bold" }}>Origem:</FormLabel>
               <Input
                 type="text"
-                name="firstName"
+                name="nationality"
                 value={formData.nationality}
                 onChange={handleChange}
+                style={{ width: "100%" }}
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Data de Nascimento:</FormLabel>
-              <DatePicker
-                selected={formData.dateOfBirth}
-                onChange={handleDateChange}
-                dateFormat="dd/MM/yyyy"
+              <FormLabel style={{ fontWeight: "bold" }}>
+                Data De Nascimento:
+              </FormLabel>
+              <Input
+                type="text"
+                name="dateOfBirth"
+                value={formData.dateOfBirth}
+                onChange={handleChange}
+                style={{ width: "100%" }}
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Gênero:</FormLabel>
+              <FormLabel style={{ fontWeight: "bold" }}>Gênero:</FormLabel>
               <Select
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
+                style={{ width: "100%" }}
               >
                 <option value="Masculino">Masculino</option>
                 <option value="Feminino">Feminino</option>
@@ -118,7 +129,83 @@ const Profile = () => {
                 </option>
               </Select>
             </FormControl>
-            <Button colorScheme="blue" type="submit">
+            <Divider />
+            <Center>
+              <Text>Seus Gostos</Text>
+            </Center>
+            <FormControl>
+              <FormLabel style={{ fontWeight: "bold" }}>
+                Filme Favorito:
+              </FormLabel>
+              <Input
+                type="text"
+                name="favoriteMovie"
+                value={formData.favoriteMovie}
+                onChange={handleChange}
+                style={{ width: "100%" }}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel style={{ fontWeight: "bold" }}>
+                Gênero de Filme Favorito:
+              </FormLabel>
+              <Input
+                type="text"
+                name="movieGenre"
+                value={formData.movieGenre}
+                onChange={handleChange}
+                style={{ width: "100%" }}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel style={{ fontWeight: "bold" }}>
+                Serie Favorito:
+              </FormLabel>
+              <Input
+                type="text"
+                name="favoriteTVShow"
+                value={formData.favoriteTVShow}
+                onChange={handleChange}
+                style={{ width: "100%" }}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel style={{ fontWeight: "bold" }}>
+                Genero de Série Favorito:
+              </FormLabel>
+              <Input
+                type="text"
+                name="tvShowGenre"
+                value={formData.tvShowGenre}
+                onChange={handleChange}
+                style={{ width: "100%" }}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel style={{ fontWeight: "bold" }}>
+                Ator Favorito:
+              </FormLabel>
+              <Input
+                type="text"
+                name="favoriteActor"
+                value={formData.favoriteActor}
+                onChange={handleChange}
+                style={{ width: "100%" }}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel style={{ fontWeight: "bold" }}>
+                Atriz Favorita:
+              </FormLabel>
+              <Input
+                type="text"
+                name="favoriteActress"
+                value={formData.favoriteActress}
+                onChange={handleChange}
+                style={{ width: "100%" }}
+              />
+            </FormControl>
+            <Button colorScheme="blue" type="submit" style={{ width: "100%" }}>
               Salvar
             </Button>
           </VStack>

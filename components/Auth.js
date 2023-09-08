@@ -189,7 +189,10 @@ export default function Auth() {
             </InputGroup>
           </FormControl>
 
-          <Link href="https://supabase-nextjs-gamma.vercel.app/send-email-password-reset">
+          <Link
+            color="teal.500"
+            href="https://supabase-nextjs-gamma.vercel.app/send-email-password-reset"
+          >
             Esqueci minha senha
           </Link>
 
@@ -242,12 +245,13 @@ export default function Auth() {
             </Button>
           </Center>
           <br />
-
-          <Link onClick={changeForm} cursor="pointer">
-            {isSignUp
-              ? "Você já tem uma Conta? Faça o Login!"
-              : "Você é Novo? Cadastre-se!"}
-          </Link>
+          <Center>
+            <Link onClick={changeForm} cursor="pointer">
+              {isSignUp
+                ? "Você já tem uma Conta? Faça o Login!"
+                : "Você é Novo? Cadastre-se!"}
+            </Link>
+          </Center>
         </Box>
       </Center>
     </ChakraProvider>
