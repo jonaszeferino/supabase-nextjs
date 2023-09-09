@@ -14,10 +14,9 @@ import {
   Input,
   Center,
   VStack,
-  IconButton
+  IconButton,
 } from "@chakra-ui/react";
 import { BiSolidUpArrow } from "react-icons/bi";
-
 
 export default function Discovery() {
   let [searchMovies, setSearchMovies] = useState([]);
@@ -449,32 +448,23 @@ export default function Discovery() {
                 <br />
                 <span className={styles.spantext}>{search.title}</span> <br />
                 <span className={styles.spantext}>
-                  {search.poster_path != null ? (
+                  <span className={styles.spantext}>
                     <span className={styles.spantext}>
-                      {" "}
                       <Image
                         className={styles.card_image}
                         src={
-                          "https://image.tmdb.org/t/p/original" +
-                          search.poster_path
+                          search.poster_path != null
+                            ? "https://image.tmdb.org/t/p/original" +
+                              search.poster_path
+                            : "/callback.png"
                         }
                         alt="poster"
                         width="240"
                         height="360"
-                      />{" "}
+                      />
                     </span>
-                  ) : (
-                    <span className={styles.spantext}>
-                      {" "}
-                      <Image
-                        className={styles.card_image}
-                        src="/callback.png"
-                        alt="poster"
-                        width="240"
-                        height="360"
-                      />{" "}
-                    </span>
-                  )}
+                    <br />
+                  </span>
                   <br />
                   <span className={styles.spantext}>
                     Média: {search.vote_average} - Nº de Votos:{" "}
@@ -549,7 +539,7 @@ export default function Discovery() {
           </span>
         </IconButton>
       )}
-      
+
       {!searchMovies ? (
         <div>
           <span className={styles.spantext}>Total Paginas: {totalPages}</span>{" "}

@@ -379,7 +379,6 @@ export default function Discovery() {
         <div className={styles.top}>
           <h3 className={styles.title}> Descubra Filmes</h3>
         </div>
-
         <br />
         <ChakraProvider>
           <FormLabel htmlFor="ordenation">Ordenação do Resultado</FormLabel>
@@ -495,7 +494,6 @@ export default function Discovery() {
             </ChakraProvider>
           ) : null}
         </span>
-
         {isError === true ? (
           <ErrorPage message={`Verifique as Credenciais`}></ErrorPage>
         ) : (
@@ -517,32 +515,20 @@ export default function Discovery() {
                   <br />
                 </div>
                 <span className={styles.spantext}>
-                  {search.poster_path != null ? (
-                    <span className={styles.spantext}>
-                      {" "}
-                      <Image
-                        className={styles.card_image}
-                        src={
-                          "https://image.tmdb.org/t/p/original" +
-                          search.poster_path
-                        }
-                        alt="poster"
-                        width="240"
-                        height="360"
-                      />{" "}
-                    </span>
-                  ) : (
-                    <span className={styles.spantext}>
-                      {" "}
-                      <Image
-                        className={styles.card_image}
-                        src="/callback.png"
-                        alt="poster"
-                        width="240"
-                        height="360"
-                      />{" "}
-                    </span>
-                  )}
+                  <span className={styles.spantext}>
+                    <Image
+                      className={styles.card_image}
+                      src={
+                        search.poster_path != null
+                          ? "https://image.tmdb.org/t/p/original" +
+                            search.poster_path
+                          : "/callback.png"
+                      }
+                      alt="poster"
+                      width="240"
+                      height="360"
+                    />
+                  </span>
                   <br />
                 </span>
                 <span className={styles.spantext}>

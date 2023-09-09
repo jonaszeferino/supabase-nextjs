@@ -4,7 +4,6 @@ import ErrorPage from "./error-page";
 import Head from "next/head";
 import Link from "next/link";
 import { Rate } from "antd";
-import { BiSolidUpArrow } from "react-icons/bi";
 import TranslationComponent from "../components/translateComponent";
 import TranslationComponentCountryName from "../components/translateComponentCountryName";
 import {
@@ -137,19 +136,15 @@ export default function Movieapi() {
       console.error(error);
     }
   };
-
   // Estrelas:
   const handleRateChange = (value) => {
-    setStarValue(value); // Atualiza o estado com o novo valor das estrelas
+    setStarValue(value);
   };
   const handleRatingSubmit = () => {
-    // AColar aqui a chamada na api para enviar o valor das estrelas ao banco de dados
     setIsRatingSubmitted(true);
   };
-
   const isLoadingPage =
     isError || movieData.adult || movieData.portugueseTitle === null;
-  console.log(isLoadingPage);
 
   return (
     <>
@@ -166,12 +161,12 @@ export default function Movieapi() {
           <ChakraProvider>
             <Box maxW="32rem">
               <div className={styles.top}>
-                <h3 className={styles.title}> O que ver hoje?</h3>
+                <h3 className={styles.title}>O Que Assistir Hoje?</h3>
                 <span>
-                  {" "}
                   Clique e veja as possibilidades até que um seja do seu agrado!
                 </span>
               </div>
+
               <Button
                 size="md"
                 bg="white"
@@ -187,7 +182,7 @@ export default function Movieapi() {
           </ChakraProvider>
         </div>
         {isLoading ? <Progress size="xs" isIndeterminate /> : null}
-        <br />
+
         {isError === true ? (
           <ErrorPage message={`- Filme Deletado`}></ErrorPage>
         ) : (
@@ -195,7 +190,6 @@ export default function Movieapi() {
             {movieData.adult === false ? (
               <div>
                 <h1>
-                  <br />
                   <span className={styles.title}>
                     {movieData.originalTitle ? (
                       <span
@@ -229,7 +223,6 @@ export default function Movieapi() {
                     <br />
                   </div>
                 ) : null}
-
                 <h1>
                   <ChakraProvider>
                     {isLoadingPage === false ? (
@@ -360,7 +353,6 @@ export default function Movieapi() {
                   <span>
                     <div>
                       <h1>Avalie Essa Dica:</h1>
-
                       <Rate
                         onChange={handleRateChange}
                         value={starValue}
