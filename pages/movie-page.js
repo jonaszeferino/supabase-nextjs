@@ -9,7 +9,6 @@ import TranslationComponentCountryName from "../components/translateComponentCou
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 
-
 import {
   ChakraProvider,
   Progress,
@@ -30,7 +29,7 @@ const MoviePage = () => {
   const [movieIdRequest, setMovieIdRequest] = useState();
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const { showBackToTopButton, scrollToTop } = useBackToTopButton(); 
+  const { showBackToTopButton, scrollToTop } = useBackToTopButton();
 
   useEffect(() => {
     setMovieIdRequest(movieId);
@@ -161,35 +160,16 @@ const MoviePage = () => {
           <div>Loading...</div>
         ) : (
           <span>
-            <span>
-              {poster != null ? (
-                <img
-                  className={styles.card_image_big}
-                  src={poster}
-                  alt="poster"
-                  width="480"
-                  height="720"
-                  style={{
-                    objectFit: "contain",
-                    maxHeight: "100%",
-                    maxWidth: "100%",
-                  }}
-                />
-              ) : (
-                <Image
-                  className={styles.card_image_big}
-                  src="/callback.png"
-                  alt="poster"
-                  width="480"
-                  height="720"
-                  style={{
-                    objectFit: "contain",
-                    maxHeight: "100%",
-                    maxWidth: "100%",
-                  }}
-                />
-              )}
-            </span>
+            <Image
+              className={styles.card_image_big}
+              src={poster || "/callback.png"} // Usar poster se estiver definido, caso contrário, usar a imagem de callback
+              alt="poster"
+              width="480"
+              height="720"
+              objectFit="contain"
+              maxHeight="100%"
+              maxWidth="100%"
+            />
           </span>
         )}
       </div>
@@ -326,7 +306,6 @@ const MoviePage = () => {
         </ChakraProvider>
         <div />
         {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
-
       </div>
     </>
   );

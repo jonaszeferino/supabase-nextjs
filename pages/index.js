@@ -158,89 +158,138 @@ export default function Home() {
               {isLoading ? <div>Carregando...</div> : " "}
             </span>
           </h2>
-
           {isError === true ? (
             <ErrorPage message={`Verifique as Credenciais`}></ErrorPage>
           ) : (
             <div className={styles.grid}>
               {searchMovies.map((search) => (
                 <div key={search.id}>
-                  <span className={styles.spantext}>{search.title}</span> <br />
-                  <span className={styles.spantext}>
-                    {search.vote_average}
-                    <div style={{ maxWidth: "240px", margin: "10px" }}>
-                      <ChakraProvider>
-                        <Progress
-                          hasStripe
-                          value={search.vote_average}
-                          max={10}
-                          colorScheme={getProgressColor(search.vote_average)}
-                        />
-                      </ChakraProvider>
-                    </div>
-                  </span>{" "}
-                  <br />
-                  <span className={styles.spantext}>
-                    {search.poster_path != null ? (
-                      <span className={styles.spantext}>
-                        {" "}
+                  <span className={styles.spantext}></span>{" "}
+                  <span
+                    className={styles.spantext}
+                    style={{
+                      position: "relative",
+                      display: "block",
+                      width: "240px",
+                      height: "360px",
+                    }}
+                  >
+                    <Link
+                      href={{
+                        pathname: "/movie-page",
+                        query: { movieId: search.id },
+                      }}
+                    >
+                      <a
+                        style={{
+                          position: "relative",
+                          width: "240px",
+                          height: "360px",
+                          display: "block",
+                        }}
+                      >
                         <Image
                           className={styles.card_image}
                           src={
-                            "https://image.tmdb.org/t/p/original" +
                             search.poster_path
+                              ? `https://image.tmdb.org/t/p/original${search.poster_path}`
+                              : "/callback.png"
                           }
                           alt="poster"
-                          width="240"
-                          height="360"
-                        />{" "}
-                      </span>
-                    ) : (
-                      <span className={styles.spantext}>
-                        {" "}
-                        <Image
-                          className={styles.card_image}
-                          src="/callback.png"
-                          alt="poster"
-                          width="240"
-                          height="360"
-                        />{" "}
-                      </span>
-                    )}
+                          width={240}
+                          height={360}
+                        />
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            background: "rgba(0, 0, 0, 0.5)",
+                            color: "white",
+                            textAlign: "center",
+                            padding: "8px 0",
+                            boxSizing: "border-box",
+                          }}
+                        >
+                          {search.title}
+                        </span>
+                      </a>
+                    </Link>
                   </span>
-                  <br />
-                  <Link
-                    href={{
-                      pathname: "/movie-page",
-                      query: { movieId: search.id },
-                    }}
-                  >
-                    <a className={styles.button}>Detalhes</a>
-                  </Link>
-                  <br />
+                  <div style={{ maxWidth: "240px", margin: "5px" }}>
+                    <ChakraProvider>
+                      <Progress
+                        hasStripe
+                        value={search.vote_average}
+                        max={10}
+                        colorScheme={getProgressColor(search.vote_average)}
+                      />
+                    </ChakraProvider>
+                    {search.vote_average}
+                  </div>
                   <br />
                 </div>
               ))}
             </div>
           )}
         </div>
-        <div className={styles.top}>
-          <h3 className={styles.title}>
-            <h3 className={styles.title}> Series Destaques da Semana</h3>
 
-            <span></span>
-          </h3>
+        <div className={styles.top}>
+          <h3 className={styles.title}> Series Destaques da Semana</h3>
         </div>
         <div className={styles.grid}>
           {searchTv.map((searchtv) => (
-            <div key={searchTv.id}>
+            <div key={searchtv.id}>
               <br />
-              <span className={styles.spantext}>
-                {searchtv.original_name}
-              </span>{" "}
-              <br />
-              <span className={styles.spantext}>{searchtv.vote_average}</span>
-              <div style={{ maxWidth: "240px", margin: "0 auto" }}>
+              <span>
+                <Link
+                  href={{
+                    pathname: "/tvshow-page",
+                    query: { tvShowId: searchtv.id },
+                  }}
+                >
+                  <a
+                    style={{
+                      position: "relative",
+                      width: "240px",
+                      height: "360px",
+                      display: "block",
+                    }}
+                  >
+                    <Image
+                      className={styles.card_image}
+                      src={
+                        searchtv.poster_path
+                          ? `https://image.tmdb.org/t/p/original${searchtv.poster_path}`
+                          : "/callback.png"
+                      }
+                      alt="poster"
+                      width={240}
+                      height={360}
+                    />
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        background: "rgba(0, 0, 0, 0.5)",
+                        color: "white",
+                        textAlign: "center",
+                        padding: "8px 0",
+                        boxSizing: "border-box",
+                        maxHeight: "40%", // Define uma altura máxima para a descrição
+                        overflow: "hidden", // Impede que a descrição estenda o espaço
+                        textOverflow: "ellipsis", // Adiciona "..." ao final do texto se ele for cortado
+                      }}
+                    >
+                      {searchtv.original_name}
+                    </span>
+                  </a>
+                </Link>
+              </span>
+              <div style={{ maxWidth: "240px", margin: "5px" }}>
                 <ChakraProvider>
                   <Progress
                     hasStripe
@@ -249,48 +298,13 @@ export default function Home() {
                     colorScheme={getProgressColor(searchtv.vote_average)}
                   />
                 </ChakraProvider>
+                {searchtv.vote_average}
               </div>
               <br />
-              <span>
-                {searchtv.poster_path != null ? (
-                  <span className={styles.spantext}>
-                    {" "}
-                    <Image
-                      className={styles.card_image}
-                      src={
-                        "https://image.tmdb.org/t/p/original" +
-                        searchtv.poster_path
-                      }
-                      alt="poster"
-                      width="240"
-                      height="360"
-                    />{" "}
-                  </span>
-                ) : (
-                  <span className={styles.spantext}>
-                    {" "}
-                    <Image
-                      className={styles.card_image}
-                      src="/callback.png"
-                      alt="poster"
-                      width="240"
-                      height="360"
-                    />{" "}
-                  </span>
-                )}
-                <br />
-                <Link
-                  href={{
-                    pathname: "/tvshow-page",
-                    query: { tvShowId: searchtv.id },
-                  }}
-                >
-                  <a className={styles.button}>Detalhes</a>
-                </Link>
-              </span>
             </div>
           ))}
         </div>
+
         {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
       </div>
     </div>

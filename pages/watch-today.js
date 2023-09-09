@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { supabase } from "../utils/supabaseClient";
-import Auth from "../components/Auth";
-import Navbar from "../components/Navbar";
 import styles from "../styles/Home.module.css";
+import ErrorPage from "./error-page";
 import Head from "next/head";
 import Link from "next/link";
 import { Rate } from "antd";
@@ -32,16 +30,12 @@ import {
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
-import ErrorPage from "./error-page";
-//teste
-export default function Home() {
-  const [session, setSession] = useState(null);
-  const [isError, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
+export default function Movieapi() {
   const [movieData, setMovieData] = useState({});
   const [randomMovieId, setRandomMovieId] = useState(null);
-
+  const [isError, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [like, setLike] = useState(0);
   const [isLikeDisabled, setLikeDisable] = useState(false);
   const [likeThanks, setLikeThanks] = useState(false);
@@ -50,16 +44,6 @@ export default function Home() {
   const [starValue, setStarValue] = useState(0); // Estado para armazenar o valor das estrelas
   const [isRatingSubmitted, setIsRatingSubmitted] = useState(false); // Estado para controlar se a avaliação foi enviada
   const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
-
-  const [showPassword, setShowPassword] = useState(false); // Estado para controlar a visibilidade da senha
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleAuthenticated = (authenticatedSession) => {
-    setSession(authenticatedSession);
-  };
 
   useEffect(() => {
     if (isError) {
@@ -116,6 +100,8 @@ export default function Home() {
       .catch((error) => setError(true), setIsLoading(false));
   };
 
+  let destino = `/movie-page?movieId=${movieData.movieId}`;
+
   function getProgressColor(progressValue) {
     if (progressValue >= 0.1 && progressValue <= 3.999) {
       return "red";
@@ -144,7 +130,6 @@ export default function Home() {
           portuguese_title: movieData.portugueseTitle,
           vote_average_by_provider: movieData.average,
           rating_by_user: starValue,
-          user_email: session?.user?.email || "movietoday@gmail.com",
         }),
       });
       return;
@@ -164,68 +149,19 @@ export default function Home() {
 
   const isLoadingPage =
     isError || movieData.adult || movieData.portugueseTitle === null;
-  //sessao e afins abaixo
-  useEffect(() => {
-    let mounted = true;
-    async function getInitialSession() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (mounted) {
-        if (session) {
-          setSession(session);
-        }
-        setIsLoading(false);
-      }
-    }
-    getInitialSession();
-    const { subscription } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-      }
-    );
-    return () => {
-      mounted = false;
-      subscription?.unsubscribe();
-    };
-  }, []);
+  console.log(isLoadingPage);
 
   return (
     <>
-      <>
-      <ChakraProvider>
-        {session ? (
-          <p>
-            Usuário: {session.user.email}{" "}
-            <br/>
-            <Button
-              onClick={() => supabase.auth.signOut()}
-              colorScheme="red"
-              size="sm"
-            >
-              Sair
-            </Button>
-          </p>
-        ) : null}
-        {/* Resto do seu código */}
-        </ChakraProvider>
-      </>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "100vh",
-        }}
-      >
-        {/* <div className="container" style={{ padding: "50px 0 100px 0" }}>
-        {!session ? (
-          // <Auth />
-          <></>
-        ) : (
-          <Account key={session.user.id} session={session} />
-        )} */}
+      <Head>
+        <title>What to Watch Today?</title>
+        <meta name="keywords" content="movies,watch,review"></meta>
+        <meta
+          name="description"
+          content="Find everything about movies here"
+        ></meta>
+      </Head>
+      <div>
         <div style={{ maxWidth: "480px", margin: "0 auto" }}>
           <ChakraProvider>
             <Box maxW="32rem">
@@ -415,10 +351,9 @@ export default function Home() {
                   </div>
                 )}
                 {movieData.portugueseTitle && (
-                  <></>
-                  // <Link href={destino}>
-                  //   <a className={styles.button}>Detalhes</a>
-                  // </Link>
+                  <Link href={destino}>
+                    <a className={styles.button}>Detalhes</a>
+                  </Link>
                 )}
                 <br />
                 {movieData.portugueseTitle && (
@@ -462,13 +397,6 @@ export default function Home() {
             ) : null}
           </div>
         )}
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-
-        {/* </div> */}
       </div>
     </>
   );

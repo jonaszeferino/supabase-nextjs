@@ -16,7 +16,6 @@ import {
   Heading,
   Box,
 } from "@chakra-ui/react";
-
 import Link from "next/link";
 import Image from "next/image";
 import TranslateProfile from "../components/TranslateProfile";
@@ -34,28 +33,27 @@ export default function Personapi() {
   console.log();
 
   useEffect(() => {
+    const apiCall = () => {
+      if (!personIdRecive) {
+        return;
+      }
+      const url = `https://api.themoviedb.org/3/person/${personIdRecive}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`;
+      fetch(url, {})
+        .then((response) => {
+          if (response.status === 200) {
+            setError(false);
+            return response.json();
+          } else {
+            setError(true);
+            throw console.log("Erro 1");
+          }
+        })
+        .then((result) => setPersonRecive(result))
+        .catch((error) => setError(true));
+    };
+
     apiCall();
   }, [personIdRecive]);
-
-  const apiCall = () => {
-    if (!personIdRecive) {
-      return;
-    }
-    const url = `https://api.themoviedb.org/3/person/${personIdRecive}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`;
-
-    fetch(url, {})
-      .then((response) => {
-        if (response.status === 200) {
-          setError(false);
-          return response.json();
-        } else {
-          setError(true);
-          throw console.log("Erro 1");
-        }
-      })
-      .then((result) => setPersonRecive(result))
-      .catch((error) => setError(true));
-  };
 
   const CallDataPerson = () => {
     if (!personIdRecive) {
@@ -90,7 +88,7 @@ export default function Personapi() {
 
           <span>
             {personRecive.profile_path != null ? (
-              <img
+              <Image
                 className={styles.card_image_big}
                 src={
                   "https://image.tmdb.org/t/p/original" +
@@ -202,7 +200,7 @@ export default function Personapi() {
                     </span>
                     <br />
 
-                    <img
+                    <Image
                       className={styles.card_image}
                       src={
                         work.poster_path
@@ -268,7 +266,7 @@ export default function Personapi() {
                     </span>
                     <br />
 
-                    <img
+                    <Image
                       className={styles.card_image}
                       src={
                         workCrew.poster_path

@@ -9,11 +9,6 @@ import {
   InputGroup,
   InputRightElement,
   Flex,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  PopoverArrow,
 } from "@chakra-ui/react";
 
 import { SearchIcon } from "@chakra-ui/icons";
@@ -396,10 +391,7 @@ const SearchBar = ({ isLoading }) => {
                     {termosSugeridos.map((termo, index) => (
                       <li
                         key={index}
-                        p="2"
-                        borderBottomWidth="1px"
-                        borderColor="gray.200"
-                        _hover={{ bg: "gray.100", cursor: "pointer" }}
+                    
                         onClick={() => selecionarTermo(termo)}
                         style={{
                           whiteSpace: "nowrap",

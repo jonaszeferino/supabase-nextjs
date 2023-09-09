@@ -27,34 +27,33 @@ const MoviePage = () => {
   const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
 
   useEffect(() => {
+    const CallDataTvShowsDetails = () => {
+      const url = `https://api.themoviedb.org/3/tv/${tvShowId}/season/${tvShowSeasonId}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`;
+
+      fetch(url)
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
+          } else if (response.status === 404) {
+            throw new Error("Temporada não encontrada");
+          } else {
+            throw new Error("Ocorreu um erro ao buscar os dados");
+          }
+        })
+        .then((result) => {
+          setDataTvShows(result);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          setError(true);
+          setIsLoading(false);
+        });
+    };
+
     if (tvShowId && tvShowSeasonId) {
       CallDataTvShowsDetails();
     }
   }, [tvShowId, tvShowSeasonId]);
-
-  const CallDataTvShowsDetails = () => {
-    const url = `https://api.themoviedb.org/3/tv/${tvShowId}/season/${tvShowSeasonId}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`;
-
-    fetch(url)
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        } else if (response.status === 404) {
-          throw new Error("Temporada não encontrada");
-        } else {
-          throw new Error("Ocorreu um erro ao buscar os dados");
-        }
-      })
-      .then((result) => {
-        setDataTvShows(result);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setError(true);
-        setIsLoading(false);
-      });
-  };
-
   if (isLoading) {
     return <p>Carregando dados...</p>;
   }

@@ -51,49 +51,42 @@ export default function Discovery() {
   let [showTvShows, setShowTvShows] = useState(true);
   let [showPerson, setShowPerson] = useState(true);
 
-  console.log(showMovies);
-  console.log(showTvShows);
-  console.log(showPerson);
-
   useEffect(() => {
-    setSearchText(query || "");
-  }, [query]);
-
-  useEffect(() => {
+    const apiCall = () => {
+      setIsLoading(true);
+      setError(false);
+  
+      const url = `https://api.themoviedb.org/3/search/multi?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR&query=${searchText}&include_adult=false`;
+  
+      fetch(url, {
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            setError(false);
+            return response.json();
+          } else {
+            throw new Error("Dados Incorretos");
+          }
+        })
+        .then((result) => {
+          setSearchMovies(result.results);
+          setSearchMovieTotalPages(result.total_pages);
+          setSearchMovieRealPage(1);
+          setSearchMovieTotalResults(result.total_results);
+          setPage(1);
+          setIsLoading(false);
+        })
+        .catch((error) => setError(true));
+    };
+  
     if (searchText) {
-      apiCall(page);
+      apiCall();
     }
-  }, [searchText, page]);
-
-  const apiCall = (currentPage) => {
-    setIsLoading(true);
-    setError(false);
-
-    const url = `https://api.themoviedb.org/3/search/multi?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR&query=${searchText}&include_adult=false&page=${currentPage}`;
-
-    fetch(url, {
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          setError(false);
-          return response.json();
-        } else {
-          throw new Error("Dados Incorretos");
-        }
-      })
-      .then((result) => {
-        setSearchMovies(result.results);
-        setSearchMovieTotalPages(result.total_pages);
-        setSearchMovieRealPage(result.page);
-        setSearchMovieTotalResults(result.total_results);
-        setPage(result.page);
-        setIsLoading(false);
-      })
-      .catch((error) => setError(true));
-  };
+  }, [searchText]);
+  
 
   const nextPage = () => {
     setPage((prevPage) => prevPage + 1);

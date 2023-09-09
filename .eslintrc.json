@@ -1,3 +1,17 @@
 {
   "extends": "next/core-web-vitals"
 }
+
+
+// {
+//   "extends": ["next/core-web-vitals", "eslint:recommended", "plugin:react/recommended"],
+//   "rules": {
+//     // Outras regras...
+//     "react/no-unknown-property": ["error", { "ignore": ["_hover", "borderBottomWidth"] }]
+//   },
+//   "settings": {
+//     "react": {
+//       "version": "detect"
+//     }
+//   }
+// }

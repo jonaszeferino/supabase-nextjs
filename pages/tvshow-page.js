@@ -160,7 +160,7 @@ const MoviePage = () => {
             <span>
               {poster != null ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   className={styles.card_image_big}
                   src={poster}
                   alt="poster"
@@ -281,7 +281,7 @@ const MoviePage = () => {
                     <span>Nº de Episódios: {work.episode_count}</span>
                     <br />
                     <br />
-                    <img
+                    <Image
                       className={styles.card_image}
                       src={
                         work.poster_path
