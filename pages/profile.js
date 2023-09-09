@@ -11,7 +11,7 @@ import {
   ChakraProvider,
   Divider,
   Text,
-  Center
+  Center,
 } from "@chakra-ui/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -38,22 +38,16 @@ const Profile = () => {
       [name]: value,
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Lógica para enviar os dados do formulário para o servidor
-    console.log(formData); // Exemplo: exibir os dados no console
   };
-
   const formatDateString = (dateString) => {
-    // Esta função formata a data no formato DDMMYYYY
     if (dateString.length !== 8) return dateString;
     const day = dateString.substring(0, 2);
     const month = dateString.substring(2, 4);
     const year = dateString.substring(4, 8);
     return `${day}${month}${year}`;
   };
-
   const handleDateChange = (e) => {
     const { name, value } = e.target;
     const formattedValue = formatDateString(value);
