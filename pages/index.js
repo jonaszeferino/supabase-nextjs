@@ -151,11 +151,6 @@ export default function Home() {
         <div>
           <div className={styles.top}>
             <h3 className={styles.title}> Filmes Destaques da Semana</h3>
-
-            <h3 className={styles.title}>
-              <br />
-              <span></span>
-            </h3>
           </div>
           <h2 className={styles.label}>
             <br />
@@ -173,7 +168,7 @@ export default function Home() {
                   <span className={styles.spantext}>{search.title}</span> <br />
                   <span className={styles.spantext}>
                     {search.vote_average}
-                    <div style={{ maxWidth: "240px", margin: "0 auto" }}>
+                    <div style={{ maxWidth: "240px", margin: "10px" }}>
                       <ChakraProvider>
                         <Progress
                           hasStripe

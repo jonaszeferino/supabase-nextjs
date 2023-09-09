@@ -49,6 +49,9 @@
   justify-content: center;
   flex-wrap: wrap;
   max-width: 1800px;
+  margin: 10px;
+  gap: 10px;
+
 }
 .card {
   margin: 1rem;
@@ -203,9 +206,13 @@
   background-size: 240px;
   width: 240px;
 }
+
+.poster-item {
+  margin: 10px; /* Ajuste a margem de acordo com o espaçamento desejado */
+}
 .card_image {
   display: inline-block;
-  margin: 0 10px;
+  margin: 10px; /* Adjust the margin to your desired spacing */
   align-items: center;
   appearance: none;
   background-color: #fcfcfd;
@@ -235,6 +242,7 @@
   will-change: box-shadow, transform;
   font-size: 18px;
 }
+
 .card_image:focus {
   box-shadow: #d6d6e7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
     rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
@@ -297,7 +305,7 @@
 }
 .button_green {
   display: inline-block;
-  margin: 0 10px;
+  margin: 10px;
   align-items: center;
   appearance: none;
   background-color: #40c484;
@@ -343,7 +351,7 @@
 }
 .button_red {
   display: inline-block;
-  margin: 0 10px;
+  margin: 10px;
   align-items: center;
   appearance: none;
   background-color: #f72e2e;
@@ -675,4 +683,8 @@
     background-color: rgb(200, 197, 197);
     transform: translateX(-50%);
   }
+}
+
+.poster {
+  margin: 20px; /* Adicione a margem desejada aqui */
 }

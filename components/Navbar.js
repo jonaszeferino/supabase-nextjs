@@ -1,3 +1,5 @@
+
+
 import Link from "next/link";
 import styles from "../styles/Navbar.module.css";
 import Auth from "./Auth";
@@ -5,7 +7,7 @@ import { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 
 import { supabase } from "../utils/supabaseClient";
-
+import SearchBar from "./SearchBar";
 import {
   Modal,
   ModalOverlay,
@@ -25,6 +27,7 @@ import {
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router"; 
 export default function Navbar({ isLoading, onAuthenticated }) {
+  
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchText, setSearchText] = useState("");
   const [showAuth, setShowAuth] = useState(false);
@@ -59,12 +62,11 @@ export default function Navbar({ isLoading, onAuthenticated }) {
       subscription?.unsubscribe();
     };
   }, []);
-
   return (
     <>
-      <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+      {/* <div style={{ maxWidth: "600px", margin: "0 auto" }}>
         {showAuth && <Auth />}{" "}
-      </div>
+      </div> */}
       <ul className={styles.navbar}>
         <li>
           <Link href="/">
@@ -73,11 +75,10 @@ export default function Navbar({ isLoading, onAuthenticated }) {
         </li>
         <li>
           <Link href="/watch-today">
-            <a>| O que Ver Hoje? |</a>
+            <a>| O que Ver Hoje? </a>
           </Link>
         </li>
-
-        {/* <li>
+        <li>
           <Link href="/search-movies">
             <a>| Descobrir Filmes</a>
           </Link>
@@ -91,10 +92,8 @@ export default function Navbar({ isLoading, onAuthenticated }) {
           <Link href="/where-is-my-movie">
             <a>| Onde Está Meu Filme? |</a>
           </Link>
-        </li> */}
-
+        </li>
         <br />
-
         <li>
           <button onClick={onOpen}>Login |</button>
         </li>
@@ -129,7 +128,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
           </li>
         ) : null}
 
-        <Modal isOpen={isOpen} onClose={onClose}>
+       <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent style={{ background: "white" }}>
             <ModalHeader>
@@ -170,7 +169,10 @@ export default function Navbar({ isLoading, onAuthenticated }) {
 
         <br />
       </ul>
-      <div style={{ maxWidth: "600px", margin: "0 auto" }}></div>
+
+      <SearchBar isLoading={isLoading} />
+
     </>
   );
 }
+
