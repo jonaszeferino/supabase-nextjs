@@ -142,7 +142,6 @@ const MoviePage = () => {
     <>
       {" "}
       <LoggedUser />
-
       <span className={styles.title}>{data.originalTitle}</span>
       <br />
       <br />
@@ -212,10 +211,8 @@ const MoviePage = () => {
 
                   <Td
                     style={{
-                      maxWidth: "480px",
-                      margin: "0 auto",
                       whiteSpace: "pre-wrap",
-                      wordBreak: "break-word",
+                      maxWidth: "480px", // Defina um valor apropriado para o tamanho máximo
                     }}
                   >
                     {data.overview ? data.overview : "Sem infos"}
@@ -291,16 +288,37 @@ const MoviePage = () => {
                 </Tr>
                 <Tr>
                   <Th>Generos</Th>
-                  <Td>{data.gender}</Td>
+                  <Td
+                    style={{
+                      whiteSpace: "pre-wrap",
+                      maxWidth: "480px", // Defina um valor apropriado para o tamanho máximo
+                    }}
+                  >
+                    {data.gender}
+                  </Td>
                 </Tr>
                 <Tr>
                   <Th>Streamings Brasil</Th>
-                  <Td>{data.providersBR}</Td>
+                  <Td
+                    style={{
+                      whiteSpace: "pre-wrap",
+                      maxWidth: "480px", // Defina um valor apropriado para o tamanho máximo
+                    }}
+                  >
+                    {data.providersBR}
+                  </Td>
                 </Tr>
 
                 <Tr>
                   <Th>Streamings EUA</Th>
-                  <Td>{data.providersUS}</Td>
+                  <Td
+                    style={{
+                      whiteSpace: "pre-wrap",
+                      maxWidth: "480px", // Defina um valor apropriado para o tamanho máximo
+                    }}
+                  >
+                    {data.providersUS}
+                  </Td>
                 </Tr>
               </Tbody>
             </Table>

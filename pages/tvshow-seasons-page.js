@@ -118,8 +118,8 @@ const MoviePage = () => {
                                 <Td>Overview:</Td>
                                 <Td
                                   style={{
-                                    wordWrap: "break-word",
-                                    maxWidth: "100%", // Use relative unit
+                                    whiteSpace: "pre-wrap",
+                                    maxWidth: "400px", // Defina um valor apropriado para o tamanho máximo
                                   }}
                                 >
                                   {episode.overview

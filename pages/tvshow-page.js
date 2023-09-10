@@ -17,7 +17,6 @@ import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
 
-
 const MoviePage = () => {
   const router = useRouter();
   const tvShowId = router.query.tvShowId;
@@ -139,7 +138,7 @@ const MoviePage = () => {
 
   return (
     <>
-    <LoggedUser/>
+      <LoggedUser />
       <span className={styles.title}>{data.originalTitle}</span>
       <br />
       <br />
@@ -203,7 +202,14 @@ const MoviePage = () => {
                   </Tr>
                   <Tr>
                     <Td>Overview:</Td>
-                    <Td>{data.overview ? data.overview : "Sem infos"}</Td>
+                    <Td
+                      style={{
+                        whiteSpace: "pre-wrap",
+                        maxWidth: "480px", // Defina um valor apropriado para o tamanho máximo
+                      }}
+                    >
+                      {data.overview ? data.overview : "Sem infos"}
+                    </Td>
                   </Tr>
                   <Tr>
                     <Td>Gêneros:</Td>

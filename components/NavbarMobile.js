@@ -68,7 +68,7 @@ const MobileNavbar = () => {
         }}
       >
         <Box
-          bg="blue.500"
+          bg="purple.500"
           color="white"
           p={4}
           display={{ base: "block", md: "none" }}
