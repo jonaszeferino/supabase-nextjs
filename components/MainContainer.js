@@ -1,4 +1,5 @@
 import Navbar from "./Navbar";
+import FooterMobile from "./FooterMobile";
 import Footer from "./Footer";
 import styles from "../styles/MainContainer.module.css";
 import NavbarMobile from "./NavbarMobile";
@@ -18,7 +19,12 @@ export default function MainContainer({ children }) {
         <Navbar />
       )}
       <div className={styles.container}>{children}</div>
-      <Footer />
-    </>
+      {isMobile ? (
+        <ChakraProvider>
+          <FooterMobile />
+        </ChakraProvider>
+      ) : (
+        <Footer />
+      )}    </>
   );
 }
