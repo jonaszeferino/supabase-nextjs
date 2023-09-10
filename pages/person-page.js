@@ -21,6 +21,8 @@ import Image from "next/image";
 import TranslateProfile from "../components/TranslateProfile";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
+import LoggedUser from "../components/LoggedUser";
+
 
 export default function Personapi() {
   const router = useRouter();
@@ -84,6 +86,7 @@ export default function Personapi() {
         <ErrorPage message={"Erro ao carregar a página"} />
       ) : (
         <div>
+          <LoggedUser />
           <h3 className={styles.title}></h3>
 
           <span>

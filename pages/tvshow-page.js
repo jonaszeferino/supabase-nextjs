@@ -15,6 +15,8 @@ import {
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
+import LoggedUser from "../components/LoggedUser";
+
 
 const MoviePage = () => {
   const router = useRouter();
@@ -137,7 +139,7 @@ const MoviePage = () => {
 
   return (
     <>
-      {" "}
+    <LoggedUser/>
       <span className={styles.title}>{data.originalTitle}</span>
       <br />
       <br />

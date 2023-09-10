@@ -19,6 +19,8 @@ import {
 import { BiSolidUpArrow } from "react-icons/bi";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
+import LoggedUser from "../components/LoggedUser";
+
 
 export default function Discovery() {
   let [movieId, setMovieId] = useState();
@@ -376,6 +378,7 @@ export default function Discovery() {
         <meta name="description" content="encontre tudo de nba aqui"></meta>
       </Head>
       <div>
+        <LoggedUser />
         <div className={styles.top}>
           <h3 className={styles.title}> Descubra Filmes</h3>
         </div>

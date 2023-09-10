@@ -16,6 +16,8 @@ import {
 } from "@chakra-ui/react";
 import { Rate } from "antd";
 import { supabase } from "../utils/supabaseClient"; // Importe o supabase aqui
+import LoggedUser from "../components/LoggedUser";
+
 
 const MoviePage = () => {
   const [data, setData] = useState([]);
@@ -140,18 +142,7 @@ const MoviePage = () => {
     <>
       {session ? (
         <ChakraProvider>
-          {session ? (
-            <p>
-              Usuário: {session.user.email} <br />
-              <Button
-                onClick={() => supabase.auth.signOut()}
-                colorScheme="red"
-                size="sm"
-              >
-                Sair
-              </Button>
-            </p>
-          ) : null}
+        <LoggedUser />
           <div
             style={{
               maxWidth: "1500px",

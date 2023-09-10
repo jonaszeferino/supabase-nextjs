@@ -16,6 +16,8 @@ import {
 } from "@chakra-ui/react";
 import { supabase } from "../utils/supabaseClient";
 import { AntDatePicker, DatePicker } from "antd";
+import LoggedUser from "../components/LoggedUser";
+
 
 const Profile = () => {
   const [formData, setFormData] = useState({

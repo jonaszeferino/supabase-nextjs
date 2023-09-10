@@ -17,6 +17,9 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { FaGoogle, FaEyeSlash, FaEye } from "react-icons/fa";
+import LoggedUser from "../components/LoggedUser";
+
+
 
 function PasswordReset() {
   const [email, setEmail] = useState("");
@@ -47,20 +50,8 @@ function PasswordReset() {
   return (
     <ChakraProvider>
       <>
-        <ChakraProvider>
-          {session ? (
-            <p>
-              Usuário: {session.user.email} <br />
-              <Button
-                onClick={() => supabase.auth.signOut()}
-                colorScheme="red"
-                size="sm"
-              >
-                Sair
-              </Button>
-            </p>
-          ) : null}
-        </ChakraProvider>
+      
+<LoggedUser />
       </>
       <Center height="100vh">
         <Box

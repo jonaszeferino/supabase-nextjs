@@ -24,7 +24,7 @@ import {
 import TranslateProfile from "../components/TranslateProfile";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
-
+import LoggedUser from "../components/LoggedUser";
 
 export default function Discovery() {
   const router = useRouter();
@@ -33,7 +33,7 @@ export default function Discovery() {
   let [movieId, setMovieId] = useState();
   let [searchMovies, setSearchMovies] = useState([]);
   let [searchText, setSearchText] = useState(query || "");
-  const { showBackToTopButton, scrollToTop } = useBackToTopButton(); 
+  const { showBackToTopButton, scrollToTop } = useBackToTopButton();
 
   console.log(query);
 
@@ -55,9 +55,9 @@ export default function Discovery() {
     const apiCall = () => {
       setIsLoading(true);
       setError(false);
-  
+
       const url = `https://api.themoviedb.org/3/search/multi?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR&query=${searchText}&include_adult=false`;
-  
+
       fetch(url, {
         headers: new Headers({
           "Content-Type": "application/json",
@@ -81,12 +81,11 @@ export default function Discovery() {
         })
         .catch((error) => setError(true));
     };
-  
+
     if (searchText) {
       apiCall();
     }
   }, [searchText]);
-  
 
   const nextPage = () => {
     setPage((prevPage) => prevPage + 1);
@@ -122,6 +121,8 @@ export default function Discovery() {
 
       <br />
       <div>
+        <LoggedUser />
+
         <div className={styles.top}>
           <h3 className={styles.title}> Busca Livre</h3>
         </div>
@@ -365,7 +366,6 @@ export default function Discovery() {
           </span>{" "}
         </span>
         {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
-
       </div>
     </>
   );

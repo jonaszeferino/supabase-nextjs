@@ -31,6 +31,7 @@ import {
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import Providers from "../components/countries";
+import LoggedUser from "../components/LoggedUser";
 
 const MoviePage = () => {
   const router = useRouter();
@@ -221,6 +222,7 @@ const MoviePage = () => {
   return (
     <>
       <ChakraProvider>
+        <LoggedUser/>
         <div className={styles.top}>
           <h3 className={styles.title}>Onde Está Meu Filme?</h3>
           {/* <span>

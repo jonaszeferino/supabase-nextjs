@@ -20,10 +20,13 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  ChakraProvider,
+  ModalCloseButton,
+  Center,
 } from "@chakra-ui/react";
 
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { useRouter } from "next/router"; 
+import { useRouter } from "next/router";
 
 export default function Navbar({ isLoading, onAuthenticated }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -87,6 +90,47 @@ export default function Navbar({ isLoading, onAuthenticated }) {
         <li>
           <button onClick={onOpen}>Login |</button>
         </li>
+<li>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent style={{ background: "white" }}>
+            <ModalHeader>
+              Login
+              <IconButton
+                icon={<FaTimes />}
+                colorScheme="gray"
+                variant="ghost"
+                ml="auto"
+                onClick={onClose}
+              />
+            </ModalHeader>
+            <ModalBody>
+              <Auth onClose={onClose} />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent style={{ background: "white" }}>
+            <ModalHeader>
+              Login{" "}
+              <IconButton
+                icon={<FaTimes />}
+                colorScheme="gray"
+                variant="ghost"
+                position="absolute"
+                top="0"
+                right="0"
+                onClick={onClose}
+              />
+            </ModalHeader>
+            <ModalBody>
+              <Auth onAuthenticated={onAuthenticated} onClose={onClose} />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+        </li>
+
         {session ? (
           <li>
             Perfil
@@ -123,4 +167,3 @@ export default function Navbar({ isLoading, onAuthenticated }) {
     </>
   );
 }
-

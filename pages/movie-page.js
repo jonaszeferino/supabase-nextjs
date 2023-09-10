@@ -8,7 +8,7 @@ import TranslationComponent from "../components/translateComponent";
 import TranslationComponentCountryName from "../components/translateComponentCountryName";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
-
+import LoggedUser from "../components/LoggedUser";
 import {
   ChakraProvider,
   Progress,
@@ -141,6 +141,8 @@ const MoviePage = () => {
   return (
     <>
       {" "}
+      <LoggedUser />
+
       <span className={styles.title}>{data.originalTitle}</span>
       <br />
       <br />

@@ -10,6 +10,7 @@ import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import { supabase } from "../utils/supabaseClient"; // Importe o supabase aqui
 import { Tooltip } from "antd";
+import LoggedUser from "../components/LoggedUser";
 
 export default function Home() {
   let [movieId, setMovieId] = useState();
@@ -134,21 +135,8 @@ export default function Home() {
       {/* <SearchBar isLoading={isLoading} /> */}
 
       <div>
-        <ChakraProvider>
-          {session ? (
-            <p>
-              Usuário: {session.user.email} <br />
-              <Button
-                onClick={() => supabase.auth.signOut()}
-                colorScheme="red"
-                size="sm"
-              >
-                Sair
-              </Button>
-            </p>
-          ) : null}
-          {/* Resto do seu código */}
-        </ChakraProvider>
+        <LoggedUser />
+
         <div>
           <div className={styles.top}>
             <h3 className={styles.title}> Filmes Destaques da Semana</h3>

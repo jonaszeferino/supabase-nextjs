@@ -6,7 +6,6 @@ import Image from "next/image";
 import Head from "next/head";
 import Link from "next/link";
 import { BiSolidUpArrow } from "react-icons/bi";
-
 import {
   Box,
   Button,
@@ -25,6 +24,8 @@ import {
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
+import LoggedUser from "../components/LoggedUser";
+
 
 export default function Discovery() {
   let [searchMovies, setSearchMovies] = useState([]);
@@ -125,6 +126,7 @@ export default function Discovery() {
         <meta name="description" content="encontre tudo de nba aqui"></meta>
       </Head>
       <div>
+        <LoggedUser/>
         <div className={styles.top}>
           <h3 className={styles.title}> Séries - Programas de TV</h3>
           {/* <span>Escolha os filtros baixo, e clique em Verificar para uma consulta de acordo com o seu desejo!</span> */}

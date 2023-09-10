@@ -16,6 +16,7 @@ import {
 import TranslateProfile from "../components/TranslateProfile";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
+import LoggedUser from "../components/LoggedUser";
 
 const MoviePage = () => {
   const router = useRouter();
@@ -61,6 +62,7 @@ const MoviePage = () => {
   return (
     <>
       <ChakraProvider>
+        <LoggedUser />
         <Center minHeight="100vh">
           <Box maxW="576px" width="100%" px="4">
             <div className={styles.grid}>

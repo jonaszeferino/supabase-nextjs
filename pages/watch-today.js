@@ -29,6 +29,8 @@ import {
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
+import LoggedUser from "../components/LoggedUser";
+
 
 export default function Movieapi() {
   const [movieData, setMovieData] = useState({});
@@ -157,6 +159,7 @@ export default function Movieapi() {
         ></meta>
       </Head>
       <div>
+        <LoggedUser />
         <div style={{ maxWidth: "480px", margin: "0 auto" }}>
           <ChakraProvider>
             <Box maxW="32rem">

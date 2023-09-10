@@ -10,7 +10,12 @@ import {
   Text,
   ChakraProvider,
 } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import {
+  HamburgerIcon,
+  CloseIcon,
+  PlusSquareIcon,
+  ChevronRightIcon,
+} from "@chakra-ui/icons";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 import { useRouter } from "next/router";
@@ -100,14 +105,38 @@ const MobileNavbar = () => {
 
           {menuOpen && (
             <Stack spacing={4} mt={4}>
-              <Link href="/watch-today">O que Ver Hoje?</Link>
-              <Link href="/search-movies">Descobrir Filmes</Link>
-              <Link href="/search-tvshows">Busca de Séries</Link>
-              <Link href="/where-is-my-movie">Onde Está Meu Filme?</Link>
+              <Link href="/watch-today">
+                <span>
+                  <ChevronRightIcon /> O que Ver Hoje?
+                </span>
+              </Link>
+              <Link href="/search-movies">
+                <span>
+                  <ChevronRightIcon /> Descobrir Filmes
+                </span>
+              </Link>
+              <Link href="/search-tvshows">
+                <span>
+                  <ChevronRightIcon /> Busca de Séries
+                </span>
+              </Link>
+              <Link href="/where-is-my-movie">
+                <span>
+                  <ChevronRightIcon /> Onde Está Meu Filme?
+                </span>
+              </Link>
               {session ? (
                 <>
-                  <Link href="/profile">Perfil</Link>
-                  <Link href="/my-movies-page">Minhas Avaliações</Link>
+                  <Link href="/profile">
+                    <span>
+                      <ChevronRightIcon /> Perfil
+                    </span>
+                  </Link>
+                  <Link href="/my-movies-page">
+                    <span>
+                      <ChevronRightIcon /> Minhas Avaliações
+                    </span>
+                  </Link>
                 </>
               ) : null}
             </Stack>
