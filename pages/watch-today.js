@@ -138,7 +138,6 @@ export default function Movieapi() {
       console.error(error);
     }
   };
-  // Estrelas:
   const handleRateChange = (value) => {
     setStarValue(value);
   };

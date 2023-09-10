@@ -17,10 +17,8 @@ import { supabase } from "../utils/supabaseClient";
 
 
 const LoggedUser = () => {
-
   const [session, setSession] = useState()
   const [isLoading, setIsLoading] = useState()
-
 
   useEffect(() => {
     let mounted = true;
