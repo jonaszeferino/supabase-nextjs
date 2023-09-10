@@ -13,7 +13,7 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <p>
-        O Que Assistir Hoje? &copy; Jonas Zeferino - 2023
+        O Que Ver Hoje? &copy; Jonas Zeferino - 2023
         <span></span>
       </p>
       <div className={styles.socialIcons}>

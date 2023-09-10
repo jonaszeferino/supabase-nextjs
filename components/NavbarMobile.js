@@ -74,7 +74,7 @@ const MobileNavbar = () => {
           display={{ base: "block", md: "none" }}
         >
           <Center>
-            <Heading>O Que Assistir Hoje?</Heading>
+            <Heading>O Que Ver Hoje?</Heading>
           </Center>
 
           <Stack direction="row" align="center" justify="space-between">
