@@ -9,6 +9,7 @@ import { BiSolidUpArrow } from "react-icons/bi";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import { supabase } from "../utils/supabaseClient"; // Importe o supabase aqui
+import { Tooltip } from "antd";
 
 export default function Home() {
   let [movieId, setMovieId] = useState();
@@ -188,17 +189,27 @@ export default function Home() {
                           display: "block",
                         }}
                       >
-                        <Image
-                          className={styles.card_image}
-                          src={
-                            search.poster_path
-                              ? `https://image.tmdb.org/t/p/original${search.poster_path}`
-                              : "/callback.png"
-                          }
-                          alt="poster"
-                          width={240}
-                          height={360}
-                        />
+                        <Tooltip
+                          title="Saiba Mais"
+                          style={{
+                            color: "white",
+                            borderColor: "purple",
+                            background: "purple",
+                          }}
+                        >
+                          <Image
+                            className={styles.card_image}
+                            src={
+                              search.poster_path
+                                ? `https://image.tmdb.org/t/p/original${search.poster_path}`
+                                : "/callback.png"
+                            }
+                            alt="poster"
+                            width={240}
+                            height={360}
+                          />
+                        </Tooltip>
+
                         <span
                           style={{
                             position: "absolute",
@@ -257,17 +268,26 @@ export default function Home() {
                       display: "block",
                     }}
                   >
-                    <Image
-                      className={styles.card_image}
-                      src={
-                        searchtv.poster_path
-                          ? `https://image.tmdb.org/t/p/original${searchtv.poster_path}`
-                          : "/callback.png"
-                      }
-                      alt="poster"
-                      width={240}
-                      height={360}
-                    />
+                    <Tooltip
+                      title="Saiba Mais"
+                      style={{
+                        color: "white",
+                        borderColor: "purple",
+                        background: "purple",
+                      }}
+                    >
+                      <Image
+                        className={styles.card_image}
+                        src={
+                          searchtv.poster_path
+                            ? `https://image.tmdb.org/t/p/original${searchtv.poster_path}`
+                            : "/callback.png"
+                        }
+                        alt="poster"
+                        width={240}
+                        height={360}
+                      />
+                    </Tooltip>
                     <span
                       style={{
                         position: "absolute",

@@ -9,6 +9,9 @@ import {
   InputGroup,
   InputRightElement,
   Flex,
+  useMediaQuery,
+  IconButton,
+  Center,
 } from "@chakra-ui/react";
 
 import { SearchIcon } from "@chakra-ui/icons";
@@ -21,6 +24,7 @@ const SearchBar = ({ isLoading }) => {
   const [termosSugeridos, setTermosSugeridos] = useState([]);
   const router = useRouter();
   const [isMouseOverSuggestions, setIsMouseOverSuggestions] = useState(false);
+  const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   function handleInputBlur() {
     if (!isMouseOverSuggestions) {
@@ -281,7 +285,7 @@ const SearchBar = ({ isLoading }) => {
   function handleInputChange(event) {
     const inputValue = event.target.value;
     setSearchText(inputValue);
-   // Se a entrada não estiver vazia, atualize os termos sugeridos
+    // Se a entrada não estiver vazia, atualize os termos sugeridos
     if (inputValue.trim() !== "") {
       setTermosSugeridos(buscarTermosSemelhantes(inputValue));
     } else {
@@ -296,15 +300,21 @@ const SearchBar = ({ isLoading }) => {
 
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-      <ChakraProvider>
+          <ChakraProvider>
         <Flex
           alignItems="center"
           width="100%"
           flex="1"
-          style={{ margin: "0 10px" }}
+          style={{ margin: "10px" }}
+          flexDirection="column"
         >
-          <InputGroup flex="1" marginRight="0">
+          <InputGroup
+            flex="1"
+            width={isMobile ? "80%" : "100%"}
+            flexDirection="column"
+          >
             <Input
+              margin="10px"
               required={true}
               size="md"
               bg="white"
@@ -321,97 +331,101 @@ const SearchBar = ({ isLoading }) => {
                   setTermosSugeridos([]);
                 }
               }}
-              pr="4.5rem"
+              pr={isMobile ? "2.5rem" : "4.5rem"}
+              marginLeft={isMobile ? "auto" : "0"}
+              marginRight={isMobile ? "auto" : "0"}
             />
-            <InputRightElement
-              width="auto"
-              size="lg"
-              mt="24px"
-              pointerEvents="none"
-            >
-              <SearchIcon color="gray.300" margin={3} size="lg" />
-            </InputRightElement>
+            {!isMobile && (
+              <InputRightElement
+                size="lg"
+                mt="24px"
+                pointerEvents="none"
+                marginLeft="auto"
+                marginRight="auto"
+              >
+                <SearchIcon color="gray.300" margin={3} size="lg" />
+              </InputRightElement>
+            )}
           </InputGroup>
-
           <Link href={`/search-free?query=${searchText}`} passHref>
-            <Button
-              as="a"
-              size="md"
-              bg="white"
-              color="black"
-              borderColor="gray"
-              borderWidth="1px"
-              mt="24px"
-              style={{ marginRight: "10px" }}
-            >
-              Pesquisar
-            </Button>
+            <Center>
+              <Button
+                marginTop={2}
+                as="a"
+                size="md"
+                bg="white"
+                color="black"
+                borderColor="gray"
+                borderWidth="1px"
+                mt="24px"
+              >
+                Pesquisar
+              </Button>
+            </Center>
           </Link>
-        </Flex>
 
-        {/* Mostrar sugestões somente se houver termos similares */}
-        {termosSugeridos.length > 0 && (
-          <Box
-            mt="2"
-            position="absolute"
-            zIndex="9999"
-            bg="white"
-            boxShadow="md"
-            borderRadius="md"
-            width="33%"
-          >
-            <ul>
-              {termosSugeridos.length > 0 && (
-                <Box
-                  mt="2"
-                  position="absolute"
-                  zIndex="9999"
-                  bg="white"
-                  boxShadow="md"
-                  borderRadius="md"
-                  width="33%"
-                  onMouseEnter={() =>
-                    setIsMouseOverSuggestions(true)
-                  } /* Atualizar o estado ao passar o mouse */
-                  onMouseLeave={() =>
-                    setIsMouseOverSuggestions(false)
-                  } /* Atualizar o estado ao tirar o mouse */
-                >
-                  <Text p="2" fontWeight="bold">
-                    Sugestões:
-                  </Text>
-                  <ul
-                    style={{
-                      listStyle: "none",
-                      padding: 0,
-                      margin: 0,
-                      width: "200px",
-                    }}
+          {termosSugeridos.length > 0 && (
+            <Box
+              mt="2"
+              position="absolute"
+              zIndex="9999"
+              bg="white"
+              boxShadow="md"
+              borderRadius="md"
+              width="33%"
+            >
+              <ul>
+                {termosSugeridos.length > 0 && (
+                  <Box
+                    mt="2"
+                    position="absolute"
+                    zIndex="9999"
+                    bg="white"
+                    boxShadow="md"
+                    borderRadius="md"
+                    width="33%"
+                    onMouseEnter={() =>
+                      setIsMouseOverSuggestions(true)
+                    }
+                    onMouseLeave={() =>
+                      setIsMouseOverSuggestions(false)
+                    }
                   >
-                    {termosSugeridos.map((termo, index) => (
-                      <li
-                        key={index}
-                    
-                        onClick={() => selecionarTermo(termo)}
-                        style={{
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                        }}
-                      >
-                        {termo}
-                      </li>
-                    ))}
-                  </ul>
-                </Box>
-              )}
-            </ul>
-          </Box>
-        )}
+                    <Text p="2" fontWeight="bold">
+                      Sugestões:
+                    </Text>
+                    <ul
+                      style={{
+                        listStyle: "none",
+                        padding: 0,
+                        margin: 0,
+                        width: "200px",
+                      }}
+                    >
+                      {termosSugeridos.map((termo, index) => (
+                        <li
+                          key={index}
+                          onClick={() => selecionarTermo(termo)}
+                          style={{
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {termo}
+                        </li>
+                      ))}
+                    </ul>
+                  </Box>
+                )}
+              </ul>
+            </Box>
+          )}
 
-        <Box>
-          <Text>{isLoading ? <Spinner /> : " "}</Text>
-        </Box>
+          <Box>
+            <Text>{isLoading ? <Spinner /> : " "}</Text>
+          </Box>
+        </Flex>
       </ChakraProvider>
     </div>
   );

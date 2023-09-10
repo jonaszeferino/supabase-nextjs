@@ -1,5 +1,3 @@
-
-
 import Link from "next/link";
 import styles from "../styles/Navbar.module.css";
 import Auth from "./Auth";
@@ -26,15 +24,10 @@ import {
 
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router"; 
-export default function Navbar({ isLoading, onAuthenticated }) {
-  
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [searchText, setSearchText] = useState("");
-  const [showAuth, setShowAuth] = useState(false);
-  const [session, setSession] = useState(null);
-  const [isError, setError] = useState(false); // You can keep this line if it's used somewhere
-  const [loading, setIsLoading] = useState(false); // Remove this line
 
+export default function Navbar({ isLoading, onAuthenticated }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [session, setSession] = useState(null);
   const router = useRouter();
 
   // Verificar sessão
@@ -48,7 +41,6 @@ export default function Navbar({ isLoading, onAuthenticated }) {
         if (session) {
           setSession(session);
         }
-        setIsLoading(false);
       }
     }
     getInitialSession();
@@ -62,11 +54,9 @@ export default function Navbar({ isLoading, onAuthenticated }) {
       subscription?.unsubscribe();
     };
   }, []);
+
   return (
     <>
-      {/* <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-        {showAuth && <Auth />}{" "}
-      </div> */}
       <ul className={styles.navbar}>
         <li>
           <Link href="/">
@@ -127,51 +117,9 @@ export default function Navbar({ isLoading, onAuthenticated }) {
             </Menu>
           </li>
         ) : null}
-
-       <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent style={{ background: "white" }}>
-            <ModalHeader>
-              Login
-              <IconButton
-                icon={<FaTimes />}
-                colorScheme="gray"
-                variant="ghost"
-                ml="auto"
-                onClick={onClose}
-              />
-            </ModalHeader>
-            <ModalBody>
-              <Auth onClose={onClose} />
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent style={{ background: "white" }}>
-            <ModalHeader>
-              Login{" "}
-              <IconButton
-                icon={<FaTimes />}
-                colorScheme="gray"
-                variant="ghost"
-                position="absolute"
-                top="0"
-                right="0"
-                onClick={onClose}
-              />
-            </ModalHeader>
-            <ModalBody>
-              <Auth onAuthenticated={onAuthenticated} onClose={onClose} />
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-
-        <br />
       </ul>
 
       <SearchBar isLoading={isLoading} />
-
     </>
   );
 }
