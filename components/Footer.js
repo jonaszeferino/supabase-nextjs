@@ -21,7 +21,7 @@ export default function Footer() {
         <a
           href="https://www.themoviedb.org/"
           target="_blank"
-          rel="TIMDB Link"
+          
         >
           <SiThemoviedatabase size={24} />
         </a>
