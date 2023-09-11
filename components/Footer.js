@@ -13,15 +13,15 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <p>
-        O Que Ver Hoje? &copy; Jonas Zeferino - 2023
-        <span></span>
+        O Que Ver Hoje?  &copy; Jonas Zeferino - 2023
+        <span>{" "} </span>
       </p>
       <div className={styles.socialIcons}>
-        Alimentado Por:
+         {" "}Alimentado Por:
         <a
           href="https://www.themoviedb.org/"
           target="_blank"
-          rel="noopener noreferrer"
+          rel="TIMDB Link"
         >
           <SiThemoviedatabase size={24} />
         </a>

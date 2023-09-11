@@ -8,7 +8,7 @@ export default function FooterMobile() {
       <Box bg="gray.900" p={4} textAlign="center" flex="1">
         <Box>
           <Text color="white" fontSize="sm">
-            O Que Ver Hoje? &copy; Jonas Zeferino - 2023
+            O Que Ver Hoje? &copy; Jonas Zeferino - 2023{" "}
           </Text>
           <Text color="white" fontSize="sm">
             Alimentado Por:

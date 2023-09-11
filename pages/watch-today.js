@@ -26,11 +26,11 @@ import {
   IconButton,
   Skeleton,
   Image,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
-
 
 export default function Movieapi() {
   const [movieData, setMovieData] = useState({});
@@ -45,6 +45,8 @@ export default function Movieapi() {
   const [starValue, setStarValue] = useState(0); // Estado para armazenar o valor das estrelas
   const [isRatingSubmitted, setIsRatingSubmitted] = useState(false); // Estado para controlar se a avaliação foi enviada
   const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
+
+  const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
     if (isError) {
@@ -237,11 +239,14 @@ export default function Movieapi() {
                             : "/callback_gray.png"
                         }
                         alt="poster"
-                        width="480"
-                        height="720"
+                        width={isMobile ? "240px" : "480px"}
+                        height={isMobile ? "360px" : "720px"}
                       />
                     ) : (
-                      <Skeleton width="480px" height="720px" />
+                      <Skeleton
+                        width={isMobile ? "240px" : "480px"}
+                        height={isMobile ? "360px" : "720px"}
+                      />
                     )}
                   </ChakraProvider>
                 </h1>

@@ -11,6 +11,8 @@ import BackToTopButton from "../components/backToTopButton";
 import { supabase } from "../utils/supabaseClient"; // Importe o supabase aqui
 import { Tooltip } from "antd";
 import LoggedUser from "../components/LoggedUser";
+import FloatButton from "../components/FloatButton";
+import LoginAlert from "../components/LoginAlert";
 
 export default function Home() {
   let [movieId, setMovieId] = useState();
@@ -135,7 +137,9 @@ export default function Home() {
       {/* <SearchBar isLoading={isLoading} /> */}
 
       <div>
+        
         <LoggedUser />
+        <LoginAlert />
 
         <div>
           <div className={styles.top}>

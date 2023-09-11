@@ -17,7 +17,8 @@ import {
 import { Rate } from "antd";
 import { supabase } from "../utils/supabaseClient"; // Importe o supabase aqui
 import LoggedUser from "../components/LoggedUser";
-
+import { RadiusUprightOutlined } from "@ant-design/icons";
+import { Button as AntButton, notification, Space } from "antd";
 
 const MoviePage = () => {
   const [data, setData] = useState([]);
@@ -28,13 +29,23 @@ const MoviePage = () => {
   const [valueEndDelete, setValueEndDelete] = useState(false);
   const [isConfirmationMode, setIsConfirmationMode] = useState(false);
   const [session, setSession] = useState(null);
+  const [email_user, setEmail_user] = useState();
 
-  const user_email = "jonaszeferino@gmail.com";
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement) => {
+    api.info({
+      message: `Aguarde ${email_user}`,
+      description:
+        "Se você fez avaliações das sugestões elas apareceram automaticamente na tela",
+      placement,
+    });
+  };
+
   const apiGetRates = async () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `/api/v1/getRateRandomMovie?user_email=${parseInt(user_email)}`,
+        `/api/v1/getRateRandomMovie?user_email=${parseInt(email_user)}`,
         {
           method: "GET",
           headers: {
@@ -54,6 +65,7 @@ const MoviePage = () => {
   useEffect(() => {
     apiGetRates();
     setValueEndDelete(false);
+    openNotification("topRight");
   }, []);
 
   const apiDeleteRates = async () => {
@@ -103,7 +115,7 @@ const MoviePage = () => {
       if (statusCode === 200) {
         apiGetRates();
       } else if (statusCode === 404) {
-        console.log("No matching document found");
+        console.log("Sem Nenhum Dado");
       } else if (statusCode === 500) {
         console.log("Internal server error");
       }
@@ -111,6 +123,9 @@ const MoviePage = () => {
       console.error(error);
     }
   };
+
+ // setEmail_user(session.user.email);
+
 
   //verificar a sessão
   useEffect(() => {
@@ -122,6 +137,7 @@ const MoviePage = () => {
       if (mounted) {
         if (session) {
           setSession(session);
+          setEmail_user(session.user.email)
         }
         setIsLoading(false);
       }
@@ -138,11 +154,17 @@ const MoviePage = () => {
     };
   }, []);
 
+
   return (
     <>
       {session ? (
         <ChakraProvider>
-        <LoggedUser />
+          <LoggedUser />
+
+          <>
+            {contextHolder}
+            <Space></Space>
+          </>
           <div
             style={{
               maxWidth: "1500px",
@@ -261,10 +283,9 @@ const MoviePage = () => {
             )}
           </div>
         </ChakraProvider>
-      ) : "Clique em logar para carregar o conteúdo da página" 
-
-      
-      }
+      ) : (
+        "Clique em logar para carregar o conteúdo da página"
+      )}
     </>
   );
 };
