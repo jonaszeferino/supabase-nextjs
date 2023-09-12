@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     res.status(405).json({ error: "Method Not Allowed" });
     return;
   }
-
+  
   const {
     email,
     name,
@@ -17,13 +17,14 @@ export default async function handler(req, res) {
     first_favorite_movie,
     second_favorite_movie,
     third_favorite_movie,
-    favorite_movie_gender,
+    favorite_movie_genre,
     first_favorite_tvshow,
     second_favorite_tvshow,
     third_favorite_tvshow,
-    favorite_tvshow_gender,
+    favorite_tvshow_genre,
     favorite_actor,
     favorite_actress,
+    favorite_directing
   } = req.body;
 
   let date = moment().tz("UTC-03:00").toDate();
@@ -42,14 +43,15 @@ export default async function handler(req, res) {
         first_favorite_movie: first_favorite_movie,
         second_favorite_movie: second_favorite_movie,
         third_favorite_movie: third_favorite_movie,
-        favorite_movie_gender: favorite_movie_gender,
+        favorite_movie_genre: favorite_movie_genre,
         first_favorite_tvshow: first_favorite_tvshow,
         second_favorite_tvshow: second_favorite_tvshow,
         third_favorite_tvshow: third_favorite_tvshow,
-        favorite_tvshow_gender: favorite_tvshow_gender,
+        favorite_tvshow_genre: favorite_tvshow_genre,
         favorite_actor: favorite_actor,
         favorite_actress: favorite_actress,
-        update_date: date ? date : null,
+        updated_date: date ? date : null,
+        favorite_directing: favorite_directing
          
       },
     };
@@ -57,9 +59,9 @@ export default async function handler(req, res) {
     const result = await collection.updateOne(filter, update, { upsert: true });
 
     if (result.matchedCount === 1 || result.upsertedCount === 1) {
-      res.status(200).json({ message: "Update successful", result });
+      res.status(200).json({ message: "Gravado com Secesso", result });
     } else {
-      res.status(500).json({ message: "Failed to update or insert" });
+      res.status(500).json({ message: "Falaha na Gravação, tente novamente." });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });

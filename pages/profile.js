@@ -17,7 +17,7 @@ import {
 import { supabase } from "../utils/supabaseClient";
 import { AntDatePicker, DatePicker } from "antd";
 import LoggedUser from "../components/LoggedUser";
-
+import { Alert, Space, Spin } from "antd";
 
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -36,18 +36,15 @@ const Profile = () => {
     tvShowGenre: "",
     favoriteActor: "",
     favoriteActress: "",
+    favoriteDirecting: "",
   });
-
-  console.log(formData);
-
   const [session, setSession] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [emailInfo, setEmailInfo] = useState("");
   const [message, setMessage] = useState("");
-
+  const [isSaving, setIsSaving] = useState(false);
+  const [isSave, setIsSave] = useState(false);
   const dateFormat = "DD/MM/YYYY";
-
-  console.log(formData.firstName);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,10 +71,7 @@ const Profile = () => {
   dayjs.extend(customParseFormat);
 
   const insertUser = async () => {
-    console.log("Primeira Chamada");
-    console.log("Enviando solicitação fetch..."); // Adicione esta linha
-
-    setMessage("Chamou!");
+    setIsSaving(true);
 
     try {
       const response = await fetch("/api/v1/putProfileData", {
@@ -102,18 +96,18 @@ const Profile = () => {
           favorite_tvshow_genre: formData.tvShowGenre,
           favorite_actor: formData.favoriteActor,
           favorite_actress: formData.favoriteActress,
+          favorite_directing: formData.favoriteDirecting,
         }),
       });
-      console.log("Resposta da solicitação fetch:", response); // Adicione esta linha
-      console.log("Em princípio, gravou");
-      setMessage("Tentou Gravar!");
+      setIsSaving(false);
+      setIsSave(true);
+
       return;
     } catch (error) {
       console.error(error);
+      console.log("erro", error);
     }
   };
-
-  console.log(formData.nationality);
 
   // Verify the session
   useEffect(() => {
@@ -259,8 +253,8 @@ const Profile = () => {
               />
               <Input
                 type="text"
-                name="favoriteSecoundMovie"
-                value={formData.favoriteSecoundMovie}
+                name="favoriteSecondMovie"
+                value={formData.favoriteSecondMovie}
                 onChange={handleChange}
                 style={{ width: "100%", margin: "2px" }}
                 placeholder="Segundo Filme"
@@ -311,8 +305,8 @@ const Profile = () => {
               />
               <Input
                 type="text"
-                name="favoriteSecoundTVShow"
-                value={formData.favoriteSecoundTVShow}
+                name="favoriteSecondTVShow"
+                value={formData.favoriteSecondTVShow}
                 onChange={handleChange}
                 style={{ width: "100%", margin: "2px" }}
                 placeholder="Segunda Serie"
@@ -374,6 +368,18 @@ const Profile = () => {
                 style={{ width: "100%" }}
               />
             </FormControl>
+
+            <FormControl>
+              <FormLabel style={{ fontWeight: "bold" }}>Direção:</FormLabel>
+              <Input
+                type="text"
+                name="favoriteDirecting"
+                value={formData.favoriteDirecting}
+                onChange={handleChange}
+                style={{ width: "100%" }}
+              />
+            </FormControl>
+
             <Button
               onClick={insertUser}
               colorScheme="blue"
@@ -382,6 +388,38 @@ const Profile = () => {
             >
               Salvar
             </Button>
+
+            {isSaving && (
+              <Space
+                direction="vertical"
+                style={{
+                  width: "100%",
+                }}
+              >
+                <Spin tip="Salvando.."></Spin>
+                <Alert
+                  message="Aguarde"
+                  description="Seus Dados Estão Sendo Salvos"
+                  type="info"
+                />
+              </Space>
+            )}
+
+            {isSave && (
+              <Space
+                direction="vertical"
+                style={{
+                  width: "100%",
+                }}
+              >
+                <Alert
+                  message="Cadastro Salvo Com Sucesso"
+                  type="success"
+                  showIcon
+                  closable
+                />
+              </Space>
+            )}
 
             <Text>{message}</Text>
           </VStack>

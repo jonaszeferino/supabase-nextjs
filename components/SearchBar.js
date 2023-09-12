@@ -26,12 +26,6 @@ const SearchBar = ({ isLoading }) => {
   const [isMouseOverSuggestions, setIsMouseOverSuggestions] = useState(false);
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
-  function handleInputBlur() {
-    if (!isMouseOverSuggestions) {
-      setTermosSugeridos([]);
-    }
-  }
-
   const listaDeTermos = [
     "Meryl Streep",
     "Scarlett Johansson",
@@ -273,6 +267,20 @@ const SearchBar = ({ isLoading }) => {
     "Hirokazu Kore-eda",
     "James Ivory",
   ];
+
+  const handleKeyUp = (event) => {
+    if (event.keyCode === 13) { // 13 is the keyboard code for the Enter key
+      Button.onClick();
+    }
+  };
+ 
+  
+  function handleInputBlur() {
+    if (!isMouseOverSuggestions) {
+      setTermosSugeridos([]);
+    }
+  }
+
   function buscarTermosSemelhantes(entrada) {
     const resultados = stringSimilarity.findBestMatch(entrada, listaDeTermos);
     const termosSugeridos = resultados.ratings
@@ -297,6 +305,7 @@ const SearchBar = ({ isLoading }) => {
     setSearchText(termo);
     setTermosSugeridos([]); // Limpar as sugestões após selecionar
   }
+
 
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto" }}>
@@ -350,6 +359,7 @@ const SearchBar = ({ isLoading }) => {
           <Link href={`/search-free?query=${searchText}`} passHref>
             <Center>
               <Button
+                type="submit"
                 marginTop={2}
                 as="a"
                 size="md"
@@ -358,6 +368,8 @@ const SearchBar = ({ isLoading }) => {
                 borderColor="gray"
                 borderWidth="1px"
                 mt="24px"
+                onKeyUp={handleKeyUp}
+
               >
                 Pesquisar
               </Button>
