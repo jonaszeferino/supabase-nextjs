@@ -269,11 +269,12 @@ const SearchBar = ({ isLoading }) => {
   ];
 
   const handleKeyUp = (event) => {
-    if (event.keyCode === 13) { // 13 is the keyboard code for the Enter key
+    if (event.keyCode === 13) {
+      // 13 is the keyboard code for the Enter key
       Button.onClick();
     }
   };
- 
+
   function handleInputBlur() {
     if (!isMouseOverSuggestions) {
       setTermosSugeridos([]);
@@ -302,15 +303,14 @@ const SearchBar = ({ isLoading }) => {
     setTermosSugeridos([]); // Limpar as sugestões após selecionar
   }
 
-
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-          <ChakraProvider>
+      <ChakraProvider>
         <Flex
           alignItems="center"
           width="100%"
           flex="1"
-          style={{ margin: "10px" }}
+          style={{ margin: "2px" }}
           flexDirection="column"
         >
           <InputGroup
@@ -319,7 +319,7 @@ const SearchBar = ({ isLoading }) => {
             flexDirection="column"
           >
             <Input
-              margin="10px"
+              margin="2px"
               required={true}
               size="md"
               bg="white"
@@ -348,24 +348,25 @@ const SearchBar = ({ isLoading }) => {
                 marginLeft="auto"
                 marginRight="auto"
               >
-                <SearchIcon color="gray.300" margin={3} size="lg" />
+                <SearchIcon color="gray.300" margin={1} size="lg" />
               </InputRightElement>
             )}
+
           </InputGroup>
           <Link href={`/search-free?query=${searchText}`} passHref>
             <Center>
               <Button
                 type="submit"
-                marginTop={2}
+                marginTop={1} // Reduz a margem superior para 5px
                 as="a"
                 size="md"
                 bg="white"
                 color="black"
                 borderColor="gray"
                 borderWidth="1px"
-                mt="24px"
+                mt="2px"
                 onKeyUp={handleKeyUp}
-
+                marginLeft="auto" 
               >
                 Pesquisar
               </Button>
@@ -392,12 +393,8 @@ const SearchBar = ({ isLoading }) => {
                     boxShadow="md"
                     borderRadius="md"
                     width="33%"
-                    onMouseEnter={() =>
-                      setIsMouseOverSuggestions(true)
-                    }
-                    onMouseLeave={() =>
-                      setIsMouseOverSuggestions(false)
-                    }
+                    onMouseEnter={() => setIsMouseOverSuggestions(true)}
+                    onMouseLeave={() => setIsMouseOverSuggestions(false)}
                   >
                     <Text p="2" fontWeight="bold">
                       Sugestões:

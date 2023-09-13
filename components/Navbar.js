@@ -162,8 +162,8 @@ export default function Navbar({ isLoading, onAuthenticated }) {
           </li>
         ) : null}
       </ul>
-
-      <SearchBar isLoading={isLoading} />
+    <SearchBar isLoading={isLoading} />
     </>
   );
 }
+

@@ -21,12 +21,12 @@ import {
   Flex,
   Icon,
   IconButton,
-  Progress
+  Progress,
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
-import { Tooltip } from "antd";
+import { Tooltip, Pagination } from "antd";
 
 export default function Discovery() {
   let [searchMovies, setSearchMovies] = useState([]);
@@ -38,6 +38,7 @@ export default function Discovery() {
     useState(1800);
   let [searchMovieReleaseDateTo, setSearchMovieReleaseDateTo] = useState(2023);
 
+  //pagination
   let [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
   let [searchMovieRealPage, setSearchMovieRealPage] = useState("");
   let [page, setPage] = useState(1);
@@ -99,6 +100,7 @@ export default function Discovery() {
       .catch((error) => setError(true));
   };
 
+  //pagination
   const nextPage = (event) => {
     setPage(page + 1), apiCall(page + 1);
   };
@@ -139,60 +141,76 @@ export default function Discovery() {
         <meta name="keywords" content="movies,watch,review"></meta>
         <meta name="description" content="filmes, series,"></meta>
       </Head>
-      <div>
-        <LoggedUser />
-        <div className={styles.top}>
-          <h3 className={styles.title}> Séries - Programas de TV</h3>
-        </div>
-        <ChakraProvider>
-          <VStack spacing={4} width="100%" padding="20px">
-            <FormControl>
-              <FormLabel>Ordem:</FormLabel>
-              <Select
-                value={searchRatingSort}
-                onChange={(event) => setSearchRatingSort(event.target.value)}
-              >
-                <option value="vote_average.asc">
-                  Da Pior Para Melhor Nota
-                </option>
-                <option value="vote_average.desc">
-                  Da Melhor Para Pior Nota
-                </option>
-              </Select>
-            </FormControl>
 
-            <FormControl>
-              <FormLabel>Nº de Votos:</FormLabel>
-              <Select
-                value={searchVoteCount}
-                onChange={(event) => setSearchVoteCount(event.target.value)}
-              >
-                <option value="0">Mais de 0 votos</option>
-                <option value="50">Mais de 50 votos</option>
-                <option value="100">Mais de 100 votos</option>
-                <option value="200">Mais de 200 votos</option>
-                <option value="500">Mais de 500 votos</option>
-                <option value="1000">Mais de 1000 votos</option>
-                <option value="5000">Mais de 5000 votos</option>
-              </Select>
-            </FormControl>
+      <LoggedUser />
+      <div className={styles.top}>
+        <h3 className={styles.title}> Séries - Programas de TV</h3>
+      </div>
 
-            <FormControl>
-              <FormLabel>Tipo de Série:</FormLabel>
-              <Select
-                value={searchTvType}
-                onChange={(event) => setSearchTvType(event.target.value)}
-              >
-                <option value="">Todos Tipos</option>
-                <option value="0">Documentário</option>
-                <option value="1">Notícias</option>
-                <option value="2">Mini Séries</option>
-                <option value="3">Realities</option>
-                <option value="4">Roteirizadas</option>
-                <option value="5">Talk Show</option>
-                <option value="6">Videos</option>
-              </Select>
-            </FormControl>
+      <br />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "600px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          <ChakraProvider>
+            <FormLabel>Ordem:</FormLabel>
+            <Select
+              value={searchRatingSort}
+              onChange={(event) => setSearchRatingSort(event.target.value)}
+            >
+              <option value="vote_average.asc">Da Pior Para Melhor Nota</option>
+              <option value="vote_average.desc">
+                Da Melhor Para Pior Nota
+              </option>
+            </Select>
+          </ChakraProvider>
+          <br />
+          <ChakraProvider>
+            <FormLabel>Nº de Votos:</FormLabel>
+            <Select
+              value={searchVoteCount}
+              onChange={(event) => setSearchVoteCount(event.target.value)}
+            >
+              <option value="0">Mais de 0 votos</option>
+              <option value="50">Mais de 50 votos</option>
+              <option value="100">Mais de 100 votos</option>
+              <option value="200">Mais de 200 votos</option>
+              <option value="500">Mais de 500 votos</option>
+              <option value="1000">Mais de 1000 votos</option>
+              <option value="5000">Mais de 5000 votos</option>
+            </Select>
+          </ChakraProvider>
+          <br />
+          <ChakraProvider>
+            <FormLabel>Tipo de Série:</FormLabel>
+            <Select
+              value={searchTvType}
+              onChange={(event) => setSearchTvType(event.target.value)}
+            >
+              <option value="">Todos Tipos</option>
+              <option value="0">Documentário</option>
+              <option value="1">Notícias</option>
+              <option value="2">Mini Séries</option>
+              <option value="3">Realities</option>
+              <option value="4">Roteirizadas</option>
+              <option value="5">Talk Show</option>
+              <option value="6">Videos</option>
+            </Select>
+          </ChakraProvider>
+          <br />
+          <ChakraProvider>
             <FormControl>
               <FormLabel>Ano Inicial e Final:</FormLabel>
               <Flex align="center">
@@ -219,147 +237,160 @@ export default function Discovery() {
                 </Select>
               </Flex>
             </FormControl>
+          </ChakraProvider>
+
+          <br />
+          <ChakraProvider>
             <Button size="lg" colorScheme="purple" onClick={apiCall}>
               Verificar
             </Button>
+          </ChakraProvider>
+          <br/>
+          <br/>
+        </div>
+      </div>
 
-            {isLoading && <Spinner />}
-          </VStack>
-        </ChakraProvider>
-        {isError === true ? (
-          <ErrorPage message={`Verifique as Credenciais`}></ErrorPage>
-        ) : (
-          <div className={styles.grid}>
-            {searchMovies.map((search) => (
-              <div key={search.id}>
-                <span className={styles.spantext}></span>{" "}
-                <span
-                  className={styles.spantext}
-                  style={{
-                    position: "relative",
-                    display: "block",
-                    width: "240px",
-                    height: "360px",
+      <ChakraProvider>{isLoading && <Spinner />}</ChakraProvider>
+
+      {isError === true ? (
+        <ErrorPage message={`Verifique as Credenciais`}></ErrorPage>
+      ) : (
+        <div className={styles.grid}>
+          {searchMovies.map((search) => (
+            <div key={search.id}>
+              <span className={styles.spantext}></span>{" "}
+              <span
+                className={styles.spantext}
+                style={{
+                  position: "relative",
+                  display: "block",
+                  width: "240px",
+                  height: "360px",
+                }}
+              >
+                <Link
+                  href={{
+                    pathname: "/tvshow-page",
+                    query: { tvShowId: search.id },
                   }}
                 >
-                  <Link
-                    href={{
-                      pathname: "/tvshow-page",
-                      query: { tvShowId: search.id },
+                  <a
+                    style={{
+                      position: "relative",
+                      width: "240px",
+                      height: "360px",
+                      display: "block",
                     }}
                   >
-                    <a
+                    <Tooltip
+                      title="Saiba Mais"
                       style={{
-                        position: "relative",
-                        width: "240px",
-                        height: "360px",
-                        display: "block",
+                        color: "white",
+                        borderColor: "purple",
+                        background: "purple",
                       }}
                     >
-                      <Tooltip
-                        title="Saiba Mais"
-                        style={{
-                          color: "white",
-                          borderColor: "purple",
-                          background: "purple",
-                        }}
-                      >
-                        {search.poster_path ? (
-                          <Image
-                            className={styles.card_image}
-                            src={`https://image.tmdb.org/t/p/original${search.poster_path}`}
-                            alt="poster"
-                            width={240}
-                            height={360}
-                          />
-                        ) : (
-                          <Image
-                            className={styles.card_image}
-                            src="/callback.png"
-                            alt="poster"
-                            width={240}
-                            height={360}
-                          />
-                        )}
-                      </Tooltip>
+                      {search.poster_path ? (
+                        <Image
+                          className={styles.card_image}
+                          src={`https://image.tmdb.org/t/p/original${search.poster_path}`}
+                          alt="poster"
+                          width={240}
+                          height={360}
+                        />
+                      ) : (
+                        <Image
+                          className={styles.card_image}
+                          src="/callback.png"
+                          alt="poster"
+                          width={240}
+                          height={360}
+                        />
+                      )}
+                    </Tooltip>
 
-                      <span
-                        style={{
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                          width: "100%",
-                          background: "rgba(0, 0, 0, 0.5)",
-                          color: "white",
-                          textAlign: "center",
-                          padding: "8px 0",
-                          boxSizing: "border-box",
-                        }}
-                      >
-                        {search.original_name}
-                      </span>
-                    </a>
-                  </Link>
-                </span>
-       
-       
-       
-                <div style={{ maxWidth: "240px", margin: "5px" }}>
-                  <ChakraProvider>
-                    <Progress
-                      hasStripe
-                      value={search.vote_average}
-                      max={10}
-                      colorScheme={getProgressColor(search.vote_average)}
-                    />
-                  </ChakraProvider>
-                  {search.vote_average}
-                </div>
-                <br />
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        background: "rgba(0, 0, 0, 0.5)",
+                        color: "white",
+                        textAlign: "center",
+                        padding: "8px 0",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      {search.original_name}
+                    </span>
+                  </a>
+                </Link>
+              </span>
+              <div style={{ maxWidth: "240px", margin: "5px" }}>
+                <ChakraProvider>
+                  <Progress
+                    hasStripe
+                    value={search.vote_average}
+                    max={10}
+                    colorScheme={getProgressColor(search.vote_average)}
+                  />
+                </ChakraProvider>
+                {search.vote_average}
               </div>
-            ))}
-          </div>
-        )}
-        {searchMovieTotalResults > 0 ? (
-          <span>
-            <button
-              onClick={previousPage}
-              disabled={page <= 1}
-              className={styles.button}
-            >
-              Anterior
-            </button>
-            <span className={styles.button}>
-              {currentPage} / {totalPages}
-            </span>
-            <button
-              onClick={nextPage}
-              disabled={page >= totalPages}
-              className={styles.button}
-            >
-              Próxima
-            </button>
-            <br />
-            <br />
-            <span className={styles.spantext}>
-              Total Resultados: {totalResults}
-            </span>{" "}
-          </span>
-        ) : (
-          ""
-        )}
+              <br />
+            </div>
+          ))}
+        </div>
+      )}
 
-        {!totalResults ? (
-          <span>
-            {/* Escolha os filtros acima, e clique em Verificar para uma consulta de
+      {searchMovieTotalResults > 0 ? (
+        <span>
+          <button
+            onClick={previousPage}
+            disabled={page <= 1}
+            className={styles.button}
+          >
+            Anterior
+          </button>
+          <span className={styles.button}>
+            {currentPage} / {totalPages}
+          </span>
+          <button
+            onClick={nextPage}
+            disabled={page >= totalPages}
+            className={styles.button}
+          >
+            Próxima
+          </button>
+          <br />
+          <br />
+          <span className={styles.spantext}>
+            Total Resultados: {totalResults}
+          </span>{" "}
+          {/* <Pagination
+              current={page}
+              total={totalPages}
+              onChange={(page) => {
+                setPage(page);
+                apiCall(page);
+              }}
+            /> */}
+        </span>
+      ) : (
+        ""
+      )}
+
+      {!totalResults ? (
+        <span>
+          {/* Escolha os filtros acima, e clique em Verificar para uma consulta de
             acordo com o seu desejo! */}
-          </span>
-        ) : (
-          ""
-        )}
+        </span>
+      ) : (
+        ""
+      )}
 
-        {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
-      </div>
+      {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
     </>
   );
 }

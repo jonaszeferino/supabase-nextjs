@@ -375,8 +375,8 @@ export default function Discovery() {
     <>
       <Head>
         <title>Descubra Filmes</title>
-        <meta name="keywords" content="movies,watch,review"></meta>
-        <meta name="description" content="encontre tudo de nba aqui"></meta>
+        <meta name="keywords" content="movies,filmes,watch,review"></meta>
+        <meta name="description" content="encontre tudo"></meta>
       </Head>
       <div>
         <LoggedUser />
@@ -384,7 +384,14 @@ export default function Discovery() {
           <h3 className={styles.title}> Descubra Filmes</h3>
         </div>
         <br />
-        <div style={{ alignItems: "center" }}>
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <div
             style={{
               maxWidth: "600px",
@@ -411,9 +418,7 @@ export default function Discovery() {
                 </option>
               </Select>
             </ChakraProvider>
-
             <br />
-
             <ChakraProvider>
               <FormLabel htmlFor="votes">Range de Votos</FormLabel>
               <Select
@@ -491,6 +496,7 @@ export default function Discovery() {
             </ChakraProvider>
           </div>
         </div>
+
         <br />
 
         {!searchMovies ? (
