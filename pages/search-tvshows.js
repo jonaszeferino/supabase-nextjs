@@ -21,11 +21,12 @@ import {
   Flex,
   Icon,
   IconButton,
+  Progress
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
-
+import { Tooltip } from "antd";
 
 export default function Discovery() {
   let [searchMovies, setSearchMovies] = useState([]);
@@ -117,19 +118,31 @@ export default function Discovery() {
   const handleToChange = (event) => {
     setSearchMovieReleaseDateTo(parseInt(event.target.value));
   };
+  function getProgressColor(progressValue) {
+    if (progressValue >= 0.1 && progressValue <= 3.999) {
+      return "red";
+    } else if (progressValue >= 4.0 && progressValue <= 5.999) {
+      return "yellow";
+    } else if (progressValue >= 6 && progressValue <= 7.999) {
+      return "green";
+    } else if (progressValue >= 8 && progressValue <= 10) {
+      return "blue";
+    } else {
+      return "gray";
+    }
+  }
 
   return (
     <>
       <Head>
         <title>Home</title>
         <meta name="keywords" content="movies,watch,review"></meta>
-        <meta name="description" content="encontre tudo de nba aqui"></meta>
+        <meta name="description" content="filmes, series,"></meta>
       </Head>
       <div>
-        <LoggedUser/>
+        <LoggedUser />
         <div className={styles.top}>
           <h3 className={styles.title}> Séries - Programas de TV</h3>
-          {/* <span>Escolha os filtros baixo, e clique em Verificar para uma consulta de acordo com o seu desejo!</span> */}
         </div>
         <ChakraProvider>
           <VStack spacing={4} width="100%" padding="20px">
@@ -219,59 +232,89 @@ export default function Discovery() {
           <div className={styles.grid}>
             {searchMovies.map((search) => (
               <div key={search.id}>
-                <span className={styles.spantext}>{search.original_name} </span>{" "}
-                <br />
-                <span className={styles.spantext}>{search.name}</span> <br />
-                <span>
-                  {search.poster_path != null ? (
-                    <span>
-                      {" "}
-                      <Image
-                        className={styles.card_image}
-                        src={
-                          "https://image.tmdb.org/t/p/original" +
-                          search.poster_path
-                        }
-                        alt="poster"
-                        width="240"
-                        height="360"
-                      />{" "}
-                    </span>
-                  ) : (
-                    <span>
-                      {" "}
-                      <Image
-                        className={styles.card_image}
-                        src="/callback.png"
-                        alt="poster"
-                        width="240"
-                        height="360"
-                      />{" "}
-                    </span>
-                  )}
-                </span>
-                <br />
-                <span className={styles.spantext}>
-                  Média: {search.vote_average} - Nº de Votos:{" "}
-                  {search.vote_count}
-                </span>{" "}
-                <br />
-                <span className={styles.spantext}>
-                  Data de Lançamento:
-                  {search.first_air_date.length > 0
-                    ? format(new Date(search.first_air_date), " dd/MM/yyyy")
-                    : ""}
-                </span>
-                <br />
-                <Link
-                  href={{
-                    pathname: "/tvshow-page",
-                    query: { tvShowId: search.id },
+                <span className={styles.spantext}></span>{" "}
+                <span
+                  className={styles.spantext}
+                  style={{
+                    position: "relative",
+                    display: "block",
+                    width: "240px",
+                    height: "360px",
                   }}
                 >
-                  <a className={styles.button}>Detalhes</a>
-                </Link>
-                <br />
+                  <Link
+                    href={{
+                      pathname: "/tvshow-page",
+                      query: { tvShowId: search.id },
+                    }}
+                  >
+                    <a
+                      style={{
+                        position: "relative",
+                        width: "240px",
+                        height: "360px",
+                        display: "block",
+                      }}
+                    >
+                      <Tooltip
+                        title="Saiba Mais"
+                        style={{
+                          color: "white",
+                          borderColor: "purple",
+                          background: "purple",
+                        }}
+                      >
+                        {search.poster_path ? (
+                          <Image
+                            className={styles.card_image}
+                            src={`https://image.tmdb.org/t/p/original${search.poster_path}`}
+                            alt="poster"
+                            width={240}
+                            height={360}
+                          />
+                        ) : (
+                          <Image
+                            className={styles.card_image}
+                            src="/callback.png"
+                            alt="poster"
+                            width={240}
+                            height={360}
+                          />
+                        )}
+                      </Tooltip>
+
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          width: "100%",
+                          background: "rgba(0, 0, 0, 0.5)",
+                          color: "white",
+                          textAlign: "center",
+                          padding: "8px 0",
+                          boxSizing: "border-box",
+                        }}
+                      >
+                        {search.original_name}
+                      </span>
+                    </a>
+                  </Link>
+                </span>
+       
+       
+       
+                <div style={{ maxWidth: "240px", margin: "5px" }}>
+                  <ChakraProvider>
+                    <Progress
+                      hasStripe
+                      value={search.vote_average}
+                      max={10}
+                      colorScheme={getProgressColor(search.vote_average)}
+                    />
+                  </ChakraProvider>
+                  {search.vote_average}
+                </div>
                 <br />
               </div>
             ))}

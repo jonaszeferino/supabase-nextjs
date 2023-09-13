@@ -304,7 +304,8 @@ export default function Discovery() {
                       query: { personId: search.id },
                     }}
                   >
-                    <a className={styles.button}>Detalhes</a>
+                    <a className={styles.button} style={{ backgroundColor: '#ebc94a',color:'white' }}>Detalhes</a>
+
                   </Link>
                 ) : null}
 
@@ -315,7 +316,7 @@ export default function Discovery() {
                       query: { movieId: search.id },
                     }}
                   >
-                    <a className={styles.button}>Detalhes</a>
+                    <a className={styles.button} style={{backgroundColor: '#3182ce', color:'white'}}>Detalhes</a>
                   </Link>
                 ) : null}
 
@@ -326,7 +327,7 @@ export default function Discovery() {
                       query: { tvShowId: search.id },
                     }}
                   >
-                    <a className={styles.button}>Detalhes</a>
+                    <a className={styles.button} style={{ backgroundColor: '#37a169',color:'white'}}>Detalhes</a>
                   </Link>
                 ) : null}
 

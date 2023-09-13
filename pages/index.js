@@ -220,6 +220,7 @@ export default function Home() {
                       </a>
                     </Link>
                   </span>
+  
                   <div style={{ maxWidth: "240px", margin: "5px" }}>
                     <ChakraProvider>
                       <Progress

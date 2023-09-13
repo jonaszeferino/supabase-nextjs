@@ -274,7 +274,6 @@ const SearchBar = ({ isLoading }) => {
     }
   };
  
-  
   function handleInputBlur() {
     if (!isMouseOverSuggestions) {
       setTermosSugeridos([]);
@@ -289,18 +288,15 @@ const SearchBar = ({ isLoading }) => {
 
     return termosSugeridos;
   }
-  // Função para atualizar os termos sugeridos quando a entrada do usuário mudar
   function handleInputChange(event) {
     const inputValue = event.target.value;
     setSearchText(inputValue);
-    // Se a entrada não estiver vazia, atualize os termos sugeridos
     if (inputValue.trim() !== "") {
       setTermosSugeridos(buscarTermosSemelhantes(inputValue));
     } else {
       setTermosSugeridos([]); // Caso contrário, não há sugestões
     }
   }
-  // Função para selecionar um termo sugerido e preencher o campo de busca
   function selecionarTermo(termo) {
     setSearchText(termo);
     setTermosSugeridos([]); // Limpar as sugestões após selecionar

@@ -15,12 +15,13 @@ import {
   Flex,
   Box,
   IconButton,
+  Center,
 } from "@chakra-ui/react";
 import { BiSolidUpArrow } from "react-icons/bi";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
-
+import { Tooltip } from "antd";
 
 export default function Discovery() {
   let [movieId, setMovieId] = useState();
@@ -383,93 +384,115 @@ export default function Discovery() {
           <h3 className={styles.title}> Descubra Filmes</h3>
         </div>
         <br />
-        <ChakraProvider>
-          <FormLabel htmlFor="ordenation">Ordenação do Resultado</FormLabel>
-          <Select
-            id="ordenation"
-            placeholder="Ordenação"
-            type="text"
-            isRequired={true}
-            value={searchRatingSort}
-            onChange={(event) => setSearchRatingSort(event.target.value)}
+        <div style={{ alignItems: "center" }}>
+          <div
+            style={{
+              maxWidth: "600px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
-            <option value="vote_average.asc">Da Pior Nota Para Melhor</option>
-            <option value="vote_average.desc">Da Melhor Nota Para Pior</option>
-          </Select>
-        </ChakraProvider>
+            <ChakraProvider>
+              <FormLabel htmlFor="ordenation">Ordenação do Resultado</FormLabel>
+              <Select
+                id="ordenation"
+                placeholder="Ordenação"
+                type="text"
+                isRequired={true}
+                value={searchRatingSort}
+                onChange={(event) => setSearchRatingSort(event.target.value)}
+              >
+                <option value="vote_average.asc">
+                  Da Pior Nota Para Melhor
+                </option>
+                <option value="vote_average.desc">
+                  Da Melhor Nota Para Pior
+                </option>
+              </Select>
+            </ChakraProvider>
 
-        <br />
-        <ChakraProvider>
-          <FormLabel htmlFor="votes">Range de Votos</FormLabel>
-          <Select
-            id="votes"
-            placeholder="Número de Votos"
-            type="number"
-            isRequired={true}
-            value={searchVoteCount}
-            onChange={(event) => setSearchVoteCount(event.target.value)}
-          >
-            <option value="0">0 Votos</option>
-            <option value="50">Mais de 50</option>
-            <option value="100">Mais de 100</option>
-            <option value="200">Mais de 200</option>
-            <option value="500">Mais de 500</option>
-            <option value="1000">Mais de 1000</option>
-            <option value="5000">Mais de 5000</option>
-          </Select>
-        </ChakraProvider>
-        <br />
-        <ChakraProvider>
-          <FormControl>
-            <FormLabel>Ano Inicial e Final:</FormLabel>
-            <Flex align="center">
-              <Select value={searchMovieReleaseDateFrom}>
-                {Array.from({ length: 2024 - 1900 + 1 }, (_, index) => (
-                  <option key={index} value={1900 + index}>
-                    {1900 + index}
+            <br />
+
+            <ChakraProvider>
+              <FormLabel htmlFor="votes">Range de Votos</FormLabel>
+              <Select
+                id="votes"
+                placeholder="Número de Votos"
+                type="number"
+                isRequired={true}
+                value={searchVoteCount}
+                onChange={(event) => setSearchVoteCount(event.target.value)}
+              >
+                <option value="0">0 Votos</option>
+                <option value="50">Mais de 50</option>
+                <option value="100">Mais de 100</option>
+                <option value="200">Mais de 200</option>
+                <option value="500">Mais de 500</option>
+                <option value="1000">Mais de 1000</option>
+                <option value="5000">Mais de 5000</option>
+              </Select>
+            </ChakraProvider>
+            <br />
+            <ChakraProvider>
+              <FormControl>
+                <FormLabel>Ano Inicial e Final:</FormLabel>
+                <Flex align="center">
+                  <Select value={searchMovieReleaseDateFrom}>
+                    {Array.from({ length: 2024 - 1900 + 1 }, (_, index) => (
+                      <option key={index} value={1900 + index}>
+                        {1900 + index}
+                      </option>
+                    ))}
+                  </Select>
+                  <Box w="20px" />
+                  <Select value={searchMovieReleaseDateTo}>
+                    {Array.from({ length: 2024 - 1900 + 1 }, (_, index) => (
+                      <option key={index} value={1900 + index}>
+                        {1900 + index}
+                      </option>
+                    ))}
+                  </Select>
+                </Flex>
+              </FormControl>
+            </ChakraProvider>
+
+            <br />
+            <ChakraProvider>
+              <FormLabel htmlFor="origin_country">País de Origem</FormLabel>
+              <Select
+                id="origin_country"
+                placeholder="Selecione o País"
+                value={searchFilters.with_origin_country}
+                onChange={(event) =>
+                  setSearchFilters({
+                    ...searchFilters,
+                    with_origin_country: event.target.value,
+                  })
+                }
+              >
+                {options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </Select>
-              <Box w="20px" />
-              <Select value={searchMovieReleaseDateTo}>
-                {Array.from({ length: 2024 - 1900 + 1 }, (_, index) => (
-                  <option key={index} value={1900 + index}>
-                    {1900 + index}
-                  </option>
-                ))}
-              </Select>
-            </Flex>
-          </FormControl>
-        </ChakraProvider>
+            </ChakraProvider>
+            <br />
+            <ChakraProvider>
+              <Button
+                size="lg"
+                colorScheme="purple"
+                mt="24px"
+                onClick={apiCall}
+              >
+                Verificar
+              </Button>
+            </ChakraProvider>
+          </div>
+        </div>
+        <br />
 
-        <br />
-        <ChakraProvider>
-          <FormLabel htmlFor="origin_country">País de Origem</FormLabel>
-          <Select
-            id="origin_country"
-            placeholder="Selecione o País"
-            value={searchFilters.with_origin_country}
-            onChange={(event) =>
-              setSearchFilters({
-                ...searchFilters,
-                with_origin_country: event.target.value,
-              })
-            }
-          >
-            {options.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </Select>
-        </ChakraProvider>
-        <br />
-        <ChakraProvider>
-          <Button size="lg" colorScheme="purple" mt="24px" onClick={apiCall}>
-            Verificar
-          </Button>
-        </ChakraProvider>
-        <br />
         {!searchMovies ? (
           <div>
             <button
@@ -503,10 +526,70 @@ export default function Discovery() {
           <div className={styles.grid}>
             {searchMovies.map((search) => (
               <div key={search.id}>
-                <span className={styles.spantext}>{search.original_title}</span>{" "}
-                <br />
-                <span className={styles.spantext}>{search.title}</span> <br />
-                <div style={{ maxWidth: "240px", margin: "0 auto" }}>
+                <span className={styles.spantext}></span>{" "}
+                <span
+                  className={styles.spantext}
+                  style={{
+                    position: "relative",
+                    display: "block",
+                    width: "240px",
+                    height: "360px",
+                  }}
+                >
+                  <Link
+                    href={{
+                      pathname: "/movie-page",
+                      query: { movieId: search.id },
+                    }}
+                  >
+                    <a
+                      style={{
+                        position: "relative",
+                        width: "240px",
+                        height: "360px",
+                        display: "block",
+                      }}
+                    >
+                      <Tooltip
+                        title="Saiba Mais"
+                        style={{
+                          color: "white",
+                          borderColor: "purple",
+                          background: "purple",
+                        }}
+                      >
+                        <Image
+                          className={styles.card_image}
+                          src={
+                            search.poster_path
+                              ? `https://image.tmdb.org/t/p/original${search.poster_path}`
+                              : "/callback.png"
+                          }
+                          alt="poster"
+                          width={240}
+                          height={360}
+                        />
+                      </Tooltip>
+
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          width: "100%",
+                          background: "rgba(0, 0, 0, 0.5)",
+                          color: "white",
+                          textAlign: "center",
+                          padding: "8px 0",
+                          boxSizing: "border-box",
+                        }}
+                      >
+                        {search.title}
+                      </span>
+                    </a>
+                  </Link>
+                </span>
+                <div style={{ maxWidth: "240px", margin: "5px" }}>
                   <ChakraProvider>
                     <Progress
                       hasStripe
@@ -515,46 +598,8 @@ export default function Discovery() {
                       colorScheme={getProgressColor(search.vote_average)}
                     />
                   </ChakraProvider>
-                  <br />
+                  {search.vote_average}
                 </div>
-                <span className={styles.spantext}>
-                  <span className={styles.spantext}>
-                    <Image
-                      className={styles.card_image}
-                      src={
-                        search.poster_path != null
-                          ? "https://image.tmdb.org/t/p/original" +
-                            search.poster_path
-                          : "/callback.png"
-                      }
-                      alt="poster"
-                      width="240"
-                      height="360"
-                    />
-                  </span>
-                  <br />
-                </span>
-                <span className={styles.spantext}>
-                  Média: {search.vote_average} - Nº de Votos:{" "}
-                  {search.vote_count}
-                </span>{" "}
-                <br />
-                <span className={styles.spantext}>
-                  Data de Lançamento:
-                  {search.release_date.length > 0
-                    ? format(new Date(search.release_date), " dd/MM/yyyy")
-                    : ""}
-                </span>
-                <br />
-                <Link
-                  href={{
-                    pathname: "/movie-page",
-                    query: { movieId: search.id },
-                  }}
-                >
-                  <a className={styles.button}>Detalhes</a>
-                </Link>
-                <br />
                 <br />
               </div>
             ))}
