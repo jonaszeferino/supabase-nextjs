@@ -45,6 +45,22 @@ const Profile = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isSave, setIsSave] = useState(false);
   const dateFormat = "DD/MM/YYYY";
+  const [userData, setUserData] = useState(null);
+  const [dateString, setDateString] = useState()
+
+
+  useEffect(() => {
+    if (emailInfo) {
+      getUser();
+    }
+  }, [emailInfo]);
+
+  const dateStringFomated = new Date(dateString).toLocaleDateString("pt-br")
+
+
+  console.log(dateString)
+  console.log(emailInfo);
+  console.log(dateStringFomated)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -106,6 +122,31 @@ const Profile = () => {
     } catch (error) {
       console.error(error);
       console.log("erro", error);
+    }
+  };
+
+  const getUser = async () => {
+    try {
+      const response = await fetch(
+        `/api/v1/getProfileData?email=${emailInfo}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        const userData = await response.json();
+        console.log("Dados do usuário:", userData);
+        
+        setUserData(userData);
+        setDateString(userData.birth_date)
+      } else {
+        console.error("Erro ao buscar o usuário:", response.status);
+      }
+    } catch (error) {
+      console.error("Erro inesperado:", error);
     }
   };
 
@@ -172,12 +213,13 @@ const Profile = () => {
                 {emailInfo}
               </Text>
             </FormControl>
+  
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>Nome:</FormLabel>
               <Input
                 type="text"
                 name="firstName"
-                value={formData.firstName}
+                value={userData?.name || formData.firstName}
                 onChange={handleChange}
                 style={{ width: "100%" }}
               />
@@ -188,17 +230,18 @@ const Profile = () => {
               <Input
                 type="text"
                 name="lastName"
-                value={formData.lastName}
+                value={userData?.surname || formData.lastName}
                 onChange={handleChange}
                 style={{ width: "100%" }}
               />
             </FormControl>
+    
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>Origem:</FormLabel>
               <Input
                 type="text"
                 name="nationality"
-                value={formData.nationality}
+                value={userData?.nationality || formData.nationality}
                 onChange={handleChange}
                 style={{ width: "100%" }}
               />
@@ -208,8 +251,8 @@ const Profile = () => {
               <FormLabel style={{ fontWeight: "bold" }}>
                 Data De Nascimento:
               </FormLabel>
-              <DatePicker
-                value={formData.dateOfBirth}
+              <Input
+                value={dateStringFomated || formData.dateOfBirth}
                 format={dateFormat}
                 onChange={handleDateChange}
                 style={{
@@ -224,7 +267,7 @@ const Profile = () => {
               <FormLabel style={{ fontWeight: "bold" }}>Gênero:</FormLabel>
               <Select
                 name="gender"
-                value={formData.gender}
+                value={userData?.gender || formData.gender}
                 onChange={handleChange}
                 style={{ width: "100%" }}
               >
@@ -246,7 +289,9 @@ const Profile = () => {
               <Input
                 type="text"
                 name="favoriteFirstMovie"
-                value={formData.favoriteFirstMovie}
+                value={
+                  userData?.first_favorite_movie || formData.favoriteFirstMovie
+                }
                 onChange={handleChange}
                 style={{ width: "100%", margin: "2px" }}
                 placeholder="Primeiro Filme"
@@ -254,7 +299,9 @@ const Profile = () => {
               <Input
                 type="text"
                 name="favoriteSecondMovie"
-                value={formData.favoriteSecondMovie}
+                value={
+                  userData?.second_favorite_movie || formData.favoriteSecondMovie
+                }
                 onChange={handleChange}
                 style={{ width: "100%", margin: "2px" }}
                 placeholder="Segundo Filme"
@@ -262,19 +309,22 @@ const Profile = () => {
               <Input
                 type="text"
                 name="favoriteThirdMovie"
-                value={formData.favoriteThirdMovie}
+                value={
+                  userData?.third_favorite_movie || formData.favoriteThirdMovie
+                }
                 onChange={handleChange}
                 style={{ width: "100%", margin: "2px" }}
                 placeholder="Terceiro Filme"
               />
             </FormControl>
+  
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Gênero de Filme Favorito:
               </FormLabel>
               <Select
                 name="movieGenre"
-                value={formData.movieGenre}
+                value={userData?.favorite_movie_genre || formData.movieGenre}
                 onChange={handleChange}
                 style={{ width: "100%" }}
               >
@@ -298,7 +348,9 @@ const Profile = () => {
               <Input
                 type="text"
                 name="favoriteFirstTVShow"
-                value={formData.favoriteFirstTVShow}
+                value={
+                  userData?.first_favorite_tvshow || formData.favoriteFirstTVShow
+                }
                 onChange={handleChange}
                 style={{ width: "100%", margin: "2px" }}
                 placeholder="Primeira Serie"
@@ -306,7 +358,10 @@ const Profile = () => {
               <Input
                 type="text"
                 name="favoriteSecondTVShow"
-                value={formData.favoriteSecondTVShow}
+                value={
+                  userData?.second_favorite_tvshow ||
+                  formData.favoriteSecondTVShow
+                }
                 onChange={handleChange}
                 style={{ width: "100%", margin: "2px" }}
                 placeholder="Segunda Serie"
@@ -314,7 +369,9 @@ const Profile = () => {
               <Input
                 type="text"
                 name="favoriteThirdTVShow"
-                value={formData.favoriteThirdTVShow}
+                value={
+                  userData?.third_favorite_tvshow || formData.favoriteThirdTVShow
+                }
                 onChange={handleChange}
                 style={{ width: "100%", margin: "2px" }}
                 placeholder="Terceira Filme"
@@ -327,7 +384,7 @@ const Profile = () => {
               </FormLabel>
               <Select
                 name="tvShowGenre"
-                value={formData.tvShowGenre}
+                value={userData?.favorite_tvshow_genre || formData.tvShowGenre}
                 onChange={handleChange}
                 style={{ width: "100%" }}
               >
@@ -344,6 +401,7 @@ const Profile = () => {
                 <option value="Documentários">Documentários</option>
               </Select>
             </FormControl>
+     
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Ator Favorito:
@@ -351,11 +409,12 @@ const Profile = () => {
               <Input
                 type="text"
                 name="favoriteActor"
-                value={formData.favoriteActor}
+                value={userData?.favorite_actor || formData.favoriteActor}
                 onChange={handleChange}
                 style={{ width: "100%" }}
               />
             </FormControl>
+   
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Atriz Favorita:
@@ -363,7 +422,7 @@ const Profile = () => {
               <Input
                 type="text"
                 name="favoriteActress"
-                value={formData.favoriteActress}
+                value={userData?.favorite_actress || formData.favoriteActress}
                 onChange={handleChange}
                 style={{ width: "100%" }}
               />
@@ -374,7 +433,9 @@ const Profile = () => {
               <Input
                 type="text"
                 name="favoriteDirecting"
-                value={formData.favoriteDirecting}
+                value={
+                  userData?.favorite_directing || formData.favoriteDirecting
+                }
                 onChange={handleChange}
                 style={{ width: "100%" }}
               />

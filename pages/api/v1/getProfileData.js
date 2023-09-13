@@ -1,27 +1,23 @@
 import client from "../../../mongoConnection";
 
-export default async function handler(req, res) {
+export default async function getProfileData(req, res) {
   if (req.method !== "GET") {
     res.status(405).json({ error: "Method Not Allowed" });
     return;
   }
 
+  const { email } = req.query; // Use o endereço de e-mail fornecido na consulta
+
   const collection = client.db("moviesTvshows").collection("users");
 
   try {
-    const user_email = parseInt(req.query.user_email);
+    const user = await collection.findOne({ email: email });
 
-    if (user_email) {
-      res.status(400).json({ error: "user_email must be a valid number" });
-      return;
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ message: "Usuário não encontrado" });
     }
-
-    const matchStage = user_email ? { user_email: user_email } : {};
-    const pipeline = [{ $match: matchStage }];
-
-    const result = await collection.aggregate(pipeline).toArray();
-
-    res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
