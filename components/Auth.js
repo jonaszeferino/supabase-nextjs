@@ -26,7 +26,7 @@ export default function Auth() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-//teste
+  //teste
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -135,27 +135,32 @@ export default function Auth() {
     <ChakraProvider>
       <>
         <ChakraProvider>
-          {session ? (
-            <p>
-              Usuário: {session.user.email} <br />
-              <Button
-                onClick={() => supabase.auth.signOut()}
-                colorScheme="red"
-                size="sm"
-              >
-                Sair
-              </Button>
-            </p>
-          ) : null}
+          <Center>
+            {session ? (
+              <p>
+                Usuário: {session.user.email} <br />
+                <Center>
+                  <Button
+                    onClick={() => supabase.auth.signOut()}
+                    colorScheme="red"
+                    size="sm"
+                  >
+                    Sair
+                  </Button>
+                </Center>
+              </p>
+            ) : null}
+          </Center>
         </ChakraProvider>
       </>
-      <Center height="100vh">
+      <Center height="60vh">
         <Box
-          p={4}
+          p={2}
           borderWidth="1px"
           maxW="400px"
           width="100%"
           position="relative"
+          marginTop={5}
         >
           <Heading as="h1" size="xl" textAlign="center" mb={4}>
             {isSignUp ? "Cadastre-se" : "Login"}
