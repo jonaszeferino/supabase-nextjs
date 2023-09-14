@@ -46,21 +46,16 @@ const Profile = () => {
   const [isSave, setIsSave] = useState(false);
   const dateFormat = "DD/MM/YYYY";
   const [userData, setUserData] = useState(null);
-  const [dateString, setDateString] = useState()
-
+  
 
   useEffect(() => {
-    if (emailInfo) {
+    if (emailInfo || isSave === true) {
       getUser();
     }
   }, [emailInfo]);
 
-  const dateStringFomated = new Date(dateString).toLocaleDateString("pt-br")
-
-
-  console.log(dateString)
+isSave
   console.log(emailInfo);
-  console.log(dateStringFomated)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -117,6 +112,7 @@ const Profile = () => {
       });
       setIsSaving(false);
       setIsSave(true);
+      console.log("Corpo da solicitação:", JSON.stringify(requestBody));
 
       return;
     } catch (error) {
@@ -139,9 +135,9 @@ const Profile = () => {
       if (response.ok) {
         const userData = await response.json();
         console.log("Dados do usuário:", userData);
-        
+
         setUserData(userData);
-        setDateString(userData.birth_date)
+        setDateString(userData.birth_date);
       } else {
         console.error("Erro ao buscar o usuário:", response.status);
       }
@@ -213,14 +209,19 @@ const Profile = () => {
                 {emailInfo}
               </Text>
             </FormControl>
-  
+
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>Nome:</FormLabel>
               <Input
                 type="text"
                 name="firstName"
                 value={userData?.name || formData.firstName}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    firstName: e.target.value,
+                  });
+                }}
                 style={{ width: "100%" }}
               />
             </FormControl>
@@ -231,18 +232,28 @@ const Profile = () => {
                 type="text"
                 name="lastName"
                 value={userData?.surname || formData.lastName}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    lastName: e.target.value,
+                  });
+                }}
                 style={{ width: "100%" }}
               />
             </FormControl>
-    
+
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>Origem:</FormLabel>
               <Input
                 type="text"
                 name="nationality"
                 value={userData?.nationality || formData.nationality}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    nationality: e.target.value,
+                  });
+                }}
                 style={{ width: "100%" }}
               />
             </FormControl>
@@ -252,9 +263,14 @@ const Profile = () => {
                 Data De Nascimento:
               </FormLabel>
               <Input
-                value={dateStringFomated || formData.dateOfBirth}
+                value={userData?.birth_date || formData.dateOfBirth}
                 format={dateFormat}
-                onChange={handleDateChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    dateOfBirth: e.target.value,
+                  });
+                }}
                 style={{
                   width: "100%",
                   height: "42px",
@@ -268,7 +284,12 @@ const Profile = () => {
               <Select
                 name="gender"
                 value={userData?.gender || formData.gender}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    gender: e.target.value,
+                  });
+                }}
                 style={{ width: "100%" }}
               >
                 <option value="Masculino">Masculino</option>
@@ -282,6 +303,7 @@ const Profile = () => {
             <Center>
               <Text>Gostos</Text>
             </Center>
+    
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Filme Favorito:
@@ -292,7 +314,12 @@ const Profile = () => {
                 value={
                   userData?.first_favorite_movie || formData.favoriteFirstMovie
                 }
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    favoriteFirstMovie: e.target.value,
+                  });
+                }}
                 style={{ width: "100%", margin: "2px" }}
                 placeholder="Primeiro Filme"
               />
@@ -300,9 +327,15 @@ const Profile = () => {
                 type="text"
                 name="favoriteSecondMovie"
                 value={
-                  userData?.second_favorite_movie || formData.favoriteSecondMovie
+                  userData?.second_favorite_movie ||
+                  formData.favoriteSecondMovie
                 }
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    favoriteSecondMovie: e.target.value,
+                  });
+                }}
                 style={{ width: "100%", margin: "2px" }}
                 placeholder="Segundo Filme"
               />
@@ -312,12 +345,17 @@ const Profile = () => {
                 value={
                   userData?.third_favorite_movie || formData.favoriteThirdMovie
                 }
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    favoriteThirdMovie: e.target.value,
+                  });
+                }}
                 style={{ width: "100%", margin: "2px" }}
                 placeholder="Terceiro Filme"
               />
             </FormControl>
-  
+
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Gênero de Filme Favorito:
@@ -325,7 +363,12 @@ const Profile = () => {
               <Select
                 name="movieGenre"
                 value={userData?.favorite_movie_genre || formData.movieGenre}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    movieGenre: e.target.value,
+                  });
+                }}
                 style={{ width: "100%" }}
               >
                 <option value="Ação">Ação</option>
@@ -349,9 +392,15 @@ const Profile = () => {
                 type="text"
                 name="favoriteFirstTVShow"
                 value={
-                  userData?.first_favorite_tvshow || formData.favoriteFirstTVShow
+                  userData?.first_favorite_tvshow ||
+                  formData.favoriteFirstTVShow
                 }
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    favoriteFirstTVShow: e.target.value,
+                  });
+                }}
                 style={{ width: "100%", margin: "2px" }}
                 placeholder="Primeira Serie"
               />
@@ -362,7 +411,12 @@ const Profile = () => {
                   userData?.second_favorite_tvshow ||
                   formData.favoriteSecondTVShow
                 }
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    favoriteSecondTVShow: e.target.value,
+                  });
+                }}
                 style={{ width: "100%", margin: "2px" }}
                 placeholder="Segunda Serie"
               />
@@ -370,9 +424,15 @@ const Profile = () => {
                 type="text"
                 name="favoriteThirdTVShow"
                 value={
-                  userData?.third_favorite_tvshow || formData.favoriteThirdTVShow
+                  userData?.third_favorite_tvshow ||
+                  formData.favoriteThirdTVShow
                 }
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    favoriteThirdTVShow: e.target.value,
+                  });
+                }}
                 style={{ width: "100%", margin: "2px" }}
                 placeholder="Terceira Filme"
               />
@@ -385,7 +445,12 @@ const Profile = () => {
               <Select
                 name="tvShowGenre"
                 value={userData?.favorite_tvshow_genre || formData.tvShowGenre}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    tvShowGenre: e.target.value,
+                  });
+                }}
                 style={{ width: "100%" }}
               >
                 <option value="Ação">Ação</option>
@@ -401,7 +466,7 @@ const Profile = () => {
                 <option value="Documentários">Documentários</option>
               </Select>
             </FormControl>
-     
+
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Ator Favorito:
@@ -410,11 +475,16 @@ const Profile = () => {
                 type="text"
                 name="favoriteActor"
                 value={userData?.favorite_actor || formData.favoriteActor}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    favoriteActor: e.target.value,
+                  });
+                }}
                 style={{ width: "100%" }}
               />
             </FormControl>
-   
+
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Atriz Favorita:
@@ -422,8 +492,13 @@ const Profile = () => {
               <Input
                 type="text"
                 name="favoriteActress"
-                value={userData?.favorite_actress || formData.favoriteActress}
-                onChange={handleChange}
+                value={formData.favoriteActress || userData?.favorite_actress}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    favoriteActress: e.target.value,
+                  });
+                }}
                 style={{ width: "100%" }}
               />
             </FormControl>
@@ -436,7 +511,12 @@ const Profile = () => {
                 value={
                   userData?.favorite_directing || formData.favoriteDirecting
                 }
-                onChange={handleChange}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    favoriteDirecting: e.target.value,
+                  });
+                }}
                 style={{ width: "100%" }}
               />
             </FormControl>
