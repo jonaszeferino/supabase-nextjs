@@ -39,22 +39,22 @@ const Profile = () => {
     favoriteDirecting: "",
   });
   const [session, setSession] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [emailInfo, setEmailInfo] = useState("");
   const [message, setMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isSave, setIsSave] = useState(false);
   const dateFormat = "DD/MM/YYYY";
   const [userData, setUserData] = useState(null);
-  
 
   useEffect(() => {
     if (emailInfo || isSave === true) {
       getUser();
+      setIsLoading(true);
     }
   }, [emailInfo]);
 
-isSave
+  isSave;
   console.log(emailInfo);
 
   const handleChange = (e) => {
@@ -135,7 +135,7 @@ isSave
       if (response.ok) {
         const userData = await response.json();
         console.log("Dados do usuário:", userData);
-
+        setIsLoading(false);
         setUserData(userData);
         setDateString(userData.birth_date);
       } else {
@@ -189,6 +189,23 @@ isSave
           </p>
         ) : null}
       </ChakraProvider>
+
+      {isLoading && (
+        <Space
+          direction="vertical"
+          style={{
+            width: "100%",
+          }}
+        >
+          <Spin tip="Salvando.."></Spin>
+          <Alert
+            message="Aguarde"
+            description="Seus Dados Estão Sendo Carregados"
+            type="info"
+          />
+        </Space>
+      )}
+
       {session ? (
         <Box p={4} style={{ maxWidth: "400px", margin: "0 auto" }}>
           <Heading size="lg" mb={4}>
@@ -303,7 +320,7 @@ isSave
             <Center>
               <Text>Gostos</Text>
             </Center>
-    
+
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Filme Favorito:
