@@ -47,6 +47,8 @@ const Profile = () => {
   const dateFormat = "DD/MM/YYYY";
   const [userData, setUserData] = useState(null);
 
+  const showSearchBar = false
+
   useEffect(() => {
     if (emailInfo || isSave === true) {
       getUser();
@@ -197,7 +199,7 @@ const Profile = () => {
             width: "100%",
           }}
         >
-          <Spin tip="Salvando.."></Spin>
+          <Spin tip="Carregando..."></Spin>
           <Alert
             message="Aguarde"
             description="Seus Dados Estão Sendo Carregados"

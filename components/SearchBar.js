@@ -19,7 +19,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import stringSimilarity from "string-similarity"; // Importe a biblioteca
 
-const SearchBar = ({ isLoading }) => {
+const SearchBar = ({ isLoading, showSearchBar = true }) => {
   const [searchText, setSearchText] = useState("");
   const [termosSugeridos, setTermosSugeridos] = useState([]);
   const router = useRouter();

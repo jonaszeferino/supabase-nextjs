@@ -1,34 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Today's Movie Watch - Overview
 
-## Getting Started
+Project in Next.js 13.01 without TypeScript -
 
-First, run the development server:
+The purpose of this project is to display movies by rating and various filters. Additionally, we offer search functionality to discover TV shows and individuals.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+The project's name originates from the page where, upon clicking a button, an algorithm presents a random movie from the database to you.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Design
+- Chakra UI
+- Ant Design
+- Regular CSS
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## External APIs
+- TMDb - The Movie Database
+- Supabase - Authentication tools
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Internal API
+ - CRUD (Create, Read, Update, Delete) operations
+ - Utilizes GET, PUT, POST, DELETE methods (about rating suggestions list)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Databases
+- Supabase - Email signups (PostgreSQL)
+- MongoDB - Rating suggestions
 
-## Learn More
+## Extra Features
+- Back-to-top buttons
+- Search bar
+- Translation of components into Portuguese
+- Unique navigation bars for mobile and web applications
+- Pagination
 
-To learn more about Next.js, take a look at the following resources:
+## Authentication
+- Complete functions with Supabase
+- New user registration
+- Sign-up
+- Reset password
+- Social login
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Languages
+- Brazilian Portuguese
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Hosting
+- Vercel (conected to gitHub)
