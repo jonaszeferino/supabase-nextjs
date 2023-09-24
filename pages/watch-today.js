@@ -165,7 +165,7 @@ export default function Movieapi() {
           <ChakraProvider>
             <Box maxW="32rem">
               <div className={styles.top}>
-                <h3 className={styles.title}>O Que Assistir Hoje?</h3>
+                <h3 className={styles.title}>O Que Ver Hoje?</h3>
                 <span>
                   Clique e veja as possibilidades até que um seja do seu agrado!
                 </span>
