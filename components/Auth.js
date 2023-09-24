@@ -98,7 +98,7 @@ export default function Auth() {
       if (error) {
         throw error;
       }
-      setAlertMessage("Usuário Logado");
+      setAlertMessage("Usuário Logando");
       console.log(user);
       console.log(session);
     } catch (e) {
