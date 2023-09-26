@@ -20,24 +20,23 @@ import LoggedUser from "../components/LoggedUser";
 import { Alert, Space, Spin } from "antd";
 
 const Profile = () => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    dateOfBirth: "",
-    nationality: "",
-    gender: "Prefiro não informar",
-    favoriteFirstMovie: "",
-    favoriteSecondMovie: "",
-    favoriteThirdMovie: "",
-    movieGenre: "",
-    favoriteFirstTVShow: "",
-    favoriteSecondTVShow: "",
-    favoriteThirdTVShow: "",
-    tvShowGenre: "",
-    favoriteActor: "",
-    favoriteActress: "",
-    favoriteDirecting: "",
-  });
+  const [name, setName] = useState();
+  const [surname, setSurname] = useState();
+  const [birthDate, setBirthDate] = useState();
+  const [nationality, setNationality] = useState();
+  const [gender, setGender] = useState();
+  const [firstFavoriteMovie, setFirstFavoriteMovie] = useState();
+  const [secondFavoriteMovie, setSecondFavoriteMovie] = useState();
+  const [thirdFavoriteMovie, setThirdFavoriteMovie] = useState();
+  const [firstFavoriteTvShow, setFirstFavoriteTvShow] = useState();
+  const [secondFavoriteTvShow, setSecondFavoriteTvShow] = useState();
+  const [thirdFavoriteTvShow, setThirdFavoriteTvShow] = useState();
+  const [favoriteMovieGender, setFavoriteMovieGender] = useState();
+  const [favoriteTvShowGender, setFavoriteTvShowGender] = useState();
+  const [favoriteDirecting, setFavoriteDirecting] = useState();
+  const [favoriteActor, setFavoriteActor] = useState();
+  const [favoriteActress, setFavoriteActress] = useState();
+
   const [session, setSession] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [emailInfo, setEmailInfo] = useState("");
@@ -47,7 +46,27 @@ const Profile = () => {
   const dateFormat = "DD/MM/YYYY";
   const [userData, setUserData] = useState(null);
 
-  const showSearchBar = false
+  const [nameEdit, setNameEdit] = useState(true);
+  const [surnameEdit, setSurnameEdit] = useState(true);
+  const [birthDateEdit, setBirthDateEdit] = useState(true);
+  const [nationalityEdit, setNationalityEdit] = useState(true);
+  const [genderEdit, setGenderEdit] = useState(true);
+  const [firstFavoriteMovieEdit, setFirstFavoriteMovieEdit] = useState(true);
+  const [secondFavoriteMovieEdit, setSecondFavoriteMovieEdit] = useState(true);
+  const [thirdFavoriteMovieEdit, setThirdFavoriteMovieEdit] = useState(true);
+  const [firstFavoriteTvShowEdit, setFirstFavoriteTvShowEdit] = useState(true);
+  const [secondFavoriteTvShowEdit, setSecondFavoriteTvShowEdit] =
+    useState(true);
+
+  const [thirdFavoriteTvShowEdit, setThirdFavoriteTvShowEdit] = useState(true);
+  const [favoriteMovieGenderEdit, setFavoriteMovieGenderEdit] = useState(true);
+  const [favoriteTvShowGenderEdit, setFavoriteTvShowGenderEdit] =
+    useState(true);
+  const [favoriteDirectingEdit, setFavoriteDirectingEdit] = useState(true);
+  const [favoriteActorEdit, setFavoriteActorEdit] = useState(true);
+  const [favoriteActressEdit, setFavoriteActressEdit] = useState(true);
+
+  const showSearchBar = false;
 
   useEffect(() => {
     if (emailInfo || isSave === true) {
@@ -56,28 +75,9 @@ const Profile = () => {
     }
   }, [emailInfo]);
 
-  isSave;
-  console.log(emailInfo);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    console.log(formData.firstName);
-  };
-
-  const handleDateChange = (date) => {
-    setFormData({
-      ...formData,
-      dateOfBirth: date,
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Botão Salvar clicado"); // Adicione esta linha
+    console.log("Botão Salvar clicado");
     await insertUser();
   };
 
@@ -94,22 +94,32 @@ const Profile = () => {
         },
         body: JSON.stringify({
           email: emailInfo,
-          name: formData.firstName,
-          surname: formData.lastName,
-          nationality: formData.nationality,
-          birth_date: formData.dateOfBirth,
-          gender: formData.gender,
-          first_favorite_movie: formData.favoriteFirstMovie,
-          second_favorite_movie: formData.favoriteSecondMovie,
-          third_favorite_movie: formData.favoriteThirdMovie,
-          favorite_movie_genre: formData.movieGenre,
-          first_favorite_tvshow: formData.favoriteFirstTVShow,
-          second_favorite_tvshow: formData.favoriteSecondTVShow,
-          third_favorite_tvshow: formData.favoriteThirdTVShow,
-          favorite_tvshow_genre: formData.tvShowGenre,
-          favorite_actor: formData.favoriteActor,
-          favorite_actress: formData.favoriteActress,
-          favorite_directing: formData.favoriteDirecting,
+          name: name || userData.name || null,
+          surname: surname || userData.surname || null,
+          nationality: nationality || userData.nationality || null,
+          birth_date: birthDate || userData.birth_date || null,
+          gender: gender || userData.gender || null,
+          first_favorite_movie:
+            firstFavoriteMovie || userData.first_favorite_movie || null,
+          second_favorite_movie:
+            secondFavoriteMovie || userData.second_favorite_movie || null,
+          third_favorite_movie:
+            thirdFavoriteMovie || userData.third_favorite_movie || null,
+          favorite_movie_genre:
+            favoriteMovieGender || userData.favorite_movie_genre || null,
+          first_favorite_tvshow:
+            firstFavoriteTvShow || userData.first_favorite_tvshow || null,
+          second_favorite_tvshow:
+            secondFavoriteTvShow || userData.second_favorite_tvshow || null,
+          third_favorite_tvshow:
+            thirdFavoriteTvShow || userData.third_favorite_tvshow || null,
+          favorite_tvshow_genre:
+            favoriteTvShowGender || userData.favorite_tvshow_genre || null,
+          favorite_actor: favoriteActor || userData.favorite_actor || null,
+          favorite_actress:
+            favoriteActress || userData.favorite_actress || null,
+          favorite_directing:
+            favoriteDirecting || userData.favorite_directing || null,
         }),
       });
       setIsSaving(false);
@@ -175,6 +185,11 @@ const Profile = () => {
     };
   }, []);
 
+  // console.group("Meu Grupo");
+  // console.log("Esta é uma mensagem dentro do grupo");
+  // console.log("Outra mensagem dentro do grupo");
+  // console.groupEnd();
+
   return (
     <ChakraProvider>
       <ChakraProvider>
@@ -214,6 +229,7 @@ const Profile = () => {
             Dados do Perfil
           </Heading>
           <VStack>
+            {/* e-mail */}
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>E-mail:</FormLabel>
               <Text
@@ -228,316 +244,666 @@ const Profile = () => {
                 {emailInfo}
               </Text>
             </FormControl>
-
+            {/* Nome */}
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>Nome:</FormLabel>
-              <Input
-                type="text"
-                name="firstName"
-                value={userData?.name || formData.firstName}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    firstName: e.target.value,
-                  });
-                }}
-                style={{ width: "100%" }}
-              />
+              {nameEdit && (
+                <Input
+                  isDisabled={nameEdit}
+                  type="text"
+                  name="firstName"
+                  value={userData?.name}
+                  style={{ width: "100%" }}
+                />
+              )}
+              {!nameEdit && (
+                <Input
+                  placeholder={userData?.name || "Nome"}
+                  isDisabled={nameEdit}
+                  type="text"
+                  name="firstName"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  style={{ width: "100%" }}
+                />
+              )}
+
+              <Button
+                onClick={() => (setNameEdit(!nameEdit), setName(""))}
+                colorScheme={nameEdit ? "red" : "green"}
+                size="sm"
+              >
+                Editar
+              </Button>
             </FormControl>
 
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>Sobrenome:</FormLabel>
-              <Input
-                type="text"
-                name="lastName"
-                value={userData?.surname || formData.lastName}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    lastName: e.target.value,
-                  });
-                }}
-                style={{ width: "100%" }}
-              />
+              {surnameEdit && (
+                <Input
+                  isDisabled={surnameEdit}
+                  type="text"
+                  name="firstName"
+                  value={userData?.surname}
+                  style={{ width: "100%" }}
+                />
+              )}
+              {!surnameEdit && (
+                <Input
+                  placeholder={userData?.surname}
+                  isDisabled={surnameEdit}
+                  type="text"
+                  name="firstName"
+                  value={surname}
+                  onChange={(e) => {
+                    setSurname(e.target.value);
+                  }}
+                  style={{ width: "100%" }}
+                />
+              )}
+              <Button
+                onClick={() => (setSurnameEdit(!surnameEdit), setSurname(""))}
+                colorScheme={surnameEdit ? "red" : "green"}
+                size="sm"
+              >
+                Editar
+              </Button>
             </FormControl>
 
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>Origem:</FormLabel>
-              <Input
-                type="text"
-                name="nationality"
-                value={userData?.nationality || formData.nationality}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    nationality: e.target.value,
-                  });
-                }}
-                style={{ width: "100%" }}
-              />
+              {nationalityEdit && (
+                <Input
+                  isDisabled={nationalityEdit}
+                  type="text"
+                  name="nationality"
+                  value={userData?.nationality}
+                  style={{ width: "100%" }}
+                />
+              )}
+              {!nationalityEdit && (
+                <Input
+                  placeholder={
+                    userData?.nationality || "Digite sua nacionalidade"
+                  }
+                  isDisabled={nationalityEdit}
+                  type="text"
+                  name="nationality"
+                  value={nationality}
+                  onChange={(e) => {
+                    setNationality(e.target.value);
+                  }}
+                  style={{ width: "100%" }}
+                />
+              )}
+              <Button
+                onClick={() => (
+                  setNationalityEdit(!nationalityEdit), setNationality("")
+                )}
+                colorScheme={nationalityEdit ? "red" : "green"}
+                size="sm"
+              >
+                Editar
+              </Button>
             </FormControl>
 
+            {/* Data de Nascimento */}
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Data De Nascimento:
               </FormLabel>
-              <Input
-                value={userData?.birth_date || formData.dateOfBirth}
-                format={dateFormat}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    dateOfBirth: e.target.value,
-                  });
-                }}
-                style={{
-                  width: "100%",
-                  height: "42px",
-                  borderColor: "#cbd5e0",
-                }}
-              />
+              {birthDateEdit && (
+                <Input
+                  isDisabled={birthDateEdit}
+                  type="text"
+                  name="nationality"
+                  value={userData?.birth_date}
+                  style={{ width: "100%" }}
+                />
+              )}
+              {!birthDateEdit && (
+                <Input
+                  placeholder={
+                    userData?.birth_date || "Digite a data dd/mm/aaaa"
+                  }
+                  isDisabled={birthDateEdit}
+                  type="text"
+                  name="nationality"
+                  value={birthDate}
+                  onChange={(e) => {
+                    setBirthDate(e.target.value);
+                  }}
+                  style={{ width: "100%" }}
+                />
+              )}
+              <Button
+                onClick={() => (
+                  setBirthDateEdit(!birthDateEdit), setBirthDate("")
+                )}
+                colorScheme={birthDateEdit ? "red" : "green"}
+                size="sm"
+              >
+                Editar
+              </Button>
             </FormControl>
 
+            {/* Genero */}
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>Gênero:</FormLabel>
-              <Select
-                name="gender"
-                value={userData?.gender || formData.gender}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    gender: e.target.value,
-                  });
-                }}
-                style={{ width: "100%" }}
+              {genderEdit && (
+                <Input
+                  isDisabled={genderEdit}
+                  type="text"
+                  name="gender"
+                  value={userData?.gender}
+                  style={{ width: "100%" }}
+                />
+              )}
+              {!genderEdit && (
+                <Select
+                  isDisabled={genderEdit}
+                  name="gender"
+                  value={gender}
+                  onChange={(e) => {
+                    setGender(e.target.value);
+                  }}
+                  style={{ width: "100%" }}
+                >
+                  <option value={userData?.gender || "Escolha o Genero"}>
+                    {userData?.gender || "Escolha o Genero"}
+                  </option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Feminino">Feminino</option>
+                  <option value="Não binário">Não binário</option>
+                  <option value="Prefiro não informar">
+                    Prefiro não informar
+                  </option>
+                </Select>
+              )}
+
+              <Button
+                onClick={() => (setGenderEdit(!genderEdit), setGender(""))}
+                colorScheme={genderEdit ? "red" : "green"}
+                size="sm"
               >
-                <option value="Masculino">Masculino</option>
-                <option value="Feminino">Feminino</option>
-                <option value="Não binário">Não binário</option>
-                <option value="Prefiro não informar">
-                  Prefiro não informar
-                </option>
-              </Select>
+                Editar
+              </Button>
             </FormControl>
+
             <Center>
               <Text>Gostos</Text>
             </Center>
 
+            {/* Filmes Favoritos */}
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Filme Favorito:
               </FormLabel>
-              <Input
-                type="text"
-                name="favoriteFirstMovie"
-                value={
-                  userData?.first_favorite_movie || formData.favoriteFirstMovie
-                }
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    favoriteFirstMovie: e.target.value,
-                  });
-                }}
-                style={{ width: "100%", margin: "2px" }}
-                placeholder="Primeiro Filme"
-              />
-              <Input
-                type="text"
-                name="favoriteSecondMovie"
-                value={
-                  userData?.second_favorite_movie ||
-                  formData.favoriteSecondMovie
-                }
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    favoriteSecondMovie: e.target.value,
-                  });
-                }}
-                style={{ width: "100%", margin: "2px" }}
-                placeholder="Segundo Filme"
-              />
-              <Input
-                type="text"
-                name="favoriteThirdMovie"
-                value={
-                  userData?.third_favorite_movie || formData.favoriteThirdMovie
-                }
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    favoriteThirdMovie: e.target.value,
-                  });
-                }}
-                style={{ width: "100%", margin: "2px" }}
-                placeholder="Terceiro Filme"
-              />
+
+              {/* first movie     */}
+              {firstFavoriteMovieEdit && (
+                <Input
+                  isDisabled={firstFavoriteMovieEdit}
+                  type="text"
+                  name="favoriteFirstMovie"
+                  value={userData?.first_favorite_movie}
+                  style={{ width: "100%", margin: "2px" }}
+                />
+              )}
+              {!firstFavoriteMovieEdit && (
+                <Input
+                  isDisabled={firstFavoriteMovieEdit}
+                  placeholder={
+                    userData?.first_favorite_movie || "Primeiro Filme Favorito"
+                  }
+                  type="text"
+                  name="favoriteFirstMovie"
+                  onChange={(e) => {
+                    setFirstFavoriteMovie(e.target.value);
+                  }}
+                  value={firstFavoriteMovie}
+                  style={{ width: "100%", margin: "2px" }}
+                />
+              )}
+
+              <Button
+                onClick={() => (
+                  setFirstFavoriteMovieEdit(!firstFavoriteMovieEdit),
+                  setFirstFavoriteMovie("")
+                )}
+                colorScheme={firstFavoriteMovieEdit ? "red" : "green"}
+                size="sm"
+              >
+                Editar
+              </Button>
+
+              {/* second movie     */}
+              {secondFavoriteMovieEdit && (
+                <Input
+                  isDisabled={secondFavoriteMovieEdit}
+                  type="text"
+                  name="favoriteSecondMovie"
+                  value={userData?.second_favorite_movie}
+                  style={{ width: "100%", margin: "2px" }}
+                />
+              )}
+              {!secondFavoriteMovieEdit && (
+                <Input
+                  isDisabled={secondFavoriteMovieEdit}
+                  placeholder={
+                    userData?.second_favorite_movie || "Segundo Filme Favorito"
+                  }
+                  type="text"
+                  name="favoriteSecondMovie"
+                  onChange={(e) => {
+                    setSecondFavoriteMovie(e.target.value);
+                  }}
+                  value={secondFavoriteMovie}
+                  style={{ width: "100%", margin: "2px" }}
+                />
+              )}
+
+              <Button
+                onClick={() => (
+                  setSecondFavoriteMovieEdit(!secondFavoriteMovieEdit),
+                  setSecondFavoriteMovie("")
+                )}
+                colorScheme={secondFavoriteMovieEdit ? "red" : "green"}
+                size="sm"
+              >
+                Editar
+              </Button>
+
+              {/* third movie  */}
+              {thirdFavoriteMovieEdit && (
+                <Input
+                  isDisabled={thirdFavoriteMovieEdit}
+                  type="text"
+                  name="favoriteThirdMovie"
+                  value={userData?.third_favorite_movie}
+                  style={{ width: "100%", margin: "2px" }}
+                />
+              )}
+              {!thirdFavoriteMovieEdit && (
+                <Input
+                  isDisabled={thirdFavoriteMovieEdit}
+                  placeholder={
+                    userData?.third_favorite_movie || "Terceiro Filme Favorito"
+                  }
+                  type="text"
+                  name="favoriteThirdMovie"
+                  onChange={(e) => {
+                    setThirdFavoriteMovie(e.target.value);
+                  }}
+                  value={thirdFavoriteMovie}
+                  style={{ width: "100%", margin: "2px" }}
+                />
+              )}
+
+              <Button
+                onClick={() => (
+                  setThirdFavoriteMovieEdit(!thirdFavoriteMovieEdit),
+                  setThirdFavoriteMovie("")
+                )}
+                colorScheme={thirdFavoriteMovieEdit ? "red" : "green"}
+                size="sm"
+              >
+                Editar
+              </Button>
             </FormControl>
 
+            {/* Genero de filme       */}
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Gênero de Filme Favorito:
               </FormLabel>
-              <Select
-                name="movieGenre"
-                value={userData?.favorite_movie_genre || formData.movieGenre}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    movieGenre: e.target.value,
-                  });
-                }}
-                style={{ width: "100%" }}
+
+              {favoriteMovieGenderEdit && (
+                <Input
+                  isDisabled={favoriteMovieGenderEdit}
+                  type="text"
+                  name="gender"
+                  value={userData?.favorite_movie_genre}
+                  style={{ width: "100%" }}
+                />
+              )}
+              {!favoriteMovieGenderEdit && (
+                <Select
+                  isDisabled={favoriteMovieGenderEdit}
+                  name="gender"
+                  value={gender}
+                  onChange={(e) => {
+                    setGender(e.target.value);
+                  }}
+                  style={{ width: "100%" }}
+                >
+                  <option
+                    value={
+                      userData?.favorite_movie_genre ||
+                      "Escolha o Genero de Filme"
+                    }
+                  >
+                    {userData?.favorite_movie_genre ||
+                      "Escolha o Genero de Filme"}{" "}
+                  </option>
+
+                  <option value="Ação">Ação</option>
+                  <option value="Aventura">Aventura</option>
+                  <option value="Comédia">Comédia</option>
+                  <option value="Drama">Drama</option>
+                  <option value="Ficção Científica">Ficção Científica</option>
+                  <option value="Fantasia">Fantasia</option>
+                  <option value="Horror">Horror</option>
+                  <option value="Suspense">Suspense</option>
+                  <option value="Romance">Romance</option>
+                  <option value="Documentários">Documentários</option>
+                </Select>
+              )}
+
+              <Button
+                onClick={() => (
+                  setFavoriteMovieGenderEdit(!favoriteMovieGenderEdit),
+                  setFavoriteMovieGender("")
+                )}
+                colorScheme={favoriteMovieGenderEdit ? "red" : "green"}
+                size="sm"
               >
-                <option value="Ação">Ação</option>
-                <option value="Aventura">Aventura</option>
-                <option value="Comédia">Comédia</option>
-                <option value="Drama">Drama</option>
-                <option value="Ficção Científica">Ficção Científica</option>
-                <option value="Fantasia">Fantasia</option>
-                <option value="Horror">Horror</option>
-                <option value="Suspense">Suspense</option>
-                <option value="Romance">Romance</option>
-                <option value="Documentários">Documentários</option>
-              </Select>
+                Editar
+              </Button>
             </FormControl>
 
+            {/* Series Favoritas */}
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Series Favoritas:
               </FormLabel>
-              <Input
-                type="text"
-                name="favoriteFirstTVShow"
-                value={
-                  userData?.first_favorite_tvshow ||
-                  formData.favoriteFirstTVShow
-                }
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    favoriteFirstTVShow: e.target.value,
-                  });
-                }}
-                style={{ width: "100%", margin: "2px" }}
-                placeholder="Primeira Serie"
-              />
-              <Input
-                type="text"
-                name="favoriteSecondTVShow"
-                value={
-                  userData?.second_favorite_tvshow ||
-                  formData.favoriteSecondTVShow
-                }
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    favoriteSecondTVShow: e.target.value,
-                  });
-                }}
-                style={{ width: "100%", margin: "2px" }}
-                placeholder="Segunda Serie"
-              />
-              <Input
-                type="text"
-                name="favoriteThirdTVShow"
-                value={
-                  userData?.third_favorite_tvshow ||
-                  formData.favoriteThirdTVShow
-                }
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    favoriteThirdTVShow: e.target.value,
-                  });
-                }}
-                style={{ width: "100%", margin: "2px" }}
-                placeholder="Terceira Filme"
-              />
+
+              {firstFavoriteTvShowEdit && (
+                <Input
+                  isDisabled={firstFavoriteTvShowEdit}
+                  type="text"
+                  name="favoriteFirstTvShow"
+                  value={userData?.first_favorite_tvshow}
+                  style={{ width: "100%", margin: "2px" }}
+                />
+              )}
+              {!firstFavoriteTvShowEdit && (
+                <Input
+                  isDisabled={firstFavoriteTvShowEdit}
+                  placeholder={
+                    userData?.first_favorite_tvshow || "Primeira Serie Favorito"
+                  }
+                  type="text"
+                  name="favoriteFirstTvShow"
+                  onChange={(e) => {
+                    setFirstFavoriteTvShow(e.target.value);
+                  }}
+                  value={firstFavoriteTvShow}
+                  style={{ width: "100%", margin: "2px" }}
+                />
+              )}
+
+              <Button
+                onClick={() => (
+                  setFirstFavoriteTvShowEdit(!firstFavoriteTvShowEdit),
+                  setFirstFavoriteTvShow("")
+                )}
+                colorScheme={firstFavoriteTvShowEdit ? "red" : "green"}
+                size="sm"
+              >
+                Editar
+              </Button>
+
+              {secondFavoriteTvShowEdit && (
+                <Input
+                  isDisabled={secondFavoriteTvShowEdit}
+                  type="text"
+                  name="favoriteSecondTvShow"
+                  value={userData?.second_favorite_tvshow}
+                  style={{ width: "100%", margin: "2px" }}
+                />
+              )}
+              {!secondFavoriteTvShowEdit && (
+                <Input
+                  isDisabled={secondFavoriteTvShowEdit}
+                  placeholder={
+                    userData?.second_favorite_tvshow || "Segunda Serie Favorito"
+                  }
+                  type="text"
+                  name="favoriteFirstTvShow"
+                  onChange={(e) => {
+                    setSecondFavoriteTvShow(e.target.value);
+                  }}
+                  value={secondFavoriteTvShow}
+                  style={{ width: "100%", margin: "2px" }}
+                />
+              )}
+
+              <Button
+                onClick={() => (
+                  setSecondFavoriteTvShowEdit(!secondFavoriteTvShowEdit),
+                  setSecondFavoriteTvShow("")
+                )}
+                colorScheme={secondFavoriteTvShowEdit ? "red" : "green"}
+                size="sm"
+              >
+                Editar
+              </Button>
+
+              {thirdFavoriteTvShowEdit && (
+                <Input
+                  isDisabled={thirdFavoriteTvShowEdit}
+                  type="text"
+                  name="favoriteThirdTvShow"
+                  value={userData?.third_favorite_tvshow}
+                  style={{ width: "100%", margin: "2px" }}
+                />
+              )}
+              {!thirdFavoriteTvShowEdit && (
+                <Input
+                  isDisabled={thirdFavoriteTvShowEdit}
+                  placeholder={
+                    userData?.third_favorite_tvshow || "Terceira Serie Favorito"
+                  }
+                  type="text"
+                  name="favoriteThirdTvShow"
+                  onChange={(e) => {
+                    setThirdFavoriteTvShow(e.target.value);
+                  }}
+                  value={thirdFavoriteTvShow}
+                  style={{ width: "100%", margin: "2px" }}
+                />
+              )}
+
+              <Button
+                onClick={() => (
+                  setThirdFavoriteTvShowEdit(!thirdFavoriteTvShowEdit),
+                  setThirdFavoriteTvShow("")
+                )}
+                colorScheme={thirdFavoriteTvShowEdit ? "red" : "green"}
+                size="sm"
+              >
+                Editar
+              </Button>
             </FormControl>
 
+            {/* genero de serie favorita */}
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Gênero de Serie Favorito:
               </FormLabel>
-              <Select
-                name="tvShowGenre"
-                value={userData?.favorite_tvshow_genre || formData.tvShowGenre}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    tvShowGenre: e.target.value,
-                  });
-                }}
-                style={{ width: "100%" }}
+
+              {favoriteTvShowGenderEdit && (
+                <Input
+                  isDisabled={favoriteTvShowGenderEdit}
+                  type="text"
+                  name="gender"
+                  value={userData?.favorite_tvshow_genre}
+                  style={{ width: "100%" }}
+                />
+              )}
+              {!favoriteTvShowGenderEdit && (
+                <Select
+                  isDisabled={favoriteTvShowGenderEdit}
+                  name="gender"
+                  value={favoriteTvShowGender}
+                  onChange={(e) => {
+                    setGender(e.target.value);
+                  }}
+                  style={{ width: "100%" }}
+                >
+                  <option
+                    value={
+                      userData?.favorite_tvshow_genre ||
+                      "Escolha o Genero de Filme"
+                    }
+                  >
+                    {userData?.favorite_tvshow_genre ||
+                      "Escolha o Genero de Filme"}
+                  </option>
+
+                  <option value="Ação">Ação</option>
+                  <option value="Aventura">Aventura</option>
+                  <option value="Comédia">Comédia</option>
+                  <option value="Drama">Drama</option>
+                  <option value="Ficção Científica">Ficção Científica</option>
+                  <option value="Fantasia">Fantasia</option>
+                  <option value="Horror">Horror</option>
+                  <option value="Suspense">Suspense</option>
+                  <option value="Romance">Romance</option>
+                  <option value="Documentários">Documentários</option>
+                </Select>
+              )}
+
+              <Button
+                onClick={() => (
+                  setFavoriteTvShowGenderEdit(!favoriteTvShowGenderEdit),
+                  setFavoriteMovieGender("")
+                )}
+                colorScheme={favoriteTvShowGenderEdit ? "red" : "green"}
+                size="sm"
               >
-                <option value="Ação">Ação</option>
-                <option value="Aventura">Aventura</option>
-                <option value="Comédia">Comédia</option>
-                <option value="Drama">Drama</option>
-                <option value="Ficção Científica">Ficção Científica</option>
-                <option value="Fantasia">Fantasia</option>
-                <option value="Horror">Horror</option>
-                <option value="Suspense">Suspense</option>
-                <option value="Romance">Romance</option>
-                <option value="Doramas">Doramas</option>
-                <option value="Documentários">Documentários</option>
-              </Select>
+                Editar
+              </Button>
             </FormControl>
 
+            {/* Ator favorito */}
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Ator Favorito:
               </FormLabel>
-              <Input
-                type="text"
-                name="favoriteActor"
-                value={userData?.favorite_actor || formData.favoriteActor}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    favoriteActor: e.target.value,
-                  });
-                }}
-                style={{ width: "100%" }}
-              />
+              {favoriteActorEdit && (
+                <Input
+                  isDisabled={favoriteActorEdit}
+                  type="text"
+                  name="favoriteActor"
+                  value={userData?.favorite_actor}
+                  style={{ width: "100%" }}
+                />
+              )}
+              {!favoriteActorEdit && (
+                <Input
+                  placeholder={userData?.favorite_actor}
+                  isDisabled={favoriteActorEdit}
+                  type="text"
+                  name="favoriteActor"
+                  value={favoriteDirecting}
+                  onChange={(e) => {
+                    setFavoriteActor(e.target.value);
+                  }}
+                  style={{ width: "100%" }}
+                />
+              )}
+              <Button
+                onClick={() => (
+                  setFavoriteActorEdit(!favoriteActorEdit), setFavoriteActor("")
+                )}
+                colorScheme={favoriteActorEdit ? "red" : "green"}
+                size="sm"
+              >
+                Editar
+              </Button>
             </FormControl>
-
+            {/* Atriz favorita */}
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
                 Atriz Favorita:
               </FormLabel>
-              <Input
-                type="text"
-                name="favoriteActress"
-                value={formData.favoriteActress || userData?.favorite_actress}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    favoriteActress: e.target.value,
-                  });
-                }}
-                style={{ width: "100%" }}
-              />
+
+              {favoriteActressEdit && (
+                <Input
+                  isDisabled={favoriteActressEdit}
+                  type="text"
+                  name="favoriteActress"
+                  value={userData?.favorite_actress}
+                  style={{ width: "100%" }}
+                />
+              )}
+              {!favoriteActressEdit && (
+                <Input
+                  placeholder={userData?.favorite_actress}
+                  isDisabled={favoriteActressEdit}
+                  type="text"
+                  name="favoriteActress"
+                  value={favoriteActress}
+                  onChange={(e) => {
+                    setFavoriteActress(e.target.value);
+                  }}
+                  style={{ width: "100%" }}
+                />
+              )}
+              <Button
+                onClick={() => (
+                  setFavoriteActressEdit(!favoriteActressEdit),
+                  setFavoriteActress("")
+                )}
+                colorScheme={favoriteActressEdit ? "red" : "green"}
+                size="sm"
+              >
+                Editar
+              </Button>
             </FormControl>
 
+            {/* Direcao */}
             <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>Direção:</FormLabel>
-              <Input
-                type="text"
-                name="favoriteDirecting"
-                value={
-                  userData?.favorite_directing || formData.favoriteDirecting
-                }
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    favoriteDirecting: e.target.value,
-                  });
-                }}
-                style={{ width: "100%" }}
-              />
+              <FormLabel style={{ fontWeight: "bold" }}>
+                Diretor Favorito:
+              </FormLabel>
+
+              {favoriteDirectingEdit && (
+                <Input
+                  isDisabled={favoriteDirectingEdit}
+                  type="text"
+                  name="favoriteDirecting"
+                  value={userData?.favorite_directing}
+                  style={{ width: "100%" }}
+                />
+              )}
+              {!favoriteDirectingEdit && (
+                <Input
+                  placeholder={userData?.favorite_directing}
+                  isDisabled={favoriteDirectingEdit}
+                  type="text"
+                  name="favoriteActress"
+                  value={favoriteDirecting}
+                  onChange={(e) => {
+                    setFavoriteDirecting(e.target.value);
+                  }}
+                  style={{ width: "100%" }}
+                />
+              )}
+              <Button
+                onClick={() => (
+                  setFavoriteDirectingEdit(!favoriteDirectingEdit),
+                  setFavoriteDirecting("")
+                )}
+                colorScheme={favoriteDirectingEdit ? "red" : "green"}
+                size="sm"
+              >
+                Editar
+              </Button>
             </FormControl>
 
             <Button
