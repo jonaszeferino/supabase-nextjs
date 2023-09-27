@@ -18,6 +18,7 @@ import { supabase } from "../utils/supabaseClient";
 import { AntDatePicker, DatePicker, Divider as DividerAntd } from "antd";
 import LoggedUser from "../components/LoggedUser";
 import { Alert, Space, Spin } from "antd";
+import Auth from "../components/Auth"
 
 const Profile = () => {
   const [name, setName] = useState();
@@ -856,7 +857,7 @@ const Profile = () => {
           )}
         </Box>
       ) : (
-        "Usuário Não Logado"
+        <Auth />
       )}
     </ChakraProvider>
   );
