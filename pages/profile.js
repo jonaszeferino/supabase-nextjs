@@ -233,50 +233,6 @@ const Profile = () => {
       )}
 
       <br />
-      {newUser && (
-        <div style={{ maxWidth: "400px", margin: "0 auto" }}>
-          <Space
-            direction="vertical"
-            style={{
-              width: "100%",
-            }}
-          >
-            <Alert
-              message="Clique em Editar e Insira Seus Dados Abaixo"
-              type="success"
-              showIcon
-              closable
-            />
-            <Button
-              onClick={() => (
-                setNameEdit(!nameEdit),
-                setSurnameEdit(!surnameEdit),
-                setBirthDateEdit(!birthDateEdit),
-                setNationalityEdit(!nationalityEdit),
-                setGenderEdit(!genderEdit),
-                setFirstFavoriteMovieEdit(!firstFavoriteMovieEdit),
-                setSecondFavoriteMovieEdit(!secondFavoriteMovieEdit),
-                setThirdFavoriteMovieEdit(!thirdFavoriteMovieEdit),
-                setFirstFavoriteTvShowEdit(!firstFavoriteTvShowEdit),
-                setSecondFavoriteTvShowEdit(!secondFavoriteTvShowEdit),
-                setThirdFavoriteTvShowEdit(!thirdFavoriteTvShowEdit),
-                setFavoriteMovieGenderEdit(!favoriteMovieGenderEdit),
-                setFavoriteTvShowGenderEdit(!favoriteTvShowGenderEdit),
-                setFavoriteDirectingEdit(!favoriteDirectingEdit),
-                setFavoriteActorEdit(!favoriteActorEdit),
-                setFavoriteActressEdit(!favoriteActressEdit)
-              )}
-              colorScheme={favoriteActressEdit ? "red" : "green"}
-              type="submit"
-              style={{ width: "100%" }}
-            >
-              {favoriteActressEdit
-                ? "Editar"
-                : "Insira Os Dados Depois Clique Em Salvar Abaixo"}
-            </Button>
-          </Space>
-        </div>
-      )}
 
       {session ? (
         <Box p={4} style={{ maxWidth: "400px", margin: "0 auto" }}>
@@ -285,6 +241,51 @@ const Profile = () => {
               <Heading size="lg" mb={4}>
                 Dados do Perfil
               </Heading>
+
+              {newUser && (
+                <div style={{ maxWidth: "400px", margin: "0 auto" }}>
+                  <Space
+                    direction="vertical"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <Alert
+                      message="Clique em Editar e Insira Seus Dados Abaixo"
+                      type="success"
+                      showIcon
+                      closable
+                    />
+                    <Button
+                      onClick={() => (
+                        setNameEdit(!nameEdit),
+                        setSurnameEdit(!surnameEdit),
+                        setBirthDateEdit(!birthDateEdit),
+                        setNationalityEdit(!nationalityEdit),
+                        setGenderEdit(!genderEdit),
+                        setFirstFavoriteMovieEdit(!firstFavoriteMovieEdit),
+                        setSecondFavoriteMovieEdit(!secondFavoriteMovieEdit),
+                        setThirdFavoriteMovieEdit(!thirdFavoriteMovieEdit),
+                        setFirstFavoriteTvShowEdit(!firstFavoriteTvShowEdit),
+                        setSecondFavoriteTvShowEdit(!secondFavoriteTvShowEdit),
+                        setThirdFavoriteTvShowEdit(!thirdFavoriteTvShowEdit),
+                        setFavoriteMovieGenderEdit(!favoriteMovieGenderEdit),
+                        setFavoriteTvShowGenderEdit(!favoriteTvShowGenderEdit),
+                        setFavoriteDirectingEdit(!favoriteDirectingEdit),
+                        setFavoriteActorEdit(!favoriteActorEdit),
+                        setFavoriteActressEdit(!favoriteActressEdit)
+                      )}
+                      colorScheme={favoriteActressEdit ? "red" : "green"}
+                      type="submit"
+                      style={{ width: "100%" }}
+                    >
+                      {favoriteActressEdit
+                        ? "Editar"
+                        : "Insira Os Dados Depois Clique Em Salvar Abaixo"}
+                    </Button>
+                  </Space>
+                </div>
+              )}
 
               <VStack>
                 {/* e-mail */}
