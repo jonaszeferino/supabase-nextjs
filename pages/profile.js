@@ -15,7 +15,7 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { supabase } from "../utils/supabaseClient";
-import { AntDatePicker, DatePicker } from "antd";
+import { AntDatePicker, DatePicker, Divider as DividerAntd } from "antd";
 import LoggedUser from "../components/LoggedUser";
 import { Alert, Space, Spin } from "antd";
 
@@ -124,6 +124,7 @@ const Profile = () => {
       });
       setIsSaving(false);
       setIsSave(true);
+      getUser();
       console.log("Corpo da solicitação:", JSON.stringify(requestBody));
 
       return;
@@ -225,730 +226,632 @@ const Profile = () => {
 
       {session ? (
         <Box p={4} style={{ maxWidth: "400px", margin: "0 auto" }}>
-          <Heading size="lg" mb={4}>
-            Dados do Perfil
-          </Heading>
-          <VStack>
-            {/* e-mail */}
-            <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>E-mail:</FormLabel>
-              <Text
-                style={{
-                  width: "100%",
-                  border: "1px solid #ccc",
-                  padding: "8px",
-                  borderRadius: "5px",
-                  borderColor: "#cbd5e0",
-                }}
-              >
-                {emailInfo}
-              </Text>
-            </FormControl>
-            {/* Nome */}
-            <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>Nome:</FormLabel>
-              {nameEdit && (
-                <Input
-                  isDisabled={nameEdit}
-                  type="text"
-                  name="firstName"
-                  value={userData?.name}
-                  style={{ width: "100%" }}
-                />
-              )}
-              {!nameEdit && (
-                <Input
-                  placeholder={userData?.name || "Nome"}
-                  isDisabled={nameEdit}
-                  type="text"
-                  name="firstName"
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
-                  style={{ width: "100%" }}
-                />
-              )}
+          {!isLoading && (
+            <>
+              <Heading size="lg" mb={4}>
+                Dados do Perfil
+              </Heading>
 
-              <Button
-                onClick={() => (setNameEdit(!nameEdit), setName(""))}
-                colorScheme={nameEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
-            </FormControl>
-
-            <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>Sobrenome:</FormLabel>
-              {surnameEdit && (
-                <Input
-                  isDisabled={surnameEdit}
-                  type="text"
-                  name="firstName"
-                  value={userData?.surname}
-                  style={{ width: "100%" }}
-                />
-              )}
-              {!surnameEdit && (
-                <Input
-                  placeholder={userData?.surname}
-                  isDisabled={surnameEdit}
-                  type="text"
-                  name="firstName"
-                  value={surname}
-                  onChange={(e) => {
-                    setSurname(e.target.value);
-                  }}
-                  style={{ width: "100%" }}
-                />
-              )}
-              <Button
-                onClick={() => (setSurnameEdit(!surnameEdit), setSurname(""))}
-                colorScheme={surnameEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
-            </FormControl>
-
-            <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>Origem:</FormLabel>
-              {nationalityEdit && (
-                <Input
-                  isDisabled={nationalityEdit}
-                  type="text"
-                  name="nationality"
-                  value={userData?.nationality}
-                  style={{ width: "100%" }}
-                />
-              )}
-              {!nationalityEdit && (
-                <Input
-                  placeholder={
-                    userData?.nationality || "Digite sua nacionalidade"
-                  }
-                  isDisabled={nationalityEdit}
-                  type="text"
-                  name="nationality"
-                  value={nationality}
-                  onChange={(e) => {
-                    setNationality(e.target.value);
-                  }}
-                  style={{ width: "100%" }}
-                />
-              )}
-              <Button
-                onClick={() => (
-                  setNationalityEdit(!nationalityEdit), setNationality("")
-                )}
-                colorScheme={nationalityEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
-            </FormControl>
-
-            {/* Data de Nascimento */}
-            <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>
-                Data De Nascimento:
-              </FormLabel>
-              {birthDateEdit && (
-                <Input
-                  isDisabled={birthDateEdit}
-                  type="text"
-                  name="nationality"
-                  value={userData?.birth_date}
-                  style={{ width: "100%" }}
-                />
-              )}
-              {!birthDateEdit && (
-                <Input
-                  placeholder={
-                    userData?.birth_date || "Digite a data dd/mm/aaaa"
-                  }
-                  isDisabled={birthDateEdit}
-                  type="text"
-                  name="nationality"
-                  value={birthDate}
-                  onChange={(e) => {
-                    setBirthDate(e.target.value);
-                  }}
-                  style={{ width: "100%" }}
-                />
-              )}
-              <Button
-                onClick={() => (
-                  setBirthDateEdit(!birthDateEdit), setBirthDate("")
-                )}
-                colorScheme={birthDateEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
-            </FormControl>
-
-            {/* Genero */}
-            <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>Gênero:</FormLabel>
-              {genderEdit && (
-                <Input
-                  isDisabled={genderEdit}
-                  type="text"
-                  name="gender"
-                  value={userData?.gender}
-                  style={{ width: "100%" }}
-                />
-              )}
-              {!genderEdit && (
-                <Select
-                  isDisabled={genderEdit}
-                  name="gender"
-                  value={gender}
-                  onChange={(e) => {
-                    setGender(e.target.value);
-                  }}
-                  style={{ width: "100%" }}
-                >
-                  <option value={userData?.gender || "Escolha o Genero"}>
-                    {userData?.gender || "Escolha o Genero"}
-                  </option>
-                  <option value="Masculino">Masculino</option>
-                  <option value="Feminino">Feminino</option>
-                  <option value="Não binário">Não binário</option>
-                  <option value="Prefiro não informar">
-                    Prefiro não informar
-                  </option>
-                </Select>
-              )}
-
-              <Button
-                onClick={() => (setGenderEdit(!genderEdit), setGender(""))}
-                colorScheme={genderEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
-            </FormControl>
-
-            <Center>
-              <Text>Gostos</Text>
-            </Center>
-
-            {/* Filmes Favoritos */}
-            <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>
-                Filme Favorito:
-              </FormLabel>
-
-              {/* first movie     */}
-              {firstFavoriteMovieEdit && (
-                <Input
-                  isDisabled={firstFavoriteMovieEdit}
-                  type="text"
-                  name="favoriteFirstMovie"
-                  value={userData?.first_favorite_movie}
-                  style={{ width: "100%", margin: "2px" }}
-                />
-              )}
-              {!firstFavoriteMovieEdit && (
-                <Input
-                  isDisabled={firstFavoriteMovieEdit}
-                  placeholder={
-                    userData?.first_favorite_movie || "Primeiro Filme Favorito"
-                  }
-                  type="text"
-                  name="favoriteFirstMovie"
-                  onChange={(e) => {
-                    setFirstFavoriteMovie(e.target.value);
-                  }}
-                  value={firstFavoriteMovie}
-                  style={{ width: "100%", margin: "2px" }}
-                />
-              )}
-
-              <Button
-                onClick={() => (
-                  setFirstFavoriteMovieEdit(!firstFavoriteMovieEdit),
-                  setFirstFavoriteMovie("")
-                )}
-                colorScheme={firstFavoriteMovieEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
-
-              {/* second movie     */}
-              {secondFavoriteMovieEdit && (
-                <Input
-                  isDisabled={secondFavoriteMovieEdit}
-                  type="text"
-                  name="favoriteSecondMovie"
-                  value={userData?.second_favorite_movie}
-                  style={{ width: "100%", margin: "2px" }}
-                />
-              )}
-              {!secondFavoriteMovieEdit && (
-                <Input
-                  isDisabled={secondFavoriteMovieEdit}
-                  placeholder={
-                    userData?.second_favorite_movie || "Segundo Filme Favorito"
-                  }
-                  type="text"
-                  name="favoriteSecondMovie"
-                  onChange={(e) => {
-                    setSecondFavoriteMovie(e.target.value);
-                  }}
-                  value={secondFavoriteMovie}
-                  style={{ width: "100%", margin: "2px" }}
-                />
-              )}
-
-              <Button
-                onClick={() => (
-                  setSecondFavoriteMovieEdit(!secondFavoriteMovieEdit),
-                  setSecondFavoriteMovie("")
-                )}
-                colorScheme={secondFavoriteMovieEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
-
-              {/* third movie  */}
-              {thirdFavoriteMovieEdit && (
-                <Input
-                  isDisabled={thirdFavoriteMovieEdit}
-                  type="text"
-                  name="favoriteThirdMovie"
-                  value={userData?.third_favorite_movie}
-                  style={{ width: "100%", margin: "2px" }}
-                />
-              )}
-              {!thirdFavoriteMovieEdit && (
-                <Input
-                  isDisabled={thirdFavoriteMovieEdit}
-                  placeholder={
-                    userData?.third_favorite_movie || "Terceiro Filme Favorito"
-                  }
-                  type="text"
-                  name="favoriteThirdMovie"
-                  onChange={(e) => {
-                    setThirdFavoriteMovie(e.target.value);
-                  }}
-                  value={thirdFavoriteMovie}
-                  style={{ width: "100%", margin: "2px" }}
-                />
-              )}
-
-              <Button
-                onClick={() => (
-                  setThirdFavoriteMovieEdit(!thirdFavoriteMovieEdit),
-                  setThirdFavoriteMovie("")
-                )}
-                colorScheme={thirdFavoriteMovieEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
-            </FormControl>
-
-            {/* Genero de filme       */}
-            <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>
-                Gênero de Filme Favorito:
-              </FormLabel>
-
-              {favoriteMovieGenderEdit && (
-                <Input
-                  isDisabled={favoriteMovieGenderEdit}
-                  type="text"
-                  name="gender"
-                  value={userData?.favorite_movie_genre}
-                  style={{ width: "100%" }}
-                />
-              )}
-              {!favoriteMovieGenderEdit && (
-                <Select
-                  isDisabled={favoriteMovieGenderEdit}
-                  name="gender"
-                  value={gender}
-                  onChange={(e) => {
-                    setGender(e.target.value);
-                  }}
-                  style={{ width: "100%" }}
-                >
-                  <option
-                    value={
-                      userData?.favorite_movie_genre ||
-                      "Escolha o Genero de Filme"
-                    }
+              <VStack>
+                {/* e-mail */}
+                <FormControl>
+                  <FormLabel style={{ fontWeight: "bold" }}>E-mail:</FormLabel>
+                  <Text
+                    style={{
+                      width: "100%",
+                      border: "1px solid #ccc",
+                      padding: "8px",
+                      borderRadius: "5px",
+                      borderColor: "#cbd5e0",
+                    }}
                   >
-                    {userData?.favorite_movie_genre ||
-                      "Escolha o Genero de Filme"}{" "}
-                  </option>
+                    {emailInfo}
+                  </Text>
+                </FormControl>
 
-                  <option value="Ação">Ação</option>
-                  <option value="Aventura">Aventura</option>
-                  <option value="Comédia">Comédia</option>
-                  <option value="Drama">Drama</option>
-                  <option value="Ficção Científica">Ficção Científica</option>
-                  <option value="Fantasia">Fantasia</option>
-                  <option value="Horror">Horror</option>
-                  <option value="Suspense">Suspense</option>
-                  <option value="Romance">Romance</option>
-                  <option value="Documentários">Documentários</option>
-                </Select>
-              )}
+                {/* Dados do usario abaixo: */}
+                {/* Nome */}
 
-              <Button
-                onClick={() => (
-                  setFavoriteMovieGenderEdit(!favoriteMovieGenderEdit),
-                  setFavoriteMovieGender("")
-                )}
-                colorScheme={favoriteMovieGenderEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
-            </FormControl>
+                <>
+                  <FormControl>
+                    <FormLabel style={{ fontWeight: "bold" }}>Nome:</FormLabel>
+                    {nameEdit && (
+                      <Input
+                        isDisabled={nameEdit}
+                        type="text"
+                        name="firstName"
+                        value={userData?.name}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+                    {!nameEdit && (
+                      <Input
+                        placeholder={userData?.name || "Nome"}
+                        isDisabled={nameEdit}
+                        type="text"
+                        name="firstName"
+                        value={name}
+                        onChange={(e) => {
+                          setName(e.target.value);
+                        }}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+                  </FormControl>
 
-            {/* Series Favoritas */}
-            <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>
-                Series Favoritas:
-              </FormLabel>
+                  <FormControl>
+                    <FormLabel style={{ fontWeight: "bold" }}>
+                      Sobrenome:
+                    </FormLabel>
+                    {surnameEdit && (
+                      <Input
+                        isDisabled={surnameEdit}
+                        type="text"
+                        name="firstName"
+                        value={userData?.surname}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+                    {!surnameEdit && (
+                      <Input
+                        placeholder={userData?.surname}
+                        isDisabled={surnameEdit}
+                        type="text"
+                        name="firstName"
+                        value={surname}
+                        onChange={(e) => {
+                          setSurname(e.target.value);
+                        }}
+                        style={{ width: "100%" }}
+                      />
+                    )}
 
-              {firstFavoriteTvShowEdit && (
-                <Input
-                  isDisabled={firstFavoriteTvShowEdit}
-                  type="text"
-                  name="favoriteFirstTvShow"
-                  value={userData?.first_favorite_tvshow}
-                  style={{ width: "100%", margin: "2px" }}
-                />
-              )}
-              {!firstFavoriteTvShowEdit && (
-                <Input
-                  isDisabled={firstFavoriteTvShowEdit}
-                  placeholder={
-                    userData?.first_favorite_tvshow || "Primeira Serie Favorito"
-                  }
-                  type="text"
-                  name="favoriteFirstTvShow"
-                  onChange={(e) => {
-                    setFirstFavoriteTvShow(e.target.value);
-                  }}
-                  value={firstFavoriteTvShow}
-                  style={{ width: "100%", margin: "2px" }}
-                />
-              )}
+                  </FormControl>
 
-              <Button
-                onClick={() => (
-                  setFirstFavoriteTvShowEdit(!firstFavoriteTvShowEdit),
-                  setFirstFavoriteTvShow("")
-                )}
-                colorScheme={firstFavoriteTvShowEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
+                  {/* nacionalidade */}
+                  <FormControl>
+                    <FormLabel style={{ fontWeight: "bold" }}>
+                      Origem:
+                    </FormLabel>
+                    {nationalityEdit && (
+                      <Input
+                        isDisabled={nationalityEdit}
+                        type="text"
+                        name="nationality"
+                        value={userData?.nationality}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+                    {!nationalityEdit && (
+                      <Input
+                        placeholder={
+                          userData?.nationality || "Digite sua nacionalidade"
+                        }
+                        isDisabled={nationalityEdit}
+                        type="text"
+                        name="nationality"
+                        value={nationality}
+                        onChange={(e) => {
+                          setNationality(e.target.value);
+                        }}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+                  </FormControl>
 
-              {secondFavoriteTvShowEdit && (
-                <Input
-                  isDisabled={secondFavoriteTvShowEdit}
-                  type="text"
-                  name="favoriteSecondTvShow"
-                  value={userData?.second_favorite_tvshow}
-                  style={{ width: "100%", margin: "2px" }}
-                />
-              )}
-              {!secondFavoriteTvShowEdit && (
-                <Input
-                  isDisabled={secondFavoriteTvShowEdit}
-                  placeholder={
-                    userData?.second_favorite_tvshow || "Segunda Serie Favorito"
-                  }
-                  type="text"
-                  name="favoriteFirstTvShow"
-                  onChange={(e) => {
-                    setSecondFavoriteTvShow(e.target.value);
-                  }}
-                  value={secondFavoriteTvShow}
-                  style={{ width: "100%", margin: "2px" }}
-                />
-              )}
+                  {/* Data de Nascimento */}
+                  <FormControl>
+                    <FormLabel style={{ fontWeight: "bold" }}>
+                      Data De Nascimento:
+                    </FormLabel>
+                    {birthDateEdit && (
+                      <Input
+                        isDisabled={birthDateEdit}
+                        type="text"
+                        name="nationality"
+                        value={userData?.birth_date}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+                    {!birthDateEdit && (
+                      <Input
+                        placeholder={
+                          userData?.birth_date || "Digite a data dd/mm/aaaa"
+                        }
+                        isDisabled={birthDateEdit}
+                        type="text"
+                        name="nationality"
+                        value={birthDate}
+                        onChange={(e) => {
+                          setBirthDate(e.target.value);
+                        }}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+                  </FormControl>
 
-              <Button
-                onClick={() => (
-                  setSecondFavoriteTvShowEdit(!secondFavoriteTvShowEdit),
-                  setSecondFavoriteTvShow("")
-                )}
-                colorScheme={secondFavoriteTvShowEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
+                  {/* Genero */}
+                  <FormControl>
+                    <FormLabel style={{ fontWeight: "bold" }}>
+                      Gênero:
+                    </FormLabel>
+                    {genderEdit && (
+                      <Input
+                        isDisabled={genderEdit}
+                        type="text"
+                        name="gender"
+                        value={userData?.gender}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+                    {!genderEdit && (
+                      <Select
+                        isDisabled={genderEdit}
+                        name="gender"
+                        value={gender}
+                        onChange={(e) => {
+                          setGender(e.target.value);
+                        }}
+                        style={{ width: "100%" }}
+                      >
+                        <option value={userData?.gender || "Escolha o Genero"}>
+                          {userData?.gender || "Escolha o Genero"}
+                        </option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Feminino">Feminino</option>
+                        <option value="Não binário">Não binário</option>
+                        <option value="Prefiro não informar">
+                          Prefiro não informar
+                        </option>
+                      </Select>
+                    )}
+                  </FormControl>
 
-              {thirdFavoriteTvShowEdit && (
-                <Input
-                  isDisabled={thirdFavoriteTvShowEdit}
-                  type="text"
-                  name="favoriteThirdTvShow"
-                  value={userData?.third_favorite_tvshow}
-                  style={{ width: "100%", margin: "2px" }}
-                />
-              )}
-              {!thirdFavoriteTvShowEdit && (
-                <Input
-                  isDisabled={thirdFavoriteTvShowEdit}
-                  placeholder={
-                    userData?.third_favorite_tvshow || "Terceira Serie Favorito"
-                  }
-                  type="text"
-                  name="favoriteThirdTvShow"
-                  onChange={(e) => {
-                    setThirdFavoriteTvShow(e.target.value);
-                  }}
-                  value={thirdFavoriteTvShow}
-                  style={{ width: "100%", margin: "2px" }}
-                />
-              )}
+                  <Center>
+                    <DividerAntd>Gostos</DividerAntd>
+                  </Center>
 
-              <Button
-                onClick={() => (
-                  setThirdFavoriteTvShowEdit(!thirdFavoriteTvShowEdit),
-                  setThirdFavoriteTvShow("")
-                )}
-                colorScheme={thirdFavoriteTvShowEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
-            </FormControl>
+                  {/* Filmes Favoritos */}
+                  <FormControl>
+                    <FormLabel style={{ fontWeight: "bold" }}>
+                      Filme Favorito:
+                    </FormLabel>
 
-            {/* genero de serie favorita */}
-            <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>
-                Gênero de Serie Favorito:
-              </FormLabel>
+                    {/* first movie     */}
+                    {firstFavoriteMovieEdit && (
+                      <Input
+                        isDisabled={firstFavoriteMovieEdit}
+                        type="text"
+                        name="favoriteFirstMovie"
+                        value={userData?.first_favorite_movie}
+                        style={{ width: "100%", margin: "2px" }}
+                      />
+                    )}
+                    {!firstFavoriteMovieEdit && (
+                      <Input
+                        isDisabled={firstFavoriteMovieEdit}
+                        placeholder={
+                          userData?.first_favorite_movie ||
+                          "Primeiro Filme Favorito"
+                        }
+                        type="text"
+                        name="favoriteFirstMovie"
+                        onChange={(e) => {
+                          setFirstFavoriteMovie(e.target.value);
+                        }}
+                        value={firstFavoriteMovie}
+                        style={{ width: "100%", margin: "2px" }}
+                      />
+                    )}
 
-              {favoriteTvShowGenderEdit && (
-                <Input
-                  isDisabled={favoriteTvShowGenderEdit}
-                  type="text"
-                  name="gender"
-                  value={userData?.favorite_tvshow_genre}
+                    {/* second movie     */}
+                    {secondFavoriteMovieEdit && (
+                      <Input
+                        isDisabled={secondFavoriteMovieEdit}
+                        type="text"
+                        name="favoriteSecondMovie"
+                        value={userData?.second_favorite_movie}
+                        style={{ width: "100%", margin: "2px" }}
+                      />
+                    )}
+                    {!secondFavoriteMovieEdit && (
+                      <Input
+                        isDisabled={secondFavoriteMovieEdit}
+                        placeholder={
+                          userData?.second_favorite_movie ||
+                          "Segundo Filme Favorito"
+                        }
+                        type="text"
+                        name="favoriteSecondMovie"
+                        onChange={(e) => {
+                          setSecondFavoriteMovie(e.target.value);
+                        }}
+                        value={secondFavoriteMovie}
+                        style={{ width: "100%", margin: "2px" }}
+                      />
+                    )}
+
+                    {/* third movie  */}
+                    {thirdFavoriteMovieEdit && (
+                      <Input
+                        isDisabled={thirdFavoriteMovieEdit}
+                        type="text"
+                        name="favoriteThirdMovie"
+                        value={userData?.third_favorite_movie}
+                        style={{ width: "100%", margin: "2px" }}
+                      />
+                    )}
+                    {!thirdFavoriteMovieEdit && (
+                      <Input
+                        isDisabled={thirdFavoriteMovieEdit}
+                        placeholder={
+                          userData?.third_favorite_movie ||
+                          "Terceiro Filme Favorito"
+                        }
+                        type="text"
+                        name="favoriteThirdMovie"
+                        onChange={(e) => {
+                          setThirdFavoriteMovie(e.target.value);
+                        }}
+                        value={thirdFavoriteMovie}
+                        style={{ width: "100%", margin: "2px" }}
+                      />
+                    )}
+
+                  </FormControl>
+
+                  {/* Genero de filme       */}
+                  <FormControl>
+                    <FormLabel style={{ fontWeight: "bold" }}>
+                      Gênero de Filme Favorito:
+                    </FormLabel>
+
+                    {favoriteMovieGenderEdit && (
+                      <Input
+                        isDisabled={favoriteMovieGenderEdit}
+                        type="text"
+                        name="favoriteMovieGender"
+                        value={userData?.favorite_movie_genre}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+                    {!favoriteMovieGenderEdit && (
+                      <Select
+                        isDisabled={favoriteMovieGenderEdit}
+                        name="favoriteMovieGender"
+                        value={favoriteMovieGender}
+                        onChange={(e) => {
+                          setFavoriteMovieGender(e.target.value);
+                        }}
+                        style={{ width: "100%", color: "gray" }}
+                      >
+                        <option
+                          value={
+                            userData?.favorite_movie_genre ||
+                            "Escolha o Genero de Filme"
+                          }
+                        >
+                          {userData?.favorite_movie_genre ||
+                            "Escolha o Genero de Filme"}{" "}
+                        </option>
+
+                        <option value="Ação">Ação</option>
+                        <option value="Aventura">Aventura</option>
+                        <option value="Comédia">Comédia</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Ficção Científica">
+                          Ficção Científica
+                        </option>
+                        <option value="Fantasia">Fantasia</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Suspense">Suspense</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Documentários">Documentários</option>
+                      </Select>
+                    )}
+
+                  </FormControl>
+
+                  {/* Series Favoritas */}
+                  <FormControl>
+                    <FormLabel style={{ fontWeight: "bold" }}>
+                      Series Favoritas:
+                    </FormLabel>
+
+                    {firstFavoriteTvShowEdit && (
+                      <Input
+                        isDisabled={firstFavoriteTvShowEdit}
+                        type="text"
+                        name="favoriteFirstTvShow"
+                        value={userData?.first_favorite_tvshow}
+                        style={{ width: "100%", margin: "2px" }}
+                      />
+                    )}
+                    {!firstFavoriteTvShowEdit && (
+                      <Input
+                        isDisabled={firstFavoriteTvShowEdit}
+                        placeholder={
+                          userData?.first_favorite_tvshow ||
+                          "Primeira Serie Favorito"
+                        }
+                        type="text"
+                        name="favoriteFirstTvShow"
+                        onChange={(e) => {
+                          setFirstFavoriteTvShow(e.target.value);
+                        }}
+                        value={firstFavoriteTvShow}
+                        style={{ width: "100%", margin: "2px" }}
+                      />
+                    )}
+
+                    {secondFavoriteTvShowEdit && (
+                      <Input
+                        isDisabled={secondFavoriteTvShowEdit}
+                        type="text"
+                        name="favoriteSecondTvShow"
+                        value={userData?.second_favorite_tvshow}
+                        style={{ width: "100%", margin: "2px" }}
+                      />
+                    )}
+                    {!secondFavoriteTvShowEdit && (
+                      <Input
+                        isDisabled={secondFavoriteTvShowEdit}
+                        placeholder={
+                          userData?.second_favorite_tvshow ||
+                          "Segunda Serie Favorito"
+                        }
+                        type="text"
+                        name="favoriteFirstTvShow"
+                        onChange={(e) => {
+                          setSecondFavoriteTvShow(e.target.value);
+                        }}
+                        value={secondFavoriteTvShow}
+                        style={{ width: "100%", margin: "2px" }}
+                      />
+                    )}
+
+                    {thirdFavoriteTvShowEdit && (
+                      <Input
+                        isDisabled={thirdFavoriteTvShowEdit}
+                        type="text"
+                        name="favoriteThirdTvShow"
+                        value={userData?.third_favorite_tvshow}
+                        style={{ width: "100%", margin: "2px" }}
+                      />
+                    )}
+                    {!thirdFavoriteTvShowEdit && (
+                      <Input
+                        isDisabled={thirdFavoriteTvShowEdit}
+                        placeholder={
+                          userData?.third_favorite_tvshow ||
+                          "Terceira Serie Favorito"
+                        }
+                        type="text"
+                        name="favoriteThirdTvShow"
+                        onChange={(e) => {
+                          setThirdFavoriteTvShow(e.target.value);
+                        }}
+                        value={thirdFavoriteTvShow}
+                        style={{ width: "100%", margin: "2px" }}
+                      />
+                    )}
+
+  
+                  </FormControl>
+
+                  {/* genero de serie favorita */}
+                  <FormControl>
+                    <FormLabel style={{ fontWeight: "bold" }}>
+                      Gênero de Serie Favorito:
+                    </FormLabel>
+
+                    {favoriteTvShowGenderEdit && (
+                      <Input
+                        isDisabled={favoriteTvShowGenderEdit}
+                        type="text"
+                        name="favoriteTvShowGender"
+                        value={userData?.favorite_tvshow_genre}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+                    {!favoriteTvShowGenderEdit && (
+                      <Select
+                        isDisabled={favoriteTvShowGenderEdit}
+                        name="favoriteTvShowGender"
+                        value={favoriteTvShowGender}
+                        onChange={(e) => {
+                          setFavoriteTvShowGender(e.target.value);
+                        }}
+                        style={{ width: "100%", color: "gray" }}
+                      >
+                        <option
+                          value={
+                            userData?.favorite_tvshow_genre ||
+                            "Escolha o Genero de Filme"
+                          }
+                        >
+                          {userData?.favorite_tvshow_genre ||
+                            "Escolha o Genero de Filme"}
+                        </option>
+
+                        <option value="Ação">Ação</option>
+                        <option value="Aventura">Aventura</option>
+                        <option value="Comédia">Comédia</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Ficção Científica">
+                          Ficção Científica
+                        </option>
+                        <option value="Fantasia">Fantasia</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Suspense">Suspense</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Documentários">Documentários</option>
+                      </Select>
+                    )}
+                  </FormControl>
+
+                  {/* Ator favorito */}
+                  <FormControl>
+                    <FormLabel style={{ fontWeight: "bold" }}>
+                      Ator Favorito:
+                    </FormLabel>
+                    {favoriteActorEdit && (
+                      <Input
+                        isDisabled={favoriteActorEdit}
+                        type="text"
+                        name="favoriteActor"
+                        value={userData?.favorite_actor}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+                    {!favoriteActorEdit && (
+                      <Input
+                        placeholder={userData?.favorite_actor}
+                        isDisabled={favoriteActorEdit}
+                        type="text"
+                        name="favoriteActor"
+                        value={favoriteDirecting}
+                        onChange={(e) => {
+                          setFavoriteActor(e.target.value);
+                        }}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+                  </FormControl>
+                  {/* Atriz favorita */}
+                  <FormControl>
+                    <FormLabel style={{ fontWeight: "bold" }}>
+                      Atriz Favorita:
+                    </FormLabel>
+
+                    {favoriteActressEdit && (
+                      <Input
+                        isDisabled={favoriteActressEdit}
+                        type="text"
+                        name="favoriteActress"
+                        value={userData?.favorite_actress}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+                    {!favoriteActressEdit && (
+                      <Input
+                        placeholder={userData?.favorite_actress}
+                        isDisabled={favoriteActressEdit}
+                        type="text"
+                        name="favoriteActress"
+                        value={favoriteActress}
+                        onChange={(e) => {
+                          setFavoriteActress(e.target.value);
+                        }}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+              
+                  </FormControl>
+
+                  {/* Direcao */}
+                  <FormControl>
+                    <FormLabel style={{ fontWeight: "bold" }}>
+                      Diretor Favorito:
+                    </FormLabel>
+
+                    {favoriteDirectingEdit && (
+                      <Input
+                        isDisabled={favoriteDirectingEdit}
+                        type="text"
+                        name="favoriteDirecting"
+                        value={userData?.favorite_directing}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+                    {!favoriteDirectingEdit && (
+                      <Input
+                        placeholder={userData?.favorite_directing}
+                        isDisabled={favoriteDirectingEdit}
+                        type="text"
+                        name="favoriteActress"
+                        value={favoriteDirecting}
+                        onChange={(e) => {
+                          setFavoriteDirecting(e.target.value);
+                        }}
+                        style={{ width: "100%" }}
+                      />
+                    )}
+ 
+                  </FormControl>
+                </>
+                <Button
+                  onClick={() => (insertUser())}
+                  colorScheme="blue"
+                  type="submit"
                   style={{ width: "100%" }}
-                />
-              )}
-              {!favoriteTvShowGenderEdit && (
-                <Select
-                  isDisabled={favoriteTvShowGenderEdit}
-                  name="gender"
-                  value={favoriteTvShowGender}
-                  onChange={(e) => {
-                    setGender(e.target.value);
-                  }}
+                  isDisabled={favoriteActressEdit}
+                >
+                  Salvar
+                </Button>
+
+                {isSaving && (
+                  <Space
+                    direction="vertical"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <Spin tip="Salvando.."></Spin>
+                    <Alert
+                      message="Aguarde"
+                      description="Seus Dados Estão Sendo Salvos"
+                      type="info"
+                    />
+                  </Space>
+                )}
+
+                {isSave && (
+                  <Space
+                    direction="vertical"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <Alert
+                      message="Cadastro Salvo Com Sucesso"
+                      type="success"
+                      showIcon
+                      closable
+                    />
+                  </Space>
+                )}
+
+                <Button
+                  onClick={() => (
+                    setNameEdit(!nameEdit),
+                    setSurnameEdit(!surnameEdit),
+                    setBirthDateEdit(!birthDateEdit),
+                    setNationalityEdit(!nationalityEdit),
+                    setGenderEdit(!genderEdit),
+                    setFirstFavoriteMovieEdit(!firstFavoriteMovieEdit),
+                    setSecondFavoriteMovieEdit(!secondFavoriteMovieEdit),
+                    setThirdFavoriteMovieEdit(!thirdFavoriteMovieEdit),
+                    setFirstFavoriteTvShowEdit(!firstFavoriteTvShowEdit),
+                    setSecondFavoriteTvShowEdit(!secondFavoriteTvShowEdit),
+                    setThirdFavoriteTvShowEdit(!thirdFavoriteTvShowEdit),
+                    setFavoriteMovieGenderEdit(!favoriteMovieGenderEdit),
+                    setFavoriteTvShowGenderEdit(!favoriteTvShowGenderEdit),
+                    setFavoriteDirectingEdit(!favoriteDirectingEdit),
+                    setFavoriteActorEdit(!favoriteActorEdit),
+                    setFavoriteActressEdit(!favoriteActressEdit)
+                  )}
+                  colorScheme={favoriteActressEdit ? "red" : "green"}
+                  type="submit"
                   style={{ width: "100%" }}
                 >
-                  <option
-                    value={
-                      userData?.favorite_tvshow_genre ||
-                      "Escolha o Genero de Filme"
-                    }
-                  >
-                    {userData?.favorite_tvshow_genre ||
-                      "Escolha o Genero de Filme"}
-                  </option>
+                   {favoriteActressEdit ? "Editar" : "Após Editar Clique em Salvar Acima" }
+                </Button>
 
-                  <option value="Ação">Ação</option>
-                  <option value="Aventura">Aventura</option>
-                  <option value="Comédia">Comédia</option>
-                  <option value="Drama">Drama</option>
-                  <option value="Ficção Científica">Ficção Científica</option>
-                  <option value="Fantasia">Fantasia</option>
-                  <option value="Horror">Horror</option>
-                  <option value="Suspense">Suspense</option>
-                  <option value="Romance">Romance</option>
-                  <option value="Documentários">Documentários</option>
-                </Select>
-              )}
-
-              <Button
-                onClick={() => (
-                  setFavoriteTvShowGenderEdit(!favoriteTvShowGenderEdit),
-                  setFavoriteMovieGender("")
-                )}
-                colorScheme={favoriteTvShowGenderEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
-            </FormControl>
-
-            {/* Ator favorito */}
-            <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>
-                Ator Favorito:
-              </FormLabel>
-              {favoriteActorEdit && (
-                <Input
-                  isDisabled={favoriteActorEdit}
-                  type="text"
-                  name="favoriteActor"
-                  value={userData?.favorite_actor}
-                  style={{ width: "100%" }}
-                />
-              )}
-              {!favoriteActorEdit && (
-                <Input
-                  placeholder={userData?.favorite_actor}
-                  isDisabled={favoriteActorEdit}
-                  type="text"
-                  name="favoriteActor"
-                  value={favoriteDirecting}
-                  onChange={(e) => {
-                    setFavoriteActor(e.target.value);
-                  }}
-                  style={{ width: "100%" }}
-                />
-              )}
-              <Button
-                onClick={() => (
-                  setFavoriteActorEdit(!favoriteActorEdit), setFavoriteActor("")
-                )}
-                colorScheme={favoriteActorEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
-            </FormControl>
-            {/* Atriz favorita */}
-            <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>
-                Atriz Favorita:
-              </FormLabel>
-
-              {favoriteActressEdit && (
-                <Input
-                  isDisabled={favoriteActressEdit}
-                  type="text"
-                  name="favoriteActress"
-                  value={userData?.favorite_actress}
-                  style={{ width: "100%" }}
-                />
-              )}
-              {!favoriteActressEdit && (
-                <Input
-                  placeholder={userData?.favorite_actress}
-                  isDisabled={favoriteActressEdit}
-                  type="text"
-                  name="favoriteActress"
-                  value={favoriteActress}
-                  onChange={(e) => {
-                    setFavoriteActress(e.target.value);
-                  }}
-                  style={{ width: "100%" }}
-                />
-              )}
-              <Button
-                onClick={() => (
-                  setFavoriteActressEdit(!favoriteActressEdit),
-                  setFavoriteActress("")
-                )}
-                colorScheme={favoriteActressEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
-            </FormControl>
-
-            {/* Direcao */}
-            <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>
-                Diretor Favorito:
-              </FormLabel>
-
-              {favoriteDirectingEdit && (
-                <Input
-                  isDisabled={favoriteDirectingEdit}
-                  type="text"
-                  name="favoriteDirecting"
-                  value={userData?.favorite_directing}
-                  style={{ width: "100%" }}
-                />
-              )}
-              {!favoriteDirectingEdit && (
-                <Input
-                  placeholder={userData?.favorite_directing}
-                  isDisabled={favoriteDirectingEdit}
-                  type="text"
-                  name="favoriteActress"
-                  value={favoriteDirecting}
-                  onChange={(e) => {
-                    setFavoriteDirecting(e.target.value);
-                  }}
-                  style={{ width: "100%" }}
-                />
-              )}
-              <Button
-                onClick={() => (
-                  setFavoriteDirectingEdit(!favoriteDirectingEdit),
-                  setFavoriteDirecting("")
-                )}
-                colorScheme={favoriteDirectingEdit ? "red" : "green"}
-                size="sm"
-              >
-                Editar
-              </Button>
-            </FormControl>
-
-            <Button
-              onClick={insertUser}
-              colorScheme="blue"
-              type="submit"
-              style={{ width: "100%" }}
-            >
-              Salvar
-            </Button>
-
-            {isSaving && (
-              <Space
-                direction="vertical"
-                style={{
-                  width: "100%",
-                }}
-              >
-                <Spin tip="Salvando.."></Spin>
-                <Alert
-                  message="Aguarde"
-                  description="Seus Dados Estão Sendo Salvos"
-                  type="info"
-                />
-              </Space>
-            )}
-
-            {isSave && (
-              <Space
-                direction="vertical"
-                style={{
-                  width: "100%",
-                }}
-              >
-                <Alert
-                  message="Cadastro Salvo Com Sucesso"
-                  type="success"
-                  showIcon
-                  closable
-                />
-              </Space>
-            )}
-
-            <Text>{message}</Text>
-          </VStack>
+                <Text>{message}</Text>
+              </VStack>
+            </>
+          )}
         </Box>
       ) : (
         "Usuário Não Logado"
