@@ -21,7 +21,7 @@ import { Alert, Space, Spin } from "antd";
 import Auth from "../components/Auth";
 
 const Profile = () => {
-  const [name, setName] = useState();
+  const [name, setName] = useState("teste");
   const [surname, setSurname] = useState();
   const [birthDate, setBirthDate] = useState();
   const [nationality, setNationality] = useState();
