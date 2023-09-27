@@ -155,6 +155,7 @@ const Profile = () => {
         setUserData(userData);
         setDateString(userData.birth_date);
         setFavoriteActressEdit(true);
+        setName(userData.name);
       } else {
         if (response.status === 404) {
           setIsLoading(false);
@@ -194,10 +195,7 @@ const Profile = () => {
     };
   }, []);
 
-  // console.group("Meu Grupo");
-  // console.log("Esta é uma mensagem dentro do grupo");
-  // console.log("Outra mensagem dentro do grupo");
-  // console.groupEnd();
+  console.log(name);
 
   return (
     <ChakraProvider>
@@ -281,7 +279,7 @@ const Profile = () => {
                     >
                       {favoriteActressEdit
                         ? "Editar"
-                        : "Insira Os Dados Depois Clique Em Salvar Abaixo"}
+                        : "Insira Os Dados Depois Clique Em Salvar"}
                     </Button>
                   </Space>
                 </div>
@@ -839,7 +837,20 @@ const Profile = () => {
                       />
                     )}
                   </FormControl>
+
+                  {/* teste */}
+
+                  {/* <Input
+                    type="text"
+                    name="firstNameTeste"
+                    defaultValue={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
+                    style={{ width: "100%" }}
+                  /> */}
                 </>
+
                 <Button
                   onClick={() => insertUser()}
                   colorScheme="blue"
