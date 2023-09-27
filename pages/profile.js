@@ -124,6 +124,7 @@ const Profile = () => {
       });
       setIsSaving(false);
       setIsSave(true);
+      setNameEdit(!nameEdit),
       getUser();
       console.log("Corpo da solicitação:", JSON.stringify(requestBody));
 
@@ -151,6 +152,7 @@ const Profile = () => {
         setIsLoading(false);
         setUserData(userData);
         setDateString(userData.birth_date);
+        setFavoriteActressEdit(true)
       } else {
         console.error("Erro ao buscar o usuário:", response.status);
       }
@@ -710,7 +712,7 @@ const Profile = () => {
                         isDisabled={favoriteActorEdit}
                         type="text"
                         name="favoriteActor"
-                        value={favoriteDirecting}
+                        value={favoriteActor}
                         onChange={(e) => {
                           setFavoriteActor(e.target.value);
                         }}
