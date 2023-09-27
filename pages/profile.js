@@ -272,7 +272,7 @@ const Profile = () => {
             >
               {favoriteActressEdit
                 ? "Editar"
-                : "Insira dos Dados Depois Clique Em Salvar Abaixo"}
+                : "Insira Os Dados Depois Clique Em Salvar Abaixo"}
             </Button>
           </Space>
         </div>
