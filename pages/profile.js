@@ -18,7 +18,7 @@ import { supabase } from "../utils/supabaseClient";
 import { AntDatePicker, DatePicker, Divider as DividerAntd } from "antd";
 import LoggedUser from "../components/LoggedUser";
 import { Alert, Space, Spin } from "antd";
-import Auth from "../components/Auth"
+import Auth from "../components/Auth";
 
 const Profile = () => {
   const [name, setName] = useState();
@@ -125,7 +125,6 @@ const Profile = () => {
       });
       setIsSaving(false);
       setIsSave(true);
-      setNameEdit(!nameEdit),
       getUser();
       console.log("Corpo da solicitação:", JSON.stringify(requestBody));
 
@@ -153,7 +152,7 @@ const Profile = () => {
         setIsLoading(false);
         setUserData(userData);
         setDateString(userData.birth_date);
-        setFavoriteActressEdit(true)
+        setFavoriteActressEdit(true);
       } else {
         console.error("Erro ao buscar o usuário:", response.status);
       }
@@ -256,6 +255,7 @@ const Profile = () => {
                 {/* Nome */}
 
                 <>
+                  {/* Name */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>Nome:</FormLabel>
                     {nameEdit && (
@@ -282,6 +282,7 @@ const Profile = () => {
                     )}
                   </FormControl>
 
+                  {/* Surname */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>
                       Sobrenome:
@@ -308,7 +309,6 @@ const Profile = () => {
                         style={{ width: "100%" }}
                       />
                     )}
-
                   </FormControl>
 
                   {/* nacionalidade */}
@@ -500,7 +500,6 @@ const Profile = () => {
                         style={{ width: "100%", margin: "2px" }}
                       />
                     )}
-
                   </FormControl>
 
                   {/* Genero de filme       */}
@@ -552,7 +551,6 @@ const Profile = () => {
                         <option value="Documentários">Documentários</option>
                       </Select>
                     )}
-
                   </FormControl>
 
                   {/* Series Favoritas */}
@@ -638,8 +636,6 @@ const Profile = () => {
                         style={{ width: "100%", margin: "2px" }}
                       />
                     )}
-
-  
                   </FormControl>
 
                   {/* genero de serie favorita */}
@@ -749,7 +745,6 @@ const Profile = () => {
                         style={{ width: "100%" }}
                       />
                     )}
-              
                   </FormControl>
 
                   {/* Direcao */}
@@ -780,11 +775,10 @@ const Profile = () => {
                         style={{ width: "100%" }}
                       />
                     )}
- 
                   </FormControl>
                 </>
                 <Button
-                  onClick={() => (insertUser())}
+                  onClick={() => insertUser()}
                   colorScheme="blue"
                   type="submit"
                   style={{ width: "100%" }}
@@ -848,7 +842,9 @@ const Profile = () => {
                   type="submit"
                   style={{ width: "100%" }}
                 >
-                   {favoriteActressEdit ? "Editar" : "Após Editar Clique em Salvar Acima" }
+                  {favoriteActressEdit
+                    ? "Editar"
+                    : "Após Editar Clique em Salvar Acima"}
                 </Button>
 
                 <Text>{message}</Text>
