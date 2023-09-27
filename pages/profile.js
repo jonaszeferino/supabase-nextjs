@@ -21,7 +21,7 @@ import { Alert, Space, Spin } from "antd";
 import Auth from "../components/Auth";
 
 const Profile = () => {
-  const [name, setName] = useState("teste");
+  const [name, setName] = useState();
   const [surname, setSurname] = useState();
   const [birthDate, setBirthDate] = useState();
   const [nationality, setNationality] = useState();
@@ -68,6 +68,8 @@ const Profile = () => {
   const [favoriteActressEdit, setFavoriteActressEdit] = useState(true);
 
   const showSearchBar = false;
+
+  const [newUser, setNewUser] = useState();
 
   useEffect(() => {
     if (emailInfo || isSave === true) {
@@ -154,6 +156,10 @@ const Profile = () => {
         setDateString(userData.birth_date);
         setFavoriteActressEdit(true);
       } else {
+        if (response.status === 404) {
+          setIsLoading(false);
+          setNewUser(true);
+        }
         console.error("Erro ao buscar o usuário:", response.status);
       }
     } catch (error) {
@@ -224,6 +230,52 @@ const Profile = () => {
             type="info"
           />
         </Space>
+      )}
+
+      <br />
+      {newUser && (
+        <div style={{ maxWidth: "400px", margin: "0 auto" }}>
+          <Space
+            direction="vertical"
+            style={{
+              width: "100%",
+            }}
+          >
+            <Alert
+              message="Clique em Editar e Insira Seus Dados Abaixo"
+              type="success"
+              showIcon
+              closable
+            />
+            <Button
+              onClick={() => (
+                setNameEdit(!nameEdit),
+                setSurnameEdit(!surnameEdit),
+                setBirthDateEdit(!birthDateEdit),
+                setNationalityEdit(!nationalityEdit),
+                setGenderEdit(!genderEdit),
+                setFirstFavoriteMovieEdit(!firstFavoriteMovieEdit),
+                setSecondFavoriteMovieEdit(!secondFavoriteMovieEdit),
+                setThirdFavoriteMovieEdit(!thirdFavoriteMovieEdit),
+                setFirstFavoriteTvShowEdit(!firstFavoriteTvShowEdit),
+                setSecondFavoriteTvShowEdit(!secondFavoriteTvShowEdit),
+                setThirdFavoriteTvShowEdit(!thirdFavoriteTvShowEdit),
+                setFavoriteMovieGenderEdit(!favoriteMovieGenderEdit),
+                setFavoriteTvShowGenderEdit(!favoriteTvShowGenderEdit),
+                setFavoriteDirectingEdit(!favoriteDirectingEdit),
+                setFavoriteActorEdit(!favoriteActorEdit),
+                setFavoriteActressEdit(!favoriteActressEdit)
+              )}
+              colorScheme={favoriteActressEdit ? "red" : "green"}
+              type="submit"
+              style={{ width: "100%" }}
+            >
+              {favoriteActressEdit
+                ? "Editar"
+                : "Insira dos Dados Depois Clique Em Salvar Abaixo"}
+            </Button>
+          </Space>
+        </div>
       )}
 
       {session ? (
@@ -298,7 +350,9 @@ const Profile = () => {
                     )}
                     {!surnameEdit && (
                       <Input
-                        placeholder={userData?.surname}
+                        placeholder={
+                          userData?.surname || "Digite seu Sobrenome"
+                        }
                         isDisabled={surnameEdit}
                         type="text"
                         name="firstName"
@@ -705,7 +759,9 @@ const Profile = () => {
                     )}
                     {!favoriteActorEdit && (
                       <Input
-                        placeholder={userData?.favorite_actor}
+                        placeholder={
+                          userData?.favorite_actor || "Digite o Ator Favorito"
+                        }
                         isDisabled={favoriteActorEdit}
                         type="text"
                         name="favoriteActor"
@@ -734,7 +790,10 @@ const Profile = () => {
                     )}
                     {!favoriteActressEdit && (
                       <Input
-                        placeholder={userData?.favorite_actress}
+                        placeholder={
+                          userData?.favorite_actress ||
+                          "Digite a Atriz Favorita"
+                        }
                         isDisabled={favoriteActressEdit}
                         type="text"
                         name="favoriteActress"
@@ -764,7 +823,10 @@ const Profile = () => {
                     )}
                     {!favoriteDirectingEdit && (
                       <Input
-                        placeholder={userData?.favorite_directing}
+                        placeholder={
+                          userData?.favorite_directing ||
+                          "Digite o Direção Favorita"
+                        }
                         isDisabled={favoriteDirectingEdit}
                         type="text"
                         name="favoriteActress"
