@@ -90,45 +90,45 @@ export default function Navbar({ isLoading, onAuthenticated }) {
         <li>
           <button onClick={onOpen}>Login |</button>
         </li>
-<li>
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent style={{ background: "white" }}>
-            <ModalHeader>
-              Login
-              <IconButton
-                icon={<FaTimes />}
-                colorScheme="gray"
-                variant="ghost"
-                ml="auto"
-                onClick={onClose}
-              />
-            </ModalHeader>
-            <ModalBody>
-              <Auth onClose={onClose} />
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent style={{ background: "white" }}>
-            <ModalHeader>
-              Login{" "}
-              <IconButton
-                icon={<FaTimes />}
-                colorScheme="gray"
-                variant="ghost"
-                position="absolute"
-                top="0"
-                right="0"
-                onClick={onClose}
-              />
-            </ModalHeader>
-            <ModalBody>
-              <Auth onAuthenticated={onAuthenticated} onClose={onClose} />
-            </ModalBody>
-          </ModalContent>
-        </Modal>
+        <li>
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent style={{ background: "white" }}>
+              <ModalHeader>
+                Login
+                <IconButton
+                  icon={<FaTimes />}
+                  colorScheme="gray"
+                  variant="ghost"
+                  ml="auto"
+                  onClick={onClose}
+                />
+              </ModalHeader>
+              <ModalBody>
+                <Auth onClose={onClose} />
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent style={{ background: "white" }}>
+              <ModalHeader>
+                Login{" "}
+                <IconButton
+                  icon={<FaTimes />}
+                  colorScheme="gray"
+                  variant="ghost"
+                  position="absolute"
+                  top="0"
+                  right="0"
+                  onClick={onClose}
+                />
+              </ModalHeader>
+              <ModalBody>
+                <Auth onAuthenticated={onAuthenticated} onClose={onClose} />
+              </ModalBody>
+            </ModalContent>
+          </Modal>
         </li>
 
         {session ? (
@@ -147,12 +147,16 @@ export default function Navbar({ isLoading, onAuthenticated }) {
                   <MenuList>
                     <MenuItem>
                       <Link href="/profile">
-                        <a>Dados</a>
+                        <a style={{ background: "#7657bd", paddingLeft: "10px" }}>
+                          Dados
+                        </a>
                       </Link>
                     </MenuItem>
                     <MenuItem>
                       <Link href="/my-movies-page">
-                        <a>Minhas Avaliações</a>
+                        <a style={{ background: "#7657bd", padding: "10px" }}>
+                          Minhas Avaliações
+                        </a>
                       </Link>
                     </MenuItem>
                   </MenuList>
@@ -162,8 +166,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
           </li>
         ) : null}
       </ul>
-    <SearchBar isLoading={isLoading} />
+      <SearchBar isLoading={isLoading} />
     </>
   );
 }
-
