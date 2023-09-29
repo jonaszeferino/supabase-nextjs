@@ -19,6 +19,7 @@ import { AntDatePicker, DatePicker, Divider as DividerAntd } from "antd";
 import LoggedUser from "../components/LoggedUser";
 import { Alert, Space, Spin } from "antd";
 import Auth from "../components/Auth";
+import Head from "next/head";
 
 const Profile = () => {
   const [name, setName] = useState();
@@ -199,6 +200,11 @@ const Profile = () => {
 
   return (
     <ChakraProvider>
+      <Head>
+        <title>Meus Dados</title>
+        <meta name="keywords" content="tvshow,watch,review"></meta>
+        <meta name="description" content="filmes, series,"></meta>
+      </Head>
       <ChakraProvider>
         {session ? (
           <p>

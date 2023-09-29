@@ -137,8 +137,8 @@ export default function Discovery() {
   return (
     <>
       <Head>
-        <title>Home</title>
-        <meta name="keywords" content="movies,watch,review"></meta>
+        <title>Descubra Series</title>
+        <meta name="keywords" content="tvshow,watch,review"></meta>
         <meta name="description" content="filmes, series,"></meta>
       </Head>
 

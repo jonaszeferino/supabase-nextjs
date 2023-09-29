@@ -22,7 +22,7 @@ import TranslateProfile from "../components/TranslateProfile";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
-
+import Head from "next/head";
 
 export default function Personapi() {
   const router = useRouter();
@@ -82,6 +82,14 @@ export default function Personapi() {
 
   return (
     <div>
+      <Head>
+        <title>Página Pessoal {personRecive.name ? personRecive.name : null} </title>
+        <meta
+          name="keywords"
+          content="movies,watch,review,series,filmes"
+        ></meta>
+        <meta name="description" content="encontre filmes e series"></meta>
+      </Head>
       {isError === true ? (
         <ErrorPage message={"Erro ao carregar a página"} />
       ) : (

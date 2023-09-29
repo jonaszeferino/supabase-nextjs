@@ -21,6 +21,7 @@ import {
   Td,
   TableContainer,
 } from "@chakra-ui/react";
+import Head from "next/head";
 
 const MoviePage = () => {
   const router = useRouter();
@@ -141,6 +142,14 @@ const MoviePage = () => {
   return (
     <>
       {" "}
+      <Head>
+        <title>Filme {data.originalTitle ?data.originalTitle : null }</title>
+        <meta
+          name="keywords"
+          content="tvshow,watch,review, series, filmes"
+        ></meta>
+        <meta name="description" content="filmes, series,"></meta>
+      </Head>
       <LoggedUser />
       <span className={styles.title}>{data.originalTitle}</span>
       <br />

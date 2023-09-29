@@ -19,6 +19,7 @@ import { supabase } from "../utils/supabaseClient"; // Importe o supabase aqui
 import LoggedUser from "../components/LoggedUser";
 import { RadiusUprightOutlined } from "@ant-design/icons";
 import { Button as AntButton, notification, Space } from "antd";
+import Head from "next/head";
 
 const MoviePage = () => {
   const [data, setData] = useState([]);
@@ -124,8 +125,7 @@ const MoviePage = () => {
     }
   };
 
- // setEmail_user(session.user.email);
-
+  // setEmail_user(session.user.email);
 
   //verificar a sessão
   useEffect(() => {
@@ -137,7 +137,7 @@ const MoviePage = () => {
       if (mounted) {
         if (session) {
           setSession(session);
-          setEmail_user(session.user.email)
+          setEmail_user(session.user.email);
         }
         setIsLoading(false);
       }
@@ -154,11 +154,18 @@ const MoviePage = () => {
     };
   }, []);
 
-
   return (
     <>
       {session ? (
         <ChakraProvider>
+          <Head>
+            <title>Minhas Avaliações </title>
+            <meta
+              name="keywords"
+              content="tvshow,watch,review, series, filmes"
+            ></meta>
+            <meta name="description" content="filmes, series,"></meta>
+          </Head>
           <LoggedUser />
 
           <>

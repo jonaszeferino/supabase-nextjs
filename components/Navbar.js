@@ -147,7 +147,9 @@ export default function Navbar({ isLoading, onAuthenticated }) {
                   <MenuList>
                     <MenuItem>
                       <Link href="/profile">
-                        <a style={{ background: "#7657bd", paddingLeft: "10px" }}>
+                        <a
+                          style={{ background: "#7657bd", paddingLeft: "10px" }}
+                        >
                           Dados
                         </a>
                       </Link>

@@ -16,6 +16,7 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
+import Head from "next/head";
 
 export default function PasswordResetPage() {
   const [email, setEmail] = useState("");
@@ -41,6 +42,11 @@ export default function PasswordResetPage() {
 
   return (
     <ChakraProvider>
+      <Head>
+        <title>Reset Password</title>
+        <meta name="keywords" content="tvshow,watch,review"></meta>
+        <meta name="description" content="filmes, series,"></meta>
+      </Head>
       <></>
       <Center height="100vh">
         <Box

@@ -18,8 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { FaGoogle, FaEyeSlash, FaEye } from "react-icons/fa";
 import LoggedUser from "../components/LoggedUser";
-
-
+import Head from "next/head";
 
 function PasswordReset() {
   const [email, setEmail] = useState("");
@@ -50,8 +49,17 @@ function PasswordReset() {
   return (
     <ChakraProvider>
       <>
-      
-<LoggedUser />
+        <Head>
+          <title>
+            Password Reset
+          </title>
+          <meta
+            name="keywords"
+            content="movies,watch,review,series,filmes"
+          ></meta>
+          <meta name="description" content="encontre filmes e series"></meta>
+        </Head>
+        <LoggedUser />
       </>
       <Center height="100vh">
         <Box

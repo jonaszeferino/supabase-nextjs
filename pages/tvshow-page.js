@@ -16,6 +16,7 @@ import {
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
+import Head from "next/head";
 
 const MoviePage = () => {
   const router = useRouter();
@@ -138,6 +139,14 @@ const MoviePage = () => {
 
   return (
     <>
+      <Head>
+        <title>Serie {data.originalTitle ? data.originalTitle : null}</title>
+        <meta
+          name="keywords"
+          content="tvshow,watch,review, series, filmes"
+        ></meta>
+        <meta name="description" content="filmes, series,"></meta>
+      </Head>
       <LoggedUser />
       <span className={styles.title}>{data.originalTitle}</span>
       <br />

@@ -152,11 +152,11 @@ export default function Movieapi() {
   return (
     <>
       <Head>
-        <title>What to Watch Today?</title>
+        <title>O que Ver Hoje?</title>
         <meta name="keywords" content="movies,watch,review"></meta>
         <meta
           name="description"
-          content="Find everything about movies here"
+          content="Encontre filmes, series e recebe sugestões"
         ></meta>
       </Head>
       <div>

@@ -32,6 +32,7 @@ import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import Providers from "../components/countries";
 import LoggedUser from "../components/LoggedUser";
+import Head from "next/head";
 
 const MoviePage = () => {
   const router = useRouter();
@@ -222,7 +223,13 @@ const MoviePage = () => {
   return (
     <>
       <ChakraProvider>
-        <LoggedUser/>
+        <Head>
+          <title>Onde está meu filme</title>
+          <meta name="keywords" content="tvshow,watch,review, series, filmes"></meta>
+          <meta name="description" content="filmes, series,"></meta>
+        </Head>
+
+        <LoggedUser />
         <div className={styles.top}>
           <h3 className={styles.title}>Onde Está Meu Filme?</h3>
           {/* <span>

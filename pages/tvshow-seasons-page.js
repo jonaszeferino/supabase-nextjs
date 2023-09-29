@@ -17,6 +17,7 @@ import TranslateProfile from "../components/TranslateProfile";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
+import Head from "next/head";
 
 const MoviePage = () => {
   const router = useRouter();
@@ -62,6 +63,14 @@ const MoviePage = () => {
   return (
     <>
       <ChakraProvider>
+        <Head>
+          <title>Series Episódios</title>
+          <meta
+            name="keywords"
+            content="tvshow,watch,review, series, filmes"
+          ></meta>
+          <meta name="description" content="filmes, series,"></meta>
+        </Head>
         <LoggedUser />
         <Center minHeight="100vh">
           <Box maxW="576px" width="100%" px="4">
