@@ -42,3 +42,4 @@ The project's name originates from the page where, upon clicking a button, an al
 
 ## Hosting
 - Vercel (conected to gitHub)
+- https://watch-today-nextjs.vercel.app/
