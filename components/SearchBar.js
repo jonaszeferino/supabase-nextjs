@@ -10,14 +10,13 @@ import {
   InputRightElement,
   Flex,
   useMediaQuery,
-  IconButton,
   Center,
 } from "@chakra-ui/react";
 
 import { SearchIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import stringSimilarity from "string-similarity"; // Importe a biblioteca
+import stringSimilarity from "string-similarity";
 
 const SearchBar = ({ isLoading, showSearchBar = true }) => {
   const [searchText, setSearchText] = useState("");
@@ -26,254 +25,19 @@ const SearchBar = ({ isLoading, showSearchBar = true }) => {
   const [isMouseOverSuggestions, setIsMouseOverSuggestions] = useState(false);
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
-  const listaDeTermos = [
-    "Meryl Streep",
-    "Scarlett Johansson",
-    "Jennifer Lawrence",
-    "Angelina Jolie",
-    "Natalie Portman",
-    "Cate Blanchett",
-    "Julia Roberts",
-    "Charlize Theron",
-    "Emma Stone",
-    "Anne Hathaway",
-    "Viola Davis",
-    "Sandra Bullock",
-    "Nicole Kidman",
-    "Kate Winslet",
-    "Mila Kunis",
-    "Amy Adams",
-    "Halle Berry",
-    "Jennifer Aniston",
-    "Julianne Moore",
-    "Keira Knightley",
-    "Emma Watson",
-    "Gal Gadot",
-    "Rachel McAdams",
-    "Jessica Chastain",
-    "Reese Witherspoon",
-    "Alicia Vikander",
-    "Michelle Pfeiffer",
-    "Gwyneth Paltrow",
-    "Jodie Foster",
+  const listaDeTermos = ["Meryl Streep"];
 
-    "Steven Spielberg",
-    "Christopher Nolan",
-    "Quentin Tarantino",
-    "Martin Scorsese",
-    "James Cameron",
-    "Ridley Scott",
-    "Tim Burton",
-    "Clint Eastwood",
-    "Ron Howard",
-    "Michael Bay",
-    "David Fincher",
-    "Wes Anderson",
-    "Spike Lee",
-    "Guy Ritchie",
-    "J.J. Abrams",
-    "Robert Zemeckis",
-    "George Lucas",
-    "Zack Snyder",
-    "Peter Jackson",
-    "Joel Coen",
-    "Bryan Singer",
-    "Ang Lee",
-    "Guillermo del Toro",
-    "Paul Thomas Anderson",
-    "James Wan",
-    "Mel Gibson",
-    "Barry Jenkins",
-    "Denis Villeneuve",
-    "Kenneth Branagh",
-    "Rob Reiner",
-    "Ava DuVernay",
-    "Greta Gerwig",
-    "Patty Jenkins",
-    "Sofia Coppola",
-    "Kathryn Bigelow",
-    "Lana Wachowski",
-    "Amy Heckerling",
-    "Dee Rees",
-    "Nora Ephron",
-    "Niki Caro",
-    "Lynn Shelton",
-    "Jane Campion",
-    "Penny Marshall",
-    "Kasi Lemmons",
-    "Mira Nair",
-    "Lulu Wang",
-    "Catherine Hardwicke",
-    "Alice Wu",
-    "Lorene Scafaria",
-    "Susanne Bier",
-    "Julie Taymor",
-    "Nancy Meyers",
-    "Karyn Kusama",
-    "Barbra Streisand",
-    "Marielle Heller",
-    "Céline Sciamma",
-    "Phyllida Lloyd",
-    "Lone Scherfig",
-    "Sofia Djama",
-    "Jerry Bruckheimer",
-    "Harvey Weinstein",
-    "Scott Rudin",
-    "Brian Grazer",
-    "Joel Silver",
-    "David Heyman",
-    "Kevin Feige",
-    "John Davis",
-    "Jon Peters",
-    "Neal H. Moritz",
-    "Roger Corman",
-    "Robert Evans",
-    "Mark Gordon",
-    "Walter F. Parkes",
-    "Ron Howard",
-    "Barry Mendel",
-    "Lawrence Bender",
-    "Dan Lin",
-    "Lorenzo di Bonaventura",
-    "Charles Roven",
-    "Joe Roth",
-    "Roy Lee",
-    "Thomas Tull",
-    "Simon Kinberg",
-    "Steven R. McQueen",
-    "Brad Grey",
-    "Chris Columbus",
-    "Ian Bryce",
-    "Frank Marshall",
-    "Richard D. Zanuck",
-    "Sherry Lansing",
-    "Kathleen Kennedy",
-    "Amy Pascal",
-    "Emma Thomas",
-    "Debra Hill",
-    "Mary Parent",
-    "Elizabeth Banks",
-    "Nina Jacobson",
-    "Laura Ziskin",
-    "Gail Berman",
-    "Cathy Konrad",
-    "Susan Downey",
-    "Stacey Sher",
-    "Lauren Shuler Donner",
-    "Lynda Obst",
-    "Cassian Elwes",
-    "Jane Rosenthal",
-    "Megan Ellison",
-    "Bonnie Arnold",
-    "Linda Obst",
-    "Stephanie Allain",
-    "Denise Di Novi",
-    "Lucy Fisher",
-    "Debra Martin Chase",
-    "Diablo Cody",
-    "Lauren Montgomery",
-    "Lucy Kitada",
-    "Pamela Abdy",
-    "Belén Atienza",
-
-    "Tom Hanks",
-    "Leonardo DiCaprio",
-    "Brad Pitt",
-    "Johnny Depp",
-    "Robert Downey Jr.",
-    "Denzel Washington",
-    "Will Smith",
-    "Tom Cruise",
-    "Harrison Ford",
-    "Morgan Freeman",
-    "Samuel L. Jackson",
-    "Chris Hemsworth",
-    "Ryan Reynolds",
-    "Hugh Jackman",
-    "Christian Bale",
-    "Mark Wahlberg",
-    "Matt Damon",
-    "Dwayne Johnson",
-    "Jake Gyllenhaal",
-    "Ryan Gosling",
-    "Joaquin Phoenix",
-    "Idris Elba",
-    "Chris Evans",
-    "Chadwick Boseman",
-    "Daniel Radcliffe",
-    "Keanu Reeves",
-    "Benedict Cumberbatch",
-    "Michael B. Jordan",
-    "Eddie Redmayne",
-    "Colleen Atwood",
-    "Sandy Powell",
-    "Edith Head",
-    "Jacqueline Durran",
-    "Jenny Beavan",
-    "Ruth E. Carter",
-    "Alexandra Byrne",
-    "Ann Roth",
-    "Trish Summerville",
-    "Eiko Ishioka",
-    "Arianne Phillips",
-    "Lindy Hemming",
-    "Mary Zophres",
-    "Milena Canonero",
-    "Michael Kaplan",
-    "Ellen Mirojnick",
-    "Shirley Kurata",
-    "Arianne Phillips",
-    "Audrey Fisher",
-    "Ngila Dickson",
-    "Suttirat Anne Larlarb",
-    "Janty Yates",
-    "Consolata Boyle",
-    "Judianna Makovsky",
-    "Julie Weiss",
-    "Sharen Davis",
-    "Jany Temime",
-    "Kym Barrett",
-    "Dressmaker",
-    "Beatrix Aruna Pasztor",
-
-    "Aaron Sorkin",
-    "Charlie Kaufman",
-    "Diablo Cody",
-    "Noah Baumbach",
-    "Taika Waititi",
-    "Rian Johnson",
-    "Greta Gerwig",
-    "Jordan Peele",
-    "Phoebe Waller-Bridge",
-    "Taylor Sheridan",
-    "Tony Kushner",
-    "Andrew Stanton",
-    "Lena Waithe",
-    "Kenneth Lonergan",
-    "Emerald Fennell",
-    "John Logan",
-    "Richard Linklater",
-    "Andrea Berloff",
-    "Michael Haneke",
-    "Tamara Jenkins",
-    "Paul Thomas Anderson",
-    "Nicole Holofcener",
-    "Pedro Almodóvar",
-    "Olivier Assayas",
-    "Makoto Shinkai",
-    "Wes Anderson",
-    "Hanif Kureishi",
-    "Joanna Hogg",
-    "Hirokazu Kore-eda",
-    "James Ivory",
-  ];
-
-  const handleKeyUp = (event) => {
-    if (event.keyCode === 13) {
-      // 13 is the keyboard code for the Enter key
-      Button.onClick();
+  function handleKeyDown(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSearch();
     }
-  };
+  }
+
+  function handleSearch() {
+    setTermosSugeridos([]);
+    router.push(`/search-free?query=${searchText}`);
+  }
 
   function handleInputBlur() {
     if (!isMouseOverSuggestions) {
@@ -284,23 +48,25 @@ const SearchBar = ({ isLoading, showSearchBar = true }) => {
   function buscarTermosSemelhantes(entrada) {
     const resultados = stringSimilarity.findBestMatch(entrada, listaDeTermos);
     const termosSugeridos = resultados.ratings
-      .filter((resultado) => resultado.rating > 0.4) // Defina um limite para considerar sugestões
+      .filter((resultado) => resultado.rating > 0.4)
       .map((resultado) => resultado.target);
 
     return termosSugeridos;
   }
+
   function handleInputChange(event) {
     const inputValue = event.target.value;
     setSearchText(inputValue);
     if (inputValue.trim() !== "") {
       setTermosSugeridos(buscarTermosSemelhantes(inputValue));
     } else {
-      setTermosSugeridos([]); // Caso contrário, não há sugestões
+      setTermosSugeridos([]);
     }
   }
+
   function selecionarTermo(termo) {
     setSearchText(termo);
-    setTermosSugeridos([]); // Limpar as sugestões após selecionar
+    setTermosSugeridos([]);
   }
 
   return (
@@ -331,6 +97,7 @@ const SearchBar = ({ isLoading, showSearchBar = true }) => {
               placeholder="Filmes, Series, Pessoas"
               value={searchText}
               onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
               onBlur={() => {
                 if (!isMouseOverSuggestions) {
                   setTermosSugeridos([]);
@@ -351,27 +118,24 @@ const SearchBar = ({ isLoading, showSearchBar = true }) => {
                 <SearchIcon color="gray.300" margin={1} size="lg" />
               </InputRightElement>
             )}
-
           </InputGroup>
-          <Link href={`/search-free?query=${searchText}`} passHref>
-            <Center>
-              <Button
-                type="submit"
-                marginTop={1} // Reduz a margem superior para 5px
-                as="a"
-                size="md"
-                bg="white"
-                color="black"
-                borderColor="gray"
-                borderWidth="1px"
-                mt="2px"
-                onKeyUp={handleKeyUp}
-                marginLeft="auto" 
-              >
-                Pesquisar
-              </Button>
-            </Center>
-          </Link>
+          <Center>
+            <Button
+              type="submit"
+              marginTop={1}
+              as="a"
+              size="md"
+              bg="white"
+              color="black"
+              borderColor="gray"
+              borderWidth="1px"
+              mt="2px"
+              marginLeft="auto"
+              onClick={handleSearch}
+            >
+              Pesquisar
+            </Button>
+          </Center>
 
           {termosSugeridos.length > 0 && (
             <Box

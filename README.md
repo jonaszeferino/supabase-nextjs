@@ -29,6 +29,7 @@ The project's name originates from the page where, upon clicking a button, an al
 - Translation of components into Portuguese
 - Unique navigation bars for mobile and web applications
 - Pagination
+- Sugestions on SearchBar
 
 ## Authentication
 - Complete functions with Supabase
