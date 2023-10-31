@@ -32,7 +32,9 @@ export default function Discovery() {
 
   let [movieId, setMovieId] = useState();
   let [searchMovies, setSearchMovies] = useState([]);
-  let [searchText, setSearchText] = useState(query || "");
+
+  const [searchText, setSearchText] = useState(router.query.query || "");
+
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
 
   console.log(query);
@@ -50,6 +52,10 @@ export default function Discovery() {
   let [showMovies, setShowMovies] = useState(true);
   let [showTvShows, setShowTvShows] = useState(true);
   let [showPerson, setShowPerson] = useState(true);
+
+  useEffect(() => {
+    setSearchText(router.query.query || "");
+  }, [router.query.query]);
 
   useEffect(() => {
     const apiCall = () => {
