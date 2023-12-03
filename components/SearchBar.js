@@ -79,63 +79,65 @@ const SearchBar = ({ isLoading, showSearchBar = true }) => {
           style={{ margin: "2px" }}
           flexDirection="column"
         >
-          <InputGroup
-            flex="1"
-            width={isMobile ? "80%" : "100%"}
-            flexDirection="column"
-          >
-            <Input
-              margin="2px"
-              required={true}
-              size="md"
-              bg="white"
-              color="black"
-              borderColor="gray"
-              borderWidth="1px"
-              mt="24px"
-              type="search"
-              placeholder="Filmes, Series, Pessoas"
-              value={searchText}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              onBlur={() => {
-                if (!isMouseOverSuggestions) {
-                  setTermosSugeridos([]);
-                }
-              }}
-              pr={isMobile ? "2.5rem" : "4.5rem"}
-              marginLeft={isMobile ? "auto" : "0"}
-              marginRight={isMobile ? "auto" : "0"}
-            />
-            {!isMobile && (
-              <InputRightElement
-                size="lg"
-                mt="24px"
-                pointerEvents="none"
-                marginLeft="auto"
-                marginRight="auto"
-              >
-                <SearchIcon color="gray.300" margin={1} size="lg" />
-              </InputRightElement>
-            )}
-          </InputGroup>
-          <Center>
-            <Button
-              type="submit"
-              marginTop={1}
-              as="a"
-              size="md"
-              bg="white"
-              color="black"
-              borderColor="gray"
-              borderWidth="1px"
-              mt="2px"
-              marginLeft="auto"
-              onClick={handleSearch}
+          <>
+            <InputGroup
+              flex="1"
+              width={isMobile ? "80%" : "100%"}
+              flexDirection="column"
             >
-              Pesquisar
-            </Button>
-          </Center>
+              <Input
+                margin="2px"
+                required={true}
+                size="md"
+                bg="white"
+                color="black"
+                borderColor="gray"
+                borderWidth="1px"
+                mt="24px"
+                type="search"
+                placeholder="Filmes, Series, Pessoas"
+                value={searchText}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                onBlur={() => {
+                  if (!isMouseOverSuggestions) {
+                    setTermosSugeridos([]);
+                  }
+                }}
+                pr={isMobile ? "2.5rem" : "4.5rem"}
+                marginLeft={isMobile ? "auto" : "0"}
+                marginRight={isMobile ? "auto" : "0"}
+              />
+              {!isMobile && (
+                <InputRightElement
+                  size="lg"
+                  mt="24px"
+                  pointerEvents="none"
+                  marginLeft="auto"
+                  marginRight="auto"
+                >
+                  <SearchIcon color="gray.300" margin={1} size="lg" />
+                </InputRightElement>
+              )}
+            </InputGroup>
+            <Center>
+              <Button
+                type="submit"
+                marginTop={1}
+                as="a"
+                size="md"
+                bg="white"
+                color="black"
+                borderColor="gray"
+                borderWidth="1px"
+                mt="2px"
+                marginLeft="auto"
+                onClick={handleSearch}
+              >
+                Pesquisar
+              </Button>
+            </Center>
+          </>
 
           {termosSugeridos.length > 0 && (
             <Box
