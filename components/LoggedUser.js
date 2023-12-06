@@ -45,6 +45,8 @@ const LoggedUser = () => {
     };
   }, []);
 
+  console.log(session)
+
   return (
     <ChakraProvider>
     {session ? (

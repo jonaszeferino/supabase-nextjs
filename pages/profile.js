@@ -814,7 +814,7 @@ const Profile = () => {
                   {/* Direcao */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>
-                      Diretor Favorito:
+                      Direção Favorita:
                     </FormLabel>
 
                     {favoriteDirectingEdit && (
