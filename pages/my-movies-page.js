@@ -31,17 +31,16 @@ const MoviePage = () => {
   const [isConfirmationMode, setIsConfirmationMode] = useState(false);
   const [session, setSession] = useState(null);
   const [email_user, setEmail_user] = useState();
-
   const [api, contextHolder] = notification.useNotification();
+  
   const openNotification = (placement) => {
     api.info({
-      message: `Aguarde ${email_user}`,
+      message: `Waiting ${email_user}`,
       description:
-        "Se você fez avaliações das sugestões elas apareceram automaticamente na tela",
+        "If you provided evaluations for the suggestions, they will appear automatically on the screen.",
       placement,
     });
   };
-
   const apiGetRates = async () => {
     setIsLoading(true);
     try {
@@ -116,7 +115,7 @@ const MoviePage = () => {
       if (statusCode === 200) {
         apiGetRates();
       } else if (statusCode === 404) {
-        console.log("Sem Nenhum Dado");
+        console.log("No data");
       } else if (statusCode === 500) {
         console.log("Internal server error");
       }
@@ -124,8 +123,6 @@ const MoviePage = () => {
       console.error(error);
     }
   };
-
-  // setEmail_user(session.user.email);
 
   //verificar a sessão
   useEffect(() => {
@@ -159,7 +156,7 @@ const MoviePage = () => {
       {session ? (
         <ChakraProvider>
           <Head>
-            <title>Minhas Avaliações </title>
+            <title>My Reviews</title>
             <meta
               name="keywords"
               content="tvshow,watch,review, series, filmes"
@@ -179,26 +176,26 @@ const MoviePage = () => {
               wordBreak: "break-word",
             }}
           >
-            <h1>Meus Likes</h1>
+            <h1>My Likes</h1>
             {valueStartDelete ? (
               <h1>
-                Excluindo Registro selecionado <Spinner size="xl" />
+                Deleting Selected Record <Spinner size="xl" />
               </h1>
             ) : null}
 
-            {valueEndDelete ? <h1>Registro Deletado</h1> : null}
+            {valueEndDelete ? <h1>Deleted record</h1> : null}
 
             {isLoading ? (
               <Spinner size="xl" />
             ) : (
               <TableContainer>
                 <Table variant="simple">
-                  <TableCaption>Like Nos Filmes</TableCaption>
+                  <TableCaption>Movie Likes</TableCaption>
                   <Thead>
                     <Tr>
-                      <Th>Filme</Th>
-                      <Th>Data</Th>
-                      <Th>Nota</Th>
+                      <Th>Movie</Th>
+                      <Th>Date</Th>
+                      <Th>Rating</Th>
                       <Th>Poster</Th>
                       <Th>
                         {isConfirmationMode ? (
@@ -208,12 +205,12 @@ const MoviePage = () => {
                               colorScheme="red"
                               marginRight={2}
                             >
-                              Confirmar
+                              Confirm
                             </Button>
                             <Button
                               onClick={() => setIsConfirmationMode(false)}
                             >
-                              Cancelar
+                              Close
                             </Button>
                           </>
                         ) : (
@@ -224,7 +221,7 @@ const MoviePage = () => {
                               selectedMovie !== null ? "red" : "gray"
                             }
                           >
-                            Excluir
+                            Delete
                           </Button>
                         )}
                       </Th>
@@ -291,7 +288,7 @@ const MoviePage = () => {
           </div>
         </ChakraProvider>
       ) : (
-        "Clique em logar para carregar o conteúdo da página"
+        "Click Log In to load the page content"
       )}
     </>
   );
