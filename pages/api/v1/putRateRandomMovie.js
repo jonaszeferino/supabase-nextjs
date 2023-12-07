@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     const result = await collection.updateOne(filter, update);
 
     if (result.matchedCount === 1) {
-      res.status(200).json({ message: "Update successful", result });
+      res.status(200).json({ message: "Update Successful", result });
     } else {
       res.status(404).json({ message: "No matching document found" });
     }

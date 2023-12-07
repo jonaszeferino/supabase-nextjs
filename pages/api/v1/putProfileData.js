@@ -6,7 +6,6 @@ export default async function handler(req, res) {
     res.status(405).json({ error: "Method Not Allowed" });
     return;
   }
-  
   const {
     email,
     name,
@@ -24,14 +23,14 @@ export default async function handler(req, res) {
     favorite_tvshow_genre,
     favorite_actor,
     favorite_actress,
-    favorite_directing
+    favorite_directing,
   } = req.body;
 
   let date = moment().tz("UTC-03:00").toDate();
   const collection = client.db("moviesTvshows").collection("users");
 
   try {
-    const filter = { email: email }; // Use o campo de email como filtro
+    const filter = { email: email };
     const update = {
       $set: {
         email: email,
@@ -51,17 +50,15 @@ export default async function handler(req, res) {
         favorite_actor: favorite_actor,
         favorite_actress: favorite_actress,
         updated_date: date ? date : null,
-        favorite_directing: favorite_directing
-         
+        favorite_directing: favorite_directing,
       },
     };
-
     const result = await collection.updateOne(filter, update, { upsert: true });
 
     if (result.matchedCount === 1 || result.upsertedCount === 1) {
-      res.status(200).json({ message: "Gravado com Secesso", result });
+      res.status(200).json({ message: "Sucess", result });
     } else {
-      res.status(500).json({ message: "Falaha na Gravação, tente novamente." });
+      res.status(500).json({ message: "Fail, try again." });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });

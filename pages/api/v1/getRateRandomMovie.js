@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     const user_email = parseInt(req.query.user_email);
 
     if (user_email) {
-      res.status(400).json({ error: "user_email must be a valid number" });
+      res.status(400).json({ error: "user_email must be a valid format" });
       return;
     }
 
