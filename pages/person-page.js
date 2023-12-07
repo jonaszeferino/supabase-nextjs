@@ -48,7 +48,7 @@ export default function Personapi() {
             return response.json();
           } else {
             setError(true);
-            throw console.log("Erro 1");
+            throw console.log("Error 1");
           }
         })
         .then((result) => setPersonRecive(result))
@@ -72,7 +72,7 @@ export default function Personapi() {
           return response.json();
         } else {
           setError(true);
-          throw console.log("Erro 1");
+          throw console.log("Error 2");
         }
       })
       .then((result) => {

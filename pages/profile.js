@@ -201,25 +201,24 @@ const Profile = () => {
   return (
     <ChakraProvider>
       <Head>
-        <title>Meus Dados</title>
+        <title>Profile</title>
         <meta name="keywords" content="tvshow,watch,review"></meta>
         <meta name="description" content="filmes, series,"></meta>
       </Head>
       <ChakraProvider>
         {session ? (
           <p>
-            Usuário: {session.user.email} <br />
+            User: {session.user.email} <br />
             <Button
               onClick={() => supabase.auth.signOut()}
               colorScheme="red"
               size="sm"
             >
-              Sair
+              Close
             </Button>
           </p>
         ) : null}
       </ChakraProvider>
-
       {isLoading && (
         <Space
           direction="vertical"
@@ -227,12 +226,8 @@ const Profile = () => {
             width: "100%",
           }}
         >
-          <Spin tip="Carregando..."></Spin>
-          <Alert
-            message="Aguarde"
-            description="Seus Dados Estão Sendo Carregados"
-            type="info"
-          />
+          <Spin tip="Loading..."></Spin>
+          <Alert message="Waiting" description="Waiting the data" type="info" />
         </Space>
       )}
 
@@ -243,9 +238,8 @@ const Profile = () => {
           {!isLoading && (
             <>
               <Heading size="lg" mb={4}>
-                Dados do Perfil
+                Profile{" "}
               </Heading>
-
               {newUser && (
                 <div style={{ maxWidth: "400px", margin: "0 auto" }}>
                   <Space
@@ -284,8 +278,8 @@ const Profile = () => {
                       style={{ width: "100%" }}
                     >
                       {favoriteActressEdit
-                        ? "Editar"
-                        : "Insira Os Dados Depois Clique Em Salvar"}
+                        ? "Edit"
+                        : "Enter the Data, Then Click Save"}
                     </Button>
                   </Space>
                 </div>
@@ -309,12 +303,12 @@ const Profile = () => {
                 </FormControl>
 
                 {/* Dados do usario abaixo: */}
-                {/* Nome */}
+                {/* Name */}
 
                 <>
                   {/* Name */}
                   <FormControl>
-                    <FormLabel style={{ fontWeight: "bold" }}>Nome:</FormLabel>
+                    <FormLabel style={{ fontWeight: "bold" }}>Name:</FormLabel>
                     {nameEdit && (
                       <Input
                         isDisabled={nameEdit}
@@ -326,7 +320,7 @@ const Profile = () => {
                     )}
                     {!nameEdit && (
                       <Input
-                        placeholder={userData?.name || "Nome"}
+                        placeholder={userData?.name || "Name"}
                         isDisabled={nameEdit}
                         type="text"
                         name="firstName"
@@ -342,25 +336,23 @@ const Profile = () => {
                   {/* Surname */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>
-                      Sobrenome:
+                      Surname:
                     </FormLabel>
                     {surnameEdit && (
                       <Input
                         isDisabled={surnameEdit}
                         type="text"
-                        name="firstName"
+                        name="surname"
                         value={userData?.surname}
                         style={{ width: "100%" }}
                       />
                     )}
                     {!surnameEdit && (
                       <Input
-                        placeholder={
-                          userData?.surname || "Digite seu Sobrenome"
-                        }
+                        placeholder={userData?.surname || "Enter your Surname"}
                         isDisabled={surnameEdit}
                         type="text"
-                        name="firstName"
+                        name="surname"
                         value={surname}
                         onChange={(e) => {
                           setSurname(e.target.value);
@@ -373,7 +365,7 @@ const Profile = () => {
                   {/* nacionalidade */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>
-                      Origem:
+                      Nationality
                     </FormLabel>
                     {nationalityEdit && (
                       <Input
@@ -387,7 +379,7 @@ const Profile = () => {
                     {!nationalityEdit && (
                       <Input
                         placeholder={
-                          userData?.nationality || "Digite sua nacionalidade"
+                          userData?.nationality || "Enter your nationality"
                         }
                         isDisabled={nationalityEdit}
                         type="text"
@@ -404,7 +396,7 @@ const Profile = () => {
                   {/* Data de Nascimento */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>
-                      Data De Nascimento:
+                      Birthdate:
                     </FormLabel>
                     {birthDateEdit && (
                       <Input
@@ -418,7 +410,7 @@ const Profile = () => {
                     {!birthDateEdit && (
                       <Input
                         placeholder={
-                          userData?.birth_date || "Digite a data dd/mm/aaaa"
+                          userData?.birth_date || "Enter your birth dd/mm/aaaa"
                         }
                         isDisabled={birthDateEdit}
                         type="text"
@@ -434,9 +426,7 @@ const Profile = () => {
 
                   {/* Genero */}
                   <FormControl>
-                    <FormLabel style={{ fontWeight: "bold" }}>
-                      Gênero:
-                    </FormLabel>
+                    <FormLabel style={{ fontWeight: "bold" }}>Gender</FormLabel>
                     {genderEdit && (
                       <Input
                         isDisabled={genderEdit}
@@ -459,24 +449,24 @@ const Profile = () => {
                         <option value={userData?.gender || "Escolha o Genero"}>
                           {userData?.gender || "Escolha o Genero"}
                         </option>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Feminino">Feminino</option>
-                        <option value="Não binário">Não binário</option>
+                        <option value="Masculino">Male</option>
+                        <option value="Feminino">Female</option>
+                        <option value="Não binário">Non-binary</option>
                         <option value="Prefiro não informar">
-                          Prefiro não informar
+                          Prefer not to provide
                         </option>
                       </Select>
                     )}
                   </FormControl>
 
                   <Center>
-                    <DividerAntd>Gostos</DividerAntd>
+                    <DividerAntd>My Preferences</DividerAntd>
                   </Center>
 
                   {/* Filmes Favoritos */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>
-                      Filme Favorito:
+                      Favorite Movies
                     </FormLabel>
 
                     {/* first movie     */}
@@ -564,7 +554,7 @@ const Profile = () => {
                   {/* Genero de filme       */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>
-                      Gênero de Filme Favorito:
+                      Favorite Movie Gender
                     </FormLabel>
 
                     {favoriteMovieGenderEdit && (
@@ -589,25 +579,25 @@ const Profile = () => {
                         <option
                           value={
                             userData?.favorite_movie_genre ||
-                            "Escolha o Genero de Filme"
+                            "Enter favorite movie gender"
                           }
                         >
                           {userData?.favorite_movie_genre ||
-                            "Escolha o Genero de Filme"}{" "}
+                            "Enter favorite movie gender"}{" "}
                         </option>
 
-                        <option value="Ação">Ação</option>
-                        <option value="Aventura">Aventura</option>
-                        <option value="Comédia">Comédia</option>
+                        <option value="Ação">Action</option>
+                        <option value="Aventura">Adventure</option>
+                        <option value="Comédia">Comedy</option>
                         <option value="Drama">Drama</option>
                         <option value="Ficção Científica">
-                          Ficção Científica
+                          Science Fiction
                         </option>
                         <option value="Fantasia">Fantasia</option>
                         <option value="Horror">Horror</option>
                         <option value="Suspense">Suspense</option>
                         <option value="Romance">Romance</option>
-                        <option value="Documentários">Documentários</option>
+                        <option value="Documentários">Documentaries</option>
                       </Select>
                     )}
                   </FormControl>
@@ -615,7 +605,7 @@ const Profile = () => {
                   {/* Series Favoritas */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>
-                      Series Favoritas:
+                      Favorite Tv Shows
                     </FormLabel>
 
                     {firstFavoriteTvShowEdit && (
@@ -632,7 +622,7 @@ const Profile = () => {
                         isDisabled={firstFavoriteTvShowEdit}
                         placeholder={
                           userData?.first_favorite_tvshow ||
-                          "Primeira Serie Favorito"
+                          "First Favorite Tv Show"
                         }
                         type="text"
                         name="favoriteFirstTvShow"
@@ -658,7 +648,7 @@ const Profile = () => {
                         isDisabled={secondFavoriteTvShowEdit}
                         placeholder={
                           userData?.second_favorite_tvshow ||
-                          "Segunda Serie Favorito"
+                          "Second Favorite TV Show"
                         }
                         type="text"
                         name="favoriteFirstTvShow"
@@ -700,7 +690,7 @@ const Profile = () => {
                   {/* genero de serie favorita */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>
-                      Gênero de Serie Favorito:
+                      Favorite Tv Show Gender
                     </FormLabel>
 
                     {favoriteTvShowGenderEdit && (
@@ -725,25 +715,25 @@ const Profile = () => {
                         <option
                           value={
                             userData?.favorite_tvshow_genre ||
-                            "Escolha o Genero de Filme"
+                            "Enter Favorite Tv Show Gender"
                           }
                         >
                           {userData?.favorite_tvshow_genre ||
-                            "Escolha o Genero de Filme"}
+                            "Enter Favorite Movie Gender"}
                         </option>
 
-                        <option value="Ação">Ação</option>
-                        <option value="Aventura">Aventura</option>
-                        <option value="Comédia">Comédia</option>
+                        <option value="Ação">Action</option>
+                        <option value="Aventura">Adventure</option>
+                        <option value="Comédia">Comedy</option>
                         <option value="Drama">Drama</option>
                         <option value="Ficção Científica">
-                          Ficção Científica
+                          Science Fiction
                         </option>
                         <option value="Fantasia">Fantasia</option>
                         <option value="Horror">Horror</option>
                         <option value="Suspense">Suspense</option>
                         <option value="Romance">Romance</option>
-                        <option value="Documentários">Documentários</option>
+                        <option value="Documentários">Documentaries</option>
                       </Select>
                     )}
                   </FormControl>
@@ -751,7 +741,7 @@ const Profile = () => {
                   {/* Ator favorito */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>
-                      Ator Favorito:
+                      Favorite Actor
                     </FormLabel>
                     {favoriteActorEdit && (
                       <Input
@@ -765,7 +755,7 @@ const Profile = () => {
                     {!favoriteActorEdit && (
                       <Input
                         placeholder={
-                          userData?.favorite_actor || "Digite o Ator Favorito"
+                          userData?.favorite_actor || "Enter favorite actor"
                         }
                         isDisabled={favoriteActorEdit}
                         type="text"
@@ -781,7 +771,7 @@ const Profile = () => {
                   {/* Atriz favorita */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>
-                      Atriz Favorita:
+                      Favorite Actress
                     </FormLabel>
 
                     {favoriteActressEdit && (
@@ -796,8 +786,7 @@ const Profile = () => {
                     {!favoriteActressEdit && (
                       <Input
                         placeholder={
-                          userData?.favorite_actress ||
-                          "Digite a Atriz Favorita"
+                          userData?.favorite_actress || "Enter favorite Actress"
                         }
                         isDisabled={favoriteActressEdit}
                         type="text"
@@ -814,7 +803,7 @@ const Profile = () => {
                   {/* Direcao */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>
-                      Direção Favorita:
+                      Favorite Direction
                     </FormLabel>
 
                     {favoriteDirectingEdit && (
@@ -864,7 +853,7 @@ const Profile = () => {
                   style={{ width: "100%" }}
                   isDisabled={favoriteActressEdit}
                 >
-                  Salvar
+                  Salve
                 </Button>
 
                 {isSaving && (
@@ -874,10 +863,10 @@ const Profile = () => {
                       width: "100%",
                     }}
                   >
-                    <Spin tip="Salvando.."></Spin>
+                    <Spin tip="Loading.."></Spin>
                     <Alert
-                      message="Aguarde"
-                      description="Seus Dados Estão Sendo Salvos"
+                      message="Waiting"
+                      description="Your Data is Being Saved"
                       type="info"
                     />
                   </Space>
@@ -891,7 +880,7 @@ const Profile = () => {
                     }}
                   >
                     <Alert
-                      message="Cadastro Salvo Com Sucesso"
+                      message="Sucessfuly"
                       type="success"
                       showIcon
                       closable
@@ -923,8 +912,8 @@ const Profile = () => {
                   style={{ width: "100%" }}
                 >
                   {favoriteActressEdit
-                    ? "Editar"
-                    : "Após Editar Clique em Salvar Acima"}
+                    ? "Edit"
+                    : "After Editing, Click Save Above"}
                 </Button>
 
                 <Text>{message}</Text>
