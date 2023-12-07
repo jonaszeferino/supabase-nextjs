@@ -189,7 +189,7 @@ export default function Personapi() {
               <>
                 <Divider />
                 <Heading as="h1" size="lg">
-                  In Front of the Cameras"
+                  In Front of the Cameras
                 </Heading>
                 <Divider />
                 <br />
