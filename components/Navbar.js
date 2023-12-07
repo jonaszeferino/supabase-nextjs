@@ -33,7 +33,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
   const [session, setSession] = useState(null);
   const router = useRouter();
 
-  // Verificar sessão
+  // Session Verify
   useEffect(() => {
     let mounted = true;
     async function getInitialSession() {
@@ -68,22 +68,22 @@ export default function Navbar({ isLoading, onAuthenticated }) {
         </li>
         <li>
           <Link href="/watch-today">
-            <a>| O que Ver Hoje? </a>
+            <a>| What to Watch Today?</a>
           </Link>
         </li>
         <li>
           <Link href="/search-movies">
-            <a>| Descobrir Filmes</a>
+            <a>| Discovery Movies</a>
           </Link>
         </li>
         <li>
           <Link href="/search-tvshows">
-            <a>| Busca de Séries</a>
+            <a>| Find Tv Shows</a>
           </Link>
         </li>
         <li>
           <Link href="/where-is-my-movie">
-            <a>| Onde Está Meu Filme? |</a>
+            <a>| Where is My Movie? |</a>
           </Link>
         </li>
         <br />
@@ -133,7 +133,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
 
         {session ? (
           <li>
-            Perfil
+            Profile
             <Menu>
               {({ isOpen }) => (
                 <>
@@ -150,14 +150,14 @@ export default function Navbar({ isLoading, onAuthenticated }) {
                         <a
                           style={{ background: "#7657bd", paddingLeft: "10px" }}
                         >
-                          Dados
+                          Data
                         </a>
                       </Link>
                     </MenuItem>
                     <MenuItem>
                       <Link href="/my-movies-page">
                         <a style={{ background: "#7657bd", padding: "10px" }}>
-                          Minhas Avaliações
+                          My Ratings
                         </a>
                       </Link>
                     </MenuItem>

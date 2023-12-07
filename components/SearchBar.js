@@ -6,7 +6,7 @@ import {
   Spinner,
   Text,
   ChakraProvider,
-  InputGroup,
+  InputGroupm,
   InputRightElement,
   Flex,
   useMediaQuery,
@@ -64,7 +64,7 @@ const SearchBar = ({ isLoading, showSearchBar = true }) => {
     }
   }
 
-  function selecionarTermo(termo) {
+  function selectTerm(termo) {
     setSearchText(termo);
     setTermosSugeridos([]);
   }
@@ -134,7 +134,7 @@ const SearchBar = ({ isLoading, showSearchBar = true }) => {
                 marginLeft="auto"
                 onClick={handleSearch}
               >
-                Pesquisar
+                Search
               </Button>
             </Center>
           </>
@@ -163,7 +163,7 @@ const SearchBar = ({ isLoading, showSearchBar = true }) => {
                     onMouseLeave={() => setIsMouseOverSuggestions(false)}
                   >
                     <Text p="2" fontWeight="bold">
-                      Sugestões:
+                      Suggestions:
                     </Text>
                     <ul
                       style={{
@@ -176,7 +176,7 @@ const SearchBar = ({ isLoading, showSearchBar = true }) => {
                       {termosSugeridos.map((termo, index) => (
                         <li
                           key={index}
-                          onClick={() => selecionarTermo(termo)}
+                          onClick={() => selectTerm(termo)}
                           style={{
                             whiteSpace: "nowrap",
                             overflow: "hidden",

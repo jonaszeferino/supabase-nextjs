@@ -10,12 +10,7 @@ import {
   Text,
   ChakraProvider,
 } from "@chakra-ui/react";
-import {
-  HamburgerIcon,
-  CloseIcon,
-  PlusSquareIcon,
-  ChevronRightIcon,
-} from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 import { useRouter } from "next/router";
@@ -74,7 +69,7 @@ const MobileNavbar = () => {
           display={{ base: "block", md: "none" }}
         >
           <Center>
-            <Heading>O Que Ver Hoje?</Heading>
+            <Heading>What to Watch Today?</Heading>
           </Center>
 
           <Stack direction="row" align="center" justify="space-between">
@@ -107,34 +102,34 @@ const MobileNavbar = () => {
             <Stack spacing={4} mt={4}>
               <Link href="/watch-today">
                 <span>
-                  <ChevronRightIcon /> O que Ver Hoje?
+                  <ChevronRightIcon /> What to Watch Today?
                 </span>
               </Link>
               <Link href="/search-movies">
                 <span>
-                  <ChevronRightIcon /> Descobrir Filmes
+                  <ChevronRightIcon /> Discovery Movies
                 </span>
               </Link>
               <Link href="/search-tvshows">
                 <span>
-                  <ChevronRightIcon /> Busca de Séries
+                  <ChevronRightIcon /> Find Tv Shows
                 </span>
               </Link>
               <Link href="/where-is-my-movie">
                 <span>
-                  <ChevronRightIcon /> Onde Está Meu Filme?
+                  <ChevronRightIcon /> Where is My Movie?
                 </span>
               </Link>
               {session ? (
                 <>
                   <Link href="/profile">
                     <span>
-                      <ChevronRightIcon /> Perfil
+                      <ChevronRightIcon /> Profile
                     </span>
                   </Link>
                   <Link href="/my-movies-page">
                     <span>
-                      <ChevronRightIcon /> Minhas Avaliações
+                      <ChevronRightIcon /> My Ratings
                     </span>
                   </Link>
                 </>

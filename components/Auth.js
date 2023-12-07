@@ -1,5 +1,5 @@
-import react, { useState, useEffect } from "react";
-import { supabase } from "../utils/supabaseClient"; // Importe o 'supabase' desta forma
+import { useState, useEffect } from "react";
+import { supabase } from "../utils/supabaseClient";
 import {
   Box,
   Heading,
@@ -21,12 +21,11 @@ import { FaGoogle, FaEyeSlash, FaEye } from "react-icons/fa";
 export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [alertMessage, setAlertMessage] = useState(""); // Estado para a mensagem do Alert
+  const [alertMessage, setAlertMessage] = useState("");
   const [session, setSession] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  //teste
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -41,23 +40,21 @@ export default function Auth() {
       console.log("User:", user);
       console.log("Session:", session);
       console.log("Error:", error);
-      setAlertMessage("Verifique seu E-mail");
+      setAlertMessage("Check your Email");
       if (user) {
-        console.log("Usuário cadastrado com sucesso:", user);
-        setAlertMessage("Verifique seu E-mail");
+        console.log("User successfully registered:", user);
+        setAlertMessage("Check your Email");
       } else if (error) {
         if (status === 429) {
-          console.log("Status 429 - Muitas solicitações recentes");
-          setAlertMessage(
-            "Você fez muitas solicitações recentemente. Aguarde um momento."
-          );
+          console.log("Status 429 - Too Many Request");
+          setAlertMessage("Too Many Requests. Take a moment.");
         } else {
-          console.error("Erro durante o cadastro:", error);
+          console.error("Error, try again:", error);
           setAlertMessage(error.message);
         }
       }
     } catch (e) {
-      console.error("Erro completo:", e);
+      console.error("Error:", e);
       setAlertMessage(e.message);
     }
   };
@@ -75,7 +72,7 @@ export default function Auth() {
       if (error) {
         throw error;
       }
-      setAlertMessage("Usuário Logando");
+      setAlertMessage("User Logging In..");
       console.log(user);
       console.log(session);
     } catch (e) {
@@ -98,7 +95,7 @@ export default function Auth() {
       if (error) {
         throw error;
       }
-      setAlertMessage("Usuário Logando");
+      setAlertMessage("Logging In");
       console.log(user);
       console.log(session);
     } catch (e) {
@@ -138,14 +135,14 @@ export default function Auth() {
           <Center>
             {session ? (
               <p>
-                Usuário: {session.user.email} <br />
+                User: {session.user.email} <br />
                 <Center>
                   <Button
                     onClick={() => supabase.auth.signOut()}
                     colorScheme="red"
                     size="sm"
                   >
-                    Sair
+                    Sign Out
                   </Button>
                 </Center>
               </p>
@@ -163,7 +160,7 @@ export default function Auth() {
           marginTop={5}
         >
           <Heading as="h1" size="xl" textAlign="center" mb={4}>
-            {isSignUp ? "Cadastre-se" : "Login"}
+            {isSignUp ? "Sign Up" : "Login"}
           </Heading>
           <FormControl>
             <FormLabel>Email</FormLabel>
@@ -174,7 +171,7 @@ export default function Auth() {
             />
           </FormControl>
           <FormControl mt={4}>
-            <FormLabel>Senha</FormLabel>
+            <FormLabel>Password</FormLabel>
             <InputGroup>
               <Input
                 type={showPassword ? "text" : "password"}
@@ -198,7 +195,7 @@ export default function Auth() {
             color="teal.500"
             href="https://supabase-nextjs-gamma.vercel.app/send-email-password-reset"
           >
-            Esqueci minha senha
+            Forgot your password?
           </Link>
 
           <Center>
@@ -209,7 +206,7 @@ export default function Auth() {
                 size="md"
                 onClick={handleSignUp}
               >
-                Cadastre-Se
+                Sign Up
               </Button>
             )}
             {!isSignUp && (
@@ -229,32 +226,31 @@ export default function Auth() {
               <Alert status="info">
                 <AlertIcon />
                 {alertMessage === "Email not confirmed"
-                  ? "E-mail Não Confirmado"
+                  ? "E-mail not confirmed"
                   : alertMessage}
               </Alert>
             </ChakraProvider>
           )}
-          <br />
 
-          {/* Link para alternar entre Sign In e Sign Up */}
+          {/* Link para to change between Sign In e Sign Up */}
           <Divider my={4} />
           <Center>
             <Button
               mt={4}
               colorScheme="blue"
               size="md"
-              leftIcon={<FaGoogle />} // Adicione o ícone do Google aqui
+              leftIcon={<FaGoogle />}
               onClick={handleGoogleSignIn}
             >
-              Login com Google
+              Login with Google
             </Button>
           </Center>
           <br />
           <Center>
             <Link onClick={changeForm} cursor="pointer">
               {isSignUp
-                ? "Você já tem uma Conta? Faça o Login!"
-                : "Você é Novo? Cadastre-se!"}
+                ? "Already have an account? Log In!"
+                : "New here? Sign Up!"}
             </Link>
           </Center>
         </Box>

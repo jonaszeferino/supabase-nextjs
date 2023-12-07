@@ -20,9 +20,9 @@ const FloatButton = () => {
 
       {showInfo && (
         <div style={{ position: 'fixed', bottom: '10px', right: '10px' }}>
-          <p>Faça o Login Gratuito - E Tenha Acesso a avaliação das sugestões de Filmes</p>
+          <p>Free Sign In - And Access the Evaluation of Movie Suggestions</p>
           <Button icon={<CloseOutlined />} onClick={toggleInfo}>
-            Fechar
+            Close
           </Button>
         </div>
       )}

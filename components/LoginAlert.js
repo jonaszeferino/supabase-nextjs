@@ -42,13 +42,13 @@ const LoginAlert = () => {
           }}
         >
           <Alert
-            message="Faça o Login Gratuito e Tenha a Possibilidade de Avaliar as Sugestões de Filme do 'O Que Ver Hoje?' - Depois de Logar - Acesse Perfil > Minhas Avaliações"
+            message="Sign in for free and Have the Possibility to Evaluate the Movie Suggestions from 'What to Watch Today?' - After Logging In - Access Profile > My Ratings"
             type="success"
             showIcon
             action={
               <Button size="small" type="text">
                 <Link href="/signUp">
-                  <a>Ir para a página de Login</a>
+                  <a>Go to Login Page</a>
                 </Link>
               </Button>
             }
