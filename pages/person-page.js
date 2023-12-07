@@ -39,7 +39,8 @@ export default function Personapi() {
       if (!personIdRecive) {
         return;
       }
-      const url = `https://api.themoviedb.org/3/person/${personIdRecive}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`;
+      const url = `https://api.themoviedb.org/3/person/${personIdRecive}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c`;
+      // const url = `https://api.themoviedb.org/3/person/${personIdRecive}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`;
       fetch(url, {})
         .then((response) => {
           if (response.status === 200) {
@@ -61,7 +62,8 @@ export default function Personapi() {
     if (!personIdRecive) {
       return;
     }
-    const url = `https://api.themoviedb.org/3/person/${personIdRecive}/combined_credits?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`;
+    const url = `https://api.themoviedb.org/3/person/${personIdRecive}/combined_credits?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c`;
+    // const url = `https://api.themoviedb.org/3/person/${personIdRecive}/combined_credits?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`;
 
     fetch(url, {})
       .then((response) => {
@@ -83,20 +85,21 @@ export default function Personapi() {
   return (
     <div>
       <Head>
-        <title>Página Pessoal {personRecive.name ? personRecive.name : null} </title>
+        <title>
+          Personal Page {personRecive.name ? personRecive.name : null}{" "}
+        </title>
         <meta
           name="keywords"
-          content="movies,watch,review,series,filmes"
+          content="movies,watch,review,tvshows,movies"
         ></meta>
-        <meta name="description" content="encontre filmes e series"></meta>
+        <meta name="description" content="find movies and tvshows"></meta>
       </Head>
       {isError === true ? (
-        <ErrorPage message={"Erro ao carregar a página"} />
+        <ErrorPage message={"Loading Error"} />
       ) : (
         <div>
           <LoggedUser />
           <h3 className={styles.title}></h3>
-
           <span>
             {personRecive.profile_path != null ? (
               <Image
@@ -142,24 +145,24 @@ export default function Personapi() {
                 <Table size="sm">
                   <Thead>
                     <Tr>
-                      <Th>Nome:</Th>
+                      <Th>Name</Th>
                       <Td>{personRecive.name}</Td>
                     </Tr>
                   </Thead>
                   <Tbody>
                     <Tr>
-                      <Th>Conhecido por: </Th>
+                      <Th>Known for?</Th>
                       <Td>
-                        <TranslateProfile
+                        {/* <TranslateProfile
                           text={personRecive.known_for_department}
                           language="pt"
-                        />
+                        /> */}
+                        {personRecive.known_for_department}
                       </Td>
                       <Tr />
                     </Tr>
-
                     <Tr>
-                      <Th>Biografia</Th>
+                      <Th>Biography</Th>
                       <Td>
                         {" "}
                         <Box whiteSpace="pre-wrap">
@@ -167,9 +170,8 @@ export default function Personapi() {
                         </Box>
                       </Td>
                     </Tr>
-
                     <Tr>
-                      <Th>Nascimento</Th>
+                      <Th>Birth </Th>
                       <Td>{personRecive.place_of_birth}</Td>
                     </Tr>
                   </Tbody>
@@ -178,9 +180,8 @@ export default function Personapi() {
             </div>
           </ChakraProvider>
           <br />
-
           <button onClick={CallDataPerson} className={styles.button}>
-            Verificar Trabalhos
+            Look the Jobs
           </button>
           <br />
           <ChakraProvider>
@@ -188,7 +189,7 @@ export default function Personapi() {
               <>
                 <Divider />
                 <Heading as="h1" size="lg">
-                  Em Frente às Câmeras
+                  In Front of the Cameras"
                 </Heading>
                 <Divider />
                 <br />
@@ -207,7 +208,7 @@ export default function Personapi() {
                     )}
                     <br />
                     <span>
-                      {work.media_type === "movie" ? "Cinema" : "Série"}
+                      {work.media_type === "movie" ? "Movie" : "Tv Show"}
                     </span>
                     <br />
 
@@ -224,10 +225,11 @@ export default function Personapi() {
                       height="360"
                     />
                     <br />
-                    <TranslateProfile
+                    {/* <TranslateProfile
                       text={work.character ? work.character : "N/A"}
                       language={"pt"}
-                    />
+                    /> */}
+                    {work.character ? work.character : "N/A"}
                     <div>
                       <Link
                         href={{
@@ -241,7 +243,7 @@ export default function Personapi() {
                               : { tvShowId: work.id },
                         }}
                       >
-                        <a className={styles.button}>Detalhes</a>
+                        <a className={styles.button}>Details</a>
                       </Link>
                       <br />
                       <br />
@@ -253,7 +255,7 @@ export default function Personapi() {
               <>
                 <Divider />
                 <Heading as="h1" size="lg">
-                  Por Trás da Câmeras
+                  Behind The Cameras
                 </Heading>
                 <Divider />
               </>
@@ -290,13 +292,12 @@ export default function Personapi() {
                       height="360"
                     />
                     <br />
-                    <TranslateProfile
+                    {/* <TranslateProfile
                       text={workCrew.job ? workCrew.job : "N/A"}
                       language={"pt"}
-                    />
-
+                    /> */}
+                    {workCrew.job ? workCrew.job : "N/A"}
                     <br />
-
                     <div>
                       <Link
                         href={{
@@ -310,7 +311,7 @@ export default function Personapi() {
                               : { tvShowId: workCrew.id },
                         }}
                       >
-                        <a className={styles.button}>Detalhes</a>
+                        <a className={styles.button}>Details</a>
                       </Link>
                       <br />
                       <br />

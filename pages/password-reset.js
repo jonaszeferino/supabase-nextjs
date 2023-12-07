@@ -40,7 +40,7 @@ function PasswordReset() {
       if (error) {
         throw error;
       }
-      setAlertMessage("Senha Trocada");
+      setAlertMessage("Password Changed");
     } catch (e) {
       setAlertMessage(e.message);
     }
@@ -50,14 +50,12 @@ function PasswordReset() {
     <ChakraProvider>
       <>
         <Head>
-          <title>
-            Password Reset
-          </title>
+          <title>Password Reset</title>
           <meta
             name="keywords"
             content="movies,watch,review,series,filmes"
           ></meta>
-          <meta name="description" content="encontre filmes e series"></meta>
+          <meta name="description" content="find movies and tvshows"></meta>
         </Head>
         <LoggedUser />
       </>
@@ -70,7 +68,7 @@ function PasswordReset() {
           position="relative"
         >
           <Heading as="h1" size="xl" textAlign="center" mb={4}>
-            Reset de Senha
+            Password Reset{" "}
           </Heading>
           <FormControl>
             <FormLabel>Email</FormLabel>
@@ -81,7 +79,7 @@ function PasswordReset() {
             />
           </FormControl>
           <FormControl mt={4}>
-            <FormLabel>Senha</FormLabel>
+            <FormLabel>Password</FormLabel>
             <InputGroup>
               <Input
                 type={showPassword ? "text" : "password"}
@@ -115,9 +113,10 @@ function PasswordReset() {
             <ChakraProvider>
               <Alert status="info">
                 <AlertIcon />
-                {alertMessage === "Email not confirmed"
+                {/* {alertMessage === "Email not confirmed"
                   ? "E-mail Não Confirmado"
-                  : alertMessage}
+                  : alertMessage} */}
+                  {alertMessage}
               </Alert>
             </ChakraProvider>
           )}
