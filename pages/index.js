@@ -8,14 +8,14 @@ import { ChakraProvider, Progress, Button } from "@chakra-ui/react";
 import { BiSolidUpArrow } from "react-icons/bi";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
-import { supabase } from "../utils/supabaseClient"; // Importe o supabase aqui
+import { supabase } from "../utils/supabaseClient"; // 
 import { Tooltip } from "antd";
 import LoggedUser from "../components/LoggedUser";
-import FloatButton from "../components/FloatButton";
 import LoginAlert from "../components/LoginAlert";
+import CarouselComponent from '../components/carousel';
+
 
 export default function Home() {
-  let [movieId, setMovieId] = useState();
   let [searchMovies, setSearchMovies] = useState([]);
   let [page, setPage] = useState(1);
   let [isError, setError] = useState(false);
@@ -25,8 +25,7 @@ export default function Home() {
 
   const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
 
-  const urlString =
-    "https://api.themoviedb.org/3/trending/movie/week?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c";
+  const urlString = "https://api.themoviedb.org/3/trending/movie/week?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c";
 
   const apiCall = (currentPage) => {
     const url = urlString;
@@ -42,7 +41,7 @@ export default function Home() {
           setError(false);
           return response.json();
         } else {
-          throw new Error("Dados Incorretos");
+          throw new Error("Wrong data");
         }
       })
       .then((result) => {
@@ -74,7 +73,7 @@ export default function Home() {
           setError(false);
           return response.json();
         } else {
-          throw new Error("Dados Incorretos");
+          throw new Error("Wrong data");
         }
       })
       .then((result) => {
@@ -137,18 +136,17 @@ export default function Home() {
       {/* <SearchBar isLoading={isLoading} /> */}
 
       <div>
-        
         <LoggedUser />
         <LoginAlert />
-
+        {/* <CarouselComponent/> */}
         <div>
           <div className={styles.top}>
-            <h3 className={styles.title}> Filmes Destaques da Semana</h3>
+            <h3 className={styles.title}> Trending Movies of the Week</h3>
           </div>
           <h2 className={styles.label}>
             <br />
             <span className={styles.spantext}>
-              {isLoading ? <div>Carregando...</div> : " "}
+              {isLoading ? <div>Loading...</div> : " "}
             </span>
           </h2>
           {isError === true ? (
@@ -182,7 +180,7 @@ export default function Home() {
                         }}
                       >
                         <Tooltip
-                          title="Saiba Mais"
+                          title="Learn More"
                           style={{
                             color: "white",
                             borderColor: "purple",
@@ -240,7 +238,7 @@ export default function Home() {
         </div>
 
         <div className={styles.top}>
-          <h3 className={styles.title}> Series Destaques da Semana</h3>
+          <h3 className={styles.title}> Trending TV Shows of the Week</h3>
         </div>
         <div className={styles.grid}>
           {searchTv.map((searchtv) => (
@@ -262,7 +260,7 @@ export default function Home() {
                     }}
                   >
                     <Tooltip
-                      title="Saiba Mais"
+                      title="Learn More"
                       style={{
                         color: "white",
                         borderColor: "purple",

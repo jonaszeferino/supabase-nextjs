@@ -36,13 +36,15 @@ const MoviePage = () => {
     setMovieIdRequest(movieId);
     Promise.all([
       fetch(
-        `https://api.themoviedb.org/3/movie/${movieIdRequest}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`
+        `https://api.themoviedb.org/3/movie/${movieIdRequest}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c`
+        // `https://api.themoviedb.org/3/movie/${movieIdRequest}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`
       ),
       fetch(
         `https://api.themoviedb.org/3/movie/${movieIdRequest}/watch/providers?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c`
       ),
       fetch(
-        `https://api.themoviedb.org/3/movie/${movieIdRequest}/credits?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`
+        `https://api.themoviedb.org/3/movie/${movieIdRequest}/credits?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c`
+        // `https://api.themoviedb.org/3/movie/${movieIdRequest}/credits?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`
       ),
     ])
       .then(([resMovie, resProviders, resCredits]) =>
@@ -78,11 +80,8 @@ const MoviePage = () => {
           gender: dataMovies.genres
             ? dataMovies.genres.map((genre) => genre.name).join(", ")
             : "",
-
           adult: dataMovies.adult,
-
           imdb: dataMovies.imdb_id,
-
           providersBR: dataProviders.results
             ? dataProviders.results.BR
               ? dataProviders.results.BR.flatrate
@@ -108,7 +107,6 @@ const MoviePage = () => {
             dataMovies.production_countries[0]
               ? dataMovies.production_countries[0].name
               : "",
-
           originalLanguage: dataMovies.original_language,
         });
         setIsLoading(false);
@@ -116,7 +114,7 @@ const MoviePage = () => {
   }, [movieId, movieIdRequest]);
 
   if (isLoading) {
-    return <p>Carregando dados...</p>;
+    return <p>Loading...</p>;
   }
 
   let poster = "/callback.png";
@@ -143,7 +141,7 @@ const MoviePage = () => {
     <>
       {" "}
       <Head>
-        <title>Filme {data.originalTitle ?data.originalTitle : null }</title>
+        <title>Movie {data.originalTitle ? data.originalTitle : null}</title>
         <meta
           name="keywords"
           content="tvshow,watch,review, series, filmes"
@@ -191,18 +189,12 @@ const MoviePage = () => {
         <ChakraProvider>
           <TableContainer>
             <Table size="sm">
-              <Thead>
-                <Tr>
-                  <Th>Título Em Português</Th>
-                  <Td>{data.portugueseTitle}</Td>
-                </Tr>
-              </Thead>
               <Tbody>
                 <Tr>
                   <Th>
                     {data.budget === 0 || data.budget === null
                       ? null
-                      : `Orçamento:`}
+                      : `Budget:`}
                   </Th>
                   <Td>
                     {" "}
@@ -214,21 +206,19 @@ const MoviePage = () => {
                         }).format(data.budget)}`}
                   </Td>
                 </Tr>
-
                 <Tr>
                   <Th>Overview</Th>
-
                   <Td
                     style={{
                       whiteSpace: "pre-wrap",
                       maxWidth: "480px", // Defina um valor apropriado para o tamanho máximo
                     }}
                   >
-                    {data.overview ? data.overview : "Sem infos"}
+                    {data.overview ? data.overview : "No Infos"}
                   </Td>
                 </Tr>
                 <Tr>
-                  <Th>Direção</Th>
+                  <Th>Direction</Th>
                   <Td>
                     {data.directors ? (
                       <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
@@ -241,50 +231,50 @@ const MoviePage = () => {
                                 query: { personId: director.id },
                               }}
                             >
-                              <a style={{ color: "blue" }}>Ver trabalhos</a>
+                              <a style={{ color: "blue" }}>Jobs</a>
                             </Link>
                           </li>
                         ))}
                       </ul>
                     ) : (
-                      "Sem informações"
+                      "No Informations"
                     )}
                   </Td>
                 </Tr>
-
                 <Tr>
-                  <Th>Número de votos</Th>
+                  <Th>Rating Count</Th>
                   <Td>{data.ratingCount}</Td>
                 </Tr>
                 <Tr>
-                  <Th>Nota</Th>
+                  <Th>Average</Th>
                   <Td>{data.average}</Td>
                 </Tr>
-
                 <Tr>
                   <Th>IMDB</Th>
                   <Td>https://www.imdb.com/title/{data.imdb}</Td>
                 </Tr>
                 <Tr>
-                  <Th>País de Origem</Th>
-                  <Td>
+                  <Th>Country of Origin</Th>
+                  <Td>{data.country}</Td>
+                  {/* <Td>
                     <TranslationComponentCountryName
                       text={data.country}
                       language="pt"
                     />
-                  </Td>
+                  </Td> */}
                 </Tr>
                 <Tr>
-                  <Th>Idioma</Th>
-                  <Td>
+                  <Th>Language</Th>
+                  <Td>{data.originalLanguage}</Td>
+                  {/* <Td>
                     <TranslationComponent
                       text={data.originalLanguage}
                       language="pt"
                     />
-                  </Td>
+                  </Td> */}
                 </Tr>
                 <Tr>
-                  <Th>Data de Lançamento</Th>
+                  <Th>Release Date</Th>
                   <Td>
                     {data.releaseDate
                       ? format(new Date(data.releaseDate), " dd/MM/yyyy")
@@ -292,11 +282,11 @@ const MoviePage = () => {
                   </Td>
                 </Tr>
                 <Tr>
-                  <Th>Popularidade</Th>
+                  <Th>Popularity</Th>
                   <Td>{data.popularity}</Td>
                 </Tr>
                 <Tr>
-                  <Th>Generos</Th>
+                  <Th>Gender</Th>
                   <Td
                     style={{
                       whiteSpace: "pre-wrap",
@@ -306,7 +296,7 @@ const MoviePage = () => {
                     {data.gender}
                   </Td>
                 </Tr>
-                <Tr>
+                {/* <Tr>
                   <Th>Streamings Brasil</Th>
                   <Td
                     style={{
@@ -316,10 +306,9 @@ const MoviePage = () => {
                   >
                     {data.providersBR}
                   </Td>
-                </Tr>
-
+                </Tr> */}
                 <Tr>
-                  <Th>Streamings EUA</Th>
+                  <Th>Streamings USA</Th>
                   <Td
                     style={{
                       whiteSpace: "pre-wrap",
