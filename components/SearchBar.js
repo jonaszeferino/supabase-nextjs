@@ -6,7 +6,7 @@ import {
   Spinner,
   Text,
   ChakraProvider,
-  InputGroupm,
+  InputGroup,
   InputRightElement,
   Flex,
   useMediaQuery,
