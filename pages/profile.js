@@ -424,7 +424,6 @@ const Profile = () => {
                     )}
                   </FormControl>
 
-                  {/* Genero */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>Gender</FormLabel>
                     {genderEdit && (
@@ -832,18 +831,6 @@ const Profile = () => {
                       />
                     )}
                   </FormControl>
-
-                  {/* teste */}
-
-                  {/* <Input
-                    type="text"
-                    name="firstNameTeste"
-                    defaultValue={name}
-                    onChange={(e) => {
-                      setName(e.target.value);
-                    }}
-                    style={{ width: "100%" }}
-                  /> */}
                 </>
 
                 <Button
@@ -927,5 +914,7 @@ const Profile = () => {
     </ChakraProvider>
   );
 };
+
+//teste
 
 export default Profile;
