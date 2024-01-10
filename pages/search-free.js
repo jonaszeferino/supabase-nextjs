@@ -305,7 +305,6 @@ export default function Discovery() {
                     <br />
                   </span>
                 ) : null}
-
                 {showPerson && search.media_type === "person" ? (
                   <Link
                     href={{
@@ -324,7 +323,7 @@ export default function Discovery() {
                       query: { movieId: search.id },
                     }}
                   >
-                    Detalhes
+                    Details
                   </Link>
                 ) : null}
 
@@ -335,7 +334,7 @@ export default function Discovery() {
                       query: { tvShowId: search.id },
                     }}
                   >
-                    Detalhes
+                    Details
                   </Link>
                 ) : null}
 
@@ -356,7 +355,7 @@ export default function Discovery() {
             disabled={page <= 1}
             className={styles.button}
           >
-            Anterior
+            Back
           </button>
           <span className={styles.button}>
             {currentPage} / {totalPages}
@@ -366,12 +365,12 @@ export default function Discovery() {
             disabled={page >= totalPages}
             className={styles.button}
           >
-            Próxima
+            Next
           </button>
           <br />
           <br />
           <span className={styles.spantext}>
-            Total Resultados: {totalResults}
+            Total Results: {totalResults}
           </span>{" "}
         </span>
         {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}

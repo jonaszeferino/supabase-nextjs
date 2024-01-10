@@ -37,14 +37,12 @@ const MoviePage = () => {
     Promise.all([
       fetch(
         `https://api.themoviedb.org/3/movie/${movieIdRequest}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c`
-        // `https://api.themoviedb.org/3/movie/${movieIdRequest}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`
       ),
       fetch(
         `https://api.themoviedb.org/3/movie/${movieIdRequest}/watch/providers?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c`
       ),
       fetch(
         `https://api.themoviedb.org/3/movie/${movieIdRequest}/credits?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c`
-        // `https://api.themoviedb.org/3/movie/${movieIdRequest}/credits?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`
       ),
     ])
       .then(([resMovie, resProviders, resCredits]) =>
@@ -170,7 +168,7 @@ const MoviePage = () => {
           <span>
             <Image
               className={styles.card_image_big}
-              src={poster || "/callback.png"} // Usar poster se estiver definido, caso contrário, usar a imagem de callback
+              src={poster || "/callback.png"}
               alt="poster"
               width="480"
               height="720"
@@ -211,7 +209,7 @@ const MoviePage = () => {
                   <Td
                     style={{
                       whiteSpace: "pre-wrap",
-                      maxWidth: "480px", // Defina um valor apropriado para o tamanho máximo
+                      maxWidth: "480px", 
                     }}
                   >
                     {data.overview ? data.overview : "No Infos"}
@@ -290,29 +288,18 @@ const MoviePage = () => {
                   <Td
                     style={{
                       whiteSpace: "pre-wrap",
-                      maxWidth: "480px", // Defina um valor apropriado para o tamanho máximo
+                      maxWidth: "480px", 
                     }}
                   >
                     {data.gender}
                   </Td>
                 </Tr>
-                {/* <Tr>
-                  <Th>Streamings Brasil</Th>
-                  <Td
-                    style={{
-                      whiteSpace: "pre-wrap",
-                      maxWidth: "480px", // Defina um valor apropriado para o tamanho máximo
-                    }}
-                  >
-                    {data.providersBR}
-                  </Td>
-                </Tr> */}
                 <Tr>
                   <Th>Streamings USA</Th>
                   <Td
                     style={{
                       whiteSpace: "pre-wrap",
-                      maxWidth: "480px", // Defina um valor apropriado para o tamanho máximo
+                      maxWidth: "480px",
                     }}
                   >
                     {data.providersUS}

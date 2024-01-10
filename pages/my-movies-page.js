@@ -233,7 +233,6 @@ const MoviePage = () => {
                         <Td>
                           {movie.original_title}
                           <br />
-                          {/* <span>{movie.portuguese_title}</span> */}
                         </Td>
                         <Td>
                           {new Date(movie.like_date).toLocaleDateString()}

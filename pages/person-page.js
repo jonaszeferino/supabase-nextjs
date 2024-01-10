@@ -225,10 +225,7 @@ export default function Personapi() {
                       height="360"
                     />
                     <br />
-                    {/* <TranslateProfile
-                      text={work.character ? work.character : "N/A"}
-                      language={"pt"}
-                    /> */}
+
                     {work.character ? work.character : "N/A"}
                     <div>
                       <Link
@@ -275,7 +272,7 @@ export default function Personapi() {
                     )}
                     <br />
                     <span>
-                      {workCrew.media_type === "movie" ? "Cinema" : "Série"}
+                      {workCrew.media_type === "movie" ? "Cinema" : "Tv Show"}
                     </span>
                     <br />
 
@@ -292,10 +289,6 @@ export default function Personapi() {
                       height="360"
                     />
                     <br />
-                    {/* <TranslateProfile
-                      text={workCrew.job ? workCrew.job : "N/A"}
-                      language={"pt"}
-                    /> */}
                     {workCrew.job ? workCrew.job : "N/A"}
                     <br />
                     <div>
