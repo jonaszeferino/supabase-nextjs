@@ -100,7 +100,6 @@ export default function Home() {
     }
   }
 
-  //verificar a sessão
   useEffect(() => {
     let mounted = true;
     async function getInitialSession() {
@@ -133,38 +132,29 @@ export default function Home() {
         <meta name="keywords" content="movies,tvshows,"></meta>
         <meta name="description" content="movies,tvshows"></meta>
       </Head>
-      {/* <SearchBar isLoading={isLoading} /> */}
 
       <div>
         <LoggedUser />
         <LoginAlert />
-        {/* <CarouselComponent/> */}
+
         <div>
           <div className={styles.top}>
             <h3 className={styles.title}> Trending Movies of the Week</h3>
           </div>
-          <h2 className={styles.label}>
-            <br />
-            <span className={styles.spantext}>
-              {isLoading ? <div>Loading...</div> : " "}
-            </span>
-          </h2>
-          {isError === true ? (
-            <ErrorPage message={`Verifique as Credenciais`}></ErrorPage>
-          ) : (
-            <div className={styles.grid}>
-              {searchMovies.map((search) => (
-                <div key={search.id}>
-                  <span className={styles.spantext}></span>{" "}
-                  <span
-                    className={styles.spantext}
-                    style={{
-                      position: "relative",
-                      display: "block",
-                      width: "240px",
-                      height: "360px",
-                    }}
-                  >
+          <div className={styles.grid}>
+            {searchMovies.map((search) => (
+              <div key={search.id}>
+                <span className={styles.spantext}></span>
+                <span
+                  className={styles.spantext}
+                  style={{
+                    position: "relative",
+                    display: "block",
+                    width: "240px",
+                    height: "360px",
+                  }}
+                >
+                  <span>
                     <Link
                       href={{
                         pathname: "/movie-page",
@@ -191,7 +181,6 @@ export default function Home() {
                           height={360}
                         />
                       </Tooltip>
-
                       <span
                         style={{
                           position: "absolute",
@@ -209,78 +198,91 @@ export default function Home() {
                       </span>
                     </Link>
                   </span>
-                  <div style={{ maxWidth: "240px", margin: "5px" }}>
-                    <ChakraProvider>
-                      <Progress
-                        hasStripe
-                        value={search.vote_average}
-                        max={10}
-                        colorScheme={getProgressColor(search.vote_average)}
-                      />
-                    </ChakraProvider>
-                    {search.vote_average}
-                  </div>
-                  <br />
+                </span>
+
+                <div style={{ maxWidth: "240px", margin: "5px" }}>
+                  <ChakraProvider>
+                    <Progress
+                      hasStripe
+                      value={search.vote_average}
+                      max={10}
+                      colorScheme={getProgressColor(search.vote_average)}
+                    />
+                  </ChakraProvider>
+                  {search.vote_average}
                 </div>
-              ))}
-            </div>
-          )}
+                <br />
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className={styles.top}>
           <h3 className={styles.title}> Trending TV Shows of the Week</h3>
         </div>
+
         <div className={styles.grid}>
+          <span className={styles.spantext}></span>
+
           {searchTv.map((searchtv) => (
             <div key={searchtv.id}>
               <br />
-              <span>
-                <Link
-                  href={{
-                    pathname: "/tvshow-page",
-                    query: { tvShowId: searchtv.id },
-                  }}
-                >
-                  <Tooltip
-                    title="Learn More"
-                    style={{
-                      color: "white",
-                      borderColor: "purple",
-                      background: "purple",
+
+              <span
+                className={styles.spantext}
+                style={{
+                  position: "relative",
+                  display: "block",
+                  width: "240px",
+                  height: "360px",
+                }}
+              >
+                <span>
+                  <Link
+                    href={{
+                      pathname: "/tvshow-page",
+                      query: { tvShowId: searchtv.id },
                     }}
                   >
-                    <Image
-                      className={styles.card_image}
-                      src={
-                        searchtv.poster_path
-                          ? `https://image.tmdb.org/t/p/original${searchtv.poster_path}`
-                          : "/callback.png"
-                      }
-                      alt="poster"
-                      width={240}
-                      height={360}
-                    />
-                  </Tooltip>
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      background: "rgba(0, 0, 0, 0.5)",
-                      color: "white",
-                      textAlign: "center",
-                      padding: "8px 0",
-                      boxSizing: "border-box",
-                      maxHeight: "40%",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {searchtv.original_name}
-                  </span>
-                </Link>
+                    <Tooltip
+                      title="Learn More"
+                      style={{
+                        color: "white",
+                        borderColor: "purple",
+                        background: "purple",
+                      }}
+                    >
+                      <Image
+                        className={styles.card_image}
+                        src={
+                          searchtv.poster_path
+                            ? `https://image.tmdb.org/t/p/original${searchtv.poster_path}`
+                            : "/callback.png"
+                        }
+                        alt="poster"
+                        width={240}
+                        height={360}
+                      />
+                    </Tooltip>
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        background: "rgba(0, 0, 0, 0.5)",
+                        color: "white",
+                        textAlign: "center",
+                        padding: "8px 0",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      {searchtv.original_name}
+                    </span>
+                  </Link>
+                </span>
               </span>
+
               <div style={{ maxWidth: "240px", margin: "5px" }}>
                 <ChakraProvider>
                   <Progress
