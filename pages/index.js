@@ -25,7 +25,7 @@ export default function Home() {
   const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
 
   const urlString =
-    "https://api.themoviedb.org/3/trending/movie/week?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c";
+    "https://api.themoviedb.org/3/trending/movie/week";
 
   const apiCall = (currentPage) => {
     const url = urlString;
@@ -34,6 +34,7 @@ export default function Home() {
     fetch(url, {
       headers: new Headers({
         "Content-Type": "application/json",
+        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
       }),
     })
       .then((response) => {

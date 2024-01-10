@@ -32,17 +32,37 @@ const MoviePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
 
+
+
   useEffect(() => {
     setMovieIdRequest(movieId);
     Promise.all([
       fetch(
-        `https://api.themoviedb.org/3/movie/${movieIdRequest}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c`
+        `https://api.themoviedb.org/3/movie/${movieIdRequest}`,
+        {
+          headers: new Headers({
+            "Content-Type": "application/json",
+            Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
+          }),
+        }
       ),
       fetch(
-        `https://api.themoviedb.org/3/movie/${movieIdRequest}/watch/providers?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c`
+        `https://api.themoviedb.org/3/movie/${movieIdRequest}/watch/providers`,
+        {
+          headers: new Headers({
+            "Content-Type": "application/json",
+            Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
+          }),
+        }
       ),
       fetch(
-        `https://api.themoviedb.org/3/movie/${movieIdRequest}/credits?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c`
+        `https://api.themoviedb.org/3/movie/${movieIdRequest}/credits`,
+        {
+          headers: new Headers({
+            "Content-Type": "application/json",
+            Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
+          }),
+        }
       ),
     ])
       .then(([resMovie, resProviders, resCredits]) =>
