@@ -115,11 +115,11 @@ const MobileNavbar = () => {
                   <ChevronRightIcon /> Discover Tv Shows
                 </span>
               </Link>
-              <Link href="/where-is-my-movie">
+              {/* <Link href="/where-is-my-movie">
                 <span>
                   <ChevronRightIcon /> Where is My Movie?
                 </span>
-              </Link>
+              </Link> */}
               {session ? (
                 <>
                   <Link href="/profile">

@@ -4,13 +4,14 @@
   font-family: "JetBrains Mono", monospace;
   font-size: large;
   display: flex;
-  /* background-image: linear-gradient(to right, #ffffff, #ffffff); */
-  background-image: linear-gradient(to right, #7f5ad5, #7457b8); 
+  
+          
+  background-color: #7657be;
   padding: 40px 20px;
   margin-top: 0%;
   text-align: center;
   justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  
   color: aliceblue;
 }
 

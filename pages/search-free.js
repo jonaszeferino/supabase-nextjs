@@ -29,15 +29,10 @@ import LoggedUser from "../components/LoggedUser";
 export default function Discovery() {
   const router = useRouter();
   const { query } = router.query;
-
   let [movieId, setMovieId] = useState();
   let [searchMovies, setSearchMovies] = useState([]);
-
   const [searchText, setSearchText] = useState(router.query.query || "");
-
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
-
-  console.log(query);
 
   //paginação
   let [page, setPage] = useState(1);
@@ -62,11 +57,12 @@ export default function Discovery() {
       setIsLoading(true);
       setError(false);
 
-      const url = `https://api.themoviedb.org/3/search/multi?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR&query=${searchText}&include_adult=false`;
+      const url = `https://api.themoviedb.org/3/search/multi?&query=${searchText}&include_adult=false&page=${page}`;
 
       fetch(url, {
         headers: new Headers({
           "Content-Type": "application/json",
+          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
         }),
       })
         .then((response) => {
@@ -82,7 +78,7 @@ export default function Discovery() {
           setSearchMovieTotalPages(result.total_pages);
           setSearchMovieRealPage(1);
           setSearchMovieTotalResults(result.total_results);
-          setPage(1);
+
           setIsLoading(false);
         })
         .catch((error) => setError(true));
@@ -91,14 +87,16 @@ export default function Discovery() {
     if (searchText) {
       apiCall();
     }
-  }, [searchText]);
+  }, [searchText,page]);
 
   const nextPage = () => {
     setPage((prevPage) => prevPage + 1);
+    setSearchMovieRealPage((prevPage) => prevPage + 1);
   };
 
   const previousPage = () => {
     setPage((prevPage) => prevPage - 1);
+    setSearchMovieRealPage((prevPage) => prevPage - 1);
   };
 
   let totalPages = searchMovieTotalPages;
@@ -120,7 +118,7 @@ export default function Discovery() {
   return (
     <>
       <Head>
-        <title>Busca Livre</title>
+        <title>Free Search</title>
         <meta
           name="keywords"
           content="movies,watch,review,series,filmes"
@@ -144,7 +142,7 @@ export default function Discovery() {
                   colorScheme={showMovies ? "blue" : "gray"}
                   onClick={handleMoviesClick}
                 >
-                  Filmes
+                  Movies
                 </Button>
               </Tooltip>
 
@@ -153,7 +151,7 @@ export default function Discovery() {
                   colorScheme={showTvShows ? "green" : "gray"}
                   onClick={handleTvShowsClick}
                 >
-                  Séries
+                  Tv Shows
                 </Button>
               </Tooltip>
 
@@ -162,7 +160,7 @@ export default function Discovery() {
                   colorScheme={showPerson ? "yellow" : "gray"}
                   onClick={handlePersonClick}
                 >
-                  Pessoas
+                  Persons
                 </Button>
               </Tooltip>
             </HStack>
@@ -172,7 +170,7 @@ export default function Discovery() {
               <br />
 
               <Text>
-                Termo de Busca: <strong>{searchText}</strong>
+                Search Term <strong>{searchText}</strong>
               </Text>
               <br />
 
@@ -312,7 +310,7 @@ export default function Discovery() {
                       query: { personId: search.id },
                     }}
                   >
-                    Detalhes
+                    Details
                   </Link>
                 ) : null}
 

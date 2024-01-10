@@ -56,6 +56,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
 
   return (
     <>
+      <SearchBar isLoading={isLoading} />
       <ul className={styles.navbar}>
         <li>
           <Link href="/">| Home</Link>
@@ -69,12 +70,12 @@ export default function Navbar({ isLoading, onAuthenticated }) {
         <li>
           <Link href="/search-tvshows">| Discover Tv Shows</Link>
         </li>
-        <li>
+        {/* <li>
           <Link href="/where-is-my-movie">| Where is My Movie? |</Link>
-        </li>
+        </li> */}
         <br />
         <li>
-          <button onClick={onOpen}>Login |</button>
+          <button onClick={onOpen}>| Login |</button>
         </li>
         <li>
           <Modal isOpen={isOpen} onClose={onClose}>
@@ -144,7 +145,6 @@ export default function Navbar({ isLoading, onAuthenticated }) {
           </li>
         ) : null}
       </ul>
-      <SearchBar isLoading={isLoading} />
     </>
   );
 }
