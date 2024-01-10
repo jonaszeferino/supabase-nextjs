@@ -14,7 +14,6 @@ import {
   FormControl,
   Flex,
   Box,
-  IconButton,
   Center,
 } from "@chakra-ui/react";
 import { BiSolidUpArrow } from "react-icons/bi";
@@ -69,9 +68,6 @@ export default function Discovery() {
   const apiCall = (currentPage) => {
     const url = urlString + "&page=" + currentPage;
     setIsLoading(true);
-
-    console.log(url + " o que chamou");
-    console.log(movieId + "Id dos filmes");
 
     fetch(url, {
       headers: new Headers({
@@ -374,14 +370,14 @@ export default function Discovery() {
   return (
     <>
       <Head>
-        <title>Descubra Filmes</title>
+        <title>Discover Movies</title>
         <meta name="keywords" content="movies,filmes,watch,review"></meta>
         <meta name="description" content="encontre tudo"></meta>
       </Head>
       <div>
         <LoggedUser />
         <div className={styles.top}>
-          <h3 className={styles.title}> Descubra Filmes</h3>
+          <h3 className={styles.title}>Discover Movies</h3>
         </div>
         <br />
 
@@ -401,47 +397,50 @@ export default function Discovery() {
             }}
           >
             <ChakraProvider>
-              <FormLabel htmlFor="ordenation">Ordenação do Resultado</FormLabel>
+              <FormLabel htmlFor="ordenation">Order By</FormLabel>
               <Select
                 id="ordenation"
-                placeholder="Ordenação"
+                placeholder="Ordenation"
                 type="text"
                 isRequired={true}
                 value={searchRatingSort}
                 onChange={(event) => setSearchRatingSort(event.target.value)}
               >
                 <option value="vote_average.asc">
-                  Da Pior Nota Para Melhor
+                  From Worst Rating to Best
                 </option>
                 <option value="vote_average.desc">
-                  Da Melhor Nota Para Pior
+                  From Best Rating to Worst
                 </option>
               </Select>
             </ChakraProvider>
             <br />
             <ChakraProvider>
-              <FormLabel htmlFor="votes">Range de Votos</FormLabel>
+              <FormLabel htmlFor="votes">Vote Range</FormLabel>
               <Select
                 id="votes"
-                placeholder="Número de Votos"
+                placeholder="Number of Votes"
                 type="number"
                 isRequired={true}
                 value={searchVoteCount}
                 onChange={(event) => setSearchVoteCount(event.target.value)}
               >
-                <option value="0">0 Votos</option>
-                <option value="50">Mais de 50</option>
-                <option value="100">Mais de 100</option>
-                <option value="200">Mais de 200</option>
-                <option value="500">Mais de 500</option>
-                <option value="1000">Mais de 1000</option>
-                <option value="5000">Mais de 5000</option>
+                <option value="0">0 Votes</option>
+                <option value="50">More than 50</option>
+                <option value="100">More than 100</option>
+                <option value="200">More than 200</option>
+                <option value="500">More than 500</option>
+                <option value="1000">More than 1000</option>
+                <option value="5000">More than 5000</option>
               </Select>
             </ChakraProvider>
             <br />
             <ChakraProvider>
               <FormControl>
-                <FormLabel>Ano Inicial e Final:</FormLabel>
+                <Center>
+                  <FormLabel>Initial and Final Year:</FormLabel>
+                </Center>
+
                 <Flex align="center">
                   <Select value={searchMovieReleaseDateFrom}>
                     {Array.from({ length: 2024 - 1900 + 1 }, (_, index) => (
@@ -464,10 +463,11 @@ export default function Discovery() {
 
             <br />
             <ChakraProvider>
-              <FormLabel htmlFor="origin_country">País de Origem</FormLabel>
+              <FormLabel htmlFor="origin_country">Country of Origin</FormLabel>
+
               <Select
                 id="origin_country"
-                placeholder="Selecione o País"
+                placeholder="Select Country"
                 value={searchFilters.with_origin_country}
                 onChange={(event) =>
                   setSearchFilters({
@@ -491,7 +491,7 @@ export default function Discovery() {
                 mt="24px"
                 onClick={apiCall}
               >
-                Verificar
+                Go
               </Button>
             </ChakraProvider>
           </div>
@@ -506,14 +506,14 @@ export default function Discovery() {
               disabled={page <= 1}
               className={styles.card}
             >
-              Anterior
+              Back
             </button>
             <button
               onClick={nextPage}
               disabled={page >= totalPages}
               className={styles.card}
             >
-              Próxima
+              Next
             </button>
           </div>
         ) : (
@@ -549,7 +549,7 @@ export default function Discovery() {
                     }}
                   >
                     <Tooltip
-                      title="Saiba Mais"
+                      title="More"
                       style={{
                         color: "white",
                         borderColor: "purple",
@@ -611,14 +611,14 @@ export default function Discovery() {
                 disabled={page <= 1}
                 className={styles.card}
               >
-                Anterior
+                Back
               </button>
               <button
                 onClick={nextPage}
                 disabled={page >= totalPages}
                 className={styles.card}
               >
-                Próxima
+                Next
               </button>
             </div>
           ) : (
@@ -627,14 +627,10 @@ export default function Discovery() {
           <br />
           {!searchMovies ? (
             <div>
+              <span className={styles.spantext}>Total Pages {totalPages} </span>{" "}
+              <span className={styles.spantext}>Page {currentPage}</span>{" "}
               <span className={styles.spantext}>
-                Total Paginas: {totalPages}{" "}
-              </span>{" "}
-              <span className={styles.spantext}>
-                Pagina Atual: {currentPage}
-              </span>{" "}
-              <span className={styles.spantext}>
-                Total Resultados: {totalResults}
+                Total Results: {totalResults}
               </span>{" "}
             </div>
           ) : (
@@ -649,7 +645,7 @@ export default function Discovery() {
               disabled={page <= 1}
               className={styles.button}
             >
-              Anterior
+              Back
             </button>
             <span className={styles.button}>
               {currentPage} / {totalPages}
@@ -659,12 +655,12 @@ export default function Discovery() {
               disabled={page >= totalPages}
               className={styles.button}
             >
-              Próxima
+              Next
             </button>
             <br />
             <br />
             <span className={styles.spantext}>
-              Total Resultados: {totalResults}
+              Total Results: {totalResults}
             </span>{" "}
           </span>
         ) : (
