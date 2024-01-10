@@ -297,7 +297,7 @@ const MoviePage = () => {
                   <div key={work.id} className={styles.gridItem}>
                     <br />
                     <span>
-                      T{work.season_number} Name {work.name}
+                      S{work.season_number} {work.name}
                     </span>
                     <br />
                     <span>Episodes Number {work.episode_count}</span>

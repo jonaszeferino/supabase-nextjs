@@ -30,16 +30,22 @@ const MoviePage = () => {
 
   useEffect(() => {
     const CallDataTvShowsDetails = () => {
-      const url = `https://api.themoviedb.org/3/tv/${tvShowId}/season/${tvShowSeasonId}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`;
+      const url = `https://api.themoviedb.org/3/tv/${tvShowId}/season/${tvShowSeasonId}`;
+      const tmdbBearer = process.env.NEXT_PUBLIC_TMDB_BEARER;
 
-      fetch(url)
+      fetch(url, {
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: tmdbBearer,
+        }),
+      })
         .then((response) => {
           if (response.status === 200) {
             return response.json();
           } else if (response.status === 404) {
-            throw new Error("Temporada não encontrada");
+            throw new Error("Season not found");
           } else {
-            throw new Error("Ocorreu um erro ao buscar os dados");
+            throw new Error("An error occurred while fetching the data");
           }
         })
         .then((result) => {
@@ -56,15 +62,16 @@ const MoviePage = () => {
       CallDataTvShowsDetails();
     }
   }, [tvShowId, tvShowSeasonId]);
+
   if (isLoading) {
-    return <p>Carregando dados...</p>;
+    return <p>Loading data...</p>;
   }
 
   return (
     <>
       <ChakraProvider>
         <Head>
-          <title>Series Episódios</title>
+          <title>Tv Shows Episodes</title>
           <meta
             name="keywords"
             content="tvshow,watch,review, series, filmes"
@@ -88,7 +95,7 @@ const MoviePage = () => {
                   >
                     <Box my="6" textAlign="center">
                       <Text fontSize="xl" fontWeight="semibold">
-                        {episode.name} - T{tvShowSeasonId} E
+                        {episode.name} S{tvShowSeasonId} E
                         {episode.episode_number}
                       </Text>
                       <Box
@@ -137,7 +144,7 @@ const MoviePage = () => {
                                 </Td>
                               </Tr>
                               <Tr>
-                                <Td>Avarage</Td>
+                                <Td>Average</Td>
                                 <Td>{episode.vote_average}</Td>
                               </Tr>
                               <Tr>
@@ -153,7 +160,7 @@ const MoviePage = () => {
                                           <div key={`writer-${index}`}>
                                             {TranslateProfile({
                                               text: "Writer",
-                                              language: "pt",
+                                              language: "en",
                                             })}
                                             : {writer.name}
                                           </div>
@@ -166,7 +173,7 @@ const MoviePage = () => {
                                           <div key={`director-${index}`}>
                                             {TranslateProfile({
                                               text: "Director",
-                                              language: "pt",
+                                              language: "en",
                                             })}
                                             : {director.name}
                                           </div>
@@ -184,7 +191,8 @@ const MoviePage = () => {
                 ))
               ) : (
                 <Text fontSize="xl" fontWeight="semibold" textAlign="center">
-No Epsisodes                </Text>
+                  No Epsisodes{" "}
+                </Text>
               )}
             </div>
             {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
