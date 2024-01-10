@@ -99,11 +99,9 @@ export default function Discovery() {
       .catch((error) => setError(true));
   };
 
-  //pagination
   const nextPage = (event) => {
     setPage(page + 1), apiCall(page + 1);
   };
-
   const previousPage = (event) => {
     setPage(page - 1), apiCall();
   };

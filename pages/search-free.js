@@ -131,7 +131,7 @@ export default function Discovery() {
         <LoggedUser />
 
         <div className={styles.top}>
-          <h3 className={styles.title}> Busca Livre</h3>
+          <h3 className={styles.title}>Free Search</h3>
         </div>
         <br />
         <ChakraProvider>

@@ -45,7 +45,7 @@ export default function Discovery() {
     ratingSort: "vote_average.desc",
     voteCount: 5000,
     releaseDateFrom: 1800,
-    releaseDateTo: 2023,
+    releaseDateTo: 2024,
     with_origin_country: "NOTHING",
   });
 
