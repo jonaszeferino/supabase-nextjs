@@ -105,15 +105,18 @@ const MoviePage = () => {
       fetch(`https://api.themoviedb.org/3/movie/${movieIdSearch}`, {
         headers: new Headers({
           "Content-Type": "application/json",
-          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
+          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
         }),
       }),
-      fetch(`https://api.themoviedb.org/3/movie/${movieIdSearch}/watch/providers`, {
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
-        }),
-      }),
+      fetch(
+        `https://api.themoviedb.org/3/movie/${movieIdSearch}/watch/providers`,
+        {
+          headers: new Headers({
+            "Content-Type": "application/json",
+            Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
+          }),
+        }
+      ),
     ])
       .then(([resMovie, resProviders]) =>
         Promise.all([resMovie.json(), resProviders.json()])
@@ -238,10 +241,7 @@ const MoviePage = () => {
 
         <LoggedUser />
         <div className={styles.top}>
-          <h3 className={styles.title}>Onde Está Meu Filme?</h3>
-          {/* <span>
-            Verifique em qual lugar do mundo seu filme está disponível
-          </span> */}
+          <h3 className={styles.title}>Where Is My Movie?</h3>
         </div>
         <br />
         <br />
@@ -255,7 +255,7 @@ const MoviePage = () => {
         >
           <InputGroup>
             <Input
-              placeholder="Digite o nome do filme"
+              placeholder="Movie Name"
               value={movieSearchQuery}
               onChange={(e) => setMovieSearchQuery(e.target.value)}
             />
@@ -264,15 +264,15 @@ const MoviePage = () => {
               <SearchIcon color="black" margin={3} />
 
               <Button colorScheme="purple" onClick={apiCall}>
-                Pesquisar
+                Go
               </Button>
             </InputRightElement>
           </InputGroup>
           <Text>
             {totals === 0 ? (
               <>
-                Sem resultados para a busca: <strong>{movieSearchQuery}</strong>{" "}
-                - Tente outro termo!
+                No Results: <strong>{movieSearchQuery}</strong> - Try Another
+                Term!
               </>
             ) : (
               ""
@@ -282,10 +282,10 @@ const MoviePage = () => {
             <Table>
               <Thead>
                 <Tr>
-                  <Th>Título</Th>
-                  <Th>Título Original</Th>
+                  <Th>Title</Th>
+                  <Th>Title Original</Th>
                   <Th>Poster</Th>
-                  <Th>Selecionar</Th>
+                  <Th>Select</Th>
                 </Tr>
               </Thead>
 
@@ -327,7 +327,7 @@ const MoviePage = () => {
           ) : null}
           {totals > 0 ? (
             <Button colorScheme="purple" onClick={fetchData}>
-              Verificar Os Streamings
+              Streamings
             </Button>
           ) : null}
         </div>
@@ -375,9 +375,9 @@ const MoviePage = () => {
           <ChakraProvider>
             <br />
             <span>
-              Clique nos tipos abaixo pra verificar as listas completas por
-              países
+              Click on the types below to check the complete lists by countries.
             </span>
+
             <br />
             <br />
 
@@ -402,14 +402,14 @@ const MoviePage = () => {
                     colorScheme={exibirTabelaRent ? "gray" : "blue"}
                     color={exibirTabelaRent ? "black" : "white"}
                   >
-                    {exibirTabelaRent ? "Para Aluguel" : "Para Aluguel"}
+                    {exibirTabelaRent ? "To Rent" : "To Rent"}
                   </Button>
                   <Button
                     onClick={handleExibirTabelaBuy}
                     colorScheme={exibirTabelaBuy ? "gray" : "purple"}
                     color={exibirTabelaBuy ? "black" : "white"}
                   >
-                    {exibirTabelaBuy ? "Compra" : "Compra"}
+                    {exibirTabelaBuy ? "Buy" : "Buy"}
                   </Button>
                 </Stack>
               </Center>
@@ -422,15 +422,15 @@ const MoviePage = () => {
                     color={exibirTabelaAds ? "black" : "white"}
                   >
                     {exibirTabelaAds
-                      ? "Gratuita com Anúncios"
-                      : "Gratuita com Anúncios"}
+                      ? "Free With Adds"
+                      : "Free With Adds"}
                   </Button>
                   <Button
                     onClick={handleExibirTabelaFree}
                     colorScheme={exibirTabelaFree ? "gray" : "purple"}
                     color={exibirTabelaFree ? "black" : "white"}
                   >
-                    {exibirTabelaFree ? "Forma Gratuita" : "Forma Gratuita"}
+                    {exibirTabelaFree ? "Free" : "Free"}
                   </Button>
                 </Stack>
               </Center>
