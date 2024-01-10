@@ -42,9 +42,9 @@ export default function Movieapi() {
   const [likeThanks, setLikeThanks] = useState(false);
   const [dateNow, setDatenow] = useState(new Date());
 
-  const [starValue, setStarValue] = useState(0); // Estado para armazenar o valor das estrelas
-  const [isRatingSubmitted, setIsRatingSubmitted] = useState(false); // Estado para controlar se a avaliação foi enviada
-  const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
+  const [starValue, setStarValue] = useState(0);
+  const [isRatingSubmitted, setIsRatingSubmitted] = useState(false); 
+  const { showBackToTopButton, scrollToTop } = useBackToTopButton(); 
 
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
@@ -352,7 +352,7 @@ export default function Movieapi() {
                 )}
                 {movieData.portugueseTitle && (
                   <Link href={destino}>
-                    <a className={styles.button}>Detalhes</a>
+                    Detalhes
                   </Link>
                 )}
                 <br />

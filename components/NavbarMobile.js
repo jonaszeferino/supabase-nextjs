@@ -107,12 +107,12 @@ const MobileNavbar = () => {
               </Link>
               <Link href="/search-movies">
                 <span>
-                  <ChevronRightIcon /> Discovery Movies
+                  <ChevronRightIcon /> Discover Movies
                 </span>
               </Link>
               <Link href="/search-tvshows">
                 <span>
-                  <ChevronRightIcon /> Find Tv Shows
+                  <ChevronRightIcon /> Discover Tv Shows
                 </span>
               </Link>
               <Link href="/where-is-my-movie">

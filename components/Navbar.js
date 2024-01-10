@@ -1,9 +1,7 @@
-import Link from "next/link";
 import styles from "../styles/Navbar.module.css";
 import Auth from "./Auth";
 import { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
-
 import { supabase } from "../utils/supabaseClient";
 import SearchBar from "./SearchBar";
 import {
@@ -12,7 +10,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
+  Link,
   useDisclosure,
   IconButton,
   Button,
@@ -21,8 +19,6 @@ import {
   MenuList,
   MenuItem,
   ChakraProvider,
-  ModalCloseButton,
-  Center,
 } from "@chakra-ui/react";
 
 import { ChevronDownIcon } from "@chakra-ui/icons";
@@ -62,29 +58,19 @@ export default function Navbar({ isLoading, onAuthenticated }) {
     <>
       <ul className={styles.navbar}>
         <li>
-          <Link href="/">
-            <a>| Home</a>
-          </Link>
+          <Link href="/">| Home</Link>
         </li>
         <li>
-          <Link href="/watch-today">
-            <a>| What to Watch Today?</a>
-          </Link>
+          <Link href="/watch-today">| What to Watch Today?</Link>
         </li>
         <li>
-          <Link href="/search-movies">
-            <a>| Discovery Movies</a>
-          </Link>
+          <Link href="/search-movies">| Discover Movies</Link>
         </li>
         <li>
-          <Link href="/search-tvshows">
-            <a>| Find Tv Shows</a>
-          </Link>
+          <Link href="/search-tvshows">| Discover Tv Shows</Link>
         </li>
         <li>
-          <Link href="/where-is-my-movie">
-            <a>| Where is My Movie? |</a>
-          </Link>
+          <Link href="/where-is-my-movie">| Where is My Movie? |</Link>
         </li>
         <br />
         <li>
@@ -146,20 +132,10 @@ export default function Navbar({ isLoading, onAuthenticated }) {
                   </MenuButton>
                   <MenuList>
                     <MenuItem>
-                      <Link href="/profile">
-                        <a
-                          style={{ background: "#7657bd", paddingLeft: "10px" }}
-                        >
-                          Data
-                        </a>
-                      </Link>
+                      <Link href="/profile">Data</Link>
                     </MenuItem>
                     <MenuItem>
-                      <Link href="/my-movies-page">
-                        <a style={{ background: "#7657bd", padding: "10px" }}>
-                          My Ratings
-                        </a>
-                      </Link>
+                      <Link href="/my-movies-page">My Ratings</Link>
                     </MenuItem>
                   </MenuList>
                 </>

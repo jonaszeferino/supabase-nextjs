@@ -48,7 +48,7 @@ const LoginAlert = () => {
             action={
               <Button size="small" type="text">
                 <Link href="/signUp">
-                  <a>Go to Login Page</a>
+                  Go to Login Page
                 </Link>
               </Button>
             }

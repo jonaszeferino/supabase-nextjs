@@ -548,51 +548,42 @@ export default function Discovery() {
                       query: { movieId: search.id },
                     }}
                   >
-                    <a
+                    <Tooltip
+                      title="Saiba Mais"
                       style={{
-                        position: "relative",
-                        width: "240px",
-                        height: "360px",
-                        display: "block",
+                        color: "white",
+                        borderColor: "purple",
+                        background: "purple",
                       }}
                     >
-                      <Tooltip
-                        title="Saiba Mais"
-                        style={{
-                          color: "white",
-                          borderColor: "purple",
-                          background: "purple",
-                        }}
-                      >
-                        <Image
-                          className={styles.card_image}
-                          src={
-                            search.poster_path
-                              ? `https://image.tmdb.org/t/p/original${search.poster_path}`
-                              : "/callback.png"
-                          }
-                          alt="poster"
-                          width={240}
-                          height={360}
-                        />
-                      </Tooltip>
+                      <Image
+                        className={styles.card_image}
+                        src={
+                          search.poster_path
+                            ? `https://image.tmdb.org/t/p/original${search.poster_path}`
+                            : "/callback.png"
+                        }
+                        alt="poster"
+                        width={240}
+                        height={360}
+                      />
+                    </Tooltip>
 
-                      <span
-                        style={{
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                          width: "100%",
-                          background: "rgba(0, 0, 0, 0.5)",
-                          color: "white",
-                          textAlign: "center",
-                          padding: "8px 0",
-                          boxSizing: "border-box",
-                        }}
-                      >
-                        {search.title}
-                      </span>
-                    </a>
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        background: "rgba(0, 0, 0, 0.5)",
+                        color: "white",
+                        textAlign: "center",
+                        padding: "8px 0",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      {search.title}
+                    </span>
                   </Link>
                 </span>
                 <div style={{ maxWidth: "240px", margin: "5px" }}>

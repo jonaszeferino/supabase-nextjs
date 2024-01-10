@@ -321,7 +321,7 @@ const MoviePage = () => {
                           },
                         }}
                       >
-                        <a className={styles.button}>Episódios</a>
+                        Episódios
                       </Link>
                       <br />
                     </div>

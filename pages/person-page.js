@@ -243,7 +243,7 @@ export default function Personapi() {
                               : { tvShowId: work.id },
                         }}
                       >
-                        <a className={styles.button}>Details</a>
+                        Details
                       </Link>
                       <br />
                       <br />
@@ -311,7 +311,7 @@ export default function Personapi() {
                               : { tvShowId: workCrew.id },
                         }}
                       >
-                        <a className={styles.button}>Details</a>
+                        Details
                       </Link>
                       <br />
                       <br />

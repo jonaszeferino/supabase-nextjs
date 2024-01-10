@@ -72,7 +72,6 @@ const MoviePage = () => {
     );
 
   const apiCall = () => {
-    // setMovieSearchQuery(null)
     Clean();
     const url = `https://api.themoviedb.org/3/search/movie?query=${movieSearchQuery}&include_adult=false&language=pt-BR&page=1`;
     setIsLoading(true);
@@ -80,8 +79,7 @@ const MoviePage = () => {
     fetch(url, {
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZDEwYmIyZmJjMTJkZmI2MjlhMGNiYWEzZjQ3ODEwYyIsInN1YiI6IjYzYTY2YmRiZWVhMzRkMDA5MDVlNzQ0NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.R2dOkW2sjiG0957GpRYFpWQJcfGC_WBHFs5lIKEYGlE",
+        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
       },
     })
       .then((response) => {
@@ -225,7 +223,10 @@ const MoviePage = () => {
       <ChakraProvider>
         <Head>
           <title>Onde está meu filme</title>
-          <meta name="keywords" content="tvshow,watch,review, series, filmes"></meta>
+          <meta
+            name="keywords"
+            content="tvshow,watch,review, series, filmes"
+          ></meta>
           <meta name="description" content="filmes, series,"></meta>
         </Head>
 

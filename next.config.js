@@ -1,5 +1,3 @@
-
-
 module.exports = {
   images: {
     domains: [
@@ -10,8 +8,8 @@ module.exports = {
   },
 
   experimental: {
-    forceSwcTransforms: true,
-    newNextLinkBehavior: false,
+    //forceSwcTransforms: true,
+    //newNextLinkBehavior: false,
   },
 };
 

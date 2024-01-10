@@ -121,7 +121,10 @@ export default function Discovery() {
     <>
       <Head>
         <title>Busca Livre</title>
-        <meta name="keywords" content="movies,watch,review,series,filmes"></meta>
+        <meta
+          name="keywords"
+          content="movies,watch,review,series,filmes"
+        ></meta>
         <meta name="description" content="encontre filmes e series"></meta>
       </Head>
 
@@ -310,12 +313,7 @@ export default function Discovery() {
                       query: { personId: search.id },
                     }}
                   >
-                    <a
-                      className={styles.button}
-                      style={{ backgroundColor: "#ebc94a", color: "white" }}
-                    >
-                      Detalhes
-                    </a>
+                    Detalhes
                   </Link>
                 ) : null}
 
@@ -326,12 +324,7 @@ export default function Discovery() {
                       query: { movieId: search.id },
                     }}
                   >
-                    <a
-                      className={styles.button}
-                      style={{ backgroundColor: "#3182ce", color: "white" }}
-                    >
-                      Detalhes
-                    </a>
+                    Detalhes
                   </Link>
                 ) : null}
 
@@ -342,12 +335,7 @@ export default function Discovery() {
                       query: { tvShowId: search.id },
                     }}
                   >
-                    <a
-                      className={styles.button}
-                      style={{ backgroundColor: "#37a169", color: "white" }}
-                    >
-                      Detalhes
-                    </a>
+                    Detalhes
                   </Link>
                 ) : null}
 

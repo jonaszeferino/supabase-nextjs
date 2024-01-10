@@ -486,7 +486,7 @@ export default function Discovery() {
                     query: { movieId: search.id },
                   }}
                 >
-                  <a className={styles.button}>Detalhes</a>
+                  Detalhes
                 </Link>
                 <br />
                 <br />
