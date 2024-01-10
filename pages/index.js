@@ -58,7 +58,7 @@ export default function Home() {
   }, [page]);
 
   const urlStringTv =
-    "https://api.themoviedb.org/3/trending/tv/week?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c";
+    "https://api.themoviedb.org/3/trending/tv/week";
 
   const apiCallTv = (currentPage) => {
     const urlTv = urlStringTv;
@@ -67,6 +67,7 @@ export default function Home() {
     fetch(urlTv, {
       headers: new Headers({
         "Content-Type": "application/json",
+        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
       }),
     })
       .then((response) => {

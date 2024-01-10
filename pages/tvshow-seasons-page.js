@@ -120,11 +120,11 @@ const MoviePage = () => {
                           <Table size="sm">
                             <Tbody>
                               <Tr>
-                                <Td>Título em Português:</Td>
+                                <Td>Title</Td>
                                 <Td>{episode.name}</Td>
                               </Tr>
                               <Tr>
-                                <Td>Overview:</Td>
+                                <Td>Overview</Td>
                                 <Td
                                   style={{
                                     whiteSpace: "pre-wrap",
@@ -137,11 +137,11 @@ const MoviePage = () => {
                                 </Td>
                               </Tr>
                               <Tr>
-                                <Td>Nota Média:</Td>
+                                <Td>Avarage</Td>
                                 <Td>{episode.vote_average}</Td>
                               </Tr>
                               <Tr>
-                                <Td>Direção e Roteiro</Td>
+                                <Td>Direction & Writing</Td>
                                 <Td>
                                   {episode.crew && episode.crew.length > 0 && (
                                     <>
@@ -184,8 +184,7 @@ const MoviePage = () => {
                 ))
               ) : (
                 <Text fontSize="xl" fontWeight="semibold" textAlign="center">
-                  Nenhum episódio encontrado.
-                </Text>
+No Epsisodes                </Text>
               )}
             </div>
             {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}

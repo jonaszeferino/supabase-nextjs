@@ -50,7 +50,7 @@ export default function Discovery() {
   });
 
   let urlString =
-    "https://api.themoviedb.org/3/discover/movie?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR&include_adult=false&include_video=false&vote_count.gte=" +
+    "https://api.themoviedb.org/3/discover/movie?&include_adult=false&include_video=false&vote_count.gte=" +
     searchVoteCount +
     "&vote_count.lte=10000000&sort_by=" +
     searchRatingSort +
@@ -72,6 +72,7 @@ export default function Discovery() {
     fetch(url, {
       headers: new Headers({
         "Content-Type": "application/json",
+        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
       }),
     })
       .then((response) => {
