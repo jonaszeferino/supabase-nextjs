@@ -76,7 +76,7 @@ export default function Discovery() {
         .then((result) => {
           setSearchMovies(result.results);
           setSearchMovieTotalPages(result.total_pages);
-          setSearchMovieRealPage(1);
+          setSearchMovieRealPage(page);
           setSearchMovieTotalResults(result.total_results);
 
           setIsLoading(false);
