@@ -136,9 +136,9 @@ export default function Discovery() {
   return (
     <>
       <Head>
-        <title>Descubra Series</title>
+        <title>Discover Tv Shows</title>
         <meta name="keywords" content="tvshow,watch,review"></meta>
-        <meta name="description" content="filmes, series,"></meta>
+        <meta name="description" content="movies, tvshows"></meta>
       </Head>
 
       <LoggedUser />
@@ -164,7 +164,7 @@ export default function Discovery() {
           }}
         >
           <ChakraProvider>
-            <FormLabel>Order</FormLabel>
+            <FormLabel>Order By</FormLabel>
             <Select
               value={searchRatingSort}
               onChange={(event) => setSearchRatingSort(event.target.value)}
@@ -256,7 +256,7 @@ export default function Discovery() {
       <ChakraProvider>{isLoading && <Spinner />}</ChakraProvider>
 
       {isError === true ? (
-        <ErrorPage message={`Verifique as Credenciais`}></ErrorPage>
+        <ErrorPage message={`Verify your credentials`}></ErrorPage>
       ) : (
         <div className={styles.grid}>
           {searchMovies.map((search) => (

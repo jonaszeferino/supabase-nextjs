@@ -421,9 +421,7 @@ const MoviePage = () => {
                     colorScheme={exibirTabelaAds ? "gray" : "blue"}
                     color={exibirTabelaAds ? "black" : "white"}
                   >
-                    {exibirTabelaAds
-                      ? "Free With Adds"
-                      : "Free With Adds"}
+                    {exibirTabelaAds ? "Free With Adds" : "Free With Adds"}
                   </Button>
                   <Button
                     onClick={handleExibirTabelaFree}
@@ -1395,6 +1393,7 @@ const MoviePage = () => {
                 </Table>
               </TableContainer>
             )}
+
             {exibirTabelaRent && (
               <TableContainer>
                 <Table size="sm">

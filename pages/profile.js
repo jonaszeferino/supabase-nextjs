@@ -249,7 +249,7 @@ const Profile = () => {
                     }}
                   >
                     <Alert
-                      message="Clique em Editar e Insira Seus Dados Abaixo"
+                      message="Click Edit and Enter Your Data Below"
                       type="success"
                       showIcon
                       closable
@@ -302,8 +302,6 @@ const Profile = () => {
                   </Text>
                 </FormControl>
 
-                {/* Dados do usario abaixo: */}
-                {/* Name */}
 
                 <>
                   {/* Name */}

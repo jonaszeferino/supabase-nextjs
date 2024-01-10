@@ -17,7 +17,7 @@ export default function SignUp() {
   return (
     <>
       <Head>
-        <title>Senha</title>
+        <title>Login</title>
         <meta name="keywords" content="tvshow,watch,review"></meta>
         <meta name="description" content="filmes, series,"></meta>
       </Head>
@@ -27,13 +27,13 @@ export default function SignUp() {
             {session ? (
               <p>
                 <Center>
-                  Usuário: {session.user.email} <br />
+                  User {session.user.email} <br />
                   <Button
                     onClick={() => supabase.auth.signOut()}
                     colorScheme="red"
                     size="sm"
                   >
-                    Sair
+                    Exit
                   </Button>
                 </Center>
               </p>

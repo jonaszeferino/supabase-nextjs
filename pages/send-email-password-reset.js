@@ -28,14 +28,14 @@ export default function PasswordResetPage() {
     setAlertMessage("");
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: "https://supabase-nextjs-gamma.vercel.app/password-reset",
+        redirectTo: "https://www.watchtodayguide.com/password-reset",
       });
       if (error) {
         throw error;
       }
-      setAlertMessage("Link do Reset Enviado ao e-mail");
+      setAlertMessage("Link do Reset Send To E-mail");
     } catch (e) {
-      console.log(e); // Add this line to log any errors to the console
+      console.log(e);
       setAlertMessage(e.message);
     }
   };
@@ -57,7 +57,7 @@ export default function PasswordResetPage() {
           position="relative"
         >
           <Heading as="h1" size="xl" textAlign="center" mb={4}>
-            Reset de Senha
+            Password Reset{" "}
           </Heading>
           <FormControl>
             <FormLabel>Email</FormLabel>
@@ -75,7 +75,7 @@ export default function PasswordResetPage() {
               colorScheme="green"
               size="sm"
             >
-              Envia o Link
+              Send a Link
             </Button>
           </Center>
           <br />
@@ -83,9 +83,7 @@ export default function PasswordResetPage() {
             <ChakraProvider>
               <Alert status="info">
                 <AlertIcon />
-                {alertMessage === "Email not confirmed"
-                  ? "E-mail Não Confirmado"
-                  : alertMessage}
+                {alertMessage}
               </Alert>
             </ChakraProvider>
           )}
