@@ -73,7 +73,7 @@ const MoviePage = () => {
 
   const apiCall = () => {
     Clean();
-    const url = `https://api.themoviedb.org/3/search/movie?query=${movieSearchQuery}&include_adult=false&language=pt-BR&page=1`;
+    const url = `https://api.themoviedb.org/3/search/movie?query=${movieSearchQuery}&include_adult=false`;
     setIsLoading(true);
 
     fetch(url, {
@@ -102,12 +102,18 @@ const MoviePage = () => {
   const fetchData = () => {
     setTotals("");
     Promise.all([
-      fetch(
-        `https://api.themoviedb.org/3/movie/${movieIdSearch}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`
-      ),
-      fetch(
-        `https://api.themoviedb.org/3/movie/${movieIdSearch}/watch/providers?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c`
-      ),
+      fetch(`https://api.themoviedb.org/3/movie/${movieIdSearch}`, {
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
+        }),
+      }),
+      fetch(`https://api.themoviedb.org/3/movie/${movieIdSearch}/watch/providers`, {
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
+        }),
+      }),
     ])
       .then(([resMovie, resProviders]) =>
         Promise.all([resMovie.json(), resProviders.json()])
