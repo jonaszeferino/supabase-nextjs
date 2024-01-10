@@ -161,8 +161,9 @@ export default function Discovery() {
           }}
         >
           <ChakraProvider>
-            <FormLabel>Order By</FormLabel>
+            <FormLabel htmlFor="orderby">Order By</FormLabel>
             <Select
+             width="400px" 
               value={searchRatingSort}
               onChange={(event) => setSearchRatingSort(event.target.value)}
             >
@@ -239,6 +240,7 @@ export default function Discovery() {
             </FormControl>
           </ChakraProvider>
 
+  
           <br />
           <ChakraProvider>
             <Button size="lg" colorScheme="purple" onClick={apiCall}>
