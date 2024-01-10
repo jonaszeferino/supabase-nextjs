@@ -143,8 +143,8 @@ export default function Discovery() {
       <div className={styles.top}>
         <h3 className={styles.title}> Discover Tv Shows</h3>
       </div>
-
       <br />
+
       <div
         style={{
           display: "flex",
@@ -158,7 +158,6 @@ export default function Discovery() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            textAlign: "center",
           }}
         >
           <ChakraProvider>
