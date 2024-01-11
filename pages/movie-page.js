@@ -4,8 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
-import TranslationComponent from "../components/translateComponent";
-import TranslationComponentCountryName from "../components/translateComponentCountryName";
+import { Rate } from "antd";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
@@ -170,16 +169,7 @@ const MoviePage = () => {
       <span className={styles.title}>{data.originalTitle}</span>
       <br />
       <br />
-      <div style={{ maxWidth: "480px", margin: "0 auto" }}>
-        <ChakraProvider>
-          <Progress
-            size="lg"
-            value={data.average}
-            max={10}
-            colorScheme={getProgressColor(data.average)}
-          />
-        </ChakraProvider>
-      </div>
+
       <br />
       <div>
         {isLoading ? (
@@ -198,6 +188,19 @@ const MoviePage = () => {
             />
           </span>
         )}
+      </div>
+
+      <div style={{ maxWidth: "480px", margin: "0 auto" }}>
+        <ChakraProvider>
+          {/* <Progress
+            size="lg"
+            value={data.average}
+            max={10}
+            colorScheme={getProgressColor(data.average)}
+          /> */}
+           <Rate value={data.average} count={10} /><br/>
+           {data.average} 
+        </ChakraProvider>
       </div>
       {/* Tabela aqui para baixo */}
       <br />

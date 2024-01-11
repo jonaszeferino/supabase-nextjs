@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Rate } from "antd";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
@@ -159,16 +160,7 @@ const MoviePage = () => {
       <span className={styles.title}>{data.originalTitle}</span>
       <br />
       <br />
-      <div style={{ maxWidth: "480px", margin: "0 auto" }}>
-        <ChakraProvider>
-          <Progress
-            hasStripe
-            value={data.average}
-            max={10}
-            colorScheme={getProgressColor(data.average)}
-          />
-        </ChakraProvider>
-      </div>
+
       <br />
       <div>
         {isLoading ? (
@@ -197,6 +189,18 @@ const MoviePage = () => {
             </span>
           </span>
         )}
+      </div>
+      <div style={{ maxWidth: "480px", margin: "0 auto" }}>
+        <ChakraProvider>
+          {/* <Progress
+            
+            value={data.average}
+            max={10}
+            colorScheme={getProgressColor(data.average)}
+          /> */}
+            <Rate value={data.average} count={10} /><br/>
+           {data.average} 
+        </ChakraProvider>
       </div>
       <div>
         <br />
