@@ -654,7 +654,7 @@ card_image - ou seja como vai ficar no index
 .card_image {
   position: relative;
   display: inline-block;
-  margin: 10px; /* Ajuste a margem conforme necessário */
+  margin: 10px;
   align-items: center;
   appearance: none;
   border-radius: 4px;
@@ -670,6 +670,8 @@ card_image - ou seja como vai ficar no index
   font-family: "JetBrains Mono", monospace;
   position: relative; /* Adicionado */
   overflow: hidden; /* Adicionado */
+  width: 240px;
+  height: 360px;
 }
 
 .card_image span {
