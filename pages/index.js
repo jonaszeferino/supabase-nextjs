@@ -159,12 +159,12 @@ export default function Home() {
                     width={240}
                     height={360}
                   />
-       
                 </Link>
 
                 <div style={{ maxWidth: "240px", margin: "8px" }}>
                   <ChakraProvider>
                     <Progress
+                      size="lg"
                       value={search.vote_average}
                       max={10}
                       colorScheme={getProgressColor(search.vote_average)}
@@ -182,8 +182,6 @@ export default function Home() {
         </div>
 
         <div className={styles.grid}>
-          
-
           {searchTv.map((searchtv) => (
             <div key={searchtv.id} style={{ marginBottom: "20px" }}>
               <Link
@@ -204,12 +202,12 @@ export default function Home() {
                   height={360}
                   layout="fixed"
                 />
-        
               </Link>
 
               <div style={{ maxWidth: "240px", margin: "8px" }}>
                 <ChakraProvider>
                   <Progress
+                    size="lg"
                     value={searchtv.vote_average}
                     max={10}
                     colorScheme={getProgressColor(searchtv.vote_average)}
