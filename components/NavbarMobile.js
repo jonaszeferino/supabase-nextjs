@@ -120,7 +120,11 @@ const MobileNavbar = () => {
                   <ChevronRightIcon /> Where is My Movie?
                 </span>
               </Link> */}
-              {session ? (
+             
+
+             {/* Profile comentado */}
+             
+              {/* {session ? (
                 <>
                   <Link href="/profile">
                     <span>
@@ -133,7 +137,9 @@ const MobileNavbar = () => {
                     </span>
                   </Link>
                 </>
-              ) : null}
+              ) : null} */}
+
+
             </Stack>
           )}
         </Box>

@@ -118,7 +118,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
           </Modal>
         </li>
 
-        {session ? (
+        {/* {session ? (
           <li>
             Profile
             <Menu>
@@ -143,7 +143,10 @@ export default function Navbar({ isLoading, onAuthenticated }) {
               )}
             </Menu>
           </li>
-        ) : null}
+        ) : null} */}
+
+
+
       </ul>
     </>
   );
