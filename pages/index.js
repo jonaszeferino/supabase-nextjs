@@ -3,16 +3,13 @@ import Image from "next/image";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { useEffect, useState } from "react";
-import ErrorPage from "./error-page";
-import { ChakraProvider, Progress, Button } from "@chakra-ui/react";
-import { BiSolidUpArrow } from "react-icons/bi";
+import { ChakraProvider, Progress } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import { supabase } from "../utils/supabaseClient"; //
-import { Tooltip } from "antd";
+import { Rate } from "antd";
 import LoggedUser from "../components/LoggedUser";
 import LoginAlert from "../components/LoginAlert";
-import CarouselComponent from "../components/carousel";
 
 export default function Home() {
   let [searchMovies, setSearchMovies] = useState([]);
@@ -24,8 +21,7 @@ export default function Home() {
 
   const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
 
-  const urlString =
-    "https://api.themoviedb.org/3/trending/movie/week";
+  const urlString = "https://api.themoviedb.org/3/trending/movie/week";
 
   const apiCall = (currentPage) => {
     const url = urlString;
@@ -34,7 +30,7 @@ export default function Home() {
     fetch(url, {
       headers: new Headers({
         "Content-Type": "application/json",
-        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
+        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
       }),
     })
       .then((response) => {
@@ -57,8 +53,7 @@ export default function Home() {
     apiCall(page);
   }, [page]);
 
-  const urlStringTv =
-    "https://api.themoviedb.org/3/trending/tv/week";
+  const urlStringTv = "https://api.themoviedb.org/3/trending/tv/week";
 
   const apiCallTv = (currentPage) => {
     const urlTv = urlStringTv;
@@ -67,7 +62,7 @@ export default function Home() {
     fetch(urlTv, {
       headers: new Headers({
         "Content-Type": "application/json",
-        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
+        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
       }),
     })
       .then((response) => {
@@ -143,77 +138,40 @@ export default function Home() {
           <div className={styles.top}>
             <h3 className={styles.title}> Trending Movies of the Week</h3>
           </div>
+
           <div className={styles.grid}>
             {searchMovies.map((search) => (
-              <div key={search.id}>
-                <span className={styles.spantext}></span>
-                <span
-                  className={styles.spantext}
-                  style={{
-                    position: "relative",
-                    display: "block",
-                    width: "240px",
-                    height: "360px",
+              <div key={search.id} style={{ marginBottom: "20px" }}>
+                <Link
+                  href={{
+                    pathname: "/movie-page",
+                    query: { movieId: search.id },
                   }}
                 >
-                  <span>
-                    <Link
-                      href={{
-                        pathname: "/movie-page",
-                        query: { movieId: search.id },
-                      }}
-                    >
-                      <Tooltip
-                        title="Learn More"
-                        style={{
-                          color: "white",
-                          borderColor: "purple",
-                          background: "purple",
-                        }}
-                      >
-                        <Image
-                          className={styles.card_image}
-                          src={
-                            search.poster_path
-                              ? `https://image.tmdb.org/t/p/original${search.poster_path}`
-                              : "/callback.png"
-                          }
-                          alt="poster"
-                          width={240}
-                          height={360}
-                        />
-                      </Tooltip>
-                      <span
-                        style={{
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                          width: "100%",
-                          background: "rgba(0, 0, 0, 0.5)",
-                          color: "white",
-                          textAlign: "center",
-                          padding: "8px 0",
-                          boxSizing: "border-box",
-                        }}
-                      >
-                        {search.title}
-                      </span>
-                    </Link>
-                  </span>
-                </span>
+                  <Image
+                    className={styles.card_image}
+                    src={
+                      search.poster_path
+                        ? `https://image.tmdb.org/t/p/original${search.poster_path}`
+                        : "/callback.png"
+                    }
+                    alt="poster"
+                    width={240}
+                    height={360}
+                  />
+       
+                </Link>
 
-                <div style={{ maxWidth: "240px", margin: "5px" }}>
+                <div style={{ maxWidth: "240px", margin: "8px" }}>
                   <ChakraProvider>
                     <Progress
-                      hasStripe
                       value={search.vote_average}
                       max={10}
                       colorScheme={getProgressColor(search.vote_average)}
                     />
                   </ChakraProvider>
-                  {search.vote_average}
+                  {search.vote_average} <Rate value={1} count={1} />
                 </div>
-                <br />
               </div>
             ))}
           </div>
@@ -224,79 +182,41 @@ export default function Home() {
         </div>
 
         <div className={styles.grid}>
-          <span className={styles.spantext}></span>
+          
 
           {searchTv.map((searchtv) => (
-            <div key={searchtv.id}>
-              <br />
-
-              <span
-                className={styles.spantext}
-                style={{
-                  position: "relative",
-                  display: "block",
-                  width: "240px",
-                  height: "360px",
+            <div key={searchtv.id} style={{ marginBottom: "20px" }}>
+              <Link
+                href={{
+                  pathname: "/tvshow-page",
+                  query: { tvShowId: searchtv.id },
                 }}
               >
-                <span>
-                  <Link
-                    href={{
-                      pathname: "/tvshow-page",
-                      query: { tvShowId: searchtv.id },
-                    }}
-                  >
-                    <Tooltip
-                      title="Learn More"
-                      style={{
-                        color: "white",
-                        borderColor: "purple",
-                        background: "purple",
-                      }}
-                    >
-                      <Image
-                        className={styles.card_image}
-                        src={
-                          searchtv.poster_path
-                            ? `https://image.tmdb.org/t/p/original${searchtv.poster_path}`
-                            : "/callback.png"
-                        }
-                        alt="poster"
-                        width={240}
-                        height={360}
-                      />
-                    </Tooltip>
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        background: "rgba(0, 0, 0, 0.5)",
-                        color: "white",
-                        textAlign: "center",
-                        padding: "8px 0",
-                        boxSizing: "border-box",
-                      }}
-                    >
-                      {searchtv.original_name}
-                    </span>
-                  </Link>
-                </span>
-              </span>
+                <Image
+                  className={styles.card_image}
+                  src={
+                    searchtv.poster_path
+                      ? `https://image.tmdb.org/t/p/original${searchtv.poster_path}`
+                      : "/callback.png"
+                  }
+                  alt="poster"
+                  width={240}
+                  height={360}
+                  layout="fixed"
+                />
+        
+              </Link>
 
-              <div style={{ maxWidth: "240px", margin: "5px" }}>
+              <div style={{ maxWidth: "240px", margin: "8px" }}>
                 <ChakraProvider>
                   <Progress
-                    hasStripe
                     value={searchtv.vote_average}
                     max={10}
                     colorScheme={getProgressColor(searchtv.vote_average)}
                   />
                 </ChakraProvider>
-                {searchtv.vote_average}
+                {searchtv.vote_average} <Rate value={1} count={1} />
               </div>
-              <br />
             </div>
           ))}
         </div>

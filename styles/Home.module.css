@@ -203,8 +203,10 @@
   margin-bottom: 20px;
 }
 .spantext {
-  background-size: 240px;
-  width: 240px;
+  position: relative;
+  display: flex; /* Add this */
+  align-items: center; /* Add this */
+  display: inline-block;
 }
 
 .poster-item {
@@ -666,6 +668,26 @@ card_image - ou seja como vai ficar no index
   will-change: transform;
   cursor: pointer;
   font-family: "JetBrains Mono", monospace;
+  position: relative; /* Adicionado */
+  overflow: hidden; /* Adicionado */
+}
+
+.card_image span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+  padding: 8px 0;
+  box-sizing: border-box;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.card_image:hover span {
+  opacity: 1;
 }
 
 .card_image img {
@@ -677,7 +699,7 @@ card_image - ou seja como vai ficar no index
 }
 
 .card_image:hover img {
-  filter: brightness(70%); /* Escurece a imagem ao passar o mouse */
+  filter: brightness(70%);
 }
 
 .imageContainer {
@@ -690,17 +712,15 @@ card_image - ou seja como vai ficar no index
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.7); /* Cor de fundo preta translúcida */
-  color: white; /* Cor do texto branco */
-  font-size: 18px;
-  opacity: 0;
-  transition: opacity 0.3s;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+  padding: 8px; 
 }
 
 .imageContainer:hover .overlayText {
   opacity: 1;
+}
+.movieContainer {
+  position: relative;
 }
