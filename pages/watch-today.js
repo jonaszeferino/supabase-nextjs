@@ -286,7 +286,10 @@ export default function Movieapi() {
                           </Thead>
                           <Tbody></Tbody>
                         </Table>
-                        <Tabs size="md" variant="enclosed">
+
+               
+
+                        <Tabs>
                           <TabList>
                             <Tab
                               style={{
@@ -317,6 +320,7 @@ export default function Movieapi() {
                               Genre
                             </Tab>
                           </TabList>
+    
                           <TabPanels>
                             <TabPanel
                               style={{
@@ -356,6 +360,8 @@ export default function Movieapi() {
                             </TabPanel>
                           </TabPanels>
                         </Tabs>
+     
+     
                       </TableContainer>
                     </ChakraProvider>
                   </div>

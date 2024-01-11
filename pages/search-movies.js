@@ -13,13 +13,14 @@ import {
   Flex,
   Box,
   Center,
-  Link as LinkChakra
+  Link as LinkChakra,
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
 import { Tooltip } from "antd";
 import Link from "next/link";
+import { Rate } from "antd";
 
 export default function Discovery() {
   let [movieId, setMovieId] = useState();
@@ -529,18 +530,8 @@ export default function Discovery() {
         ) : (
           <div className={styles.grid}>
             {searchMovies.map((search) => (
-              <div key={search.id}>
-                <span className={styles.spantext}></span>{" "}
-                <span
-                  className={styles.spantext}
-                  style={{
-                    position: "relative",
-                    display: "block",
-                    width: "240px",
-                    height: "360px",
-                  }}
-                >
-                  <ChakraProvider>
+              <div key={search.id}  style={{ marginBottom: "10px" }}>
+                <ChakraProvider>
                   <Link
                     href={{
                       pathname: "/movie-page",
@@ -567,35 +558,19 @@ export default function Discovery() {
                         height={360}
                       />
                     </Tooltip>
-
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        background: "rgba(0, 0, 0, 0.5)",
-                        color: "white",
-                        textAlign: "center",
-                        padding: "8px 0",
-                        boxSizing: "border-box",
-                      }}
-                    >
-                      {search.title}
-                    </span>
                   </Link>
-                  </ChakraProvider>
-                </span>
-                <div style={{ maxWidth: "240px", margin: "5px" }}>
+                </ChakraProvider>
+
+                <div style={{ maxWidth: "240px", margin: "10px" }}>
                   <ChakraProvider>
                     <Progress
-                      hasStripe
+                      size="lg"
                       value={search.vote_average}
                       max={10}
                       colorScheme={getProgressColor(search.vote_average)}
                     />
+                    {search.vote_average} <Rate value={1} count={1} />
                   </ChakraProvider>
-                  {search.vote_average}
                 </div>
                 <br />
               </div>

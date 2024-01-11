@@ -141,7 +141,7 @@ export default function Home() {
 
           <div className={styles.grid}>
             {searchMovies.map((search) => (
-              <div key={search.id} style={{ marginBottom: "20px" }}>
+              <div key={search.id} style={{ marginBottom: "10px" }}>
                 <Link
                   href={{
                     pathname: "/movie-page",
