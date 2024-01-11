@@ -164,7 +164,7 @@ const MoviePage = () => {
           name="keywords"
           content="tvshow,watch,review, series, filmes"
         ></meta>
-        <meta name="description" content="filmes, series,"></meta>
+        <meta name="description" content="movies, series,"></meta>
       </Head>
       <LoggedUser />
       <span className={styles.title}>{data.originalTitle}</span>
@@ -173,7 +173,7 @@ const MoviePage = () => {
       <div style={{ maxWidth: "480px", margin: "0 auto" }}>
         <ChakraProvider>
           <Progress
-            hasStripe
+            size="lg"
             value={data.average}
             max={10}
             colorScheme={getProgressColor(data.average)}
@@ -274,12 +274,6 @@ const MoviePage = () => {
                 <Tr>
                   <Th>Country of Origin</Th>
                   <Td>{data.country}</Td>
-                  {/* <Td>
-                    <TranslationComponentCountryName
-                      text={data.country}
-                      language="pt"
-                    />
-                  </Td> */}
                 </Tr>
                 <Tr>
                   <Th>Language</Th>
