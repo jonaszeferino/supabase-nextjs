@@ -1,32 +1,26 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import ErrorPage from "./error-page";
-import { format } from "date-fns";
 import Image from "next/image";
 import Head from "next/head";
-import Link from "next/link";
-import { BiSolidUpArrow } from "react-icons/bi";
 import {
   Box,
   Button,
   FormControl,
   FormLabel,
-  Input,
   Select,
   Spinner,
-  Text,
   ChakraProvider,
-  VStack,
   Center,
   Flex,
-  Icon,
-  IconButton,
   Progress,
+  Link as LinkChakra,
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
-import { Tooltip, Pagination } from "antd";
+import { Tooltip } from "antd";
+import Link from "next/link";
 
 export default function Discovery() {
   let [searchMovies, setSearchMovies] = useState([]);
@@ -83,7 +77,7 @@ export default function Discovery() {
           setError(false);
           return response.json();
         } else {
-          throw new Error("Dados Incorretos");
+          throw new Error("Wrong Data");
         }
       })
       .then(
@@ -163,7 +157,7 @@ export default function Discovery() {
           <ChakraProvider>
             <FormLabel htmlFor="orderby">Order By</FormLabel>
             <Select
-             width="400px" 
+              width="400px"
               value={searchRatingSort}
               onChange={(event) => setSearchRatingSort(event.target.value)}
             >
@@ -174,9 +168,9 @@ export default function Discovery() {
                 From Best Rating to Worst
               </option>
             </Select>
-          </ChakraProvider>
-          <br />
-          <ChakraProvider>
+
+            <br />
+
             <FormLabel>Vote Number</FormLabel>
             <Select
               value={searchVoteCount}
@@ -190,9 +184,9 @@ export default function Discovery() {
               <option value="1000">More than 1000</option>
               <option value="5000">More than 5000</option>
             </Select>
-          </ChakraProvider>
-          <br />
-          <ChakraProvider>
+
+            <br />
+
             <FormLabel>Tv Show Type</FormLabel>
             <Select
               value={searchTvType}
@@ -207,9 +201,9 @@ export default function Discovery() {
               <option value="5">Talk Show</option>
               <option value="6">Videos</option>
             </Select>
-          </ChakraProvider>
-          <br />
-          <ChakraProvider>
+
+            <br />
+
             <FormControl>
               <Center>
                 <FormLabel>Initial and Final Year</FormLabel>
@@ -238,11 +232,10 @@ export default function Discovery() {
                 </Select>
               </Flex>
             </FormControl>
-          </ChakraProvider>
+          
 
-  
           <br />
-          <ChakraProvider>
+          
             <Button size="lg" colorScheme="purple" onClick={apiCall}>
               Go
             </Button>
@@ -270,55 +263,60 @@ export default function Discovery() {
                   height: "360px",
                 }}
               >
-                <Link
-                  href={{
-                    pathname: "/tvshow-page",
-                    query: { tvShowId: search.id },
-                  }}
-                >
-                  <Tooltip
-                    title="Saiba Mais"
-                    style={{
-                      color: "white",
-                      borderColor: "purple",
-                      background: "purple",
-                    }}
-                  >
-                    {search.poster_path ? (
-                      <Image
-                        className={styles.card_image}
-                        src={`https://image.tmdb.org/t/p/original${search.poster_path}`}
-                        alt="poster"
-                        width={240}
-                        height={360}
-                      />
-                    ) : (
-                      <Image
-                        className={styles.card_image}
-                        src="/callback.png"
-                        alt="poster"
-                        width={240}
-                        height={360}
-                      />
-                    )}
-                  </Tooltip>
+                <ChakraProvider>
 
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      background: "rgba(0, 0, 0, 0.5)",
-                      color: "white",
-                      textAlign: "center",
-                      padding: "8px 0",
-                      boxSizing: "border-box",
+                {/* <Link as={`/tvshow-page?tvShowId=${search.id}`}> */}
+
+                  <Link
+                    href={{
+                      pathname: "/tvshow-page",
+                      query: { tvShowId: search.id },
                     }}
                   >
-                    {search.original_name}
-                  </span>
-                </Link>
+                    <Tooltip
+                      title="Saiba Mais"
+                      style={{
+                        color: "white",
+                        borderColor: "purple",
+                        background: "purple",
+                      }}
+                    >
+                      {search.poster_path ? (
+                        <Image
+                          className={styles.card_image}
+                          src={`https://image.tmdb.org/t/p/original${search.poster_path}`}
+                          alt="poster"
+                          width={240}
+                          height={360}
+                        />
+                      ) : (
+                        <Image
+                          className={styles.card_image}
+                          src="/callback.png"
+                          alt="poster"
+                          width={240}
+                          height={360}
+                        />
+                      )}
+                    </Tooltip>
+
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        background: "rgba(0, 0, 0, 0.5)",
+                        color: "white",
+                        textAlign: "center",
+                        padding: "8px 0",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      {search.original_name}
+                    </span>
+                  </Link>
+                </ChakraProvider>
               </span>
               <div style={{ maxWidth: "240px", margin: "5px" }}>
                 <ChakraProvider>

@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import ErrorPage from "./error-page";
-import { format } from "date-fns";
 import Image from "next/image";
 import Head from "next/head";
-import Link from "next/link";
 import {
   ChakraProvider,
   Progress,
@@ -15,12 +13,13 @@ import {
   Flex,
   Box,
   Center,
+  Link as LinkChakra
 } from "@chakra-ui/react";
-import { BiSolidUpArrow } from "react-icons/bi";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
 import { Tooltip } from "antd";
+import Link from "next/link";
 
 export default function Discovery() {
   let [movieId, setMovieId] = useState();
@@ -72,7 +71,7 @@ export default function Discovery() {
     fetch(url, {
       headers: new Headers({
         "Content-Type": "application/json",
-        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
+        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
       }),
     })
       .then((response) => {
@@ -80,7 +79,7 @@ export default function Discovery() {
           setError(false);
           return response.json();
         } else {
-          throw new Error("Dados Incorretos");
+          throw new Error("Wrong Data");
         }
       })
       .then(
@@ -121,252 +120,6 @@ export default function Discovery() {
       return "gray";
     }
   }
-
-  // const options = [
-  //   { value: "AF", label: "Afeganistão" },
-  //   { value: "AL", label: "Albânia" },
-  //   { value: "DZ", label: "Argélia" },
-  //   { value: "AS", label: "Samoa Americana" },
-  //   { value: "AD", label: "Andorra" },
-  //   { value: "AO", label: "Angola" },
-  //   { value: "AQ", label: "Antártica" },
-  //   { value: "AG", label: "Antígua e Barbuda" },
-  //   { value: "AR", label: "Argentina" },
-  //   { value: "AM", label: "Armênia" },
-  //   { value: "AW", label: "Aruba" },
-  //   { value: "AU", label: "Austrália" },
-  //   { value: "AT", label: "Áustria" },
-  //   { value: "AZ", label: "Azerbaijão" },
-  //   { value: "BS", label: "Bahamas" },
-  //   { value: "BH", label: "Bahrein" },
-  //   { value: "BD", label: "Bangladesh" },
-  //   { value: "BB", label: "Barbados" },
-  //   { value: "BY", label: "Bielorrússia" },
-  //   { value: "BE", label: "Bélgica" },
-  //   { value: "BZ", label: "Belize" },
-  //   { value: "BJ", label: "Benin" },
-  //   { value: "BM", label: "Bermudas" },
-  //   { value: "BT", label: "Butão" },
-  //   { value: "BO", label: "Bolívia" },
-  //   { value: "BA", label: "Bósnia e Herzegovina" },
-  //   { value: "BW", label: "Botsuana" },
-  //   { value: "BV", label: "Ilha Bouvet" },
-  //   { value: "BR", label: "Brasil" },
-  //   { value: "IO", label: "Território Britânico do Oceano Índico" },
-  //   { value: "BN", label: "Brunei" },
-  //   { value: "BG", label: "Bulgária" },
-  //   { value: "BF", label: "Burkina Faso" },
-  //   { value: "BI", label: "Burundi" },
-  //   { value: "KH", label: "Camboja" },
-  //   { value: "CM", label: "Camarões" },
-  //   { value: "CA", label: "Canadá" },
-  //   { value: "CV", label: "Cabo Verde" },
-  //   { value: "KY", label: "Ilhas Cayman" },
-  //   { value: "CF", label: "República Centro-Africana" },
-  //   { value: "TD", label: "Chade" },
-  //   { value: "CL", label: "Chile" },
-  //   { value: "CN", label: "China" },
-  //   { value: "CX", label: "Ilha Christmas" },
-  //   { value: "CC", label: "Ilhas Cocos (Keeling)" },
-  //   { value: "CO", label: "Colômbia" },
-  //   { value: "KM", label: "Comores" },
-  //   { value: "CG", label: "Congo" },
-  //   { value: "CD", label: "República Democrática do Congo" },
-  //   { value: "CK", label: "Ilhas Cook" },
-  //   { value: "CR", label: "Costa Rica" },
-  //   { value: "CI", label: "Costa do Marfim" },
-  //   { value: "HR", label: "Croácia" },
-  //   { value: "CU", label: "Cuba" },
-  //   { value: "CY", label: "Chipre" },
-  //   { value: "CZ", label: "República Tcheca" },
-  //   { value: "DK", label: "Dinamarca" },
-  //   { value: "DJ", label: "Djibuti" },
-  //   { value: "DM", label: "Dominica" },
-  //   { value: "DO", label: "República Dominicana" },
-  //   { value: "EC", label: "Equador" },
-  //   { value: "EG", label: "Egito" },
-  //   { value: "SV", label: "El Salvador" },
-  //   { value: "GQ", label: "Guiné Equatorial" },
-  //   { value: "ER", label: "Eritreia" },
-  //   { value: "EE", label: "Estônia" },
-  //   { value: "ET", label: "Etiópia" },
-  //   { value: "FK", label: "Ilhas Malvinas" },
-  //   { value: "FO", label: "Ilhas Faroe" },
-  //   { value: "FJ", label: "Fiji" },
-  //   { value: "FI", label: "Finlândia" },
-  //   { value: "FR", label: "França" },
-  //   { value: "GF", label: "Guiana Francesa" },
-  //   { value: "PF", label: "Polinésia Francesa" },
-  //   { value: "TF", label: "Territórios Franceses do Sul" },
-  //   { value: "GA", label: "Gabão" },
-  //   { value: "GM", label: "Gâmbia" },
-  //   { value: "GE", label: "Geórgia" },
-  //   { value: "DE", label: "Alemanha" },
-  //   { value: "GH", label: "Gana" },
-  //   { value: "GI", label: "Gibraltar" },
-  //   { value: "GR", label: "Grécia" },
-  //   { value: "GL", label: "Groenlândia" },
-  //   { value: "GD", label: "Granada" },
-  //   { value: "GP", label: "Guadalupe" },
-  //   { value: "GU", label: "Guam" },
-  //   { value: "GT", label: "Guatemala" },
-  //   { value: "GG", label: "Guernsey" },
-  //   { value: "GN", label: "Guiné" },
-  //   { value: "GW", label: "Guiné-Bissau" },
-  //   { value: "GY", label: "Guiana" },
-  //   { value: "HT", label: "Haiti" },
-  //   { value: "HM", label: "Ilha Heard e Ilhas McDonald" },
-  //   { value: "VA", label: "Cidade do Vaticano" },
-  //   { value: "HN", label: "Honduras" },
-  //   { value: "HK", label: "Hong Kong" },
-  //   { value: "HU", label: "Hungria" },
-  //   { value: "IS", label: "Islândia" },
-  //   { value: "IN", label: "Índia" },
-  //   { value: "ID", label: "Indonésia" },
-  //   { value: "IR", label: "Irã" },
-  //   { value: "IQ", label: "Iraque" },
-  //   { value: "IE", label: "Irlanda" },
-  //   { value: "IM", label: "Ilha de Man" },
-  //   { value: "IL", label: "Israel" },
-  //   { value: "IT", label: "Itália" },
-  //   { value: "JM", label: "Jamaica" },
-  //   { value: "JP", label: "Japão" },
-  //   { value: "JE", label: "Jersey" },
-  //   { value: "JO", label: "Jordânia" },
-  //   { value: "KZ", label: "Cazaquistão" },
-  //   { value: "KE", label: "Quênia" },
-  //   { value: "KI", label: "Quiribati" },
-  //   { value: "KP", label: "Coreia do Norte" },
-  //   { value: "KR", label: "Coreia do Sul" },
-  //   { value: "KW", label: "Kuwait" },
-  //   { value: "KG", label: "Quirguistão" },
-  //   { value: "LA", label: "Laos" },
-  //   { value: "LV", label: "Letônia" },
-  //   { value: "LB", label: "Líbano" },
-  //   { value: "LS", label: "Lesoto" },
-  //   { value: "LR", label: "Libéria" },
-  //   { value: "LY", label: "Líbia" },
-  //   { value: "LI", label: "Liechtenstein" },
-  //   { value: "LT", label: "Lituânia" },
-  //   { value: "LU", label: "Luxemburgo" },
-  //   { value: "MO", label: "Macau" },
-  //   { value: "MK", label: "Macedônia do Norte" },
-  //   { value: "MG", label: "Madagascar" },
-  //   { value: "MW", label: "Malawi" },
-  //   { value: "MY", label: "Malásia" },
-  //   { value: "MV", label: "Maldivas" },
-  //   { value: "ML", label: "Mali" },
-  //   { value: "MT", label: "Malta" },
-  //   { value: "MH", label: "Ilhas Marshall" },
-  //   { value: "MQ", label: "Martinica" },
-  //   { value: "MR", label: "Mauritânia" },
-  //   { value: "MU", label: "Maurício" },
-  //   { value: "YT", label: "Mayotte" },
-  //   { value: "MX", label: "México" },
-  //   { value: "FM", label: "Micronésia" },
-  //   { value: "MD", label: "Moldávia" },
-  //   { value: "MC", label: "Mônaco" },
-  //   { value: "MN", label: "Mongólia" },
-  //   { value: "ME", label: "Montenegro" },
-  //   { value: "MS", label: "Montserrat" },
-  //   { value: "MA", label: "Marrocos" },
-  //   { value: "MZ", label: "Moçambique" },
-  //   { value: "MM", label: "Mianmar (Birmânia)" },
-  //   { value: "NA", label: "Namíbia" },
-  //   { value: "NR", label: "Nauru" },
-  //   { value: "NP", label: "Nepal" },
-  //   { value: "NL", label: "Países Baixos" },
-  //   { value: "NC", label: "Nova Caledônia" },
-  //   { value: "NZ", label: "Nova Zelândia" },
-  //   { value: "NI", label: "Nicarágua" },
-  //   { value: "NE", label: "Níger" },
-  //   { value: "NG", label: "Nigéria" },
-  //   { value: "NU", label: "Niue" },
-  //   { value: "NF", label: "Ilha Norfolk" },
-  //   { value: "MP", label: "Ilhas Marianas do Norte" },
-  //   { value: "NO", label: "Noruega" },
-  //   { value: "OM", label: "Omã" },
-  //   { value: "PK", label: "Paquistão" },
-  //   { value: "PW", label: "Palau" },
-  //   { value: "PS", label: "Territórios Palestinos" },
-  //   { value: "PA", label: "Panamá" },
-  //   { value: "PG", label: "Papua Nova Guiné" },
-  //   { value: "PY", label: "Paraguai" },
-  //   { value: "PE", label: "Peru" },
-  //   { value: "PH", label: "Filipinas" },
-  //   { value: "PN", label: "Ilhas Pitcairn" },
-  //   { value: "PL", label: "Polônia" },
-  //   { value: "PT", label: "Portugal" },
-  //   { value: "PR", label: "Porto Rico" },
-  //   { value: "QA", label: "Catar" },
-  //   { value: "RE", label: "Reunião" },
-  //   { value: "RO", label: "Romênia" },
-  //   { value: "RU", label: "Rússia" },
-  //   { value: "RW", label: "Ruanda" },
-  //   { value: "SH", label: "Santa Helena" },
-  //   { value: "KN", label: "São Cristóvão e Nevis" },
-  //   { value: "LC", label: "Santa Lúcia" },
-  //   { value: "PM", label: "Saint Pierre e Miquelon" },
-  //   { value: "VC", label: "São Vicente e Granadinas" },
-  //   { value: "WS", label: "Samoa" },
-  //   { value: "SM", label: "San Marino" },
-  //   { value: "ST", label: "São Tomé e Príncipe" },
-  //   { value: "SA", label: "Arábia Saudita" },
-  //   { value: "SN", label: "Senegal" },
-  //   { value: "RS", label: "Sérvia" },
-  //   { value: "SC", label: "Seychelles" },
-  //   { value: "SL", label: "Serra Leoa" },
-  //   { value: "SG", label: "Singapura" },
-  //   { value: "SX", label: "Sint Maarten" },
-  //   { value: "SK", label: "Eslováquia" },
-  //   { value: "SI", label: "Eslovênia" },
-  //   { value: "SB", label: "Ilhas Salomão" },
-  //   { value: "SO", label: "Somália" },
-  //   { value: "ZA", label: "África do Sul" },
-  //   { value: "GS", label: "Geórgia do Sul e Ilhas Sandwich do Sul" },
-  //   { value: "SS", label: "Sudão do Sul" },
-  //   { value: "ES", label: "Espanha" },
-  //   { value: "LK", label: "Sri Lanka" },
-  //   { value: "SD", label: "Sudão" },
-  //   { value: "SR", label: "Suriname" },
-  //   { value: "SJ", label: "Svalbard e Jan Mayen" },
-  //   { value: "SZ", label: "Suazilândia" },
-  //   { value: "SE", label: "Suécia" },
-  //   { value: "CH", label: "Suíça" },
-  //   { value: "SY", label: "Síria" },
-  //   { value: "TW", label: "Taiwan" },
-  //   { value: "TJ", label: "Tajiquistão" },
-  //   { value: "TZ", label: "Tanzânia" },
-  //   { value: "TH", label: "Tailândia" },
-  //   { value: "TL", label: "Timor-Leste" },
-  //   { value: "TG", label: "Togo" },
-  //   { value: "TK", label: "Tokelau" },
-  //   { value: "TO", label: "Tonga" },
-  //   { value: "TT", label: "Trinidad e Tobago" },
-  //   { value: "TN", label: "Tunísia" },
-  //   { value: "TR", label: "Turquia" },
-  //   { value: "TM", label: "Turcomenistão" },
-  //   { value: "TC", label: "Ilhas Turcas e Caicos" },
-  //   { value: "TV", label: "Tuvalu" },
-  //   { value: "UG", label: "Uganda" },
-  //   { value: "UA", label: "Ucrânia" },
-  //   { value: "AE", label: "Emirados Árabes Unidos" },
-  //   { value: "GB", label: "Reino Unido" },
-  //   { value: "US", label: "Estados Unidos da América" },
-  //   { value: "UM", label: "Ilhas Menores Distantes dos Estados Unidos" },
-  //   { value: "UY", label: "Uruguai" },
-  //   { value: "UZ", label: "Uzbequistão" },
-  //   { value: "VU", label: "Vanuatu" },
-  //   { value: "VE", label: "Venezuela" },
-  //   { value: "VN", label: "Vietnã" },
-  //   { value: "VG", label: "Ilhas Virgens Britânicas" },
-  //   { value: "VI", label: "Ilhas Virgens Americanas" },
-  //   { value: "WF", label: "Wallis e Futuna" },
-  //   { value: "EH", label: "Saara Ocidental" },
-  //   { value: "YE", label: "Iêmen" },
-  //   { value: "ZM", label: "Zâmbia" },
-  //   { value: "ZW", label: "Zimbábue" },
-  // ];
 
   const options = [
     { value: "AL", label: "Albania" },
@@ -611,7 +364,7 @@ export default function Discovery() {
     { value: "YE", label: "Yemen" },
     { value: "ZM", label: "Zambia" },
     { value: "ZW", label: "Zimbabwe" },
-  ]
+  ];
 
   return (
     <>
@@ -659,9 +412,9 @@ export default function Discovery() {
                   From Best Rating to Worst
                 </option>
               </Select>
-            </ChakraProvider>
-            <br />
-            <ChakraProvider>
+
+              <br />
+
               <FormLabel htmlFor="votes">Vote Range</FormLabel>
               <Select
                 id="votes"
@@ -679,9 +432,9 @@ export default function Discovery() {
                 <option value="1000">More than 1000</option>
                 <option value="5000">More than 5000</option>
               </Select>
-            </ChakraProvider>
-            <br />
-            <ChakraProvider>
+
+              <br />
+
               <FormControl>
                 <Center>
                   <FormLabel>Initial and Final Year:</FormLabel>
@@ -705,10 +458,9 @@ export default function Discovery() {
                   </Select>
                 </Flex>
               </FormControl>
-            </ChakraProvider>
 
-            <br />
-            <ChakraProvider>
+              <br />
+
               <FormLabel htmlFor="origin_country">Country of Origin</FormLabel>
 
               <Select
@@ -728,9 +480,9 @@ export default function Discovery() {
                   </option>
                 ))}
               </Select>
-            </ChakraProvider>
-            <br />
-            <ChakraProvider>
+
+              <br />
+
               <Button
                 size="lg"
                 colorScheme="purple"
@@ -788,6 +540,7 @@ export default function Discovery() {
                     height: "360px",
                   }}
                 >
+                  <ChakraProvider>
                   <Link
                     href={{
                       pathname: "/movie-page",
@@ -831,6 +584,7 @@ export default function Discovery() {
                       {search.title}
                     </span>
                   </Link>
+                  </ChakraProvider>
                 </span>
                 <div style={{ maxWidth: "240px", margin: "5px" }}>
                   <ChakraProvider>
