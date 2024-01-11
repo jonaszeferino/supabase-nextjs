@@ -214,7 +214,7 @@ export default function Discovery() {
                   value={searchMovieReleaseDateFrom}
                   onChange={handleFromChange}
                 >
-                  {Array.from({ length: 2024 - 1900 + 1 }, (_, index) => (
+                  {Array.from({ length: 2025 - 1900 + 1 }, (_, index) => (
                     <option key={index} value={1900 + index}>
                       {1900 + index}
                     </option>
@@ -225,7 +225,7 @@ export default function Discovery() {
                   value={searchMovieReleaseDateTo}
                   onChange={handleToChange}
                 >
-                  {Array.from({ length: 2024 - 1900 + 1 }, (_, index) => (
+                  {Array.from({ length: 2025 - 1900 + 1 }, (_, index) => (
                     <option key={index} value={1900 + index}>
                       {1900 + index}
                     </option>
@@ -263,7 +263,7 @@ export default function Discovery() {
                   }}
                 >
                   <Tooltip
-                    title="Saiba Mais"
+                    title="More"
                     style={{
                       color: "white",
                       borderColor: "purple",
