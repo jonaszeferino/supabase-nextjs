@@ -1,5 +1,6 @@
 module.exports = {
   images: {
+    unoptimized: true,
     domains: [
       "image.tmdb.org",
       "https://image.tmdb.org/t/p/original",
