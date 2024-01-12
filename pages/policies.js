@@ -56,7 +56,7 @@ const PoliciesPage = () => {
                   >
                     TMDB - The Movie Database
                   </ChakraLink>
-                  Users are encouraged to review TMDB's terms of service on
+                  Users are encouraged to review TMDBs terms of service on
                   their website. Our Trivia service, powered by
                   <ChakraLink
                     href="https://the-trivia-api.com/"
