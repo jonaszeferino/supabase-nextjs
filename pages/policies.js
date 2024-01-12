@@ -1,7 +1,6 @@
 import Head from "next/head";
 import {
   ChakraProvider,
-  Flex,
   Box,
   Text,
   Heading,
