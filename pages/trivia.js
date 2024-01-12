@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import { Alert, Space } from "antd";
 
-
 export default function Reservations() {
   const [answers, setAnswers] = useState({ questions: [] });
   const [shuffledAnswers, setShuffledAnswers] = useState([]);
@@ -61,9 +60,6 @@ export default function Reservations() {
     } else if (selectedDifficulties.includes("hard")) {
       choice = "&difficulty=hard";
     }
-
-    console.log(selectedDifficulties);
-    console.log(choice);
 
     //const url = `https://the-trivia-api.com/api/questions?limit=1&categories=${selectedCategories.join( ",")}${choice}`;
     const url = `https://the-trivia-api.com/api/questions?limit=1&categories=film_and_tv&${choice}`;
@@ -165,7 +161,7 @@ export default function Reservations() {
     { name: "hard", displayName: "Hard" },
   ];
 
-//Enviar stats
+  //Enviar stats
 
   const insertStats = async () => {
     try {
@@ -187,33 +183,9 @@ export default function Reservations() {
     }
   };
 
-  console.log(correct);
-
   return (
     <div>
-  
       <Center>
-        {/* <Space
-          direction="vertical"
-          style={{
-            magin: "10px",
-          }}
-        >
-          <Alert
-            message="Without any selection, the questions will come randomly with all
-            subjects and difficulties"
-            type="success"
-            showIcon
-            closable
-          />
-          <Alert
-            message="Save your stats automatically by creating a free account or logging in."
-            type="success"
-            showIcon
-            closable
-          />
-        </Space> */}
-
         <Text style={{ margin: "10px" }}></Text>
       </Center>
 
@@ -263,7 +235,7 @@ export default function Reservations() {
               <br />
               <Center>
                 <VStack spacing={2} align="start">
-                  <HStack spacing={2} align="start">
+                  <HStack spacing={2} align="start" mb={6}>
                     <Button
                       style={{ backgroundColor: isClickedA }}
                       onClick={() => {
@@ -272,6 +244,7 @@ export default function Reservations() {
                         insertStats();
                       }}
                       isDisabled={isDisabled}
+                      maxW="390px"
                     >
                       A
                     </Button>{" "}
@@ -283,11 +256,21 @@ export default function Reservations() {
                         insertStats();
                       }}
                       isDisabled={isDisabled}
+                      maxW="390px"
                     >
-                      {shuffledAnswers[0]}
+                      <Text
+                        style={{
+                          whiteSpace: "pre-wrap",
+                          maxWidth: "480px",
+                          margin: "10px",
+                        }}
+                      >
+                        {shuffledAnswers[0]}
+                      </Text>
                     </Button>{" "}
                   </HStack>
-                  <HStack spacing={2} align="start">
+
+                  <HStack spacing={2} align="start" mb={6}>
                     <Button
                       style={{ backgroundColor: isClickedB }}
                       onClick={() => {
@@ -296,6 +279,7 @@ export default function Reservations() {
                         insertStats();
                       }}
                       isDisabled={isDisabled}
+                      maxW="390px"
                     >
                       B
                     </Button>{" "}
@@ -307,11 +291,21 @@ export default function Reservations() {
                         insertStats();
                       }}
                       isDisabled={isDisabled}
+                      maxW="390px"
                     >
-                      {shuffledAnswers[1]}
+                      <Text
+                        style={{
+                          whiteSpace: "pre-wrap",
+                          maxWidth: "480px",
+                          margin: "10px",
+                        }}
+                      >
+                        {shuffledAnswers[1]}
+                      </Text>
                     </Button>{" "}
                   </HStack>
-                  <HStack spacing={2} align="start">
+
+                  <HStack spacing={2} align="start" mb={6}>
                     <Button
                       style={{ backgroundColor: isClickedC }}
                       onClick={() => {
@@ -320,6 +314,7 @@ export default function Reservations() {
                         insertStats();
                       }}
                       isDisabled={isDisabled}
+                      maxW="390px"
                     >
                       C
                     </Button>{" "}
@@ -331,11 +326,21 @@ export default function Reservations() {
                         insertStats();
                       }}
                       isDisabled={isDisabled}
+                      maxW="390px"
                     >
-                      {shuffledAnswers[2]}
+                      <Text
+                        style={{
+                          whiteSpace: "pre-wrap",
+                          maxWidth: "480px",
+                          margin: "10px",
+                        }}
+                      >
+                        {shuffledAnswers[2]}
+                      </Text>
                     </Button>{" "}
                   </HStack>
-                  <HStack spacing={2} align="start">
+
+                  <HStack spacing={2} align="start" mb={6}>
                     <Button
                       style={{ backgroundColor: isClickedD }}
                       onClick={() => {
@@ -344,6 +349,7 @@ export default function Reservations() {
                         insertStats();
                       }}
                       isDisabled={isDisabled}
+                      maxW="390px"
                     >
                       D
                     </Button>{" "}
@@ -355,12 +361,22 @@ export default function Reservations() {
                         insertStats();
                       }}
                       isDisabled={isDisabled}
+                      maxW="390px"
                     >
-                      {shuffledAnswers[3]}
+                      <Text
+                        style={{
+                          whiteSpace: "pre-wrap",
+                          maxWidth: "480px",
+                          margin: "10px",
+                        }}
+                      >
+                        {shuffledAnswers[3]}
+                      </Text>
                     </Button>{" "}
                   </HStack>
                 </VStack>
               </Center>
+
               <br />
               <Text textAlign="center">
                 <span>{resultsAnswer}</span>

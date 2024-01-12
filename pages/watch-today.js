@@ -53,7 +53,7 @@ export default function Movieapi() {
     if (isError) {
       apiCall();
     }
-  }, [isError]);
+  }, [isError, apiCall]);
   const posterRef = useRef(null);
 
   const apiCall = () => {
