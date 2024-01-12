@@ -66,7 +66,7 @@ export default function Reservations() {
     console.log(choice);
 
     //const url = `https://the-trivia-api.com/api/questions?limit=1&categories=${selectedCategories.join( ",")}${choice}`;
-    const url = `https://the-trivia-api.com/api/questions?limit=1&categories=film_and_tv`;
+    const url = `https://the-trivia-api.com/api/questions?limit=1&categories=film_and_tv&${choice}`;
     setResultsAnswer("");
     setSelectedAnswer("");
     setResultado("");

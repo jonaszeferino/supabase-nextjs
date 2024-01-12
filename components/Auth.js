@@ -193,7 +193,7 @@ export default function Auth() {
 
           <Link
             color="teal.500"
-            href="https://supabase-nextjs-gamma.vercel.app/send-email-password-reset"
+            href="https://www.watchtodayguide.com/send-email-password-reset"
           >
             Forgot your password?
           </Link>

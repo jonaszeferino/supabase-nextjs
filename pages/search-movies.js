@@ -531,6 +531,7 @@ export default function Discovery() {
           <div className={styles.grid}>
             {searchMovies.map((search) => (
               <div key={search.id}  style={{ marginBottom: "10px" }}>
+         
                 <ChakraProvider>
                   <Link
                     href={{
