@@ -54,7 +54,7 @@ const PoliciesPage = () => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    TMDB - The Movie Database
+                    {" "}TMDB - The Movie Database
                   </ChakraLink>
                   Users are encouraged to review TMDBs terms of service on
                   their website. Our Trivia service, powered by
@@ -65,7 +65,7 @@ const PoliciesPage = () => {
                   >
                     The Trivia API
                   </ChakraLink>
-                  , may collect data as per their privacy policy, which you can
+                   {" "},may collect data as per their privacy policy, which you can
                   find on their website.
                 </Text>
               </Box>
