@@ -132,7 +132,7 @@ export default function Home() {
 
       <div>
         <LoggedUser />
-        {/* <LoginAlert /> */}
+        <LoginAlert />
 
         <div>
           <div className={styles.top}>

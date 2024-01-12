@@ -70,6 +70,9 @@ export default function Navbar({ isLoading, onAuthenticated }) {
         <li>
           <Link href="/search-tvshows">| Discover Tv Shows</Link>
         </li>
+        <li>
+          <Link href="/trivia">| Trivia</Link>
+        </li>
         {/* <li>
           <Link href="/where-is-my-movie">| Where is My Movie? |</Link>
         </li> */}

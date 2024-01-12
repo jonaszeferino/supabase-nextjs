@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 import ErrorPage from "./error-page";
 import Head from "next/head";
 import Link from "next/link";
-
+import { Rate } from "antd";
 import TranslationComponent from "../components/translateComponent";
 import TranslationComponentCountryName from "../components/translateComponentCountryName";
 import {
@@ -31,7 +31,6 @@ import {
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
-import { Rate } from "antd";
 
 export default function Movieapi() {
   const [movieData, setMovieData] = useState({});
@@ -221,26 +220,20 @@ export default function Movieapi() {
                   </span>
                   <br />
                   {movieData.portugueseTitle ? (
-                    <span>
-                      <br />
-                      {movieData.average}/10{" "}
-                      <br />
-                      <Rate value={movieData.average} count={10} />
-                    </span>
+                    <span>{movieData.average}/10</span>
                   ) : null}
                   <br />
                 </h1>
                 {movieData.portugueseTitle ? (
                   <div style={{ maxWidth: "480px", margin: "0 auto" }}>
-                    {/* <ChakraProvider>
+                    <ChakraProvider>
                       <Progress
-                        size="lg"
+                        hasStripe
                         value={movieData.average}
                         max={10}
                         colorScheme={getProgressColor(movieData.average)}
                       />
-                    </ChakraProvider> */}
-
+                    </ChakraProvider>
                     <br />
                   </div>
                 ) : null}
@@ -294,6 +287,8 @@ export default function Movieapi() {
                           <Tbody></Tbody>
                         </Table>
 
+               
+
                         <Tabs>
                           <TabList>
                             <Tab
@@ -325,14 +320,14 @@ export default function Movieapi() {
                               Genre
                             </Tab>
                           </TabList>
-
+    
                           <TabPanels>
                             <TabPanel
                               style={{
                                 fontFamily: "Helvetica Neue, sans-serif",
                               }}
                             >
-                              {`${movieData.average}`}
+                              {`${movieData.average} / ${movieData.ratingCount} Votes`}
                             </TabPanel>
                             <TabPanel>
                               <TranslationComponentCountryName
@@ -365,6 +360,8 @@ export default function Movieapi() {
                             </TabPanel>
                           </TabPanels>
                         </Tabs>
+     
+     
                       </TableContainer>
                     </ChakraProvider>
                   </div>

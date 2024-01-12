@@ -115,6 +115,11 @@ const MobileNavbar = () => {
                   <ChevronRightIcon /> Discover Tv Shows
                 </span>
               </Link>
+              <Link href="/trivia">
+                <span>
+                  <ChevronRightIcon /> Trivia
+                </span>
+              </Link>
               {/* <Link href="/where-is-my-movie">
                 <span>
                   <ChevronRightIcon /> Where is My Movie?

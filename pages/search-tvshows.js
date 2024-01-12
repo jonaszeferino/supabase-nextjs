@@ -21,7 +21,6 @@ import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
 import { Tooltip } from "antd";
 import Link from "next/link";
-import { Rate } from "antd";
 
 export default function Discovery() {
   let [searchMovies, setSearchMovies] = useState([]);
@@ -214,7 +213,7 @@ export default function Discovery() {
                   value={searchMovieReleaseDateFrom}
                   onChange={handleFromChange}
                 >
-                  {Array.from({ length: 2025 - 1900 + 1 }, (_, index) => (
+                  {Array.from({ length: 2024 - 1900 + 1 }, (_, index) => (
                     <option key={index} value={1900 + index}>
                       {1900 + index}
                     </option>
@@ -225,7 +224,7 @@ export default function Discovery() {
                   value={searchMovieReleaseDateTo}
                   onChange={handleToChange}
                 >
-                  {Array.from({ length: 2025 - 1900 + 1 }, (_, index) => (
+                  {Array.from({ length: 2024 - 1900 + 1 }, (_, index) => (
                     <option key={index} value={1900 + index}>
                       {1900 + index}
                     </option>
@@ -233,9 +232,10 @@ export default function Discovery() {
                 </Select>
               </Flex>
             </FormControl>
+          
 
-            <br />
-
+          <br />
+          
             <Button size="lg" colorScheme="purple" onClick={apiCall}>
               Go
             </Button>
@@ -253,48 +253,81 @@ export default function Discovery() {
         <div className={styles.grid}>
           {searchMovies.map((search) => (
             <div key={search.id}>
-              <ChakraProvider>
+              <span className={styles.spantext}></span>{" "}
+              <span
+                className={styles.spantext}
+                style={{
+                  position: "relative",
+                  display: "block",
+                  width: "240px",
+                  height: "360px",
+                }}
+              >
+                <ChakraProvider>
+
                 {/* <Link as={`/tvshow-page?tvShowId=${search.id}`}> */}
 
-                <Link
-                  href={{
-                    pathname: "/tvshow-page",
-                    query: { tvShowId: search.id },
-                  }}
-                >
-                  <Tooltip
-                    title="More"
-                    style={{
-                      color: "white",
-                      borderColor: "purple",
-                      background: "purple",
+                  <Link
+                    href={{
+                      pathname: "/tvshow-page",
+                      query: { tvShowId: search.id },
                     }}
                   >
-                    <Image
-                      className={styles.card_image}
-                      src={
-                        `https://image.tmdb.org/t/p/original${search.poster_path}` ||
-                        `/callback.png`
-                      }
-                      alt="poster"
-                      width={240}
-                      height={360}
-                    />
-                  </Tooltip>
-                </Link>
-              </ChakraProvider>
+                    <Tooltip
+                      title="Saiba Mais"
+                      style={{
+                        color: "white",
+                        borderColor: "purple",
+                        background: "purple",
+                      }}
+                    >
+                      {search.poster_path ? (
+                        <Image
+                          className={styles.card_image}
+                          src={`https://image.tmdb.org/t/p/original${search.poster_path}`}
+                          alt="poster"
+                          width={240}
+                          height={360}
+                        />
+                      ) : (
+                        <Image
+                          className={styles.card_image}
+                          src="/callback.png"
+                          alt="poster"
+                          width={240}
+                          height={360}
+                        />
+                      )}
+                    </Tooltip>
 
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        background: "rgba(0, 0, 0, 0.5)",
+                        color: "white",
+                        textAlign: "center",
+                        padding: "8px 0",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      {search.original_name}
+                    </span>
+                  </Link>
+                </ChakraProvider>
+              </span>
               <div style={{ maxWidth: "240px", margin: "5px" }}>
                 <ChakraProvider>
                   <Progress
-                    size="lg"
+                    hasStripe
                     value={search.vote_average}
                     max={10}
                     colorScheme={getProgressColor(search.vote_average)}
                   />
-                  {search.vote_average} <Rate value={1} count={1} />
                 </ChakraProvider>
-                
+                {search.vote_average}
               </div>
               <br />
             </div>
