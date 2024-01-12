@@ -178,7 +178,11 @@ const MoviePage = () => {
           <span>
             <Image
               className={styles.card_image_big}
-              src={poster || "/callback.png"}
+              src={
+                poster
+                  ? `https://image.tmdb.org/t/p/original${poster}`
+                  : "/callback.png"
+              }
               alt="poster"
               width="480"
               height="720"
