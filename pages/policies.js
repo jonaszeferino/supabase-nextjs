@@ -41,23 +41,23 @@ const PoliciesPage = () => {
               <Box maxW="460px" mx="auto">
                 <Text>
                   We do not collect any user information through cookies or
-                  other means on our website.{' '}
+                  other means on our website.
                 </Text>
               </Box>
             </TabPanel>
             <TabPanel>
               <Box maxW="460px" mx="auto">
                 <Text>
-                  Our site relies on open data provided by{' '}
+                  Our site relies on open data provided by
                   <ChakraLink
                     href="https://www.themoviedb.org/"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    TMDB (The Movie Database)
+                    TMDB - The Movie Database
                   </ChakraLink>
                   . Users are encouraged to review TMDB's terms of service on
-                  their website. Our Trivia service, powered by{' '}
+                  their website. Our Trivia service, powered by
                   <ChakraLink
                     href="https://the-trivia-api.com/"
                     target="_blank"
@@ -73,7 +73,7 @@ const PoliciesPage = () => {
             <TabPanel>
               <Box maxW="460px" mx="auto">
                 <Text>
-                  User authentication is handled securely through{' '}
+                  User authentication is handled securely through
                   <ChakraLink
                     href="https://supabase.io/"
                     target="_blank"
