@@ -367,6 +367,17 @@ export default function Discovery() {
     { value: "ZW", label: "Zimbabwe" },
   ];
 
+  function generateOptions(startYear, endYear) {
+    return Array.from({ length: endYear - startYear + 1 }, (_, index) => (
+      <option key={index} value={startYear + index}>
+        {startYear + index}
+      </option>
+    ));
+  }
+  
+  const optionsFrom = generateOptions(1800, 2023);
+  const optionsTo = generateOptions(1801, 2024);
+
   return (
     <>
       <Head>
@@ -442,20 +453,22 @@ export default function Discovery() {
                 </Center>
 
                 <Flex align="center">
-                  <Select value={searchMovieReleaseDateFrom}>
-                    {Array.from({ length: 2024 - 1900 + 1 }, (_, index) => (
-                      <option key={index} value={1900 + index}>
-                        {1900 + index}
-                      </option>
-                    ))}
+                  <Select
+                    value={searchMovieReleaseDateFrom}
+                    onChange={(event) =>
+                      setSearchMovieReleaseDateFrom(event.target.value)
+                    }
+                  >
+                    {optionsFrom}
                   </Select>
                   <Box w="20px" />
-                  <Select value={searchMovieReleaseDateTo}>
-                    {Array.from({ length: 2024 - 1900 + 1 }, (_, index) => (
-                      <option key={index} value={1900 + index}>
-                        {1900 + index}
-                      </option>
-                    ))}
+                  <Select
+                    value={searchMovieReleaseDateTo}
+                    onChange={(event) =>
+                      setSearchMovieReleaseDateTo(event.target.value)
+                    }
+                  >
+                    {optionsTo}
                   </Select>
                 </Flex>
               </FormControl>
@@ -530,8 +543,7 @@ export default function Discovery() {
         ) : (
           <div className={styles.grid}>
             {searchMovies.map((search) => (
-              <div key={search.id}  style={{ marginBottom: "10px" }}>
-         
+              <div key={search.id} style={{ marginBottom: "10px" }}>
                 <ChakraProvider>
                   <Link
                     href={{
