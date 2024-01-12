@@ -54,7 +54,7 @@ export default function Footer() {
           marginRight={5}
         >
           <Text fontWeight="bold" mb={2}>
-            Legal
+            Quick Links{" "}
           </Text>
           <Link href="/search-free?query=">Free Search</Link>
           <Link href="/where-is-my-movie">Where Is My Movie?</Link>
@@ -75,6 +75,8 @@ export default function Footer() {
           <Link href="/signUp">Login / Sign Up</Link>
           <Link href="/send-email-password-reset">Password Reset</Link>
           <Link href="/">Link 3</Link>
+          <br />
+          <br />
         </VStack>
       </HStack>
     </footer>
