@@ -92,7 +92,7 @@ const PoliciesPage = () => {
 
       <Box bg="white" p={4} textAlign="center">
         <Text>
-        {new Date().getFullYear()} The Only Apps. All rights
+        &copy; {new Date().getFullYear()} The Only Apps. All rights
           reserved.
         </Text>
         <nav>
