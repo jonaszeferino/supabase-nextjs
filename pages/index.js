@@ -149,6 +149,7 @@ export default function Home() {
                   }}
                 >
                   <Image
+                    unoptimized
                     className={styles.card_image}
                     src={
                       search.poster_path

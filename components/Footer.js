@@ -74,7 +74,7 @@ export default function Footer() {
           </Text>
           <Link href="/signUp">Login / Sign Up</Link>
           <Link href="/send-email-password-reset">Password Reset</Link>
-          <Link href="/">Link 3</Link>
+          <Link href="/policies">Policy</Link>
           <br />
           <br />
         </VStack>
