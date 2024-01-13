@@ -10,6 +10,7 @@ import {
   ChakraProvider,
   Center,
   Link,
+  Select,
 } from "@chakra-ui/react";
 import { Alert, Space } from "antd";
 
@@ -156,6 +157,7 @@ export default function Reservations() {
   ];
 
   const difficultyOptions = [
+    { name: "", displayName: "All" },
     { name: "easy", displayName: "Easy" },
     { name: "medium", displayName: "Medium" },
     { name: "hard", displayName: "Hard" },
@@ -206,6 +208,18 @@ export default function Reservations() {
             >
               Start
             </Button>
+            <HStack>
+              <Select
+                placeholder="Select Difficulty"
+                onChange={(e) => setSelectedDifficulties([e.target.value])}
+              >
+                {difficultyOptions.map((option) => (
+                  <option key={option.name} value={option.name}>
+                    {option.displayName}
+                  </option>
+                ))}
+              </Select>
+            </HStack>
             <br />
             <br />
             <br />
