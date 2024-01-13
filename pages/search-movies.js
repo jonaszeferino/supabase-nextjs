@@ -28,7 +28,7 @@ export default function Discovery() {
   let [searchRatingSort, setSearchRatingSort] = useState("vote_average.desc");
   let [searchVoteCount, setSearchVoteCount] = useState(5000);
   let [searchMovieReleaseDateFrom, setSearchMovieReleaseDateFrom] =
-    useState(1800);
+    useState(1900);
   let [searchMovieReleaseDateTo, setSearchMovieReleaseDateTo] = useState(2023);
   //paginação
   let [page, setPage] = useState(1);
@@ -44,7 +44,7 @@ export default function Discovery() {
   const [searchFilters, setSearchFilters] = useState({
     ratingSort: "vote_average.desc",
     voteCount: 5000,
-    releaseDateFrom: 1800,
+    releaseDateFrom: 1900,
     releaseDateTo: 2024,
     with_origin_country: "NOTHING",
   });
@@ -375,8 +375,8 @@ export default function Discovery() {
     ));
   }
   
-  const optionsFrom = generateOptions(1800, 2023);
-  const optionsTo = generateOptions(1801, 2024);
+  const optionsFrom = generateOptions(1900, 2023);
+  const optionsTo = generateOptions(1901, 2024);
 
   return (
     <>
