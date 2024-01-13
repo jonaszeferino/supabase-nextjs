@@ -316,7 +316,7 @@ export default function Movieapi() {
                                 fontFamily: "Helvetica Neue, sans-serif",
                               }}
                             >
-                              {`${movieData.average} / ${movieData.ratingCount} votos`}
+                              {`${movieData.average} `}
                             </TabPanel>
                             <TabPanel>
                               <TranslationComponentCountryName
@@ -404,3 +404,4 @@ export default function Movieapi() {
     </>
   );
 }
+//fixed
