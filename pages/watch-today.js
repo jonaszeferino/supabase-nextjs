@@ -143,12 +143,10 @@ export default function Movieapi() {
     }
   };
 
-  // Estrelas:
   const handleRateChange = (value) => {
-    setStarValue(value); // Atualiza o estado com o novo valor das estrelas
+    setStarValue(value); 
   };
   const handleRatingSubmit = () => {
-    
     setIsRatingSubmitted(true);
   };
 
@@ -323,13 +321,13 @@ export default function Movieapi() {
                             <TabPanel>
                               <TranslationComponentCountryName
                                 text={movieData.country}
-                                language="pt"
+                                language="en"
                               />
                             </TabPanel>
                             <TabPanel>
                               <TranslationComponent
                                 text={movieData.originalLanguage}
-                                language="pt"
+                                language="en"
                               />
                             </TabPanel>
                             <TabPanel
