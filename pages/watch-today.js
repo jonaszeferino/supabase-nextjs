@@ -3,7 +3,8 @@ import styles from "../styles/Home.module.css";
 import ErrorPage from "./error-page";
 import Head from "next/head";
 import Link from "next/link";
-
+import { Rate } from "antd";
+import { BiSolidUpArrow } from "react-icons/bi";
 import TranslationComponent from "../components/translateComponent";
 import TranslationComponentCountryName from "../components/translateComponentCountryName";
 import {
@@ -26,12 +27,9 @@ import {
   IconButton,
   Skeleton,
   Image,
-  useMediaQuery,
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
-import LoggedUser from "../components/LoggedUser";
-import { Rate } from "antd";
 
 export default function Movieapi() {
   const [movieData, setMovieData] = useState({});
@@ -43,17 +41,15 @@ export default function Movieapi() {
   const [likeThanks, setLikeThanks] = useState(false);
   const [dateNow, setDatenow] = useState(new Date());
 
-  const [starValue, setStarValue] = useState(0);
-  const [isRatingSubmitted, setIsRatingSubmitted] = useState(false);
-  const { showBackToTopButton, scrollToTop } = useBackToTopButton();
-
-  const [isMobile] = useMediaQuery("(max-width: 768px)");
+  const [starValue, setStarValue] = useState(0); // Estado para armazenar o valor das estrelas
+  const [isRatingSubmitted, setIsRatingSubmitted] = useState(false); // Estado para controlar se a avaliação foi enviada
+  const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
 
   useEffect(() => {
     if (isError) {
       apiCall();
     }
-  }, [isError, apiCall]);
+  }, [isError]);
   const posterRef = useRef(null);
 
   const apiCall = () => {
@@ -68,15 +64,9 @@ export default function Movieapi() {
     setIsRatingSubmitted(false);
     setStarValue(0);
 
-    const tmdbBearer = process.env.NEXT_PUBLIC_TMDB_BEARER;
-    const url = `https://api.themoviedb.org/3/movie/${randomMovieId}`;
+    const url = `https://api.themoviedb.org/3/movie/${randomMovieId}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`;
 
-    fetch(url, {
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
-      }),
-    })
+    fetch(url)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -107,10 +97,7 @@ export default function Movieapi() {
         setIsLoading(false);
         setError(false);
       })
-      .catch((error) => {
-        setError(true);
-        setIsLoading(false);
-      });
+      .catch((error) => setError(true), setIsLoading(false));
   };
 
   let destino = `/movie-page?movieId=${movieData.movieId}`;
@@ -150,14 +137,19 @@ export default function Movieapi() {
       console.error(error);
     }
   };
+
+  // Estrelas:
   const handleRateChange = (value) => {
-    setStarValue(value);
+    setStarValue(value); // Atualiza o estado com o novo valor das estrelas
   };
   const handleRatingSubmit = () => {
+    // AColar aqui a chamada na api para enviar o valor das estrelas ao banco de dados
     setIsRatingSubmitted(true);
   };
+
   const isLoadingPage =
     isError || movieData.adult || movieData.portugueseTitle === null;
+  console.log(isLoadingPage);
 
   return (
     <>
@@ -166,22 +158,20 @@ export default function Movieapi() {
         <meta name="keywords" content="movies,watch,review"></meta>
         <meta
           name="description"
-          content="Find movies, series e recive sugestions"
+          content="Find everything about movies here"
         ></meta>
       </Head>
       <div>
-        <LoggedUser />
         <div style={{ maxWidth: "480px", margin: "0 auto" }}>
           <ChakraProvider>
             <Box maxW="32rem">
               <div className={styles.top}>
-                <h3 className={styles.title}>What to Watch Today?</h3>
+                <h3 className={styles.title}> O que ver hoje?</h3>
                 <span>
-                  Click and see the possibilities until you find one to your
-                  liking!
+                  {" "}
+                  Clique e veja as possibilidades até que um seja do seu agrado!
                 </span>
               </div>
-
               <Button
                 size="md"
                 bg="white"
@@ -191,20 +181,21 @@ export default function Movieapi() {
                 mt="24px"
                 onClick={apiCall}
               >
-                Go
+                Verificar
               </Button>
             </Box>
           </ChakraProvider>
         </div>
         {isLoading ? <Progress size="xs" isIndeterminate /> : null}
-
+        <br />
         {isError === true ? (
-          <ErrorPage message={`- Deleted Movie`}></ErrorPage>
+          <ErrorPage message={`- Filme Deletado`}></ErrorPage>
         ) : (
           <div>
             {movieData.adult === false ? (
               <div>
                 <h1>
+                  <br />
                   <span className={styles.title}>
                     {movieData.originalTitle ? (
                       <span
@@ -221,29 +212,24 @@ export default function Movieapi() {
                   </span>
                   <br />
                   {movieData.portugueseTitle ? (
-                    <span>
-                      <br />
-                      {movieData.average}/10{" "}
-                      <br />
-                      <Rate value={movieData.average} count={10} />
-                    </span>
+                    <span>{movieData.average}/10</span>
                   ) : null}
                   <br />
                 </h1>
                 {movieData.portugueseTitle ? (
                   <div style={{ maxWidth: "480px", margin: "0 auto" }}>
-                    {/* <ChakraProvider>
+                    <ChakraProvider>
                       <Progress
-                        size="lg"
+                        hasStripe
                         value={movieData.average}
                         max={10}
                         colorScheme={getProgressColor(movieData.average)}
                       />
-                    </ChakraProvider> */}
-
+                    </ChakraProvider>
                     <br />
                   </div>
                 ) : null}
+
                 <h1>
                   <ChakraProvider>
                     {isLoadingPage === false ? (
@@ -256,14 +242,11 @@ export default function Movieapi() {
                             : "/callback_gray.png"
                         }
                         alt="poster"
-                        width={isMobile ? "240px" : "480px"}
-                        height={isMobile ? "360px" : "720px"}
+                        width="480"
+                        height="720"
                       />
                     ) : (
-                      <Skeleton
-                        width={isMobile ? "240px" : "480px"}
-                        height={isMobile ? "360px" : "720px"}
-                      />
+                      <Skeleton width="480px" height="720px" />
                     )}
                   </ChakraProvider>
                 </h1>
@@ -280,7 +263,7 @@ export default function Movieapi() {
                                   fontFamily: "Helvetica Neue, sans-serif",
                                 }}
                               >
-                                Title{" "}
+                                Título Em Português
                               </Td>
                               <Td
                                 style={{
@@ -293,57 +276,55 @@ export default function Movieapi() {
                           </Thead>
                           <Tbody></Tbody>
                         </Table>
-
-                        <Tabs>
+                        <Tabs size="md" variant="enclosed">
                           <TabList>
                             <Tab
                               style={{
                                 fontFamily: "Helvetica Neue, sans-serif",
                               }}
                             >
-                              Average{" "}
+                              Nota Média
                             </Tab>
                             <Tab
                               style={{
                                 fontFamily: "Helvetica Neue, sans-serif",
                               }}
                             >
-                              Country{" "}
+                              País de Origem
                             </Tab>
                             <Tab
                               style={{
                                 fontFamily: "Helvetica Neue, sans-serif",
                               }}
                             >
-                              Language
+                              Idioma
                             </Tab>
                             <Tab
                               style={{
                                 fontFamily: "Helvetica Neue, sans-serif",
                               }}
                             >
-                              Genre
+                              Genero
                             </Tab>
                           </TabList>
-
                           <TabPanels>
                             <TabPanel
                               style={{
                                 fontFamily: "Helvetica Neue, sans-serif",
                               }}
                             >
-                              {`${movieData.average}`}
+                              {`${movieData.average} / ${movieData.ratingCount} votos`}
                             </TabPanel>
                             <TabPanel>
                               <TranslationComponentCountryName
                                 text={movieData.country}
-                                language="en"
+                                language="pt"
                               />
                             </TabPanel>
                             <TabPanel>
                               <TranslationComponent
                                 text={movieData.originalLanguage}
-                                language="en"
+                                language="pt"
                               />
                             </TabPanel>
                             <TabPanel
@@ -370,13 +351,16 @@ export default function Movieapi() {
                   </div>
                 )}
                 {movieData.portugueseTitle && (
-                  <Link href={destino}>Details</Link>
+                  <Link href={destino}>
+                    Detalhes
+                  </Link>
                 )}
                 <br />
                 {movieData.portugueseTitle && (
                   <span>
                     <div>
-                      <h1>Put Your Avaliation</h1>
+                      <h1>Avalie Essa Dica:</h1>
+
                       <Rate
                         onChange={handleRateChange}
                         value={starValue}
@@ -391,20 +375,22 @@ export default function Movieapi() {
                         }}
                         disabled={isRatingSubmitted}
                       >
-                        Send Avaliation
+                        Enviar Avaliação
                       </Button>
-                      {isRatingSubmitted && <p>Success</p>}
+                      {isRatingSubmitted && (
+                        <p>Avaliação enviada com sucesso!</p>
+                      )}
                     </div>
                   </span>
                 )}
                 <br />
-                {likeThanks && <span>Thanks 😀 </span>}
+                {likeThanks && <span>Obrigado pela Resposta!! 😀 </span>}
                 {showBackToTopButton && (
                   <BackToTopButton onClick={scrollToTop} />
                 )}
                 {movieData.portugueseTitle && (
                   <button onClick={apiCall} className={styles.button}>
-                    Try Again{" "}
+                    Verificar Novo
                   </button>
                 )}
               </div>
@@ -415,4 +401,3 @@ export default function Movieapi() {
     </>
   );
 }
-//teste
