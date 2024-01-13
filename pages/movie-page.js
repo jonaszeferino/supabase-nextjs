@@ -296,7 +296,7 @@ const MoviePage = () => {
                   <Th>Release Date</Th>
                   <Td>
                     {data.releaseDate
-                      ? format(new Date(data.releaseDate), " dd/MM/yyyy")
+                      ? format(new Date(data.releaseDate), " MM/dd/yyyy")
                       : ""}
                   </Td>
                 </Tr>

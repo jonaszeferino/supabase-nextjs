@@ -252,7 +252,7 @@ const MoviePage = () => {
                     <Td>First Episode on-air</Td>
                     <Td>
                       {data.firstEpisodeToAir
-                        ? format(new Date(data.firstEpisodeToAir), "dd/MM/yyyy")
+                        ? format(new Date(data.firstEpisodeToAir), "MM/dd/yyyy")
                         : ""}
                     </Td>
                   </Tr>
