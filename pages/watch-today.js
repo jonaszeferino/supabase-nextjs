@@ -41,9 +41,9 @@ export default function Movieapi() {
   const [likeThanks, setLikeThanks] = useState(false);
   const [dateNow, setDatenow] = useState(new Date());
 
-  const [starValue, setStarValue] = useState(0); // Estado para armazenar o valor das estrelas
-  const [isRatingSubmitted, setIsRatingSubmitted] = useState(false); // Estado para controlar se a avaliação foi enviada
-  const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
+  const [starValue, setStarValue] = useState(0);
+  const [isRatingSubmitted, setIsRatingSubmitted] = useState(false); 
+  const { showBackToTopButton, scrollToTop } = useBackToTopButton();
 
   useEffect(() => {
     if (isError) {
@@ -64,9 +64,14 @@ export default function Movieapi() {
     setIsRatingSubmitted(false);
     setStarValue(0);
 
-    const url = `https://api.themoviedb.org/3/movie/${randomMovieId}?api_key=dd10bb2fbc12dfb629a0cbaa3f47810c&language=pt-BR`;
+    const url = `https://api.themoviedb.org/3/movie/${randomMovieId}`;
 
-    fetch(url)
+    fetch(url, {
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
+      }),
+    })
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -143,7 +148,7 @@ export default function Movieapi() {
     setStarValue(value); // Atualiza o estado com o novo valor das estrelas
   };
   const handleRatingSubmit = () => {
-    // AColar aqui a chamada na api para enviar o valor das estrelas ao banco de dados
+    
     setIsRatingSubmitted(true);
   };
 
@@ -166,10 +171,10 @@ export default function Movieapi() {
           <ChakraProvider>
             <Box maxW="32rem">
               <div className={styles.top}>
-                <h3 className={styles.title}> O que ver hoje?</h3>
+                <h3 className={styles.title}>What To Watch Today?</h3>
                 <span>
                   {" "}
-                  Clique e veja as possibilidades até que um seja do seu agrado!
+                  Click and see the possibilities until you find one to your liking!
                 </span>
               </div>
               <Button
@@ -181,7 +186,7 @@ export default function Movieapi() {
                 mt="24px"
                 onClick={apiCall}
               >
-                Verificar
+                Go
               </Button>
             </Box>
           </ChakraProvider>
@@ -263,7 +268,7 @@ export default function Movieapi() {
                                   fontFamily: "Helvetica Neue, sans-serif",
                                 }}
                               >
-                                Título Em Português
+                                Title
                               </Td>
                               <Td
                                 style={{
@@ -283,28 +288,28 @@ export default function Movieapi() {
                                 fontFamily: "Helvetica Neue, sans-serif",
                               }}
                             >
-                              Nota Média
+                              Average
                             </Tab>
                             <Tab
                               style={{
                                 fontFamily: "Helvetica Neue, sans-serif",
                               }}
                             >
-                              País de Origem
+                              Country
                             </Tab>
                             <Tab
                               style={{
                                 fontFamily: "Helvetica Neue, sans-serif",
                               }}
                             >
-                              Idioma
+                              Language
                             </Tab>
                             <Tab
                               style={{
                                 fontFamily: "Helvetica Neue, sans-serif",
                               }}
                             >
-                              Genero
+                              Genre
                             </Tab>
                           </TabList>
                           <TabPanels>
@@ -352,14 +357,14 @@ export default function Movieapi() {
                 )}
                 {movieData.portugueseTitle && (
                   <Link href={destino}>
-                    Detalhes
+                    Details
                   </Link>
                 )}
                 <br />
                 {movieData.portugueseTitle && (
                   <span>
                     <div>
-                      <h1>Avalie Essa Dica:</h1>
+                      <h1>Rate This Tip</h1>
 
                       <Rate
                         onChange={handleRateChange}
@@ -375,22 +380,22 @@ export default function Movieapi() {
                         }}
                         disabled={isRatingSubmitted}
                       >
-                        Enviar Avaliação
+                        Submit Rating
                       </Button>
                       {isRatingSubmitted && (
-                        <p>Avaliação enviada com sucesso!</p>
+                        <p>Rating submitted successfully!</p>
                       )}
                     </div>
                   </span>
                 )}
                 <br />
-                {likeThanks && <span>Obrigado pela Resposta!! 😀 </span>}
+                {likeThanks && <span>Thanks 😀 </span>}
                 {showBackToTopButton && (
                   <BackToTopButton onClick={scrollToTop} />
                 )}
                 {movieData.portugueseTitle && (
                   <button onClick={apiCall} className={styles.button}>
-                    Verificar Novo
+                   Try Again
                   </button>
                 )}
               </div>
