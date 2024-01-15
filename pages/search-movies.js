@@ -29,12 +29,16 @@ export default function Discovery() {
   let [searchVoteCount, setSearchVoteCount] = useState(5000);
   let [searchMovieReleaseDateFrom, setSearchMovieReleaseDateFrom] =
     useState(1900);
+
+  const [genres, setGenres] = useState([]);
+
   let [searchMovieReleaseDateTo, setSearchMovieReleaseDateTo] = useState(2023);
   //paginação
   let [page, setPage] = useState(1);
   let [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
   let [searchMovieRealPage, setSearchMovieRealPage] = useState("");
   let [searchMovieTotalResults, setSearchMovieTotalResults] = useState("");
+  let [searchMovieCategory, setSearchMovieCategory] = useState("");
   // erro e loading
   let [isError, setError] = useState(false);
   let [isLoading, setIsLoading] = useState(false);
@@ -47,6 +51,7 @@ export default function Discovery() {
     releaseDateFrom: 1900,
     releaseDateTo: 2024,
     with_origin_country: "NOTHING",
+    category: "",
   });
 
   let urlString =
@@ -57,7 +62,9 @@ export default function Discovery() {
     "&primary_release_date.gte=" +
     searchMovieReleaseDateFrom +
     "&primary_release_date.lte=" +
-    searchMovieReleaseDateTo;
+    searchMovieReleaseDateTo +
+    "&with_genres=" +
+    searchMovieCategory;
 
   if (searchFilters.with_origin_country === "NOTHING") {
     urlString;
@@ -374,9 +381,31 @@ export default function Discovery() {
       </option>
     ));
   }
-  
+
   const optionsFrom = generateOptions(1900, 2023);
   const optionsTo = generateOptions(1901, 2024);
+
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const response = await fetch(
+          "https://api.themoviedb.org/3/genre/list", {
+            headers: new Headers({
+              "Content-Type": "application/json",
+              Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
+            }),
+          }
+        );
+        const data = await response.json();
+        setGenres(data.genres);
+      } catch (error) {
+        console.error("Error fetching genres:", error);
+      }
+    };
+  
+    fetchGenres();
+  }, []);
+  
 
   return (
     <>
@@ -496,6 +525,20 @@ export default function Discovery() {
               </Select>
 
               <br />
+
+              <FormLabel htmlFor="movieCategory">Movie Category</FormLabel>
+              <Select
+                id="movieCategory"
+                placeholder="Select Category"
+                value={searchMovieCategory}
+                onChange={(event) => setSearchMovieCategory(event.target.value)}
+              >
+                {genres.map((genre) => (
+                  <option key={genre.id} value={genre.id}>
+                    {genre.name}
+                  </option>
+                ))}
+              </Select>
 
               <Button
                 size="lg"

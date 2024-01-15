@@ -128,6 +128,7 @@ export default function Home() {
         <title>Home</title>
         <meta name="keywords" content="movies,tvshows,"></meta>
         <meta name="description" content="movies,tvshows"></meta>
+
       </Head>
 
       <div>
