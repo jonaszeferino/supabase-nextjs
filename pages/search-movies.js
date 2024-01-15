@@ -33,17 +33,16 @@ export default function Discovery() {
   const [genres, setGenres] = useState([]);
 
   let [searchMovieReleaseDateTo, setSearchMovieReleaseDateTo] = useState(2023);
-  //paginação
   let [page, setPage] = useState(1);
   let [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
   let [searchMovieRealPage, setSearchMovieRealPage] = useState("");
   let [searchMovieTotalResults, setSearchMovieTotalResults] = useState("");
   let [searchMovieCategory, setSearchMovieCategory] = useState("");
-  // erro e loading
   let [isError, setError] = useState(false);
   let [isLoading, setIsLoading] = useState(false);
+  
   const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
-  // estado pra amarzenar os filtros utilizados
+  
 
   const [searchFilters, setSearchFilters] = useState({
     ratingSort: "vote_average.desc",
