@@ -32,6 +32,9 @@ export default function Discovery() {
   let [searchMovieReleaseDateFrom, setSearchMovieReleaseDateFrom] =
     useState(1800);
   let [searchMovieReleaseDateTo, setSearchMovieReleaseDateTo] = useState(2023);
+  const [searchTvShowCategory, setSearchTvShowCategory] = useState("")
+
+  const [genres, setGenres] = useState([]);
 
   //pagination
   let [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
@@ -52,7 +55,9 @@ export default function Discovery() {
     "&first_air_date.gte=" +
     (searchMovieReleaseDateFrom + 1) +
     "&first_air_date.lte=" +
-    (searchMovieReleaseDateTo + 1);
+    (searchMovieReleaseDateTo + 1) +
+    "&with_genres=" +
+    searchTvShowCategory;
 
   if (searchTvType !== "") {
     urlString += "&with_type=" + searchTvType;
@@ -125,6 +130,28 @@ export default function Discovery() {
       return "gray";
     }
   }
+
+
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const response = await fetch(
+          "https://api.themoviedb.org/3/genre/tv/list", {
+            headers: new Headers({
+              "Content-Type": "application/json",
+              Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
+            }),
+          }
+        );
+        const data = await response.json();
+        setGenres(data.genres);
+      } catch (error) {
+        console.error("Error fetching genres:", error);
+      }
+    };
+  
+    fetchGenres();
+  }, []);
 
   return (
     <>
@@ -235,6 +262,21 @@ export default function Discovery() {
             </FormControl>
 
             <br />
+
+            <FormLabel htmlFor="movieCategory">Tv Show Category</FormLabel>
+              <Select
+                id="movieCategory"
+                placeholder="Select Category"
+                value={searchTvShowCategory}
+                onChange={(event) => setSearchTvShowCategory(event.target.value)}
+              >
+                {genres.map((genre) => (
+                  <option key={genre.id} value={genre.id}>
+                    {genre.name}
+                  </option>
+                ))}
+              </Select>
+              <br/>
 
             <Button size="lg" colorScheme="purple" onClick={apiCall}>
               Go
