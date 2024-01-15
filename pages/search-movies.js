@@ -47,7 +47,7 @@ export default function Discovery() {
 
   const [searchFilters, setSearchFilters] = useState({
     ratingSort: "vote_average.desc",
-    voteCount: 5000,
+    voteCount: 100,
     releaseDateFrom: 1900,
     releaseDateTo: 2024,
     with_origin_country: "NOTHING",
