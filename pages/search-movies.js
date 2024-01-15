@@ -26,7 +26,7 @@ export default function Discovery() {
   let [movieId, setMovieId] = useState();
   let [searchMovies, setSearchMovies] = useState([]);
   let [searchRatingSort, setSearchRatingSort] = useState("vote_average.desc");
-  let [searchVoteCount, setSearchVoteCount] = useState(5000);
+  let [searchVoteCount, setSearchVoteCount] = useState(100);
   let [searchMovieReleaseDateFrom, setSearchMovieReleaseDateFrom] =
     useState(1900);
 
