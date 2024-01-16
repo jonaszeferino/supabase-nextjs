@@ -4,7 +4,6 @@ import ErrorPage from "./error-page";
 import Head from "next/head";
 import Link from "next/link";
 import { Rate } from "antd";
-import { BiSolidUpArrow } from "react-icons/bi";
 import TranslationComponent from "../components/translateComponent";
 import TranslationComponentCountryName from "../components/translateComponentCountryName";
 import {
@@ -24,7 +23,6 @@ import {
   TabList,
   TabPanels,
   TabPanel,
-  IconButton,
   Skeleton,
   Image,
 } from "@chakra-ui/react";
@@ -47,9 +45,15 @@ export default function Movieapi() {
 
   useEffect(() => {
     if (isError) {
-      apiCall();
+      const fetchData = async () => {
+        apiCall();
+      };
+      fetchData();
     }
-  }, [isError,apiCall]);
+  }, [isError]);
+  
+
+
   const posterRef = useRef(null);
 
   const apiCall = () => {
@@ -102,7 +106,10 @@ export default function Movieapi() {
         setIsLoading(false);
         setError(false);
       })
-      .catch((error) => setError(true), setIsLoading(false));
+      .catch((error) => {
+        setError(true);
+        setIsLoading(false);
+      });
   };
 
   let destino = `/movie-page?movieId=${movieData.movieId}`;
@@ -404,4 +411,3 @@ export default function Movieapi() {
     </>
   );
 }
-//fixed

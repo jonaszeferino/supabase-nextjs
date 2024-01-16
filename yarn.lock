@@ -6145,6 +6145,7 @@ __metadata:
     moment-timezone: "npm:^0.5.43"
     mongodb: "npm:^6.0.0"
     next: "npm:^14.0.4"
+    prop-types: "npm:^15.8.1"
     react: "npm:^18.2.0"
     react-bootstrap: "npm:^2.9.1"
     react-datepicker: "npm:^4.16.0"
