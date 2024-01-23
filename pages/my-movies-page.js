@@ -220,7 +220,7 @@ const MoviePage = () => {
                         ) : (
                           <Button
                             onClick={() => setIsConfirmationMode(true)}
-                            disabled={selectedMovie === null}
+                            isDisabled={selectedMovie === null}
                             colorScheme={
                               selectedMovie !== null ? "red" : "gray"
                             }
