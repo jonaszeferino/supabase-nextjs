@@ -138,24 +138,24 @@ const Profile = () => {
   };
 
   const getUser = async () => {
+    const url = `/api/v1/getProfileData?email=${encodeURIComponent(emailInfo)}`;
+    console.log("URL: ",url)
+
     try {
       console.log("Sending GET request to /api/v1/getProfileData");
-      const response = await fetch(
-        `/api/v1/getProfileData?email=${encodeURIComponent(emailInfo)}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-  
-      console.log("Received response:", response.status, response.statusText);
-  
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Received response:", response);
+
       if (response.ok) {
         const userData = await response.json();
         console.log("Dados do usuário:", userData);
-  
+
         setIsLoading(false);
         setUserData(userData);
         setDateString(userData.birth_date);
@@ -167,16 +167,14 @@ const Profile = () => {
           setIsLoading(false);
           setNewUser(true);
         }
-        console.error("Erro ao buscar o usuário:", response.status);
+        console.error("Erro ao buscar o usuário:", response.status); ///ELE CAI AQUI
       }
     } catch (error) {
       console.error("Erro inesperado:", error);
     }
   };
-  
-  
-  
-// Verify the session
+
+  // Verify the session
   useEffect(() => {
     let mounted = true;
     async function getInitialSession() {
@@ -307,7 +305,6 @@ const Profile = () => {
                     {emailInfo}
                   </Text>
                 </FormControl>
-
 
                 <>
                   {/* Name */}
