@@ -15,8 +15,7 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { supabase } from "../utils/supabaseClient";
-import { AntDatePicker, DatePicker, Divider as DividerAntd } from "antd";
-import LoggedUser from "../components/LoggedUser";
+import { Divider as DividerAntd } from "antd";
 import { Alert, Space, Spin } from "antd";
 import Auth from "../components/Auth";
 import Head from "next/head";
@@ -141,14 +140,16 @@ const Profile = () => {
   const getUser = async () => {
     try {
       const response = await fetch(
-        `/api/v1/getProfileData?email=${emailInfo}`,
+        `/api/v1/postProfileData`,
         {
-          method: "GET",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({ email: emailInfo })
         }
       );
+  
       if (response.ok) {
         const userData = await response.json();
         console.log("Dados do usuário:", userData);
@@ -168,6 +169,7 @@ const Profile = () => {
       console.error("Erro inesperado:", error);
     }
   };
+  
 
   // Verify the session
   useEffect(() => {
