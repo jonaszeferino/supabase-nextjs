@@ -449,10 +449,10 @@ const Profile = () => {
                         <option value={userData?.gender || "Choose Gender"}>
                           {userData?.gender || "Choose Gender"}
                         </option>
-                        <option value="Masculino">Male</option>
-                        <option value="Feminino">Female</option>
-                        <option value="Não binário">Non-binary</option>
-                        <option value="Prefiro não informar">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Non Binary">Non-binary</option>
+                        <option value="Prefer not to provide">
                           Prefer not to provide
                         </option>
                       </Select>
@@ -484,7 +484,7 @@ const Profile = () => {
                         isDisabled={firstFavoriteMovieEdit}
                         placeholder={
                           userData?.first_favorite_movie ||
-                          "Primeiro Filme Favorito"
+                          "First Favorite Movie"
                         }
                         type="text"
                         name="favoriteFirstMovie"
@@ -511,7 +511,7 @@ const Profile = () => {
                         isDisabled={secondFavoriteMovieEdit}
                         placeholder={
                           userData?.second_favorite_movie ||
-                          "Segundo Filme Favorito"
+                          "Second Favorite Movie"
                         }
                         type="text"
                         name="favoriteSecondMovie"
@@ -538,7 +538,7 @@ const Profile = () => {
                         isDisabled={thirdFavoriteMovieEdit}
                         placeholder={
                           userData?.third_favorite_movie ||
-                          "Terceiro Filme Favorito"
+                          "Third Favorite Movie"
                         }
                         type="text"
                         name="favoriteThirdMovie"
@@ -579,25 +579,25 @@ const Profile = () => {
                         <option
                           value={
                             userData?.favorite_movie_genre ||
-                            "Enter favorite movie gender"
+                            "Enter favorite movie genre"
                           }
                         >
                           {userData?.favorite_movie_genre ||
-                            "Enter favorite movie gender"}{" "}
+                            "Enter favorite movie genre"}{" "}
                         </option>
 
-                        <option value="Ação">Action</option>
-                        <option value="Aventura">Adventure</option>
-                        <option value="Comédia">Comedy</option>
+                        <option value="Action">Action</option>
+                        <option value="Adventure">Adventure</option>
+                        <option value="Comedy">Comedy</option>
                         <option value="Drama">Drama</option>
-                        <option value="Ficção Científica">
+                        <option value="Science Fiction">
                           Science Fiction
                         </option>
                         <option value="Fantasia">Fantasia</option>
                         <option value="Horror">Horror</option>
                         <option value="Suspense">Suspense</option>
                         <option value="Romance">Romance</option>
-                        <option value="Documentários">Documentaries</option>
+                        <option value="Documentaries">Documentaries</option>
                       </Select>
                     )}
                   </FormControl>
@@ -674,7 +674,7 @@ const Profile = () => {
                         isDisabled={thirdFavoriteTvShowEdit}
                         placeholder={
                           userData?.third_favorite_tvshow ||
-                          "Terceira Serie Favorito"
+                          "Third Favorite TvShow"
                         }
                         type="text"
                         name="favoriteThirdTvShow"
@@ -722,18 +722,18 @@ const Profile = () => {
                             "Enter Favorite Movie Gender"}
                         </option>
 
-                        <option value="Ação">Action</option>
-                        <option value="Aventura">Adventure</option>
-                        <option value="Comédia">Comedy</option>
+                        <option value="Action">Action</option>
+                        <option value="Adventure">Adventure</option>
+                        <option value="Comedy">Comedy</option>
                         <option value="Drama">Drama</option>
-                        <option value="Ficção Científica">
+                        <option value="Science Fiction">
                           Science Fiction
                         </option>
                         <option value="Fantasia">Fantasia</option>
                         <option value="Horror">Horror</option>
                         <option value="Suspense">Suspense</option>
                         <option value="Romance">Romance</option>
-                        <option value="Documentários">Documentaries</option>
+                        <option value="Documentaries">Documentaries</option>
                       </Select>
                     )}
                   </FormControl>
