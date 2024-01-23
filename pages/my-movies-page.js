@@ -32,128 +32,132 @@ const MoviePage = () => {
   const [session, setSession] = useState(null);
   const [email_user, setEmail_user] = useState();
   const [api, contextHolder] = notification.useNotification();
-  
-  // const openNotification = (placement) => {
-  //   api.info({
-  //     message: `Waiting ${email_user}`,
-  //     description:
-  //       "If you provided evaluations for the suggestions, they will appear automatically on the screen.",
-  //     placement,
-  //   });
-  // };
-  // const apiGetRates = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await fetch(
-  //       `/api/v1/getRateRandomMovie?user_email=${parseInt(email_user)}`,
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-  //     const responseData = await response.json();
-  //     setData(responseData);
-  //     setIsLoading(false);
-  //     setValueEndDelete(false);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
-  // useEffect(() => {
-  //   apiGetRates();
-  //   setValueEndDelete(false);
-  //   openNotification("topRight");
-  // }, []);
+    //verificar a sessão
+    useEffect(() => {
+      let mounted = true;
+      async function getInitialSession() {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        if (mounted) {
+          if (session) {
+            setSession(session);
+            setEmail_user(session.user.email);
+          }
+          setIsLoading(false);
+        }
+      }
+      getInitialSession();
+      const { subscription } = supabase.auth.onAuthStateChange(
+        (_event, session) => {
+          setSession(session);
+        }
+      );
+      return () => {
+        mounted = false;
+        subscription?.unsubscribe();
+      };
+    }, []);
 
-  // const apiDeleteRates = async () => {
-  //   setValueStartDelete(true);
-  //   try {
-  //     const response = await fetch("/api/v1/deleteRateRandomMovie", {
-  //       method: "DELETE",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         movie_id: selectedMovie,
-  //         user_email: user_email,
-  //       }),
-  //     });
-  //     setValueStartDelete(false), apiGetRates();
-  //     setValueEndDelete(true);
-  //     setIsConfirmationMode(false);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const openNotification = (placement) => {
+    api.info({
+      message: `Waiting ${email_user}`,
+      description:
+        "If you provided evaluations for the suggestions, they will appear automatically on the screen.",
+      placement,
+    });
+  };
+  const apiGetRates = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `/api/v1/getRateRandomMovie?user_email=${parseInt(email_user)}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const responseData = await response.json();
+      setData(responseData);
+      setIsLoading(false);
+      setValueEndDelete(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  // const apiPutRates = async (movieId, rating) => {
-  //   try {
-  //     console.log("Request payload:", {
-  //       movie_id: movieId,
-  //       user_email: user_email,
-  //       rating_by_user: rating,
-  //     });
+  useEffect(() => {
+    apiGetRates();
+    setValueEndDelete(false);
+    openNotification("topRight");
+  }, []);
 
-  //     const response = await fetch("/api/v1/putRateRandomMovie", {
-  //       method: "PUT",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         movie_id: movieId,
-  //         user_email: user_email,
-  //         rating_by_user: rating,
-  //       }),
-  //     });
+  const apiDeleteRates = async () => {
+    console.log("Delete call ")
+    setValueStartDelete(true);
+    try {
+      const response = await fetch("/api/v1/deleteRateRandomMovie", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          movie_id: selectedMovie,
+          user_email: email_user,
+        }),
+      });
+      setValueStartDelete(false), apiGetRates();
+      setValueEndDelete(true);
+      setIsConfirmationMode(false);
+    } catch (error) {
+      console.error(error);
+      console.log(error)
+    }
+  };
 
-  //     const responseData = await response.json();
-  //     const statusCode = response.status;
+  const apiPutRates = async (movieId, rating) => {
+    try {
+      console.log("Request payload:", {
+        movie_id: movieId,
+        user_email: user_email,
+        rating_by_user: rating,
+      });
 
-  //     if (statusCode === 200) {
-  //       apiGetRates();
-  //     } else if (statusCode === 404) {
-  //       console.log("No data");
-  //     } else if (statusCode === 500) {
-  //       console.log("Internal server error");
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+      const response = await fetch("/api/v1/putRateRandomMovie", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          movie_id: movieId,
+          user_email: user_email,
+          rating_by_user: rating,
+        }),
+      });
 
-  // //verificar a sessão
-  // useEffect(() => {
-  //   let mounted = true;
-  //   async function getInitialSession() {
-  //     const {
-  //       data: { session },
-  //     } = await supabase.auth.getSession();
-  //     if (mounted) {
-  //       if (session) {
-  //         setSession(session);
-  //         setEmail_user(session.user.email);
-  //       }
-  //       setIsLoading(false);
-  //     }
-  //   }
-  //   getInitialSession();
-  //   const { subscription } = supabase.auth.onAuthStateChange(
-  //     (_event, session) => {
-  //       setSession(session);
-  //     }
-  //   );
-  //   return () => {
-  //     mounted = false;
-  //     subscription?.unsubscribe();
-  //   };
-  // }, []);
+      const responseData = await response.json();
+      const statusCode = response.status;
+
+      if (statusCode === 200) {
+        apiGetRates();
+      } else if (statusCode === 404) {
+        console.log("No data");
+      } else if (statusCode === 500) {
+        console.log("Internal server error");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
 
   return (
     <>
-      {/* {session ? (
+      {session ? (
         <ChakraProvider>
           <Head>
             <title>My Reviews</title>
@@ -288,8 +292,7 @@ const MoviePage = () => {
         </ChakraProvider>
       ) : (
         "Click Log In to load the page content"
-      )} */}
-      <span>nada</span>
+      )}
     </>
   );
 };
