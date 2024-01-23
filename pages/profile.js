@@ -139,6 +139,8 @@ const Profile = () => {
 
   const getUser = async () => {
     try {
+      console.log("Sending POST request to /api/v1/postProfileData");
+  
       const response = await fetch(
         `/api/v1/postProfileData`,
         {
@@ -150,9 +152,12 @@ const Profile = () => {
         }
       );
   
+      console.log("Received response:", response.status, response.statusText);
+  
       if (response.ok) {
         const userData = await response.json();
         console.log("Dados do usuário:", userData);
+  
         setIsLoading(false);
         setUserData(userData);
         setDateString(userData.birth_date);
@@ -160,6 +165,7 @@ const Profile = () => {
         setName(userData.name);
       } else {
         if (response.status === 404) {
+          console.log("User not found");
           setIsLoading(false);
           setNewUser(true);
         }
@@ -169,6 +175,7 @@ const Profile = () => {
       console.error("Erro inesperado:", error);
     }
   };
+  
   
 // Verify the session
   useEffect(() => {
