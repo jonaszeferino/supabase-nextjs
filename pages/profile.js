@@ -139,7 +139,7 @@ const Profile = () => {
 
   const getUser = async () => {
     const url = `/api/v1/getProfileData?email=${encodeURIComponent(emailInfo)}`;
-    console.log("URL: ",url)
+    console.log("URL: ", url);
 
     try {
       console.log("Sending GET request to /api/v1/getProfileData");
@@ -446,8 +446,8 @@ const Profile = () => {
                         }}
                         style={{ width: "100%" }}
                       >
-                        <option value={userData?.gender || "Escolha o Genero"}>
-                          {userData?.gender || "Escolha o Genero"}
+                        <option value={userData?.gender || "Choose Gender"}>
+                          {userData?.gender || "Choose Gender"}
                         </option>
                         <option value="Masculino">Male</option>
                         <option value="Feminino">Female</option>
@@ -554,7 +554,7 @@ const Profile = () => {
                   {/* Genero de filme       */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>
-                      Favorite Movie Gender
+                      Favorite Movie Genre
                     </FormLabel>
 
                     {favoriteMovieGenderEdit && (
@@ -690,7 +690,7 @@ const Profile = () => {
                   {/* genero de serie favorita */}
                   <FormControl>
                     <FormLabel style={{ fontWeight: "bold" }}>
-                      Favorite Tv Show Gender
+                      Favorite Tv Show Genre
                     </FormLabel>
 
                     {favoriteTvShowGenderEdit && (
