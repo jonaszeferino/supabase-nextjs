@@ -139,16 +139,14 @@ const Profile = () => {
 
   const getUser = async () => {
     try {
-      console.log("Sending POST request to /api/v1/postProfileData");
-  
+      console.log("Sending GET request to /api/v1/getProfileData");
       const response = await fetch(
-        `/api/v1/postProfileData`,
+        `/api/v1/getProfileData?email=${encodeURIComponent(emailInfo)}`,
         {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: emailInfo })
         }
       );
   
@@ -175,6 +173,7 @@ const Profile = () => {
       console.error("Erro inesperado:", error);
     }
   };
+  
   
   
 // Verify the session
