@@ -1,4 +1,9 @@
 module.exports = {
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   images: {
     unoptimized: true,
     domains: [
@@ -7,7 +12,6 @@ module.exports = {
       "image.tmdb.org/t/p/original",
     ],
   },
-
   experimental: {
     //forceSwcTransforms: true,
     //newNextLinkBehavior: false,
