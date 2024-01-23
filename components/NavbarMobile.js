@@ -129,7 +129,7 @@ const MobileNavbar = () => {
 
              {/* Profile comentado */}
              
-              {/* {session ? (
+              {session ? (
                 <>
                   <Link href="/profile">
                     <span>
@@ -142,7 +142,7 @@ const MobileNavbar = () => {
                     </span>
                   </Link>
                 </>
-              ) : null} */}
+              ) : null}
 
 
             </Stack>

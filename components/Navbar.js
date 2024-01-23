@@ -73,9 +73,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
         <li>
           <Link href="/trivia">| Trivia</Link>
         </li>
-        {/* <li>
-          <Link href="/where-is-my-movie">| Where is My Movie? |</Link>
-        </li> */}
+  
         <br />
         <li>
           <button onClick={onOpen}>| Login |</button>
@@ -121,7 +119,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
           </Modal>
         </li>
 
-        {/* {session ? (
+        {session ? (
           <li>
             Profile
             <Menu>
@@ -146,7 +144,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
               )}
             </Menu>
           </li>
-        ) : null} */}
+        ) : null}
 
 
 
