@@ -170,8 +170,7 @@ const Profile = () => {
     }
   };
   
-
-  // Verify the session
+// Verify the session
   useEffect(() => {
     let mounted = true;
     async function getInitialSession() {
@@ -198,8 +197,6 @@ const Profile = () => {
     };
   }, []);
 
-  console.log(name);
-
   return (
     <ChakraProvider>
       <Head>
@@ -210,7 +207,8 @@ const Profile = () => {
       <ChakraProvider>
         {session ? (
           <p>
-            User: {session.user.email} <br />
+            {/* User: {session.user.email} <br /> */}
+            User: {emailInfo} <br />
             <Button
               onClick={() => supabase.auth.signOut()}
               colorScheme="red"
