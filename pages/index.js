@@ -19,7 +19,7 @@ export default function Home() {
   let [searchTv, setSearchTv] = useState([]);
   const [session, setSession] = useState(null);
 
-  const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
+  const { showBackToTopButton, scrollToTop } = useBackToTopButton();
 
   const urlString = "https://api.themoviedb.org/3/trending/movie/week";
 
@@ -128,7 +128,6 @@ export default function Home() {
         <title>Home</title>
         <meta name="keywords" content="movies,tvshows,"></meta>
         <meta name="description" content="movies,tvshows"></meta>
-
       </Head>
 
       <div>
@@ -139,44 +138,51 @@ export default function Home() {
           <div className={styles.top}>
             <h3 className={styles.title}> Trending Movies of the Week</h3>
           </div>
-
-          <div className={styles.grid}>
-            {searchMovies.map((search) => (
-              <div key={search.id} style={{ marginBottom: "10px" }}>
-                <Link
-                  href={{
-                    pathname: "/movie-page",
-                    query: { movieId: search.id },
-                  }}
-                >
-                  <Image
-                    unoptimized
-                    className={styles.card_image}
-                    src={
-                      search.poster_path
-                        ? `https://image.tmdb.org/t/p/original${search.poster_path}`
-                        : "/callback.png"
-                    }
-                    alt="poster"
-                    width={240}
-                    height={360}
-                  />
-                </Link>
-
-                <div style={{ maxWidth: "240px", margin: "8px" }}>
-                  <ChakraProvider>
-                    <Progress
-                      size="lg"
-                      value={search.vote_average}
-                      max={10}
-                      colorScheme={getProgressColor(search.vote_average)}
+          <br />
+          <>
+            {isLoading ? (
+              <ChakraProvider>
+                <Progress size="xs" isIndeterminate />
+              </ChakraProvider>
+            ) : null}
+            <div className={styles.grid}>
+              {searchMovies.map((search) => (
+                <div key={search.id} style={{ marginBottom: "10px" }}>
+                  <Link
+                    href={{
+                      pathname: "/movie-page",
+                      query: { movieId: search.id },
+                    }}
+                  >
+                    <Image
+                      unoptimized
+                      className={styles.card_image}
+                      src={
+                        search.poster_path
+                          ? `https://image.tmdb.org/t/p/original${search.poster_path}`
+                          : "/callback.png"
+                      }
+                      alt="poster"
+                      width={240}
+                      height={360}
                     />
-                  </ChakraProvider>
-                  {search.vote_average} <Rate value={1} count={1} />
+                  </Link>
+
+                  <div style={{ maxWidth: "240px", margin: "8px" }}>
+                    <ChakraProvider>
+                      <Progress
+                        size="lg"
+                        value={search.vote_average}
+                        max={10}
+                        colorScheme={getProgressColor(search.vote_average)}
+                      />
+                    </ChakraProvider>
+                    {search.vote_average} <Rate value={1} count={1} />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </>
         </div>
 
         <div className={styles.top}>
