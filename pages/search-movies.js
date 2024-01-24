@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+
 import styles from "../styles/Home.module.css";
 import ErrorPage from "./error-page";
 import Image from "next/image";
@@ -14,6 +15,14 @@ import {
   Box,
   Center,
   Link as LinkChakra,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
@@ -24,6 +33,9 @@ import { Rate } from "antd";
 import { useRouter } from "next/router";
 
 export default function Discovery() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = React.useRef();
+
   const router = useRouter(); // Initialize the useRouter hook
   let [searchMovies, setSearchMovies] = useState([]);
   let [searchRatingSort, setSearchRatingSort] = useState("vote_average.desc");
@@ -477,138 +489,158 @@ export default function Discovery() {
             }}
           >
             <ChakraProvider>
-              <FormLabel htmlFor="ordenation">Order By</FormLabel>
-              <Select
-                id="ordenation"
-                placeholder="Ordenation"
-                type="text"
-                isRequired={true}
-                value={searchFilters.searchRatingSort}
-                onChange={(event) =>
-                  setSearchFilters({
-                    ...searchFilters,
-                    searchRatingSort: event.target.value,
-                  })
-                }
-              >
-                <option value="vote_average.asc">
-                  From Worst Rating to Best
-                </option>
-                <option value="vote_average.desc">
-                  From Best Rating to Worst
-                </option>
-              </Select>
-
-              <br />
-
-              <FormLabel htmlFor="votes">Vote Range</FormLabel>
-              <Select
-                id="votes"
-                placeholder="Number of Votes"
-                type="number"
-                isRequired={true}
-                value={searchFilters.searchVoteCount}
-                onChange={(event) =>
-                  setSearchFilters({
-                    ...searchFilters,
-                    searchVoteCount: event.target.value,
-                  })
-                }
-              >
-                <option value="0">0 Votes</option>
-                <option value="50">More than 50</option>
-                <option value="100">More than 100</option>
-                <option value="200">More than 200</option>
-                <option value="500">More than 500</option>
-                <option value="1000">More than 1000</option>
-                <option value="5000">More than 5000</option>
-              </Select>
-
-              <br />
-
-              <FormControl>
-                <Center>
-                  <FormLabel>Initial and Final Year:</FormLabel>
-                </Center>
-
-                <Flex align="center">
-                  <Select
-                    value={searchFilters.searchMovieReleaseDateFrom}
-                    onChange={(event) =>
-                      setSearchFilters({
-                        ...searchFilters,
-                        searchMovieReleaseDateFrom: event.target.value,
-                      })
-                    }
-                  >
-                    {optionsFrom}
-                  </Select>
-                  <Box w="20px" />
-                  <Select
-                    value={searchFilters.searchMovieReleaseDateTo}
-                    onChange={(event) =>
-                      setSearchFilters({
-                        ...searchFilters,
-                        searchMovieReleaseDateTo: event.target.value,
-                      })
-                    }
-                  >
-                    {optionsTo}
-                  </Select>
-                </Flex>
-              </FormControl>
-
-              <br />
-
-              <FormLabel htmlFor="origin_country">Country of Origin</FormLabel>
-
-              <Select
-                id="origin_country"
-                placeholder="Select Country"
-                value={searchFilters.with_origin_country}
-                onChange={(event) =>
-                  setSearchFilters({
-                    ...searchFilters,
-                    with_origin_country: event.target.value,
-                  })
-                }
-              >
-                {options.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </Select>
-
-              <br />
-
-              <FormLabel htmlFor="movieCategory">Movie Category</FormLabel>
-              <Select
-                id="movieCategory"
-                placeholder="Select Category"
-                value={searchFilters.category}
-                onChange={(event) =>
-                  setSearchFilters({
-                    ...searchFilters,
-                    category: event.target.value,
-                  })
-                }
-              >
-                {genres.map((genre) => (
-                  <option key={genre.id} value={genre.id}>
-                    {genre.name}
-                  </option>
-                ))}
-              </Select>
-
-              <Button
-                size="lg"
-                colorScheme="purple"
-                mt="24px"
-                onClick={apiCall}
-              >
-                Go
+              <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
+                Filters
               </Button>
+              <Drawer
+                isOpen={isOpen}
+                placement="right"
+                onClose={onClose}
+                finalFocusRef={btnRef}
+              >
+                <DrawerOverlay />
+                <DrawerContent>
+                  <DrawerCloseButton />
+                  <DrawerHeader>Select Filters</DrawerHeader>
+
+                  <DrawerBody>
+                    <FormLabel htmlFor="ordenation">Order By</FormLabel>
+                    <Select
+                      id="ordenation"
+                      placeholder="Ordenation"
+                      type="text"
+                      isRequired={true}
+                      value={searchFilters.searchRatingSort}
+                      onChange={(event) =>
+                        setSearchFilters({
+                          ...searchFilters,
+                          searchRatingSort: event.target.value,
+                        })
+                      }
+                    >
+                      <option value="vote_average.asc">
+                        From Worst Rating to Best
+                      </option>
+                      <option value="vote_average.desc">
+                        From Best Rating to Worst
+                      </option>
+                    </Select>
+
+                    <br />
+
+                    <FormLabel htmlFor="votes">Vote Range</FormLabel>
+                    <Select
+                      id="votes"
+                      placeholder="Number of Votes"
+                      type="number"
+                      isRequired={true}
+                      value={searchFilters.searchVoteCount}
+                      onChange={(event) =>
+                        setSearchFilters({
+                          ...searchFilters,
+                          searchVoteCount: event.target.value,
+                        })
+                      }
+                    >
+                      <option value="0">0 Votes</option>
+                      <option value="50">More than 50</option>
+                      <option value="100">More than 100</option>
+                      <option value="200">More than 200</option>
+                      <option value="500">More than 500</option>
+                      <option value="1000">More than 1000</option>
+                      <option value="5000">More than 5000</option>
+                    </Select>
+
+                    <br />
+
+                    <FormControl>
+                      <Center>
+                        <FormLabel>Initial and Final Year:</FormLabel>
+                      </Center>
+
+                      <Flex align="center">
+                        <Select
+                          value={searchFilters.searchMovieReleaseDateFrom}
+                          onChange={(event) =>
+                            setSearchFilters({
+                              ...searchFilters,
+                              searchMovieReleaseDateFrom: event.target.value,
+                            })
+                          }
+                        >
+                          {optionsFrom}
+                        </Select>
+                        <Box w="20px" />
+                        <Select
+                          value={searchFilters.searchMovieReleaseDateTo}
+                          onChange={(event) =>
+                            setSearchFilters({
+                              ...searchFilters,
+                              searchMovieReleaseDateTo: event.target.value,
+                            })
+                          }
+                        >
+                          {optionsTo}
+                        </Select>
+                      </Flex>
+                    </FormControl>
+
+                    <br />
+
+                    <FormLabel htmlFor="origin_country">
+                      Country of Origin
+                    </FormLabel>
+
+                    <Select
+                      id="origin_country"
+                      placeholder="Select Country"
+                      value={searchFilters.with_origin_country}
+                      onChange={(event) =>
+                        setSearchFilters({
+                          ...searchFilters,
+                          with_origin_country: event.target.value,
+                        })
+                      }
+                    >
+                      {options.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </Select>
+
+                    <br />
+
+                    <FormLabel htmlFor="movieCategory">
+                      Movie Category
+                    </FormLabel>
+                    <Select
+                      id="movieCategory"
+                      placeholder="Select Category"
+                      value={searchFilters.category}
+                      onChange={(event) =>
+                        setSearchFilters({
+                          ...searchFilters,
+                          category: event.target.value,
+                        })
+                      }
+                    >
+                      {genres.map((genre) => (
+                        <option key={genre.id} value={genre.id}>
+                          {genre.name}
+                        </option>
+                      ))}
+                    </Select>
+                  </DrawerBody>
+
+                  <DrawerFooter>
+                    <Button variant="outline" mr={3} onClick={onClose}>
+                      Cancel
+                    </Button>
+                    <Button variant="outline" onClick={apiCall}>Go</Button>
+                  </DrawerFooter>
+                </DrawerContent>
+              </Drawer>
             </ChakraProvider>
           </div>
         </div>
