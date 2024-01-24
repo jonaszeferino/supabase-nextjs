@@ -80,7 +80,7 @@ export default function Discovery() {
       urlString += "&with_origin_country=" + searchFilters.with_origin_country;
     }
 
- return urlString;
+    return urlString;
   };
 
   const updateURL = () => {
@@ -106,7 +106,14 @@ export default function Discovery() {
 
   useEffect(() => {
     updateURL();
-  }, [ratingSort, voteCount, releaseDateFrom, releaseDateTo, category, with_origin_country]);
+  }, [
+    ratingSort,
+    voteCount,
+    releaseDateFrom,
+    releaseDateTo,
+    category,
+    with_origin_country,
+  ]);
 
   const apiCall = (currentPage) => {
     const url = generateApiUrl() + "&page=" + currentPage;
@@ -476,8 +483,13 @@ export default function Discovery() {
                 placeholder="Ordenation"
                 type="text"
                 isRequired={true}
-                value={searchRatingSort}
-                onChange={(event) => setSearchRatingSort(event.target.value)}
+                value={searchFilters.searchRatingSort}
+                onChange={(event) =>
+                  setSearchFilters({
+                    ...searchFilters,
+                    searchRatingSort: event.target.value,
+                  })
+                }
               >
                 <option value="vote_average.asc">
                   From Worst Rating to Best
@@ -495,8 +507,13 @@ export default function Discovery() {
                 placeholder="Number of Votes"
                 type="number"
                 isRequired={true}
-                value={searchVoteCount}
-                onChange={(event) => setSearchVoteCount(event.target.value)}
+                value={searchFilters.searchVoteCount}
+                onChange={(event) =>
+                  setSearchFilters({
+                    ...searchFilters,
+                    searchVoteCount: event.target.value,
+                  })
+                }
               >
                 <option value="0">0 Votes</option>
                 <option value="50">More than 50</option>
@@ -516,18 +533,24 @@ export default function Discovery() {
 
                 <Flex align="center">
                   <Select
-                    value={searchMovieReleaseDateFrom}
+                    value={searchFilters.searchMovieReleaseDateFrom}
                     onChange={(event) =>
-                      setSearchMovieReleaseDateFrom(event.target.value)
+                      setSearchFilters({
+                        ...searchFilters,
+                        searchMovieReleaseDateFrom: event.target.value,
+                      })
                     }
                   >
                     {optionsFrom}
                   </Select>
                   <Box w="20px" />
                   <Select
-                    value={searchMovieReleaseDateTo}
+                    value={searchFilters.searchMovieReleaseDateTo}
                     onChange={(event) =>
-                      setSearchMovieReleaseDateTo(event.target.value)
+                      setSearchFilters({
+                        ...searchFilters,
+                        searchMovieReleaseDateTo: event.target.value,
+                      })
                     }
                   >
                     {optionsTo}
