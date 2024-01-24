@@ -489,7 +489,7 @@ export default function Discovery() {
             }}
           >
             <ChakraProvider>
-              <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
+              <Button ref={btnRef} colorScheme="purple" onClick={onOpen}>
                 Filters
               </Button>
               <Drawer
