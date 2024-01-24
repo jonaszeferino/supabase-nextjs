@@ -21,9 +21,10 @@ import LoggedUser from "../components/LoggedUser";
 import { Tooltip } from "antd";
 import Link from "next/link";
 import { Rate } from "antd";
+import { useRouter } from "next/router";
 
 export default function Discovery() {
-  let [movieId, setMovieId] = useState();
+  const router = useRouter(); // Initialize the useRouter hook
   let [searchMovies, setSearchMovies] = useState([]);
   let [searchRatingSort, setSearchRatingSort] = useState("vote_average.desc");
   let [searchVoteCount, setSearchVoteCount] = useState(100);
@@ -40,39 +41,75 @@ export default function Discovery() {
   let [searchMovieCategory, setSearchMovieCategory] = useState("");
   let [isError, setError] = useState(false);
   let [isLoading, setIsLoading] = useState(false);
-  
+
   const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
-  
 
   const [searchFilters, setSearchFilters] = useState({
     ratingSort: "vote_average.desc",
     voteCount: 100,
     releaseDateFrom: 1900,
-    releaseDateTo: 2024,
+    releaseDateTo: 2023,
     with_origin_country: "NOTHING",
     category: "",
   });
 
-  let urlString =
-    "https://api.themoviedb.org/3/discover/movie?&include_adult=false&include_video=false&vote_count.gte=" +
-    searchVoteCount +
-    "&vote_count.lte=10000000&sort_by=" +
-    searchRatingSort +
-    "&primary_release_date.gte=" +
-    searchMovieReleaseDateFrom +
-    "&primary_release_date.lte=" +
-    searchMovieReleaseDateTo +
-    "&with_genres=" +
-    searchMovieCategory;
+  const {
+    ratingSort,
+    voteCount,
+    releaseDateFrom,
+    releaseDateTo,
+    with_origin_country,
+    category,
+  } = searchFilters;
 
-  if (searchFilters.with_origin_country === "NOTHING") {
-    urlString;
-  } else {
-    urlString += "&with_origin_country=" + searchFilters.with_origin_country;
-  }
+  const generateApiUrl = () => {
+    let urlString =
+      "https://api.themoviedb.org/3/discover/movie?vote_count.gte=" +
+      searchFilters.voteCount +
+      "&vote_count.lte=10000000&sort_by=" +
+      searchFilters.ratingSort +
+      "&primary_release_date.gte=" +
+      searchFilters.releaseDateFrom +
+      "&primary_release_date.lte=" +
+      searchFilters.releaseDateTo +
+      "&with_genres=" +
+      searchFilters.category;
+
+    if (with_origin_country === "NOTHING") {
+    } else {
+      urlString += "&with_origin_country=" + searchFilters.with_origin_country;
+    }
+
+ return urlString;
+  };
+
+  const updateURL = () => {
+    const { pathname } = router;
+    const queryParams = {
+      searchRatingSort: ratingSort,
+      searchVoteCount: voteCount,
+      searchMovieReleaseDateFrom: releaseDateFrom,
+      searchMovieReleaseDateTo: releaseDateTo,
+      searchMovieCategory: category,
+      with_origin_country: with_origin_country,
+    };
+
+    router.push({
+      pathname,
+      query: queryParams,
+    });
+  };
+
+  useEffect(() => {
+    apiCall();
+  }, []);
+
+  useEffect(() => {
+    updateURL();
+  }, [ratingSort, voteCount, releaseDateFrom, releaseDateTo, category, with_origin_country]);
 
   const apiCall = (currentPage) => {
-    const url = urlString + "&page=" + currentPage;
+    const url = generateApiUrl() + "&page=" + currentPage;
     setIsLoading(true);
 
     fetch(url, {
@@ -89,19 +126,16 @@ export default function Discovery() {
           throw new Error("Wrong Data");
         }
       })
-      .then(
-        (result) => (
-          setSearchMovies(result.results),
-          setSearchMovieTotalPages(result.total_pages),
-          setSearchMovieRealPage(result.page),
-          setSearchMovieTotalResults(result.total_results),
-          setPage(result.page),
-          setIsLoading(false)
-        )
-      )
+      .then((result) => {
+        setSearchMovies(result.results);
+        setSearchMovieTotalPages(result.total_pages);
+        setSearchMovieRealPage(result.page);
+        setSearchMovieTotalResults(result.total_results);
+        setPage(result.page);
+        setIsLoading(false);
+      })
       .catch((error) => setError(true));
   };
-
   const nextPage = (event) => {
     setPage(page + 1), apiCall(page + 1);
   };
@@ -388,7 +422,8 @@ export default function Discovery() {
     const fetchGenres = async () => {
       try {
         const response = await fetch(
-          "https://api.themoviedb.org/3/genre/list", {
+          "https://api.themoviedb.org/3/genre/list",
+          {
             headers: new Headers({
               "Content-Type": "application/json",
               Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
@@ -401,10 +436,9 @@ export default function Discovery() {
         console.error("Error fetching genres:", error);
       }
     };
-  
+
     fetchGenres();
   }, []);
-  
 
   return (
     <>
@@ -529,8 +563,13 @@ export default function Discovery() {
               <Select
                 id="movieCategory"
                 placeholder="Select Category"
-                value={searchMovieCategory}
-                onChange={(event) => setSearchMovieCategory(event.target.value)}
+                value={searchFilters.category}
+                onChange={(event) =>
+                  setSearchFilters({
+                    ...searchFilters,
+                    category: event.target.value,
+                  })
+                }
               >
                 {genres.map((genre) => (
                   <option key={genre.id} value={genre.id}>
