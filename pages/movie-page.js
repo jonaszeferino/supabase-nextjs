@@ -12,9 +12,7 @@ import {
   ChakraProvider,
   Progress,
   Table,
-  Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -123,7 +121,14 @@ const MoviePage = () => {
   }, [movieId, movieIdRequest]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <p>
+        {" "}
+        <ChakraProvider>
+          <Progress size="xs" isIndeterminate />
+        </ChakraProvider>
+      </p>
+    );
   }
 
   let poster = "/callback.png";
@@ -164,7 +169,11 @@ const MoviePage = () => {
       <br />
       <div>
         {isLoading ? (
-          <div>Loading...</div>
+          <div>
+            <ChakraProvider>
+              <Progress size="xs" isIndeterminate />
+            </ChakraProvider>
+          </div>
         ) : (
           <span>
             <Image
@@ -246,7 +255,7 @@ const MoviePage = () => {
                                 query: { personId: director.id },
                               }}
                             >
-                             <strong>{director.name}</strong> 
+                              <strong>{director.name}</strong>
                             </Link>
                           </li>
                         ))}
