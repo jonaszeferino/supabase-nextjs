@@ -31,38 +31,30 @@ const MoviePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
 
-
-
   useEffect(() => {
     setMovieIdRequest(movieId);
     Promise.all([
-      fetch(
-        `https://api.themoviedb.org/3/movie/${movieIdRequest}`,
-        {
-          headers: new Headers({
-            "Content-Type": "application/json",
-            Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
-          }),
-        }
-      ),
+      fetch(`https://api.themoviedb.org/3/movie/${movieIdRequest}`, {
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
+        }),
+      }),
       fetch(
         `https://api.themoviedb.org/3/movie/${movieIdRequest}/watch/providers`,
         {
           headers: new Headers({
             "Content-Type": "application/json",
-            Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
+            Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
           }),
         }
       ),
-      fetch(
-        `https://api.themoviedb.org/3/movie/${movieIdRequest}/credits`,
-        {
-          headers: new Headers({
-            "Content-Type": "application/json",
-            Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER
-          }),
-        }
-      ),
+      fetch(`https://api.themoviedb.org/3/movie/${movieIdRequest}/credits`, {
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
+        }),
+      }),
     ])
       .then(([resMovie, resProviders, resCredits]) =>
         Promise.all([resMovie.json(), resProviders.json(), resCredits.json()])
@@ -169,7 +161,6 @@ const MoviePage = () => {
       <span className={styles.title}>{data.originalTitle}</span>
       <br />
       <br />
-
       <br />
       <div>
         {isLoading ? (
@@ -193,7 +184,6 @@ const MoviePage = () => {
           </span>
         )}
       </div>
-
       <div style={{ maxWidth: "480px", margin: "0 auto" }}>
         <ChakraProvider>
           {/* <Progress
@@ -202,8 +192,9 @@ const MoviePage = () => {
             max={10}
             colorScheme={getProgressColor(data.average)}
           /> */}
-           <Rate value={data.average} count={10} /><br/>
-           {data.average} 
+          <Rate value={data.average} count={10} />
+          <br />
+          {data.average}
         </ChakraProvider>
       </div>
       {/* Tabela aqui para baixo */}
@@ -236,7 +227,7 @@ const MoviePage = () => {
                   <Td
                     style={{
                       whiteSpace: "pre-wrap",
-                      maxWidth: "480px", 
+                      maxWidth: "480px",
                     }}
                   >
                     {data.overview ? data.overview : "No Infos"}
@@ -249,14 +240,13 @@ const MoviePage = () => {
                       <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                         {data.directors.map((director, index) => (
                           <li key={index}>
-                            {director.name}{" "}
                             <Link
                               href={{
                                 pathname: "/person-page",
                                 query: { personId: director.id },
                               }}
                             >
-                              Jobs
+                             <strong>{director.name}</strong> 
                             </Link>
                           </li>
                         ))}
@@ -309,7 +299,7 @@ const MoviePage = () => {
                   <Td
                     style={{
                       whiteSpace: "pre-wrap",
-                      maxWidth: "480px", 
+                      maxWidth: "480px",
                     }}
                   >
                     {data.gender}
