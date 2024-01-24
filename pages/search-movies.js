@@ -510,11 +510,11 @@ export default function Discovery() {
                       placeholder="Ordenation"
                       type="text"
                       isRequired={true}
-                      value={searchFilters.searchRatingSort}
+                      value={searchFilters.ratingSort}
                       onChange={(event) =>
                         setSearchFilters({
                           ...searchFilters,
-                          searchRatingSort: event.target.value,
+                          ratingSort: event.target.value,
                         })
                       }
                     >
@@ -534,11 +534,11 @@ export default function Discovery() {
                       placeholder="Number of Votes"
                       type="number"
                       isRequired={true}
-                      value={searchFilters.searchVoteCount}
+                      value={searchFilters.voteCount}
                       onChange={(event) =>
                         setSearchFilters({
                           ...searchFilters,
-                          searchVoteCount: event.target.value,
+                          voteCount: event.target.value,
                         })
                       }
                     >
@@ -560,11 +560,11 @@ export default function Discovery() {
 
                       <Flex align="center">
                         <Select
-                          value={searchFilters.searchMovieReleaseDateFrom}
+                          value={searchFilters.releaseDateFrom}
                           onChange={(event) =>
                             setSearchFilters({
                               ...searchFilters,
-                              searchMovieReleaseDateFrom: event.target.value,
+                              releaseDateFrom: event.target.value,
                             })
                           }
                         >
@@ -572,11 +572,11 @@ export default function Discovery() {
                         </Select>
                         <Box w="20px" />
                         <Select
-                          value={searchFilters.searchMovieReleaseDateTo}
+                          value={searchFilters.releaseDateTo}
                           onChange={(event) =>
                             setSearchFilters({
                               ...searchFilters,
-                              searchMovieReleaseDateTo: event.target.value,
+                              releaseDateTo: event.target.value,
                             })
                           }
                         >
