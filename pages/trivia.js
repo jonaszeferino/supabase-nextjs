@@ -286,7 +286,7 @@ export default function Trivia() {
                   When you click on start, the count resets. If you click on
                   next, the count will continue.
                   <br />
-                  If you don't choose the difficulty, the questions will come
+                  If you dont choose the difficulty, the questions will come
                   randomly.
                 </Box>
               </Box>
@@ -492,8 +492,8 @@ export default function Trivia() {
                       <strong> {totalWrongQuestions}</strong>
                     </Text>
                     <Text>
-                      <strong>Easy:</strong> {difficultyCount.easy} |{" "}
-                      <strong>Medium:</strong> {difficultyCount.medium} |{" "}
+                      <strong>Easy:</strong> {difficultyCount.easy} {" |"}
+                      <strong>Medium:</strong> {difficultyCount.medium} {"| "}
                       <strong>Hard:</strong> {difficultyCount.hard}
                     </Text>
                   </Text>
