@@ -14,6 +14,8 @@ import {
 } from "@chakra-ui/react";
 import { Alert, Space } from "antd";
 import styles from "../styles/Home.module.css";
+import { supabase } from "../utils/supabaseClient";
+import LoggedUser from "../components/LoggedUser";
 
 export default function Trivia() {
   const { isOpen, onToggle } = useDisclosure();
@@ -195,6 +197,30 @@ export default function Trivia() {
     }
   };
 
+  useEffect(() => {
+    let mounted = true;
+    async function getInitialSession() {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (mounted) {
+        if (session) {
+          setSession(session);
+        }
+      }
+    }
+    getInitialSession();
+    const { subscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
+    return () => {
+      mounted = false;
+      subscription?.unsubscribe();
+    };
+  }, []);
+
   return (
     <div>
       <Center>
@@ -206,6 +232,8 @@ export default function Trivia() {
         <h3 className={styles.title}>Trivia</h3>
       </div>
       <br />
+
+      <LoggedUser />
 
       <ChakraProvider>
         <Box>
