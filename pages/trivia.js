@@ -21,6 +21,11 @@ export default function Trivia() {
   const [shuffledAnswers, setShuffledAnswers] = useState([]);
   const [resultsAnswer, setResultsAnswer] = useState("");
   const [categories, setCategories] = useState("");
+  const [difficultyCount, setDifficultyCount] = useState({
+    easy: 0,
+    medium: 0,
+    hard: 0,
+  });
 
   const [selectedDifficulties, setSelectedDifficulties] = useState([]);
 
@@ -89,6 +94,10 @@ export default function Trivia() {
             category: question.category,
           })),
         });
+        setDifficultyCount((prevCount) => ({
+          ...prevCount,
+          [result[0].difficulty]: prevCount[result[0].difficulty] + 1,
+        }));
       })
       .catch((error) => setError(true));
   };
@@ -196,7 +205,7 @@ export default function Trivia() {
       <div className={styles.top}>
         <h3 className={styles.title}>Trivia</h3>
       </div>
-      <br/>
+      <br />
 
       <ChakraProvider>
         <Box>
@@ -220,6 +229,11 @@ export default function Trivia() {
                       setTotalCorrectQuestions(0);
                       setTotalWrongQuestions(0);
                       setisDisabled(false);
+                      setDifficultyCount({
+                        easy: 0,
+                        medium: 0,
+                        hard: 0,
+                      });
                     }}
                   >
                     Start
@@ -421,10 +435,9 @@ export default function Trivia() {
 
               <br />
               <Text textAlign="center">
-                
                 <span>{resultsAnswer}</span>
-                <br/>
-                <br/>
+                <br />
+                <br />
 
                 <Text textAlign="center">
                   <span>
@@ -435,7 +448,6 @@ export default function Trivia() {
                     Category: <strong> {answers.questions[0]?.category}</strong>
                   </span>
                 </Text>
-                
 
                 <VStack spacing={2} align="center">
                   <Text>
@@ -450,6 +462,11 @@ export default function Trivia() {
                     <strong>Wrong:</strong>{" "}
                     <Text as="span" color="red">
                       <strong> {totalWrongQuestions}</strong>
+                    </Text>
+                    <Text>
+                      <strong>Easy:</strong> {difficultyCount.easy} |{" "}
+                      <strong>Medium:</strong> {difficultyCount.medium} |{" "}
+                      <strong>Hard:</strong> {difficultyCount.hard}
                     </Text>
                   </Text>
                 </VStack>
