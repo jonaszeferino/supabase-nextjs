@@ -73,7 +73,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
         <li>
           <Link href="/trivia">| Trivia</Link>
         </li>
-  
+
         <br />
         <li>
           <button onClick={onOpen}>| Login |</button>
@@ -132,8 +132,8 @@ export default function Navbar({ isLoading, onAuthenticated }) {
                   >
                     {""}
                   </MenuButton>
-                  <MenuList>
-                    <MenuItem>
+                  <MenuList style={{ background: "#7657be", padding: "10px" }}>
+                    <MenuItem >
                       <Link href="/profile">Data</Link>
                     </MenuItem>
                     <MenuItem>
@@ -145,9 +145,6 @@ export default function Navbar({ isLoading, onAuthenticated }) {
             </Menu>
           </li>
         ) : null}
-
-
-
       </ul>
     </>
   );
