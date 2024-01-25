@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import {
   Button,
-  Checkbox,
   Stack,
   Text,
   VStack,
@@ -9,12 +8,15 @@ import {
   Box,
   ChakraProvider,
   Center,
-  Link,
   Select,
+  useDisclosure,
+  Collapse,
 } from "@chakra-ui/react";
 import { Alert, Space } from "antd";
+import styles from "../styles/Home.module.css";
 
-export default function Reservations() {
+export default function Trivia() {
+  const { isOpen, onToggle } = useDisclosure();
   const [answers, setAnswers] = useState({ questions: [] });
   const [shuffledAnswers, setShuffledAnswers] = useState([]);
   const [resultsAnswer, setResultsAnswer] = useState("");
@@ -62,7 +64,6 @@ export default function Reservations() {
       choice = "&difficulty=hard";
     }
 
-    //const url = `https://the-trivia-api.com/api/questions?limit=1&categories=${selectedCategories.join( ",")}${choice}`;
     const url = `https://the-trivia-api.com/api/questions?limit=1&categories=film_and_tv&${choice}`;
     setResultsAnswer("");
     setSelectedAnswer("");
@@ -192,38 +193,65 @@ export default function Reservations() {
       </Center>
 
       <br />
+      <div className={styles.top}>
+        <h3 className={styles.title}>Trivia</h3>
+      </div>
+      <br/>
 
       <ChakraProvider>
         <Box>
-          <Center>
-            <Button
-              onClick={() => {
-                apiCall();
-                setFirstTime(false);
-                setTotalQuestions(0);
-                setTotalCorrectQuestions(0);
-                setTotalWrongQuestions(0);
-                setisDisabled(false);
-              }}
-            >
-              Start
-            </Button>
-            <HStack>
-              <Select
-                placeholder="Select Difficulty"
-                onChange={(e) => setSelectedDifficulties([e.target.value])}
+          <>
+            <Button onClick={onToggle}>Click Me</Button>
+            <Collapse in={isOpen} animateOpacity>
+              <Box
+                p="40px"
+                color="white"
+                mt="4"
+                bg="teal.500"
+                rounded="md"
+                shadow="md"
               >
-                {difficultyOptions.map((option) => (
-                  <option key={option.name} value={option.name}>
-                    {option.displayName}
-                  </option>
-                ))}
-              </Select>
-            </HStack>
-            <br />
-            <br />
-            <br />
-          </Center>
+                <Center>
+                  <Button
+                    onClick={() => {
+                      apiCall();
+                      setFirstTime(false);
+                      setTotalQuestions(0);
+                      setTotalCorrectQuestions(0);
+                      setTotalWrongQuestions(0);
+                      setisDisabled(false);
+                    }}
+                  >
+                    Start
+                  </Button>
+                  <HStack>
+                    <Select
+                      placeholder="Select Difficulty"
+                      onChange={(e) =>
+                        setSelectedDifficulties([e.target.value])
+                      }
+                    >
+                      {difficultyOptions.map((option) => (
+                        <option key={option.name} value={option.name}>
+                          {option.displayName}
+                        </option>
+                      ))}
+                    </Select>
+                  </HStack>
+                </Center>
+                <br />
+                <Box>
+                  When you click on start, the count resets. If you click on
+                  next, the count will continue.
+                  <br />
+                  If you don't choose the difficulty, the questions will come
+                  randomly.
+                </Box>
+              </Box>
+            </Collapse>
+          </>
+          <br />
+
           <Center>
             <br />
             {!firstTime && (
@@ -231,7 +259,7 @@ export default function Reservations() {
                 onClick={() => {
                   apiCall(), setisDisabled(false);
                 }}
-                colorScheme="blue"
+                color="teal.500"
               >
                 Next Question
               </Button>
@@ -393,9 +421,11 @@ export default function Reservations() {
 
               <br />
               <Text textAlign="center">
+                
                 <span>{resultsAnswer}</span>
-                <br />
-                <br />
+                <br/>
+                <br/>
+
                 <Text textAlign="center">
                   <span>
                     Difficulty:
@@ -405,6 +435,7 @@ export default function Reservations() {
                     Category: <strong> {answers.questions[0]?.category}</strong>
                   </span>
                 </Text>
+                
 
                 <VStack spacing={2} align="center">
                   <Text>
