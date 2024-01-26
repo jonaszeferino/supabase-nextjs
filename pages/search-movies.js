@@ -23,6 +23,8 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
+  Tag,
+  HStack,
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
@@ -52,8 +54,8 @@ export default function Discovery() {
     voteCount: 5000,
     releaseDateFrom: 1900,
     releaseDateTo: 2024,
-    with_origin_country: "NOTHING",
-    category: "",
+    with_origin_country: "All",
+    category: "All",
   });
 
   const {
@@ -78,7 +80,7 @@ export default function Discovery() {
       "&with_genres=" +
       searchFilters.category;
 
-    if (with_origin_country === "NOTHING") {
+    if (with_origin_country === "All") {
     } else {
       urlString += "&with_origin_country=" + searchFilters.with_origin_country;
     }
@@ -484,8 +486,21 @@ export default function Discovery() {
           >
             <ChakraProvider>
               <Button ref={btnRef} colorScheme="purple" onClick={onOpen}>
-                Filters
+                Select Filters
               </Button>
+              <br />
+              <HStack>
+                <Tag colorScheme="blue">Vote:+{searchFilters.voteCount}</Tag>
+                <Tag colorScheme="green">Order:{searchFilters.ratingSort ==="vote_average.desc" ? "Desc" : "Asc" } </Tag>
+                <Tag colorScheme="red">
+                 Year:{searchFilters.releaseDateFrom}-{searchFilters.releaseDateTo}{" "}
+                </Tag>
+                <Tag colorScheme="yellow">
+                  Country:{searchFilters.with_origin_country}
+                </Tag>
+                <Tag colorScheme="gray">Category:{searchFilters.category}</Tag>
+              </HStack>
+
               <Drawer
                 isOpen={isOpen}
                 placement="right"
