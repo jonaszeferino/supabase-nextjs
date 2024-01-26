@@ -95,37 +95,40 @@ export default function Discovery() {
     return urlString;
   };
 
-  const updateURL = () => {
-    const { pathname } = router;
-    const queryParams = {
-      searchRatingSort: ratingSort,
-      searchVoteCount: voteCount,
-      searchMovieReleaseDateFrom: releaseDateFrom,
-      searchMovieReleaseDateTo: releaseDateTo,
-      searchMovieCategory: category,
-      with_origin_country: with_origin_country,
-    };
+  // function to update URL
+  // const updateURL = () => {
+  //   const { pathname } = router;
+  //   const queryParams = {
+  //     searchRatingSort: ratingSort,
+  //     searchVoteCount: voteCount,
+  //     searchMovieReleaseDateFrom: releaseDateFrom,
+  //     searchMovieReleaseDateTo: releaseDateTo,
+  //     searchMovieCategory: category,
+  //     with_origin_country: with_origin_country,
+  //   };
 
-    router.push({
-      pathname,
-      query: queryParams,
-    });
-  };
+  //   router.push({
+  //     pathname,
+  //     query: queryParams,
+  //   });
+  // };
 
   useEffect(() => {
     apiCall();
   }, []);
 
-  useEffect(() => {
-    updateURL();
-  }, [
-    ratingSort,
-    voteCount,
-    releaseDateFrom,
-    releaseDateTo,
-    category,
-    with_origin_country,
-  ]);
+  // Use effect to update URL
+
+  // useEffect(() => {
+  //   updateURL();
+  // }, [
+  //   ratingSort,
+  //   voteCount,
+  //   releaseDateFrom,
+  //   releaseDateTo,
+  //   category,
+  //   with_origin_country,
+  // ]);
 
   const apiCall = (currentPage) => {
     const url = generateApiUrl() + "&page=" + currentPage;
@@ -631,13 +634,21 @@ export default function Discovery() {
                         </option>
                       ))}
                     </Select>
+                    <br/>
+                    <Center>
+                      <Button size="lg" colorScheme="purple" onClick={apiCall}>
+                        Go
+                      </Button>
+                    </Center>
                   </DrawerBody>
 
                   <DrawerFooter>
-                    <Button variant="outline" mr={3} onClick={onClose}>
+                    {/* <Button variant="outline" mr={3} onClick={onClose}>
                       Cancel
-                    </Button>
-                    <Button variant="outline" onClick={apiCall}>Go</Button>
+                    </Button> */}
+                    {/* <Button variant="outline" onClick={apiCall}>
+                      Go
+                    </Button> */}
                   </DrawerFooter>
                 </DrawerContent>
               </Drawer>
