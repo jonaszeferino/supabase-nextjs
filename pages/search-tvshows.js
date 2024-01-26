@@ -23,6 +23,8 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
+  Tag,
+  HStack,
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
@@ -34,15 +36,14 @@ import { Rate } from "antd";
 export default function Discovery() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
-  
 
   const [searchFilters, setSearchFilters] = useState({
-    voteCount: "5000", 
+    voteCount: "5000",
     ratingSort: "vote_average.desc",
     releaseDateFrom: 1900,
     releaseDateTo: 2024,
-    tvShowCategory: "NOTHING",
-    tvType: "",
+    tvShowCategory: "All",
+    tvType: "All",
   });
 
   const {
@@ -57,7 +58,7 @@ export default function Discovery() {
   const [searchMovies, setSearchMovies] = useState([]);
   const [searchMovieTotalResults, setSearchMovieTotalResults] = useState("");
   const [genres, setGenres] = useState([]);
-  
+
   //pagination
   const [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
   const [searchMovieRealPage, setSearchMovieRealPage] = useState("");
@@ -94,7 +95,7 @@ export default function Discovery() {
       currentPage = parseInt(currentPage);
     }
     const url = urlString + "&page=" + currentPage;
-    console.log('o que chama: ',url)
+    console.log("o que chama: ", url);
     setIsLoading(true);
 
     fetch(url, {
@@ -171,6 +172,54 @@ export default function Discovery() {
     fetchGenres();
   }, []);
 
+  //Tags:
+  const selectedFiltersTags = [
+    {
+      label: `Vote: +${searchFilters.voteCount}`,
+      colorScheme: "blue",
+    },
+    {
+      label: `Order: ${
+        searchFilters.ratingSort === "vote_average.desc" ? "Desc" : "Asc"
+      }`,
+      colorScheme: "green",
+    },
+    {
+      label: `Year: ${searchFilters.releaseDateFrom}-${searchFilters.releaseDateTo}`,
+      colorScheme: "red",
+    },
+
+    {
+      label: `Type: ${
+        searchFilters.tvType === "0"
+          ? "Documentary"
+          : searchFilters.tvType === "1"
+          ? "News"
+          : searchFilters.tvType === "2"
+          ? "Mini Series"
+          : searchFilters.tvType === "3"
+          ? "Reality"
+          : searchFilters.tvType === "4"
+          ? "Scripted"
+          : searchFilters.tvType === "5"
+          ? "Talk Show"
+          : searchFilters.tvType === "6"
+          ? "Videos"
+          : "All"
+      }`,
+      colorScheme: "yellow",
+    },
+
+    {
+      label: `Category: ${
+        genres.find(
+          (genre) => genre.id === parseInt(searchFilters.tvShowCategory, 10)
+        )?.name || "All"
+      }`,
+      colorScheme: "gray",
+    },
+  ];
+
   return (
     <>
       <Head>
@@ -202,8 +251,17 @@ export default function Discovery() {
         >
           <ChakraProvider>
             <Button ref={btnRef} colorScheme="purple" onClick={onOpen}>
-              Filters
+              Select Filters
             </Button>
+
+            <br />
+            <HStack>
+              {selectedFiltersTags.map((tag, index) => (
+                <Tag key={index} colorScheme={tag.colorScheme}>
+                  {tag.label}
+                </Tag>
+              ))}
+            </HStack>
             <Drawer
               isOpen={isOpen}
               placement="right"
@@ -266,29 +324,6 @@ export default function Discovery() {
 
                   <br />
 
-                  <FormLabel>Tv Show Type</FormLabel>
-
-                  <Select
-                    value={searchFilters.tvType}
-                    onChange={(event) =>
-                      setSearchFilters({
-                        ...searchFilters,
-                        tvType: event.target.value,
-                      })
-                    }
-                  >
-                    <option value="">All</option>
-                    <option value="0">Documentary</option>
-                    <option value="1">News</option>
-                    <option value="2">Mini Series</option>
-                    <option value="3">Reality</option>
-                    <option value="4">Scripted</option>
-                    <option value="5">Talk Show</option>
-                    <option value="6">Videos</option>
-                  </Select>
-
-                  <br />
-
                   <FormControl>
                     <Center>
                       <FormLabel>Initial and Final Year</FormLabel>
@@ -327,6 +362,28 @@ export default function Discovery() {
                       </Select>
                     </Flex>
                   </FormControl>
+
+                  <br />
+                  <FormLabel>Tv Show Type</FormLabel>
+
+                  <Select
+                    value={searchFilters.tvType}
+                    onChange={(event) =>
+                      setSearchFilters({
+                        ...searchFilters,
+                        tvType: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="">All</option>
+                    <option value="0">Documentary</option>
+                    <option value="1">News</option>
+                    <option value="2">Mini Series</option>
+                    <option value="3">Reality</option>
+                    <option value="4">Scripted</option>
+                    <option value="5">Talk Show</option>
+                    <option value="6">Videos</option>
+                  </Select>
 
                   <br />
 

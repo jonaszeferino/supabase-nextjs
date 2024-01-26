@@ -249,7 +249,7 @@ export default function Movieapi() {
                           movieData.image
                             ? "https://image.tmdb.org/t/p/original" +
                               movieData.image
-                            : "/callback_gray.png"
+                            : "/callback.png"
                         }
                         alt="poster"
                         width="480"

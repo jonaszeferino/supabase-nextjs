@@ -25,6 +25,7 @@ import {
   useDisclosure,
   Tag,
   HStack,
+  Spinner,
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
@@ -455,6 +456,35 @@ export default function Discovery() {
     fetchGenres();
   }, []);
 
+  const selectedFiltersTags = [
+    {
+      label: `Vote: +${searchFilters.voteCount}`,
+      colorScheme: "blue",
+    },
+    {
+      label: `Order: ${
+        searchFilters.ratingSort === "vote_average.desc" ? "Desc" : "Asc"
+      }`,
+      colorScheme: "green",
+    },
+    {
+      label: `Year: ${searchFilters.releaseDateFrom}-${searchFilters.releaseDateTo}`,
+      colorScheme: "red",
+    },
+    {
+      label: `Type: ${searchFilters.with_origin_country}`,
+      colorScheme: "yellow",
+    },
+    {
+      label: `Category: ${
+        genres.find(
+          (genre) => genre.id === parseInt(searchFilters.category, 10)
+        )?.name || "All"
+      }`,
+      colorScheme: "gray",
+    },
+  ];
+
   return (
     <>
       <Head>
@@ -490,15 +520,11 @@ export default function Discovery() {
               </Button>
               <br />
               <HStack>
-                <Tag colorScheme="blue">Vote:+{searchFilters.voteCount}</Tag>
-                <Tag colorScheme="green">Order:{searchFilters.ratingSort ==="vote_average.desc" ? "Desc" : "Asc" } </Tag>
-                <Tag colorScheme="red">
-                 Year:{searchFilters.releaseDateFrom}-{searchFilters.releaseDateTo}{" "}
-                </Tag>
-                <Tag colorScheme="yellow">
-                  Country:{searchFilters.with_origin_country}
-                </Tag>
-                <Tag colorScheme="gray">Category:{searchFilters.category}</Tag>
+                {selectedFiltersTags.map((tag, index) => (
+                  <Tag key={index} colorScheme={tag.colorScheme}>
+                    {tag.label}
+                  </Tag>
+                ))}
               </HStack>
 
               <Drawer
@@ -662,6 +688,8 @@ export default function Discovery() {
             </ChakraProvider>
           </div>
         </div>
+        <br />
+        <ChakraProvider>{isLoading && <Spinner />}</ChakraProvider>
 
         <br />
 
