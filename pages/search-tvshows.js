@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import ErrorPage from "./error-page";
 import Image from "next/image";
@@ -15,6 +15,14 @@ import {
   Flex,
   Progress,
   Link as LinkChakra,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
@@ -24,43 +32,59 @@ import Link from "next/link";
 import { Rate } from "antd";
 
 export default function Discovery() {
-  let [searchMovies, setSearchMovies] = useState([]);
-  let [searchRatingSort, setSearchRatingSort] = useState("vote_average.desc");
-  let [searchVoteCount, setSearchVoteCount] = useState(100);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = React.useRef();
+  
 
-  let [searchMovieTotalResults, setSearchMovieTotalResults] = useState("");
-  let [searchMovieReleaseDateFrom, setSearchMovieReleaseDateFrom] =
-    useState(1800);
-  let [searchMovieReleaseDateTo, setSearchMovieReleaseDateTo] = useState(2023);
-  const [searchTvShowCategory, setSearchTvShowCategory] = useState("")
+  const [searchFilters, setSearchFilters] = useState({
+    voteCount: "5000", 
+    ratingSort: "vote_average.desc",
+    releaseDateFrom: 1900,
+    releaseDateTo: 2024,
+    tvShowCategory: "NOTHING",
+    tvType: "",
+  });
 
+  const {
+    voteCount,
+    ratingSort,
+    releaseDateFrom,
+    releaseDateTo,
+    tvShowCategory,
+    tvType,
+  } = searchFilters;
+
+  const [searchMovies, setSearchMovies] = useState([]);
+  const [searchMovieTotalResults, setSearchMovieTotalResults] = useState("");
   const [genres, setGenres] = useState([]);
-
+  
   //pagination
-  let [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
-  let [searchMovieRealPage, setSearchMovieRealPage] = useState("");
-  let [page, setPage] = useState(1);
+  const [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
+  const [searchMovieRealPage, setSearchMovieRealPage] = useState("");
+  const [page, setPage] = useState(1);
+  const [isError, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  // back to the top button
+  const { showBackToTopButton, scrollToTop } = useBackToTopButton();
 
-  let [isError, setError] = useState(false);
-  let [isLoading, setIsLoading] = useState(false);
-  let [searchTvType, setSearchTvType] = useState("");
-
-  const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
+  useEffect(() => {
+    apiCall();
+  }, []);
 
   let urlString =
     "https://api.themoviedb.org/3/discover/tv?&include_adult=false&include_video=false&vote_count.gte=" +
-    searchVoteCount +
+    searchFilters.voteCount +
     "&vote_count.lte=10000000&sort_by=" +
-    searchRatingSort +
+    searchFilters.ratingSort +
     "&first_air_date.gte=" +
-    (searchMovieReleaseDateFrom + 1) +
+    (searchFilters.releaseDateFrom + 1) +
     "&first_air_date.lte=" +
-    (searchMovieReleaseDateTo + 1) +
+    (searchFilters.releaseDateTo + 1) +
     "&with_genres=" +
-    searchTvShowCategory;
+    searchFilters.tvShowCategory;
 
-  if (searchTvType !== "") {
-    urlString += "&with_type=" + searchTvType;
+  if (searchFilters.tvType !== "") {
+    urlString += "&with_type=" + searchFilters.tvType;
   }
 
   const apiCall = (currentPage) => {
@@ -70,6 +94,7 @@ export default function Discovery() {
       currentPage = parseInt(currentPage);
     }
     const url = urlString + "&page=" + currentPage;
+    console.log('o que chama: ',url)
     setIsLoading(true);
 
     fetch(url, {
@@ -110,13 +135,6 @@ export default function Discovery() {
   let currentPage = searchMovieRealPage;
   let totalResults = searchMovieTotalResults;
 
-  const handleFromChange = (event) => {
-    setSearchMovieReleaseDateFrom(parseInt(event.target.value));
-  };
-
-  const handleToChange = (event) => {
-    setSearchMovieReleaseDateTo(parseInt(event.target.value));
-  };
   function getProgressColor(progressValue) {
     if (progressValue >= 0.1 && progressValue <= 3.999) {
       return "red";
@@ -131,12 +149,12 @@ export default function Discovery() {
     }
   }
 
-
   useEffect(() => {
     const fetchGenres = async () => {
       try {
         const response = await fetch(
-          "https://api.themoviedb.org/3/genre/tv/list", {
+          "https://api.themoviedb.org/3/genre/tv/list",
+          {
             headers: new Headers({
               "Content-Type": "application/json",
               Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
@@ -149,7 +167,7 @@ export default function Discovery() {
         console.error("Error fetching genres:", error);
       }
     };
-  
+
     fetchGenres();
   }, []);
 
@@ -183,104 +201,173 @@ export default function Discovery() {
           }}
         >
           <ChakraProvider>
-            <FormLabel htmlFor="orderby">Order By</FormLabel>
-            <Select
-              width="400px"
-              value={searchRatingSort}
-              onChange={(event) => setSearchRatingSort(event.target.value)}
-            >
-              <option value="vote_average.asc">
-                From Worst Rating to Best
-              </option>
-              <option value="vote_average.desc">
-                From Best Rating to Worst
-              </option>
-            </Select>
-
-            <br />
-
-            <FormLabel>Vote Number</FormLabel>
-            <Select
-              value={searchVoteCount}
-              onChange={(event) => setSearchVoteCount(event.target.value)}
-            >
-              <option value="0">0 Votes</option>
-              <option value="50">More than 50</option>
-              <option value="100">More than 100</option>
-              <option value="200">More than 200</option>
-              <option value="500">More than 500</option>
-              <option value="1000">More than 1000</option>
-              <option value="5000">More than 5000</option>
-            </Select>
-
-            <br />
-
-            <FormLabel>Tv Show Type</FormLabel>
-            <Select
-              value={searchTvType}
-              onChange={(event) => setSearchTvType(event.target.value)}
-            >
-              <option value="">All</option>
-              <option value="0">Documentary</option>
-              <option value="1">News</option>
-              <option value="2">Mini Series</option>
-              <option value="3">Reality</option>
-              <option value="4">Scripted</option>
-              <option value="5">Talk Show</option>
-              <option value="6">Videos</option>
-            </Select>
-
-            <br />
-
-            <FormControl>
-              <Center>
-                <FormLabel>Initial and Final Year</FormLabel>
-              </Center>
-              <Flex align="center">
-                <Select
-                  value={searchMovieReleaseDateFrom}
-                  onChange={handleFromChange}
-                >
-                  {Array.from({ length: 2025 - 1900 + 1 }, (_, index) => (
-                    <option key={index} value={1900 + index}>
-                      {1900 + index}
-                    </option>
-                  ))}
-                </Select>
-                <Box w="20px" />
-                <Select
-                  value={searchMovieReleaseDateTo}
-                  onChange={handleToChange}
-                >
-                  {Array.from({ length: 2025 - 1900 + 1 }, (_, index) => (
-                    <option key={index} value={1900 + index}>
-                      {1900 + index}
-                    </option>
-                  ))}
-                </Select>
-              </Flex>
-            </FormControl>
-
-            <br />
-
-            <FormLabel htmlFor="movieCategory">Tv Show Category</FormLabel>
-              <Select
-                id="movieCategory"
-                placeholder="Select Category"
-                value={searchTvShowCategory}
-                onChange={(event) => setSearchTvShowCategory(event.target.value)}
-              >
-                {genres.map((genre) => (
-                  <option key={genre.id} value={genre.id}>
-                    {genre.name}
-                  </option>
-                ))}
-              </Select>
-              <br/>
-
-            <Button size="lg" colorScheme="purple" onClick={apiCall}>
-              Go
+            <Button ref={btnRef} colorScheme="purple" onClick={onOpen}>
+              Filters
             </Button>
+            <Drawer
+              isOpen={isOpen}
+              placement="right"
+              onClose={onClose}
+              finalFocusRef={btnRef}
+            >
+              <DrawerOverlay />
+              <DrawerContent>
+                <DrawerCloseButton />
+                <DrawerHeader>Select Filters</DrawerHeader>
+
+                <DrawerBody>
+                  <FormLabel htmlFor="orderby">Order By</FormLabel>
+                  <Select
+                    id="ordenation"
+                    placeholder="Ordenation"
+                    type="text"
+                    isRequired={true}
+                    value={searchFilters.ratingSort}
+                    onChange={(event) =>
+                      setSearchFilters({
+                        ...searchFilters,
+                        ratingSort: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="vote_average.asc">
+                      From Worst Rating to Best
+                    </option>
+                    <option value="vote_average.desc">
+                      From Best Rating to Worst
+                    </option>
+                  </Select>
+
+                  <br />
+
+                  <FormLabel>Minimum Vote Count</FormLabel>
+
+                  <Select
+                    id="votes"
+                    placeholder="Number of Votes"
+                    type="number"
+                    isRequired={true}
+                    value={searchFilters.voteCount}
+                    onChange={(event) =>
+                      setSearchFilters({
+                        ...searchFilters,
+                        voteCount: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="0">0 Votes</option>
+                    <option value="50">More than 50</option>
+                    <option value="100">More than 100</option>
+                    <option value="200">More than 200</option>
+                    <option value="500">More than 500</option>
+                    <option value="1000">More than 1000</option>
+                    <option value="5000">More than 5000</option>
+                  </Select>
+
+                  <br />
+
+                  <FormLabel>Tv Show Type</FormLabel>
+
+                  <Select
+                    value={searchFilters.tvType}
+                    onChange={(event) =>
+                      setSearchFilters({
+                        ...searchFilters,
+                        tvType: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="">All</option>
+                    <option value="0">Documentary</option>
+                    <option value="1">News</option>
+                    <option value="2">Mini Series</option>
+                    <option value="3">Reality</option>
+                    <option value="4">Scripted</option>
+                    <option value="5">Talk Show</option>
+                    <option value="6">Videos</option>
+                  </Select>
+
+                  <br />
+
+                  <FormControl>
+                    <Center>
+                      <FormLabel>Initial and Final Year</FormLabel>
+                    </Center>
+                    <Flex align="center">
+                      <Select
+                        value={searchFilters.releaseDateFrom}
+                        onChange={(event) =>
+                          setSearchFilters({
+                            ...searchFilters,
+                            releaseDateFrom: event.target.value,
+                          })
+                        }
+                      >
+                        {Array.from({ length: 2025 - 1900 + 1 }, (_, index) => (
+                          <option key={index} value={1900 + index}>
+                            {1900 + index}
+                          </option>
+                        ))}
+                      </Select>
+                      <Box w="20px" />
+                      <Select
+                        value={searchFilters.releaseDateTo}
+                        onChange={(event) =>
+                          setSearchFilters({
+                            ...searchFilters,
+                            releaseDateTo: event.target.value,
+                          })
+                        }
+                      >
+                        {Array.from({ length: 2025 - 1900 + 1 }, (_, index) => (
+                          <option key={index} value={1900 + index}>
+                            {1900 + index}
+                          </option>
+                        ))}
+                      </Select>
+                    </Flex>
+                  </FormControl>
+
+                  <br />
+
+                  <FormLabel htmlFor="movieCategory">
+                    Tv Show Category
+                  </FormLabel>
+                  <Select
+                    id="movieCategory"
+                    placeholder="Select Category"
+                    value={searchFilters.tvShowCategory}
+                    onChange={(event) =>
+                      setSearchFilters({
+                        ...searchFilters,
+                        tvShowCategory: event.target.value,
+                      })
+                    }
+                  >
+                    {genres.map((genre) => (
+                      <option key={genre.id} value={genre.id}>
+                        {genre.name}
+                      </option>
+                    ))}
+                  </Select>
+                  <br />
+                  <Center>
+                    <Button size="lg" colorScheme="purple" onClick={apiCall}>
+                      Go
+                    </Button>
+                  </Center>
+                </DrawerBody>
+
+                <DrawerFooter>
+                  {/* <Button variant="outline" mr={3} onClick={onClose}>
+                    Cancel
+                  </Button>
+                  <Button variant="outline" onClick={apiCall}>
+                    Go
+                  </Button> */}
+                </DrawerFooter>
+              </DrawerContent>
+            </Drawer>
           </ChakraProvider>
           <br />
           <br />
@@ -315,8 +402,9 @@ export default function Discovery() {
                     <Image
                       className={styles.card_image}
                       src={
-                        `https://image.tmdb.org/t/p/original${search.poster_path}` ||
-                        `/callback.png`
+                        search.poster_path
+                          ? `https://image.tmdb.org/t/p/original${search.poster_path}`
+                          : `/callback.png`
                       }
                       alt="poster"
                       width={240}
@@ -336,7 +424,6 @@ export default function Discovery() {
                   />
                   {search.vote_average} <Rate value={1} count={1} />
                 </ChakraProvider>
-                
               </div>
               <br />
             </div>

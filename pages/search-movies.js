@@ -35,32 +35,23 @@ import { useRouter } from "next/router";
 export default function Discovery() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
-
   const router = useRouter(); // Initialize the useRouter hook
-  let [searchMovies, setSearchMovies] = useState([]);
-  let [searchRatingSort, setSearchRatingSort] = useState("vote_average.desc");
-  let [searchVoteCount, setSearchVoteCount] = useState(100);
-  let [searchMovieReleaseDateFrom, setSearchMovieReleaseDateFrom] =
-    useState(1900);
-
+  const [searchMovies, setSearchMovies] = useState([]);
   const [genres, setGenres] = useState([]);
+  const [page, setPage] = useState(1);
+  const [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
+  const [searchMovieRealPage, setSearchMovieRealPage] = useState("");
+  const [searchMovieTotalResults, setSearchMovieTotalResults] = useState("");
+  const [isError, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  let [searchMovieReleaseDateTo, setSearchMovieReleaseDateTo] = useState(2023);
-  let [page, setPage] = useState(1);
-  let [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
-  let [searchMovieRealPage, setSearchMovieRealPage] = useState("");
-  let [searchMovieTotalResults, setSearchMovieTotalResults] = useState("");
-  let [searchMovieCategory, setSearchMovieCategory] = useState("");
-  let [isError, setError] = useState(false);
-  let [isLoading, setIsLoading] = useState(false);
-
-  const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
+  const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // back to the button Hook
 
   const [searchFilters, setSearchFilters] = useState({
     ratingSort: "vote_average.desc",
-    voteCount: 100,
+    voteCount: 5000,
     releaseDateFrom: 1900,
-    releaseDateTo: 2023,
+    releaseDateTo: 2024,
     with_origin_country: "NOTHING",
     category: "",
   });
@@ -531,7 +522,8 @@ export default function Discovery() {
 
                     <br />
 
-                    <FormLabel htmlFor="votes">Vote Range</FormLabel>
+                    <FormLabel>Minimum Vote Count</FormLabel>
+
                     <Select
                       id="votes"
                       placeholder="Number of Votes"
@@ -634,7 +626,7 @@ export default function Discovery() {
                         </option>
                       ))}
                     </Select>
-                    <br/>
+                    <br />
                     <Center>
                       <Button size="lg" colorScheme="purple" onClick={apiCall}>
                         Go
