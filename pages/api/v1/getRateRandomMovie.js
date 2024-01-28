@@ -11,13 +11,14 @@ export default async function handler(req, res) {
   try {
     const user_email = parseInt(req.query.user_email);
 
-    if (user_email) {
+    if (isNaN(user_email)) {
       res.status(400).json({ error: "user_email must be a valid format" });
       return;
     }
 
     const matchStage = user_email ? { user_email: user_email } : {};
-    const pipeline = [{ $match: matchStage }];
+    const sortStage = { $sort: { like_date: 1 } };
+    const pipeline = [{ $match: matchStage }, sortStage];
 
     const result = await collection.aggregate(pipeline).toArray();
 
