@@ -9,15 +9,15 @@ export default async function handler(req, res) {
   const collection = client.db("moviesSeriesLikes").collection("movieLikes");
 
   try {
-    const user_email = parseInt(req.query.user_email);
+    const user_email = req.query.user_email;
 
-    if (isNaN(user_email)) {
-      res.status(400).json({ error: "user_email must be a valid format" });
+    if (!user_email) {
+      res.status(400).json({ error: "user_email must be provided" });
       return;
     }
 
-    const matchStage = user_email ? { user_email: user_email } : {};
-    const sortStage = { $sort: { like_date: 1 } };
+    const matchStage = { user_email: user_email };
+    const sortStage = { $sort: { like_date: -1 } }; // Altere para -1 se desejar ordenar do mais recente para o mais antigo
     const pipeline = [{ $match: matchStage }, sortStage];
 
     const result = await collection.aggregate(pipeline).toArray();
