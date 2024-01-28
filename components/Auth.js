@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { supabase } from "../utils/supabaseClient";
+import { useRouter } from "next/router";
+
+import { getSiteUrl, supabase } from "../utils/supabaseClient";
+
 import {
   Box,
   Heading,
@@ -19,6 +22,14 @@ import {
 import { FaGoogle, FaEyeSlash, FaEye } from "react-icons/fa";
 
 export default function Auth() {
+  const router = useRouter();
+  const siteUrl = router.asPath;
+   let siteUrlComplete = "https://www.watchtodayguide.com" + siteUrl
+
+  
+  console.log("Current URL: ", siteUrl)
+  console.log("URl concatenada: ", siteUrlComplete)
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
@@ -36,10 +47,11 @@ export default function Auth() {
       const { user, error, status } = await supabase.auth.signUp({
         email: email,
         password: password,
+        options: {
+          redirectTo: siteUrlComplete,
+        },
       });
-      console.log("User:", user);
-      console.log("Session:", session);
-      console.log("Error:", error);
+ 
       setAlertMessage("Check your Email");
       if (user) {
         console.log("User successfully registered:", user);
@@ -65,10 +77,10 @@ export default function Auth() {
       const { user, session, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
+        options: {
+          redirectTo: siteUrlComplete,
+        },
       });
-      console.log("User:", user);
-      console.log("Session:", session);
-      console.log("Error:", error);
       if (error) {
         throw error;
       }
@@ -84,24 +96,27 @@ export default function Auth() {
   };
 
   const handleGoogleSignIn = async () => {
+
     setAlertMessage("");
     try {
       const { user, session, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
+        options: {
+          redirectTo: siteUrlComplete,
+        },
       });
-      console.log("User:", user);
-      console.log("Session:", session);
-      console.log("Error:", error);
       if (error) {
         throw error;
       }
       setAlertMessage("Logging In");
-      console.log(user);
-      console.log(session);
+      const currentUrl = router.asPath;
+      router.push(currentUrl);
     } catch (e) {
       setAlertMessage(e.message);
     }
   };
+
+
 
   useEffect(() => {
     let mounted = true;
