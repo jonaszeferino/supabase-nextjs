@@ -228,12 +228,13 @@ export default function Trivia() {
       </Center>
 
       <br />
+      <LoggedUser />
       <div className={styles.top}>
         <h3 className={styles.title}>Trivia</h3>
       </div>
       <br />
 
-      <LoggedUser />
+      
 
       <ChakraProvider>
         <Box>
