@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     }
 
     const matchStage = { user_email: user_email };
-    const sortStage = { $sort: { like_date: -1 } }; // Altere para -1 se desejar ordenar do mais recente para o mais antigo
+    const sortStage = { $sort: { like_date: -1 } };
     const pipeline = [{ $match: matchStage }, sortStage];
 
     const result = await collection.aggregate(pipeline).toArray();

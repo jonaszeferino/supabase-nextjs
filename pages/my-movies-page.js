@@ -15,7 +15,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { Rate } from "antd";
-import { supabase } from "../utils/supabaseClient"; // Importe o supabase aqui
+import { supabase } from "../utils/supabaseClient";
 import LoggedUser from "../components/LoggedUser";
 import { Button as AntButton, notification, Space } from "antd";
 import Head from "next/head";
@@ -66,11 +66,12 @@ const MoviePage = () => {
       placement,
     });
   };
+ 
   const apiGetRates = async () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `/api/v1/getRateRandomMovie?user_email=${parseInt(email_user)}`,
+        `/api/v1/getRateRandomMovie?user_email=${email_user}`,
         {
           method: "GET",
           headers: {
