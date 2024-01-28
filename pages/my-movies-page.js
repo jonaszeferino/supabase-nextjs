@@ -17,7 +17,6 @@ import {
 import { Rate } from "antd";
 import { supabase } from "../utils/supabaseClient"; // Importe o supabase aqui
 import LoggedUser from "../components/LoggedUser";
-import { RadiusUprightOutlined } from "@ant-design/icons";
 import { Button as AntButton, notification, Space } from "antd";
 import Head from "next/head";
 
@@ -33,32 +32,31 @@ const MoviePage = () => {
   const [email_user, setEmail_user] = useState();
   const [api, contextHolder] = notification.useNotification();
 
-    //verificar a sessão
-    useEffect(() => {
-      let mounted = true;
-      async function getInitialSession() {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-        if (mounted) {
-          if (session) {
-            setSession(session);
-            setEmail_user(session.user.email);
-          }
-          setIsLoading(false);
-        }
-      }
-      getInitialSession();
-      const { subscription } = supabase.auth.onAuthStateChange(
-        (_event, session) => {
+  useEffect(() => {
+    let mounted = true;
+    async function getInitialSession() {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (mounted) {
+        if (session) {
           setSession(session);
+          setEmail_user(session.user.email);
         }
-      );
-      return () => {
-        mounted = false;
-        subscription?.unsubscribe();
-      };
-    }, []);
+        setIsLoading(false);
+      }
+    }
+    getInitialSession();
+    const { subscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
+    return () => {
+      mounted = false;
+      subscription?.unsubscribe();
+    };
+  }, []);
 
   const openNotification = (placement) => {
     api.info({
@@ -80,6 +78,7 @@ const MoviePage = () => {
           },
         }
       );
+      console.log("Chamada Profile ", fetch);
       const responseData = await response.json();
       setData(responseData);
       setIsLoading(false);
@@ -96,7 +95,7 @@ const MoviePage = () => {
   }, []);
 
   const apiDeleteRates = async () => {
-    console.log("Delete call ")
+    console.log("Delete call ");
     setValueStartDelete(true);
     try {
       const response = await fetch("/api/v1/deleteRateRandomMovie", {
@@ -114,7 +113,7 @@ const MoviePage = () => {
       setIsConfirmationMode(false);
     } catch (error) {
       console.error(error);
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -152,8 +151,6 @@ const MoviePage = () => {
       console.error(error);
     }
   };
-
-
 
   return (
     <>
@@ -257,7 +254,7 @@ const MoviePage = () => {
                               movie.poster_path !== "/callback_gray.png"
                                 ? "https://image.tmdb.org/t/p/original" +
                                   movie.poster_path
-                                : "/callback_gray.png"
+                                : "/callback.png"
                             }
                             alt="poster"
                             width={60}
