@@ -39,12 +39,11 @@ export default function Movieapi() {
   const [isLikeDisabled, setLikeDisable] = useState(false);
   const [likeThanks, setLikeThanks] = useState(false);
   const [dateNow, setDatenow] = useState(new Date());
-
   const [starValue, setStarValue] = useState(0);
   const [isRatingSubmitted, setIsRatingSubmitted] = useState(false);
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
-  const [session, setSession] = useState(null)
-  const [email_user, setEmail_user] = useState(null)
+  const [session, setSession] = useState(null);
+  const [email_user, setEmail_user] = useState(null);
 
   useEffect(() => {
     if (isError) {
@@ -76,9 +75,7 @@ export default function Movieapi() {
         console.error("Error getting session:", error);
       }
     }
-
     getInitialSession();
-
     const { subscription } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         console.log("Auth State Change:", session);
@@ -177,7 +174,7 @@ export default function Movieapi() {
           portuguese_title: movieData.portugueseTitle,
           vote_average_by_provider: movieData.average,
           rating_by_user: starValue,
-          user_email: email_user
+          user_email: email_user,
         }),
       });
       return;
@@ -211,7 +208,7 @@ export default function Movieapi() {
         <div style={{ maxWidth: "480px", margin: "0 auto" }}>
           <ChakraProvider>
             <Box maxW="32rem">
-            <LoggedUser />
+              <LoggedUser />
               <div className={styles.top}>
                 <h3 className={styles.title}>What To Watch Today?</h3>
                 <span>
