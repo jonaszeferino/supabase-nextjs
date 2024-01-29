@@ -60,7 +60,7 @@ const MoviePage = () => {
 
   const openNotification = (placement) => {
     api.info({
-      message: `Waiting ${email_user}`,
+      message: `Waiting ${user_email}`,
       description:
         "If you provided evaluations for the suggestions, they will appear automatically on the screen.",
       placement,
@@ -71,7 +71,7 @@ const MoviePage = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `/api/v1/getRateRandomMovie?user_email=${email_user}`,
+        `/api/v1/getRateRandomMovie?user_email=${user_email}`,
         {
           method: "GET",
           headers: {
@@ -88,6 +88,7 @@ const MoviePage = () => {
       console.error(error);
     }
   };
+  
 
   useEffect(() => {
     apiGetRates();
