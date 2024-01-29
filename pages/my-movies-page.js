@@ -101,7 +101,7 @@ const apiGetRates = async () => {
     apiGetRates();
     setValueEndDelete(false);
     openNotification("topRight");
-  }, []);
+  }, [email_user]);
 
   const apiDeleteRates = async () => {
     console.log("Delete call ");
