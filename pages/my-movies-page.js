@@ -82,6 +82,7 @@ const apiGetRates = async () => {
   setIsLoading(true);
   try {
     const response = await fetch(`/api/v1/getRateRandomMovie?user_email=${email_user}`, {
+ //https://www.watchtodayguide.com/api/v1/getRateRandomMovie?user_email=jonaszeferino%40gmail.com
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -176,7 +177,7 @@ const apiGetRates = async () => {
           </Head>
           <LoggedUser />
 
-          <Button onClick={apiGetRates}></Button>
+          {/* <Button onClick={apiGetRates}></Button> */}
 
           <>
             {contextHolder}
@@ -263,7 +264,7 @@ const apiGetRates = async () => {
                         <Td>
                           <Image
                             src={
-                              movie.poster_path !== "/callback_gray.png"
+                              movie.poster_path !== "/callback.png"
                                 ? "https://image.tmdb.org/t/p/original" +
                                   movie.poster_path
                                 : "/callback.png"
