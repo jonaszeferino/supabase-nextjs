@@ -29,6 +29,7 @@ import {
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
+import { supabase } from "../utils/supabaseClient";
 
 export default function Movieapi() {
   const [movieData, setMovieData] = useState({});
