@@ -264,8 +264,8 @@ const apiGetRates = async () => {
                         <Td>
                           <Image
                             src={
-                              movie.poster_path !== "/callback.png"
-                                ? "https://image.tmdb.org/t/p/original" +
+                              movie.poster_path ?
+                                 "https://image.tmdb.org/t/p/original" +
                                   movie.poster_path
                                 : "/callback.png"
                             }
@@ -302,6 +302,7 @@ const apiGetRates = async () => {
         </ChakraProvider>
       ) : (
         "Click Log In to load the page content"
+        
       )}
     </>
   );
