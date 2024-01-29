@@ -95,6 +95,7 @@ const apiGetRates = async () => {
     setValueEndDelete(false);
   } catch (error) {
     console.error("Error fetching rates:", error);
+
   }
 };
   useEffect(() => {
@@ -174,6 +175,8 @@ const apiGetRates = async () => {
             <meta name="description" content="filmes, series,"></meta>
           </Head>
           <LoggedUser />
+
+          <Button onClick={apiGetRates}></Button>
 
           <>
             {contextHolder}
