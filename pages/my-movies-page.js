@@ -32,25 +32,33 @@ const MoviePage = () => {
   const [email_user, setEmail_user] = useState();
   const [api, contextHolder] = notification.useNotification();
 
-  console.log("Estado Email: ", email_user)
+  console.log("Estado Email: ", email_user);
 
   useEffect(() => {
     let mounted = true;
     async function getInitialSession() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (mounted) {
-        if (session) {
-          setSession(session);
-          setEmail_user(session.user.email);
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        console.log("Session:", session);
+        if (mounted) {
+          if (session) {
+            setSession(session);
+            setEmail_user(session.user.email);
+          }
+          setIsLoading(false);
         }
-        setIsLoading(false);
+      } catch (error) {
+        console.error("Error getting session:", error);
       }
     }
+
     getInitialSession();
+
     const { subscription } = supabase.auth.onAuthStateChange(
       (_event, session) => {
+        console.log("Auth State Change:", session);
         setSession(session);
       }
     );
@@ -60,6 +68,7 @@ const MoviePage = () => {
     };
   }, []);
 
+
   const openNotification = (placement) => {
     api.info({
       message: `Waiting ${email_user}`,
@@ -68,30 +77,26 @@ const MoviePage = () => {
       placement,
     });
   };
- 
-  const apiGetRates = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(
-        `/api/v1/getRateRandomMovie?user_email=${email_user}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("Chamada Profile ", fetch);
-      const responseData = await response.json();
-      setData(responseData);
-      setIsLoading(false);
-      setValueEndDelete(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  
 
+const apiGetRates = async () => {
+  setIsLoading(true);
+  try {
+    const response = await fetch(`/api/v1/getRateRandomMovie?user_email=${email_user}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("Chamada Profile ", fetch);
+    const responseData = await response.json();
+    console.log("Response Data:", responseData);
+    setData(responseData);
+    setIsLoading(false);
+    setValueEndDelete(false);
+  } catch (error) {
+    console.error("Error fetching rates:", error);
+  }
+};
   useEffect(() => {
     apiGetRates();
     setValueEndDelete(false);
