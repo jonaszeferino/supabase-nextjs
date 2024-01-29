@@ -32,6 +32,8 @@ const MoviePage = () => {
   const [email_user, setEmail_user] = useState();
   const [api, contextHolder] = notification.useNotification();
 
+  console.log("Estado Email: ", email_user)
+
   useEffect(() => {
     let mounted = true;
     async function getInitialSession() {
@@ -60,7 +62,7 @@ const MoviePage = () => {
 
   const openNotification = (placement) => {
     api.info({
-      message: `Waiting ${user_email}`,
+      message: `Waiting ${email_user}`,
       description:
         "If you provided evaluations for the suggestions, they will appear automatically on the screen.",
       placement,
@@ -71,7 +73,7 @@ const MoviePage = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `/api/v1/getRateRandomMovie?user_email=${user_email}`,
+        `/api/v1/getRateRandomMovie?user_email=${email_user}`,
         {
           method: "GET",
           headers: {
@@ -123,7 +125,7 @@ const MoviePage = () => {
     try {
       console.log("Request payload:", {
         movie_id: movieId,
-        user_email: user_email,
+        user_email: email_user,
         rating_by_user: rating,
       });
 
@@ -134,7 +136,7 @@ const MoviePage = () => {
         },
         body: JSON.stringify({
           movie_id: movieId,
-          user_email: user_email,
+          user_email: email_user,
           rating_by_user: rating,
         }),
       });
