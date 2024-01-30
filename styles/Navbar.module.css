@@ -2,7 +2,7 @@
 .navbar {
   list-style-type: none;
   font-family: "JetBrains Mono", monospace;
-  font-size: x-large; /* Alterado de 'large' para 'x-large' */
+  font-size: large; /* Alterado de 'large' para 'x-large' */
   display: flex;
   background-color: #7657be;
   padding: 20px 10px;

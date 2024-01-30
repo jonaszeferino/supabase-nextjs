@@ -57,7 +57,6 @@ export default function Navbar({ isLoading, onAuthenticated }) {
   return (
     <>
       <SearchBar isLoading={isLoading} />
-
       <ul className={styles.navbar}>
         <Link href="/">
           <Image

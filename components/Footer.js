@@ -16,7 +16,7 @@ export default function Footer() {
       >
         <VStack align="flex-start" spacing={4} padding={20} flexGrow={1}>
           <Text fontWeight="bold" mb={2}>
-            What to Watch Today?
+            Watch Today Guide
           </Text>
           <Text>&copy; Jonas Zeferino 2024</Text>
 
