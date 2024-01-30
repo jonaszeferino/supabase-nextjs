@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Box,
-  Button,
   Input,
   Spinner,
   Text,
@@ -12,9 +11,6 @@ import {
   useMediaQuery,
   Center,
 } from "@chakra-ui/react";
-
-import { SearchIcon } from "@chakra-ui/icons";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import stringSimilarity from "string-similarity";
 
@@ -89,13 +85,13 @@ const SearchBar = ({ isLoading, showSearchBar = true }) => {
               <Center>
                 <Input
                   maxWidth="600px"
-                  margin="2px"
+                  mb="-20px"
                   required={true}
                   size="md"
                   bg="white"
                   color="black"
                   border="none"
-                  mt="24px"
+                  mt="18px"
                   type="search"
                   placeholder="Movies, Tvshows, Person"
                   value={searchText}
@@ -118,28 +114,9 @@ const SearchBar = ({ isLoading, showSearchBar = true }) => {
                   pointerEvents="none"
                   marginLeft="auto"
                   marginRight="auto"
-                >
-                  {/* <SearchIcon color="gray.300" margin={1} size="lg" /> */}
-                </InputRightElement>
+                ></InputRightElement>
               )}
             </InputGroup>
-            {/* <Center>
-              <Button
-                type="submit"
-                marginTop={1}
-                as="a"
-                size="md"
-                bg="white"
-                color="black"
-                borderColor="gray"
-                borderWidth="1px"
-                mt="2px"
-                marginLeft="auto"
-                onClick={handleSearch}
-              >
-                Search
-              </Button>
-            </Center> */}
           </>
 
           {termosSugeridos.length > 0 && (

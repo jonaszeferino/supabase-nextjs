@@ -2,16 +2,13 @@
 .navbar {
   list-style-type: none;
   font-family: "JetBrains Mono", monospace;
-  font-size: large;
+  font-size: x-large; /* Alterado de 'large' para 'x-large' */
   display: flex;
-  
-          
   background-color: #7657be;
-  padding: 40px 20px;
+  padding: 20px 10px;
   margin-top: 0%;
   text-align: center;
   justify-content: center;
-  
   color: aliceblue;
 }
 

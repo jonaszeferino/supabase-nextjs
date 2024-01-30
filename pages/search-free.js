@@ -87,7 +87,7 @@ export default function Discovery() {
     if (searchText) {
       apiCall();
     }
-  }, [searchText,page]);
+  }, [searchText, page]);
 
   const nextPage = () => {
     setPage((prevPage) => prevPage + 1);
@@ -216,90 +216,63 @@ export default function Discovery() {
                 <br />
                 {showTvShows && search.media_type == "tv" ? (
                   <span className={styles.spantext}>
-                    {search.poster_path != null ? (
-                      <span className={styles.spantext}>
-                        <Image
-                          className={styles.card_image}
-                          src={
-                            "https://image.tmdb.org/t/p/original" +
-                            search.poster_path
-                          }
-                          alt="poster"
-                          width="240"
-                          height="360"
-                        />{" "}
-                      </span>
-                    ) : (
-                      <span className={styles.spantext}>
-                        <Image
-                          className={styles.card_image}
-                          src="/callback_gray.png"
-                          alt="poster"
-                          width="240"
-                          height="360"
-                        />
-                      </span>
-                    )}
+                    <span className={styles.spantext}>
+                      <Image
+                        className={styles.card_image}
+                        src={
+                          search.poster_path
+                            ? "https://image.tmdb.org/t/p/original" +
+                              search.poster_path
+                            : "/callback.png"
+                        }
+                        alt="poster"
+                        width="240"
+                        height="360"
+                      />{" "}
+                    </span>
+
                     <br />
                   </span>
                 ) : null}
 
                 {showMovies && search.media_type == "movie" ? (
                   <span className={styles.spantext}>
-                    {search.poster_path != null ? (
-                      <span className={styles.spantext}>
-                        <Image
-                          className={styles.card_image}
-                          src={
-                            "https://image.tmdb.org/t/p/original" +
-                            search.poster_path
-                          }
-                          alt="poster"
-                          width="240"
-                          height="360"
-                        />{" "}
-                      </span>
-                    ) : (
-                      <span className={styles.spantext}>
-                        <Image
-                          className={styles.card_image}
-                          src="/callback_gray.png"
-                          alt="poster"
-                          width="240"
-                          height="360"
-                        />
-                      </span>
-                    )}
+                    <span className={styles.spantext}>
+                      <Image
+                        className={styles.card_image}
+                        src={
+                          search.poster_path
+                            ? "https://image.tmdb.org/t/p/original" +
+                              search.poster_path
+                            : "/callback.png"
+                        }
+                        alt="poster"
+                        width="240"
+                        height="360"
+                      />{" "}
+                    </span>
+
                     <br />
                   </span>
                 ) : null}
 
                 {showPerson && search.media_type === "person" ? (
                   <span className={styles.spantext}>
-                    {search.profile_path != null ? (
-                      <span className={styles.spantext}>
-                        <Image
-                          className={styles.card_image}
-                          src={
-                            "https://image.tmdb.org/t/p/original" +
-                            search.profile_path
-                          }
-                          alt="poster"
-                          width="240"
-                          height="360"
-                        />{" "}
-                      </span>
-                    ) : (
-                      <span className={styles.spantext}>
-                        <Image
-                          className={styles.card_image}
-                          src="/callback_gray.png"
-                          alt="poster"
-                          width="240"
-                          height="360"
-                        />
-                      </span>
-                    )}
+                    <span className={styles.spantext}>
+                      <Image
+                        className={styles.card_image}
+                        src={
+                          search.profile_path
+                            ? "https://image.tmdb.org/t/p/original" +
+                              search.profile_path
+                            : "/callback.png"
+                        }
+                        alt="poster"
+                        width="240"
+                        height="360"
+                      />{" "}
+                    </span>
+
                     <br />
                   </span>
                 ) : null}
