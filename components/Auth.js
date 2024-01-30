@@ -17,18 +17,19 @@ import {
   Link,
   Divider,
   InputGroup,
+  Image,
   InputRightElement,
+
 } from "@chakra-ui/react";
 import { FaGoogle, FaEyeSlash, FaEye } from "react-icons/fa";
 
 export default function Auth() {
   const router = useRouter();
   const siteUrl = router.asPath;
-  let siteUrlComplete = "https://www.watchtodayguide.com" + siteUrl
+  let siteUrlComplete = "https://www.watchtodayguide.com" + siteUrl;
 
-  
-  console.log("Current URL: ", siteUrl)
-  console.log("URl concatenada: ", siteUrlComplete)
+  console.log("Current URL: ", siteUrl);
+  console.log("URl concatenada: ", siteUrlComplete);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -51,7 +52,7 @@ export default function Auth() {
           redirectTo: siteUrlComplete,
         },
       });
- 
+
       setAlertMessage("Check your Email");
       if (user) {
         console.log("User successfully registered:", user);
@@ -96,7 +97,6 @@ export default function Auth() {
   };
 
   const handleGoogleSignIn = async () => {
-
     setAlertMessage("");
     try {
       const { user, session, error } = await supabase.auth.signInWithOAuth({
@@ -115,8 +115,6 @@ export default function Auth() {
       setAlertMessage(e.message);
     }
   };
-
-
 
   useEffect(() => {
     let mounted = true;
@@ -165,6 +163,22 @@ export default function Auth() {
           </Center>
         </ChakraProvider>
       </>
+      <Center>
+      <Link href="/">
+          <Image
+            src="/logo_11.png"
+            alt="poster"
+            width="160"
+            height="160"
+            mt={10}
+            style={{
+              display: "block",
+              marginBottom: "2px",
+              marginTop: "2px",
+            }}
+          />
+        </Link>
+      </Center>
       <Center height="60vh">
         <Box
           p={2}

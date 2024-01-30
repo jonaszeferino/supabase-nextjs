@@ -60,9 +60,9 @@ export default function Navbar({ isLoading, onAuthenticated }) {
       <ul className={styles.navbar}>
         <Link href="/">
           <Image
-            src="/logo_5.png"
+            src="/logo_10.png"
             alt="poster"
-            width="150"
+            width="160"
             height="160"
             mt={10}
             style={{
