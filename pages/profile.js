@@ -13,6 +13,7 @@ import {
   FormControl,
   FormLabel,
   Select,
+  Image
 } from "@chakra-ui/react";
 import { supabase } from "../utils/supabaseClient";
 import { Divider as DividerAntd } from "antd";
@@ -37,6 +38,7 @@ const Profile = () => {
   const [favoriteDirecting, setFavoriteDirecting] = useState();
   const [favoriteActor, setFavoriteActor] = useState();
   const [favoriteActress, setFavoriteActress] = useState();
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const [session, setSession] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -291,6 +293,23 @@ const Profile = () => {
 
               <VStack>
                 {/* e-mail */}
+                <FormControl>
+                  <FormLabel>
+                    <Select
+                      name="profileImage"
+                      value={selectedImage} // State variable to store the selected image
+                      onChange={(e) => setSelectedImage(e.target.value)}
+                    >
+                      {imageOptions.map((imagePath) => (
+                        <option key={imagePath} value={imagePath}>
+                          {imagePath}
+                        </option>
+                      ))}
+                    </Select>
+                    <Image src={selectedImage} alt="Profile Image" />
+                  </FormLabel>
+                </FormControl>
+
                 <FormControl>
                   <FormLabel style={{ fontWeight: "bold" }}>E-mail:</FormLabel>
                   <Text
@@ -590,9 +609,7 @@ const Profile = () => {
                         <option value="Adventure">Adventure</option>
                         <option value="Comedy">Comedy</option>
                         <option value="Drama">Drama</option>
-                        <option value="Science Fiction">
-                          Science Fiction
-                        </option>
+                        <option value="Science Fiction">Science Fiction</option>
                         <option value="Fantasia">Fantasia</option>
                         <option value="Horror">Horror</option>
                         <option value="Suspense">Suspense</option>
@@ -726,9 +743,7 @@ const Profile = () => {
                         <option value="Adventure">Adventure</option>
                         <option value="Comedy">Comedy</option>
                         <option value="Drama">Drama</option>
-                        <option value="Science Fiction">
-                          Science Fiction
-                        </option>
+                        <option value="Science Fiction">Science Fiction</option>
                         <option value="Fantasia">Fantasia</option>
                         <option value="Horror">Horror</option>
                         <option value="Suspense">Suspense</option>
