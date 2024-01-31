@@ -75,98 +75,100 @@ export default function Navbar({ isLoading, onAuthenticated }) {
         <ul className={styles.navbar}>
           <ul className={styles.navbar}>
             <ul className={styles.navbar}>
-              <li>
-                <Link href="/">| Home</Link>
-              </li>
-              <li>
-                <Link href="/watch-today">| What to Watch Today?</Link>
-              </li>
-              <li>
-                <Link href="/search-movies">| Discover Movies</Link>
-              </li>
-              <li>
-                <Link href="/search-tvshows">| Discover Tv Shows</Link>
-              </li>
-              <li>
-                <Link href="/trivia">| Trivia</Link>
-              </li>
-
-              <br />
-              <li>
-                <button onClick={onOpen}>| Login |</button>
-              </li>
-              <li>
-                <Modal isOpen={isOpen} onClose={onClose}>
-                  <ModalOverlay />
-                  <ModalContent style={{ background: "white" }}>
-                    <ModalHeader>
-                      Login
-                      <IconButton
-                        icon={<FaTimes />}
-                        colorScheme="gray"
-                        variant="ghost"
-                        ml="auto"
-                        onClick={onClose}
-                      />
-                    </ModalHeader>
-                    <ModalBody>
-                      <Auth onClose={onClose} />
-                    </ModalBody>
-                  </ModalContent>
-                </Modal>
-                <Modal isOpen={isOpen} onClose={onClose}>
-                  <ModalOverlay />
-                  <ModalContent style={{ background: "white" }}>
-                    <ModalHeader>
-                      Login{" "}
-                      <IconButton
-                        icon={<FaTimes />}
-                        colorScheme="gray"
-                        variant="ghost"
-                        position="absolute"
-                        top="0"
-                        right="0"
-                        onClick={onClose}
-                      />
-                    </ModalHeader>
-                    <ModalBody>
-                      <Auth
-                        onAuthenticated={onAuthenticated}
-                        onClose={onClose}
-                      />
-                    </ModalBody>
-                  </ModalContent>
-                </Modal>
-              </li>
-
-              {session ? (
+              <ul className={styles.navbar}>
                 <li>
-                  Profile
-                  <Menu>
-                    {({ isOpen }) => (
-                      <>
-                        <MenuButton
-                          isActive={isOpen}
-                          as={Button}
-                          rightIcon={<ChevronDownIcon />}
-                        >
-                          {""}
-                        </MenuButton>
-                        <MenuList
-                          style={{ background: "#7657be", padding: "10px" }}
-                        >
-                          <MenuItem>
-                            <Link href="/profile">Data</Link>
-                          </MenuItem>
-                          <MenuItem>
-                            <Link href="/my-movies-page">My Ratings</Link>
-                          </MenuItem>
-                        </MenuList>
-                      </>
-                    )}
-                  </Menu>
+                  <Link href="/">| Home</Link>
                 </li>
-              ) : null}
+                <li>
+                  <Link href="/watch-today">| What to Watch Today?</Link>
+                </li>
+                <li>
+                  <Link href="/search-movies">| Discover Movies</Link>
+                </li>
+                <li>
+                  <Link href="/search-tvshows">| Discover Tv Shows</Link>
+                </li>
+                <li>
+                  <Link href="/trivia">| Trivia</Link>
+                </li>
+
+                <br />
+                <li>
+                  <button onClick={onOpen}>| Login |</button>
+                </li>
+                <li>
+                  <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay />
+                    <ModalContent style={{ background: "white" }}>
+                      <ModalHeader>
+                        Login
+                        <IconButton
+                          icon={<FaTimes />}
+                          colorScheme="gray"
+                          variant="ghost"
+                          ml="auto"
+                          onClick={onClose}
+                        />
+                      </ModalHeader>
+                      <ModalBody>
+                        <Auth onClose={onClose} />
+                      </ModalBody>
+                    </ModalContent>
+                  </Modal>
+                  <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay />
+                    <ModalContent style={{ background: "white" }}>
+                      <ModalHeader>
+                        Login{" "}
+                        <IconButton
+                          icon={<FaTimes />}
+                          colorScheme="gray"
+                          variant="ghost"
+                          position="absolute"
+                          top="0"
+                          right="0"
+                          onClick={onClose}
+                        />
+                      </ModalHeader>
+                      <ModalBody>
+                        <Auth
+                          onAuthenticated={onAuthenticated}
+                          onClose={onClose}
+                        />
+                      </ModalBody>
+                    </ModalContent>
+                  </Modal>
+                </li>
+
+                {session ? (
+                  <li>
+                    Profile
+                    <Menu>
+                      {({ isOpen }) => (
+                        <>
+                          <MenuButton
+                            isActive={isOpen}
+                            as={Button}
+                            rightIcon={<ChevronDownIcon />}
+                          >
+                            {""}
+                          </MenuButton>
+                          <MenuList
+                            style={{ background: "#7657be", padding: "10px" }}
+                          >
+                            <MenuItem>
+                              <Link href="/profile">Data</Link>
+                            </MenuItem>
+                            <MenuItem>
+                              <Link href="/my-movies-page">My Ratings</Link>
+                            </MenuItem>
+                          </MenuList>
+                        </>
+                      )}
+                    </Menu>
+                  </li>
+                ) : null}
+              </ul>
             </ul>
           </ul>
         </ul>

@@ -5,7 +5,9 @@
   font-size: large; /* Alterado de 'large' para 'x-large' */
   display: flex;
   background-color: #7657be;
-  padding: 20px 10px;
+  /* padding: 20px 10px; */
+  padding: 20px 10px 10px 10px; /* Reduce bottom padding */
+
   margin-top: 0%;
   text-align: center;
   justify-content: center;
@@ -27,6 +29,7 @@
   color: rgb(206, 206, 206);
   text-align: center;
 }
+
 
 /* Navbar Responsive Styles */
 @media only screen and (max-width: 768px) {

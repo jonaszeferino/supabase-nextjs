@@ -85,7 +85,7 @@ const SearchBar = ({ isLoading, showSearchBar = true }) => {
               <Center>
                 <Input
                   maxWidth="600px"
-                  mb="-20px"
+                  mb="-60px"
                   required={true}
                   size="md"
                   bg="white"
