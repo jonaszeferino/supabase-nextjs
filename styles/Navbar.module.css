@@ -6,7 +6,7 @@
   display: flex;
   background-color: #7657be;
   /* padding: 20px 10px; */
-  padding: 20px 10px 10px 10px; /* Reduce bottom padding */
+  padding: 20px 10px 8px 8px; /* Reduce bottom padding */
 
   margin-top: 0%;
   text-align: center;
