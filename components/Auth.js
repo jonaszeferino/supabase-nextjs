@@ -26,8 +26,8 @@ import { FaGoogle, FaEyeSlash, FaEye } from "react-icons/fa";
 export default function Auth() {
   const router = useRouter();
   const siteUrl = router.asPath;
-  //let siteUrlComplete = "https://www.watchtodayguide.com" + siteUrl;
-  let siteUrlComplete = "http://localhost:3000" + siteUrl;
+  let siteUrlComplete = "https://www.watchtodayguide.com" + siteUrl;
+  //let siteUrlComplete = "http://localhost:3000" + siteUrl;
 
   console.log("Current URL: ", siteUrl);
   console.log("URl concatenada: ", siteUrlComplete);

@@ -330,7 +330,7 @@ const Profile = () => {
               )}
 
               <VStack>
-                {/* <FormControl>
+                <FormControl>
                   <FormLabel>
                     <Select
                       name="profileImage"
@@ -347,13 +347,13 @@ const Profile = () => {
                     </Select>
 
                     <Center>
-                      <Image src={selectedImage} alt="Profile Image" />
+                      <Image src={selectedImage ? userData?.avatar : selectedImage} alt="Profile Image" />
                     </Center>
                     <Center>
                       <Image src={userData?.avatar} alt="Profile Image" />
                     </Center>
                   </FormLabel>
-                </FormControl> */}
+                </FormControl>
 
                 <FormControl>
                   <FormLabel style={{ fontWeight: "bold" }}>E-mail:</FormLabel>
