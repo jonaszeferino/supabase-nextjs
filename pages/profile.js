@@ -13,7 +13,7 @@ import {
   FormControl,
   FormLabel,
   Select,
-  Image
+  Image,
 } from "@chakra-ui/react";
 import { supabase } from "../utils/supabaseClient";
 import { Divider as DividerAntd } from "antd";
@@ -39,6 +39,26 @@ const Profile = () => {
   const [favoriteActor, setFavoriteActor] = useState();
   const [favoriteActress, setFavoriteActress] = useState();
   const [selectedImage, setSelectedImage] = useState(null);
+
+  const [profileData, setProfileData] = useState({
+    name: "",
+    surname: "",
+    birthDate: "",
+    nationality: "",
+    gender: "",
+    firstFavoriteMovie: "",
+    secondFavoriteMovie: "",
+    thirdFavoriteMovie: "",
+    firstFavoriteTvShow: "",
+    secondFavoriteTvShow: "",
+    thirdFavoriteTvShow: "",
+    favoriteMovieGender: "",
+    favoriteTvShowGender: "",
+    favoriteDirecting: "",
+    favoriteActor: "",
+    favoriteActress: "",
+    selectedImage: "",
+  });
 
   const [session, setSession] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -68,6 +88,23 @@ const Profile = () => {
   const [favoriteDirectingEdit, setFavoriteDirectingEdit] = useState(true);
   const [favoriteActorEdit, setFavoriteActorEdit] = useState(true);
   const [favoriteActressEdit, setFavoriteActressEdit] = useState(true);
+  const [imageFromProfile, setImageFromProfile] = useState("");
+
+  const imageOptions = {
+    "Choose you Avatar": "perfil_0.jpeg",
+    "Perfil 1": "perfil_1.png",
+    "Perfil 2": "perfil_2.png",
+    "Perfil 3": "perfil_3.png",
+    "Perfil 4": "perfil_4.png",
+    "Perfil 5": "perfil_5.png",
+    "Perfil 6": "perfil_6.png",
+    "Perfil 7": "perfil_7.png",
+    "Perfil 8": "perfil_8.png",
+    "Perfil 9": "perfil_9.png",
+    "Perfil 10": "perfil_10.png",
+    "Perfil 11": "perfil_11.png",
+    "Perfil 12": "perfil_12.png",
+  };
 
   const showSearchBar = false;
 
@@ -125,6 +162,7 @@ const Profile = () => {
             favoriteActress || userData.favorite_actress || null,
           favorite_directing:
             favoriteDirecting || userData.favorite_directing || null,
+          avatar: imageFromProfile || userData.avatar || "perfil_0.jpeg",
         }),
       });
       setIsSaving(false);
@@ -141,10 +179,8 @@ const Profile = () => {
 
   const getUser = async () => {
     const url = `/api/v1/getProfileData?email=${encodeURIComponent(emailInfo)}`;
-    console.log("URL: ", url);
 
     try {
-      console.log("Sending GET request to /api/v1/getProfileData");
       const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -152,12 +188,9 @@ const Profile = () => {
         },
       });
 
-      console.log("Received response:", response);
-
       if (response.ok) {
         const userData = await response.json();
-        console.log("Dados do usuário:", userData);
-
+        console.log("0 Dados do usuário:", userData);
         setIsLoading(false);
         setUserData(userData);
         setDateString(userData.birth_date);
@@ -169,12 +202,15 @@ const Profile = () => {
           setIsLoading(false);
           setNewUser(true);
         }
-        console.error("Erro ao buscar o usuário:", response.status); ///ELE CAI AQUI
+        console.error("Erro ao buscar o usuário:", response.status);
+        I;
       }
     } catch (error) {
       console.error("Erro inesperado:", error);
     }
   };
+
+  console.log("1 Imagem from Avatar", imageFromProfile);
 
   // Verify the session
   useEffect(() => {
@@ -202,6 +238,8 @@ const Profile = () => {
       subscription?.unsubscribe();
     };
   }, []);
+
+  console.log(imageFromProfile);
 
   return (
     <ChakraProvider>
@@ -292,23 +330,30 @@ const Profile = () => {
               )}
 
               <VStack>
-                {/* e-mail */}
-                <FormControl>
+                {/* <FormControl>
                   <FormLabel>
                     <Select
                       name="profileImage"
-                      value={selectedImage} // State variable to store the selected image
+                      value={selectedImage}
                       onChange={(e) => setSelectedImage(e.target.value)}
                     >
-                      {imageOptions.map((imagePath) => (
-                        <option key={imagePath} value={imagePath}>
-                          {imagePath}
-                        </option>
-                      ))}
+                      {Object.entries(imageOptions).map(
+                        ([label, imagePath]) => (
+                          <option key={imagePath} value={imagePath}>
+                            {label}
+                          </option>
+                        )
+                      )}
                     </Select>
-                    <Image src={selectedImage} alt="Profile Image" />
+
+                    <Center>
+                      <Image src={selectedImage} alt="Profile Image" />
+                    </Center>
+                    <Center>
+                      <Image src={userData?.avatar} alt="Profile Image" />
+                    </Center>
                   </FormLabel>
-                </FormControl>
+                </FormControl> */}
 
                 <FormControl>
                   <FormLabel style={{ fontWeight: "bold" }}>E-mail:</FormLabel>

@@ -24,6 +24,7 @@ export default async function handler(req, res) {
     favorite_actor,
     favorite_actress,
     favorite_directing,
+    avatar
   } = req.body;
 
   let date = moment().tz("UTC-03:00").toDate();
@@ -51,6 +52,7 @@ export default async function handler(req, res) {
         favorite_actress: favorite_actress,
         updated_date: date ? date : null,
         favorite_directing: favorite_directing,
+        avatar: avatar,
       },
     };
     const result = await collection.updateOne(filter, update, { upsert: true });
