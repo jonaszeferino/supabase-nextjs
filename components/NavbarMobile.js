@@ -120,15 +120,7 @@ const MobileNavbar = () => {
                   <ChevronRightIcon /> Trivia
                 </span>
               </Link>
-              {/* <Link href="/where-is-my-movie">
-                <span>
-                  <ChevronRightIcon /> Where is My Movie?
-                </span>
-              </Link> */}
-             
 
-             {/* Profile comentado */}
-             
               {session ? (
                 <>
                   <Link href="/profile">
@@ -143,15 +135,14 @@ const MobileNavbar = () => {
                   </Link>
                 </>
               ) : null}
-
-
             </Stack>
           )}
         </Box>
       </div>
       <div style={{ paddingTop: "100px" }}>
-        {/* Adicione espaço acima do SearchBar para não sobrepor o Navbar */}
-        <SearchBar />
+        <ChakraProvider>
+          <SearchBar />
+        </ChakraProvider>
       </div>
     </>
   );

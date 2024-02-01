@@ -26,11 +26,8 @@ import { FaGoogle, FaEyeSlash, FaEye } from "react-icons/fa";
 export default function Auth() {
   const router = useRouter();
   const siteUrl = router.asPath;
-  let siteUrlComplete = "https://www.watchtodayguide.com" + siteUrl;
-  //let siteUrlComplete = "http://localhost:3000" + siteUrl;
-
-  console.log("Current URL: ", siteUrl);
-  console.log("URl concatenada: ", siteUrlComplete);
+  //let siteUrlComplete = "https://www.watchtodayguide.com" + siteUrl;
+  let siteUrlComplete = "http://localhost:3000" + siteUrl;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -53,8 +50,7 @@ export default function Auth() {
           redirectTo: siteUrlComplete,
         },
       });
-
-      setAlertMessage("Check your Email");
+        setAlertMessage("Check your Email");
       if (user) {
         console.log("User successfully registered:", user);
         setAlertMessage("Check your Email");
