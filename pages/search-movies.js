@@ -89,43 +89,15 @@ export default function Discovery() {
     return urlString;
   };
 
-  // function to update URL
-  // const updateURL = () => {
-  //   const { pathname } = router;
-  //   const queryParams = {
-  //     searchRatingSort: ratingSort,
-  //     searchVoteCount: voteCount,
-  //     searchMovieReleaseDateFrom: releaseDateFrom,
-  //     searchMovieReleaseDateTo: releaseDateTo,
-  //     searchMovieCategory: category,
-  //     with_origin_country: with_origin_country,
-  //   };
-
-  //   router.push({
-  //     pathname,
-  //     query: queryParams,
-  //   });
-  // };
 
   useEffect(() => {
     apiCall();
   }, []);
 
-  // Use effect to update URL
-
-  // useEffect(() => {
-  //   updateURL();
-  // }, [
-  //   ratingSort,
-  //   voteCount,
-  //   releaseDateFrom,
-  //   releaseDateTo,
-  //   category,
-  //   with_origin_country,
-  // ]);
-
   const apiCall = (currentPage) => {
-    const url = generateApiUrl() + "&page=" + currentPage;
+
+    const url = `https://api.themoviedb.org/3/discover/movie?&include_adult=false&vote_count.gte=100&vote_count.lte=10000000&sort_by=vote_average.desc&primary_release_date.gte=1900&primary_release_date.lte=2025&page=1`;
+    //const url = generateApiUrl() + "&page=" + currentPage;
     setIsLoading(true);
 
     fetch(url, {
