@@ -36,13 +36,7 @@ import { Rate } from "antd";
 import { useRouter } from "next/router";
 
 export default function Discovery() {
-  let [movieId, setMovieId] = useState();
   let [searchMovies, setSearchMovies] = useState([]);
-  let [searchRatingSort, setSearchRatingSort] = useState("vote_average.desc");
-  let [searchVoteCount, setSearchVoteCount] = useState(5000);
-  let [searchMovieReleaseDateFrom, setSearchMovieReleaseDateFrom] =
-    useState(1800);
-  let [searchMovieReleaseDateTo, setSearchMovieReleaseDateTo] = useState(2025);
   //paginação
   let [page, setPage] = useState(1);
   let [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
@@ -52,29 +46,28 @@ export default function Discovery() {
   let [isError, setError] = useState(false);
   let [isLoading, setIsLoading] = useState(false);
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
-
   // estado pra amarzenar os filtros utilizados
   const btnRef = useRef();
   const [genres, setGenres] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [searchFilters, setSearchFilters] = useState({
-    ratingSort: "vote_average.desc",
     voteCount: 5000,
+    ratingSort: "vote_average.desc",
     releaseDateFrom: 1800,
-    releaseDateTo: 2023,
+    releaseDateTo: 2025,
     with_origin_country: "NOTHING",
   });
 
   let urlString =
     "https://api.themoviedb.org/3/discover/movie?&vote_count.gte=" +
-    searchVoteCount +
+    searchFilters.voteCount +
     "&vote_count.lte=10000000&sort_by=" +
-    searchRatingSort +
+    searchFilters.ratingSort +
     "&primary_release_date.gte=" +
-    searchMovieReleaseDateFrom +
+    searchFilters.releaseDateFrom +
     "&primary_release_date.lte=" +
-    searchMovieReleaseDateTo;
+    searchFilters.releaseDateTo;
 
   if (searchFilters.with_origin_country === "NOTHING") {
     urlString;
@@ -86,7 +79,6 @@ export default function Discovery() {
 
   const apiCall = (currentPage) => {
     const url = urlString + "&page=" + currentPage;
-
     console.log("Chamada: ", url);
     setIsLoading(true);
     fetch(url, {
@@ -126,7 +118,7 @@ export default function Discovery() {
 
   useEffect(() => {
     apiCall(page);
-  }, []);
+  }, [page]);
 
   let totalPages = searchMovieTotalPages;
   let currentPage = searchMovieRealPage;
@@ -394,20 +386,17 @@ export default function Discovery() {
                     </Select>
                     <br />
                     <Center>
-                      <Button size="lg" colorScheme="purple" onClick={apiCall}>
+                      <Button
+                        size="lg"
+                        colorScheme="purple"
+                        onClick={() => apiCall(page)}
+                      >
                         Go
                       </Button>
                     </Center>
                   </DrawerBody>
 
-                  <DrawerFooter>
-                    {/* <Button variant="outline" mr={3} onClick={onClose}>
-                      Cancel
-                    </Button> */}
-                    {/* <Button variant="outline" onClick={apiCall}>
-                      Go
-                    </Button> */}
-                  </DrawerFooter>
+                  <DrawerFooter></DrawerFooter>
                 </DrawerContent>
               </Drawer>
             </ChakraProvider>
