@@ -14,7 +14,6 @@ import {
   Flex,
   Box,
   Center,
-  Link as LinkChakra,
   Drawer,
   DrawerBody,
   DrawerFooter,
@@ -33,26 +32,25 @@ import LoggedUser from "../components/LoggedUser";
 import { Tooltip } from "antd";
 import Link from "next/link";
 import { Rate } from "antd";
-import { useRouter } from "next/router";
 
 export default function Discovery() {
   let [searchMovies, setSearchMovies] = useState([]);
-  //paginação
+  //pagination
   let [page, setPage] = useState(1);
   let [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
   let [searchMovieRealPage, setSearchMovieRealPage] = useState("");
   let [searchMovieTotalResults, setSearchMovieTotalResults] = useState("");
-  // erro e loading
+
   let [isError, setError] = useState(false);
   let [isLoading, setIsLoading] = useState(false);
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
-  // estado pra amarzenar os filtros utilizados
+
   const btnRef = useRef();
   const [genres, setGenres] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [searchFilters, setSearchFilters] = useState({
-    voteCount: 5000,
+    voteCount: 1000,
     ratingSort: "vote_average.desc",
     releaseDateFrom: 1900,
     releaseDateTo: 2025,
@@ -98,7 +96,7 @@ export default function Discovery() {
           setError(false);
           return response.json();
         } else {
-          throw new Error("Dados Incorretos");
+          throw new Error("Wrong Data");
         }
       })
       .then(
@@ -125,7 +123,7 @@ export default function Discovery() {
   useEffect(() => {
     setPage(1);
   }, [searchFilters]);
-  
+
   useEffect(() => {
     apiCall(page);
   }, [page]);
