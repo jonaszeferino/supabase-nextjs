@@ -160,7 +160,7 @@ export default function Discovery() {
       <Head>
         <title>Discover Movies</title>
         <meta name="keywords" content="movies,filmes,watch,review"></meta>
-        <meta name="description" content="encontre tudo"></meta>
+        <meta name="description" content="find tv shows, movies and today tips"></meta>
       </Head>
       <div>
         <LoggedUser />
@@ -186,16 +186,16 @@ export default function Discovery() {
           >
             <ChakraProvider>
               <Button ref={btnRef} colorScheme="purple" onClick={onOpen}>
-                Select Filters
+                Put Your Birthday 
               </Button>
               <br />
-              <HStack>
+              {/* <HStack>
                 {selectedFiltersTags.map((tag, index) => (
                   <Tag key={index} colorScheme={tag.colorScheme}>
                     {tag.label}
                   </Tag>
                 ))}
-              </HStack>
+              </HStack> */}
 
               <Drawer
                 isOpen={isOpen}

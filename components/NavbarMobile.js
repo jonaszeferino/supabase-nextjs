@@ -2,12 +2,10 @@ import { useState, useEffect } from "react";
 import {
   Box,
   Button,
-  IconButton,
   Stack,
   useDisclosure,
   Heading,
   Center,
-  Text,
   ChakraProvider,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, ChevronRightIcon } from "@chakra-ui/icons";
@@ -69,7 +67,7 @@ const MobileNavbar = () => {
           display={{ base: "block", md: "none" }}
         >
           <Center>
-            <Heading>What to Watch Today?</Heading>
+            <Heading>Watch Today Guide</Heading>
           </Center>
 
           <Stack direction="row" align="center" justify="space-between">
@@ -113,6 +111,11 @@ const MobileNavbar = () => {
               <Link href="/search-tvshows">
                 <span>
                   <ChevronRightIcon /> Discover Tv Shows
+                </span>
+              </Link>
+              <Link href="/birthday-movies">
+                <span>
+                  <ChevronRightIcon /> Birthday Movie
                 </span>
               </Link>
               <Link href="/trivia">
