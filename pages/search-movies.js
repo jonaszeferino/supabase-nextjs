@@ -54,25 +54,31 @@ export default function Discovery() {
   const [searchFilters, setSearchFilters] = useState({
     voteCount: 5000,
     ratingSort: "vote_average.desc",
-    releaseDateFrom: 1800,
+    releaseDateFrom: 1900,
     releaseDateTo: 2025,
-    with_origin_country: "NOTHING",
+    with_origin_country: "All",
+    category: "All",
   });
 
   let urlString =
-    "https://api.themoviedb.org/3/discover/movie?&vote_count.gte=" +
-    searchFilters.voteCount +
-    "&vote_count.lte=10000000&sort_by=" +
-    searchFilters.ratingSort +
-    "&primary_release_date.gte=" +
+    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US` +
+    `&primary_release_date.gte=` +
     searchFilters.releaseDateFrom +
-    "&primary_release_date.lte=" +
-    searchFilters.releaseDateTo;
+    `-01-01` +
+    `&primary_release_date.lte=` +
+    searchFilters.releaseDateTo +
+    `-12-31` +
+    `&sort_by=` +
+    searchFilters.ratingSort +
+    `&vote_count.gte=` +
+    searchFilters.voteCount;
 
-  if (searchFilters.with_origin_country === "NOTHING") {
-    urlString;
-  } else {
+  if (searchFilters.with_origin_country !== "All") {
     urlString += "&with_origin_country=" + searchFilters.with_origin_country;
+  }
+
+  if (searchFilters.category !== "All") {
+    urlString += "&with_genres=" + searchFilters.category;
   }
 
   console.log("UrlString: ", urlString);
@@ -149,7 +155,7 @@ export default function Discovery() {
   }
 
   const optionsFrom = generateOptions(1900, 2023);
-  const optionsTo = generateOptions(1901, 2024);
+  const optionsTo = generateOptions(1901, 2025);
 
   useEffect(() => {
     const fetchGenres = async () => {
@@ -189,7 +195,7 @@ export default function Discovery() {
       colorScheme: "red",
     },
     {
-      label: `Type: ${searchFilters.with_origin_country}`,
+      label: `Country: ${searchFilters.with_origin_country}`,
       colorScheme: "yellow",
     },
     {
