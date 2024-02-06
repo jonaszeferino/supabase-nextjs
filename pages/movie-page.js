@@ -284,19 +284,15 @@ const MoviePage = () => {
                 <Tr>
                   <Th>Language</Th>
                   <Td>{data.originalLanguage}</Td>
-                  {/* <Td>
-                    <TranslationComponent
-                      text={data.originalLanguage}
-                      language="pt"
-                    />
-                  </Td> */}
+  
                 </Tr>
                 <Tr>
                   <Th>Release Date</Th>
                   <Td>
-                    {data.releaseDate
+                    {data.releaseDate}
+                    {/* {data.releaseDate
                       ? format(new Date(data.releaseDate), " MM/dd/yyyy")
-                      : ""}
+                      : ""} */}
                   </Td>
                 </Tr>
                 <Tr>
