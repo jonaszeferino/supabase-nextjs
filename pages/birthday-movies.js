@@ -7,9 +7,7 @@ import Head from "next/head";
 import {
   ChakraProvider,
   Progress,
-  Select,
   Input,
-  FormLabel,
   Button,
   FormControl,
   Flex,
@@ -23,9 +21,11 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
-  Tag,
-  HStack,
   Spinner,
+  Text,
+  useToast,
+  Tooltip as TooltipChakra,
+  CustomCard,
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
@@ -36,38 +36,85 @@ import { Rate } from "antd";
 
 export default function Discovery() {
   let [searchMovies, setSearchMovies] = useState([]);
-  //pagination
+
   let [page, setPage] = useState(1);
   let [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
   let [searchMovieRealPage, setSearchMovieRealPage] = useState("");
   let [searchMovieTotalResults, setSearchMovieTotalResults] = useState("");
 
-  let [isError, setError] = useState(false);
+  let [isError, setError] = useState("");
   let [isLoading, setIsLoading] = useState(false);
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
 
   const btnRef = useRef();
-  const [genres, setGenres] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [type, setType] = useState(true);
+
+  // Toast
+
+  const toast = useToast();
+  const toastIdRef = React.useRef();
+
+  function close() {
+    if (toastIdRef.current) {
+      toast.close(toastIdRef.current);
+    }
+  }
+  function closeAll() {
+    // you may optionally pass an object of positions to exclusively close
+    // keeping other positions opened
+    // e.g. `{ positions: ['bottom'] }`
+    toast.closeAll();
+  }
+
+  function addToast() {
+    toastIdRef.current = toast({ description: "some text" });
+  }
+
+  // Date handle
+
+  const handleInputChange = (event) => {
+    const { value } = event.target;
+    setSearchFilters({
+      ...searchFilters,
+      releaseYear: value,
+    });
+    if (value < 1900 || value > new Date().getFullYear()) {
+      setError("The year must be between 1900 and the current year");
+    } else {
+      setError("");
+    }
+  };
 
   const [searchFilters, setSearchFilters] = useState({
     ratingSort: "vote_average.desc",
-    releaseDateFrom: "1986-09-19",
+    releaseDateFrom: "2014-11-05",
+    releaseYear: "2024",
   });
 
-  let urlString =
-    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US` +
-    `&primary_release_date.gte=` +
-    searchFilters.releaseDateFrom +
-    `&primary_release_date.lte=` +
-    searchFilters.releaseDateFrom +
-    `&sort_by=popularity.desc`;
+  let urlString = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US`;
 
-  console.log("Chamada: ", urlString);
+  if (type === true) {
+    urlString +=
+      `&primary_release_date.gte=` +
+      searchFilters.releaseDateFrom +
+      `&primary_release_date.lte=` +
+      searchFilters.releaseDateFrom +
+      `&sort_by=popularity.desc`;
+  } else {
+    urlString +=
+      `&primary_release_date.gte=` +
+      searchFilters.releaseYear +
+      "-01-01" +
+      `&primary_release_date.lte=` +
+      searchFilters.releaseYear +
+      "-12-31" +
+      `&sort_by=popularity.desc`;
+  }
 
   const apiCall = (currentPage) => {
     const url = urlString + "&page=" + currentPage;
-    console.log("Chamada: ", url);
+
     setIsLoading(true);
     fetch(url, {
       headers: new Headers({
@@ -90,7 +137,8 @@ export default function Discovery() {
           setSearchMovieRealPage(result.page),
           setSearchMovieTotalResults(result.total_results),
           setPage(result.page),
-          setIsLoading(false)
+          setIsLoading(false),
+          onClose()
         )
       )
       .catch((error) => setError(true));
@@ -103,10 +151,6 @@ export default function Discovery() {
   const previousPage = (event) => {
     setPage(page - 1), apiCall(page - 1);
   };
-
-  useEffect(() => {
-    setPage(1);
-  }, [searchFilters]);
 
   let totalPages = searchMovieTotalPages;
   let currentPage = searchMovieRealPage;
@@ -126,41 +170,15 @@ export default function Discovery() {
     }
   }
 
-  useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        const response = await fetch(
-          "https://api.themoviedb.org/3/genre/list",
-          {
-            headers: new Headers({
-              "Content-Type": "application/json",
-              Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
-            }),
-          }
-        );
-        const data = await response.json();
-        setGenres(data.genres);
-      } catch (error) {
-        console.error("Error fetching genres:", error);
-      }
-    };
-
-    fetchGenres();
-  }, []);
-
-  const selectedFiltersTags = [
-    {
-      label: `Birthday: ${searchFilters.releaseDateFrom}`,
-      colorScheme: "red",
-    },
-  ];
-
   return (
     <>
       <Head>
         <title>Discover Movies</title>
         <meta name="keywords" content="movies,filmes,watch,review"></meta>
-        <meta name="description" content="find tv shows, movies and today tips"></meta>
+        <meta
+          name="description"
+          content="find tv shows, movies and today tips"
+        ></meta>
       </Head>
       <div>
         <LoggedUser />
@@ -186,16 +204,9 @@ export default function Discovery() {
           >
             <ChakraProvider>
               <Button ref={btnRef} colorScheme="purple" onClick={onOpen}>
-                Put Your Birthday 
+                Put Your Birthday
               </Button>
               <br />
-              {/* <HStack>
-                {selectedFiltersTags.map((tag, index) => (
-                  <Tag key={index} colorScheme={tag.colorScheme}>
-                    {tag.label}
-                  </Tag>
-                ))}
-              </HStack> */}
 
               <Drawer
                 isOpen={isOpen}
@@ -211,10 +222,22 @@ export default function Discovery() {
                   </Center>
 
                   <DrawerBody>
+                    <Center>
+                      <Button
+                        colorScheme="purple"
+                        onClick={() => setType(!type)}
+                      >
+                        Your Day / Your Year
+                      </Button>
+                    </Center>
+
+                    <br />
+
                     <FormControl>
                       <Center>
                         <Flex align="center">
                           <Input
+                            isDisabled={!type}
                             type="date"
                             value={searchFilters.releaseDateFrom}
                             onChange={(event) =>
@@ -224,8 +247,31 @@ export default function Discovery() {
                               })
                             }
                           />
+
                           <Box w="20px" />
                         </Flex>
+                      </Center>
+                    </FormControl>
+
+                    <br />
+                    <FormControl>
+                      <Center>
+                        <Flex align="center">
+                          <Input
+                            isDisabled={type}
+                            type="number"
+                            min={1900}
+                            max={new Date().getFullYear()}
+                            value={searchFilters.releaseYear}
+                            onChange={handleInputChange}
+                          />
+                          <Box w="20px" />
+                        </Flex>
+                      </Center>
+                      <Center>
+                        {isError && (
+                          <Text style={{ color: "red" }}>{isError}</Text>
+                        )}
                       </Center>
                     </FormControl>
 
@@ -281,7 +327,7 @@ export default function Discovery() {
           ) : null}
         </span>
         {isError === true ? (
-          <ErrorPage message={`Verifique as Credenciais`}></ErrorPage>
+          <ErrorPage message={`Verify Credentials`}></ErrorPage>
         ) : (
           <div className={styles.grid}>
             {searchMovies.map((search) => (
