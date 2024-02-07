@@ -38,22 +38,13 @@ export default function Discovery() {
   const btnRef = React.useRef();
 
   const [searchFilters, setSearchFilters] = useState({
-    voteCount: "5000",
+    voteCount: 1000,
     ratingSort: "vote_average.desc",
     releaseDateFrom: 1900,
-    releaseDateTo: 2024,
-    tvShowCategory: "All",
+    releaseDateTo: 2025,
     tvType: "All",
+    category: "All",
   });
-
-  const {
-    voteCount,
-    ratingSort,
-    releaseDateFrom,
-    releaseDateTo,
-    tvShowCategory,
-    tvType,
-  } = searchFilters;
 
   const [searchMovies, setSearchMovies] = useState([]);
   const [searchMovieTotalResults, setSearchMovieTotalResults] = useState("");
@@ -73,20 +64,29 @@ export default function Discovery() {
   }, []);
 
   let urlString =
-    "https://api.themoviedb.org/3/discover/tv?&include_adult=false&include_video=false&vote_count.gte=" +
-    searchFilters.voteCount +
-    "&vote_count.lte=10000000&sort_by=" +
+    "https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&sort_by=" +
     searchFilters.ratingSort +
     "&first_air_date.gte=" +
-    (searchFilters.releaseDateFrom + 1) +
-    "&first_air_date.lte=" +
-    (searchFilters.releaseDateTo + 1) +
-    "&with_genres=" +
-    searchFilters.tvShowCategory;
+    searchFilters.releaseDateFrom +
+    "-01-01&first_air_date.lte=" +
+    searchFilters.releaseDateTo +
+    "-12-31" +
+    "&include_null_first_air_dates=false" +
+    "&vote_count.gte=" +
+    searchFilters.voteCount;
 
-  if (searchFilters.tvType !== "") {
+  if (searchFilters.tvType === "All") {
+    urlString;
+  } else {
     urlString += "&with_type=" + searchFilters.tvType;
   }
+  if (searchFilters.category === "All") {
+    urlString;
+  } else {
+    urlString += "&with_genres=" + searchFilters.category;
+  }
+
+  console.log("New Call: ", urlString);
 
   const apiCall = (currentPage) => {
     if (currentPage === "" || isNaN(currentPage)) {
@@ -172,7 +172,6 @@ export default function Discovery() {
     fetchGenres();
   }, []);
 
-  //Tags:
   const selectedFiltersTags = [
     {
       label: `Vote: +${searchFilters.voteCount}`,
@@ -387,17 +386,17 @@ export default function Discovery() {
 
                   <br />
 
-                  <FormLabel htmlFor="movieCategory">
+                  <FormLabel htmlFor="tcShowCategory">
                     Tv Show Category
                   </FormLabel>
                   <Select
                     id="movieCategory"
                     placeholder="Select Category"
-                    value={searchFilters.tvShowCategory}
+                    value={searchFilters.category}
                     onChange={(event) =>
                       setSearchFilters({
                         ...searchFilters,
-                        tvShowCategory: event.target.value,
+                        category: event.target.value,
                       })
                     }
                   >
