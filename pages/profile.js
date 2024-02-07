@@ -119,7 +119,7 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Botão Salvar clicado");
+
     await insertUser();
   };
 
@@ -168,7 +168,6 @@ const Profile = () => {
       setIsSaving(false);
       setIsSave(true);
       getUser();
-      console.log("Corpo da solicitação:", JSON.stringify(requestBody));
 
       return;
     } catch (error) {
@@ -190,7 +189,7 @@ const Profile = () => {
 
       if (response.ok) {
         const userData = await response.json();
-        console.log("0 Dados do usuário:", userData);
+
         setIsLoading(false);
         setUserData(userData);
         setDateString(userData.birth_date);
@@ -202,15 +201,13 @@ const Profile = () => {
           setIsLoading(false);
           setNewUser(true);
         }
-        console.error("Erro ao buscar o usuário:", response.status);
+        console.error("Error to find user", response.status);
         I;
       }
     } catch (error) {
-      console.error("Erro inesperado:", error);
+      console.error("Error Unexpected", error);
     }
   };
-
-  console.log("1 Imagem from Avatar", imageFromProfile);
 
   // Verify the session
   useEffect(() => {
@@ -238,8 +235,6 @@ const Profile = () => {
       subscription?.unsubscribe();
     };
   }, []);
-
-  console.log(imageFromProfile);
 
   return (
     <ChakraProvider>
@@ -330,7 +325,7 @@ const Profile = () => {
               )}
 
               <VStack>
-                <FormControl>
+                {/* <FormControl>
                   <FormLabel>
                     <Select
                       name="profileImage"
@@ -347,13 +342,16 @@ const Profile = () => {
                     </Select>
 
                     <Center>
-                      <Image src={selectedImage ? userData?.avatar : selectedImage} alt="Profile Image" />
+                      <Image
+                        src={selectedImage ? userData?.avatar : selectedImage}
+                        alt="Profile Image"
+                      />
                     </Center>
                     <Center>
                       <Image src={userData?.avatar} alt="Profile Image" />
                     </Center>
                   </FormLabel>
-                </FormControl>
+                </FormControl> */}
 
                 <FormControl>
                   <FormLabel style={{ fontWeight: "bold" }}>E-mail:</FormLabel>

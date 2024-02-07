@@ -3,25 +3,26 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import ErrorPage from "./error-page";
-import Image from "next/image";
+//import Image from "next/image";
 import Head from "next/head";
 import {
   Box,
   Button,
-  Input,
   Spinner,
   Text,
   ChakraProvider,
   Center,
-  Tag,
-  TagLabel,
-  TagLeftIcon,
-  TagRightIcon,
-  TagCloseButton,
   HStack,
   Tooltip,
+  Image,
+  TableContainer,
+  Table,
+  TableCaption,
+  Tbody,
+  Tr,
+  Td,
 } from "@chakra-ui/react";
-import TranslateProfile from "../components/TranslateProfile";
+
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
@@ -104,15 +105,15 @@ export default function Discovery() {
   let totalResults = searchMovieTotalResults;
 
   const handleMoviesClick = () => {
-    setShowMovies(!showMovies); // Inverte o valor do estado showMovies
+    setShowMovies(!showMovies);
   };
 
   const handleTvShowsClick = () => {
-    setShowTvShows(!showTvShows); // Inverte o valor do estado showTvShows
+    setShowTvShows(!showTvShows);
   };
 
   const handlePersonClick = () => {
-    setShowPerson(!showPerson); // Inverte o valor do estado showPerson
+    setShowPerson(!showPerson);
   };
 
   return (
@@ -137,7 +138,7 @@ export default function Discovery() {
         <ChakraProvider>
           <Center>
             <HStack spacing={6}>
-              <Tooltip label="Habilita/Desabilita Filmes">
+              <Tooltip label="Enabel/Disable Movies">
                 <Button
                   colorScheme={showMovies ? "blue" : "gray"}
                   onClick={handleMoviesClick}
@@ -146,7 +147,7 @@ export default function Discovery() {
                 </Button>
               </Tooltip>
 
-              <Tooltip label="Habilita/Desabilita Séries">
+              <Tooltip label="Enable/Disable TvShows">
                 <Button
                   colorScheme={showTvShows ? "green" : "gray"}
                   onClick={handleTvShowsClick}
@@ -155,7 +156,7 @@ export default function Discovery() {
                 </Button>
               </Tooltip>
 
-              <Tooltip label="Habilita/Desabilita Pessoas">
+              <Tooltip label="Enable/Disable People">
                 <Button
                   colorScheme={showPerson ? "yellow" : "gray"}
                   onClick={handlePersonClick}
@@ -183,138 +184,147 @@ export default function Discovery() {
           </Center>
         </ChakraProvider>
 
-        {isError === true ? (
-          <ErrorPage message={`Verifique as Credenciais`}></ErrorPage>
-        ) : (
-          <div className={styles.grid}>
-            {searchMovies.map((search) => (
-              <div key={search.id}>
-                <span className={styles.spantext}>
-                  {showPerson && search.media_type === "person" ? (
-                    <span></span>
-                  ) : (
-                    <span></span>
-                  )}
-                  {search.media_type === "person" && showPerson
-                    ? search.name
-                    : search.media_type === "movie" && showMovies
-                    ? search.title
-                    : search.media_type === "tv" && showTvShows
-                    ? search.name
-                    : ""}
-                </span>
-                <br />
-                {showPerson && search.media_type === "person" ? (
-                  <span>
-                    Posição:{" "}
-                    <TranslateProfile
-                      text={search.known_for_department}
-                      language={"pt"}
-                    />
-                  </span>
-                ) : null}
-                <br />
-                {showTvShows && search.media_type == "tv" ? (
-                  <span className={styles.spantext}>
-                    <span className={styles.spantext}>
-                      <Image
-                        className={styles.card_image}
-                        src={
-                          search.poster_path
-                            ? "https://image.tmdb.org/t/p/original" +
-                              search.poster_path
-                            : "/callback.png"
-                        }
-                        alt="poster"
-                        width="240"
-                        height="360"
-                      />{" "}
-                    </span>
+        <div className={styles.grid}>
+          {searchMovies.map((search) => (
+            <div key={search.id}>
+              {showPerson || showMovies || showTvShows ? (
+                <ChakraProvider>
+                  <TableContainer>
+                    <Table variant="simple"> 
+                      <Tbody>
+                        <Tr>
+                          <Td>
+                            {search.media_type === "person" && showPerson
+                              ? search.name
+                              : null}
+                            {search.media_type === "movie" && showMovies
+                              ? search.title
+                              : null}
+                            {search.media_type === "tv" && showTvShows
+                              ? search.name
+                              : null}
+                          </Td>
+                        </Tr>
+                        <Tr>
+                          <Td>
+                            {search.media_type === "person" && showPerson
+                              ? search.known_for_department
+                              : null}
+                            {search.media_type === "movie" && showMovies
+                              ? "Movie"
+                              : null}
+                            {search.media_type === "tv" && showTvShows
+                              ? "TvShow"
+                              : null}
+                          </Td>
+                        </Tr>
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
+                </ChakraProvider>
+              ) : null}
 
-                    <br />
-                  </span>
-                ) : null}
-
-                {showMovies && search.media_type == "movie" ? (
-                  <span className={styles.spantext}>
-                    <span className={styles.spantext}>
-                      <Image
-                        className={styles.card_image}
-                        src={
-                          search.poster_path
-                            ? "https://image.tmdb.org/t/p/original" +
-                              search.poster_path
-                            : "/callback.png"
-                        }
-                        alt="poster"
-                        width="240"
-                        height="360"
-                      />{" "}
-                    </span>
-
-                    <br />
-                  </span>
-                ) : null}
-
-                {showPerson && search.media_type === "person" ? (
-                  <span className={styles.spantext}>
-                    <span className={styles.spantext}>
-                      <Image
-                        className={styles.card_image}
-                        src={
-                          search.profile_path
-                            ? "https://image.tmdb.org/t/p/original" +
-                              search.profile_path
-                            : "/callback.png"
-                        }
-                        alt="poster"
-                        width="240"
-                        height="360"
-                      />{" "}
-                    </span>
-
-                    <br />
-                  </span>
-                ) : null}
-                {showPerson && search.media_type === "person" ? (
-                  <Link
-                    href={{
-                      pathname: "/person-page",
-                      query: { personId: search.id },
-                    }}
-                  >
-                    Details
-                  </Link>
-                ) : null}
-
-                {showMovies && search.media_type === "movie" ? (
-                  <Link
-                    href={{
-                      pathname: "/movie-page",
-                      query: { movieId: search.id },
-                    }}
-                  >
-                    Details
-                  </Link>
-                ) : null}
-
-                {showTvShows && search.media_type === "tv" ? (
+              {showTvShows && search.media_type == "tv" ? (
+                <ChakraProvider>
                   <Link
                     href={{
                       pathname: "/tvshow-page",
                       query: { tvShowId: search.id },
                     }}
                   >
-                    Details
+                    <Tooltip
+                      title="More"
+                      style={{
+                        color: "white",
+                        borderColor: "purple",
+                        background: "purple",
+                      }}
+                    >
+                      <Image
+                        className={styles.card_image}
+                        src={
+                          search.poster_path
+                            ? `https://image.tmdb.org/t/p/original${search.poster_path}`
+                            : "/callback.png"
+                        }
+                        alt="poster"
+                        width={240}
+                        height={360}
+                      />
+                    </Tooltip>
                   </Link>
-                ) : null}
+                </ChakraProvider>
+              ) : null}
 
-                <br />
-                <br />
-              </div>
-            ))}
-          </div>
-        )}
+              {showMovies && search.media_type == "movie" ? (
+                <ChakraProvider>
+                  <Link
+                    href={{
+                      pathname: "/movie-page",
+                      query: { movieId: search.id },
+                    }}
+                  >
+                    <Tooltip
+                      title="More"
+                      style={{
+                        color: "white",
+                        borderColor: "purple",
+                        background: "purple",
+                      }}
+                    >
+                      <Image
+                        className={styles.card_image}
+                        src={
+                          search.poster_path
+                            ? `https://image.tmdb.org/t/p/original${search.poster_path}`
+                            : "/callback.png"
+                        }
+                        alt="poster"
+                        width={240}
+                        height={360}
+                      />
+                    </Tooltip>
+                  </Link>
+                </ChakraProvider>
+              ) : null}
+
+              {showPerson && search.media_type === "person" ? (
+                <ChakraProvider>
+                  <Link
+                    href={{
+                      pathname: "/person-page",
+                      query: { personId: search.id },
+                    }}
+                  >
+                    <Tooltip
+                      title="More"
+                      style={{
+                        color: "white",
+                        borderColor: "purple",
+                        background: "purple",
+                      }}
+                    >
+                      <Image
+                        className={styles.card_image}
+                        src={
+                          search.profile_path
+                            ? `https://image.tmdb.org/t/p/original${search.profile_path}`
+                            : "/callback.png"
+                        }
+                        alt="poster"
+                        width={240}
+                        height={360}
+                      />
+                    </Tooltip>
+                  </Link>
+                </ChakraProvider>
+              ) : null}
+
+              <br />
+              <br />
+            </div>
+          ))}
+        </div>
 
         <span className={styles.spantext}>
           <br />

@@ -79,11 +79,9 @@ export default function Discovery() {
     urlString += "&with_genres=" + searchFilters.category;
   }
 
-  console.log("UrlString: ", urlString);
-
   const apiCall = (currentPage) => {
     const url = urlString + "&page=" + currentPage;
-    console.log("Chamada: ", url);
+
     setIsLoading(true);
     fetch(url, {
       headers: new Headers({

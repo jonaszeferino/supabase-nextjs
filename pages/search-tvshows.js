@@ -86,8 +86,6 @@ export default function Discovery() {
     urlString += "&with_genres=" + searchFilters.category;
   }
 
-  console.log("New Call: ", urlString);
-
   const apiCall = (currentPage) => {
     if (currentPage === "" || isNaN(currentPage)) {
       currentPage = 1;
@@ -95,7 +93,7 @@ export default function Discovery() {
       currentPage = parseInt(currentPage);
     }
     const url = urlString + "&page=" + currentPage;
-    console.log("o que chama: ", url);
+
     setIsLoading(true);
 
     fetch(url, {
