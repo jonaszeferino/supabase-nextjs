@@ -11,13 +11,16 @@ import {
   Select,
   useDisclosure,
   Collapse,
+  useMediaQuery,
 } from "@chakra-ui/react";
-import { Alert, Space } from "antd";
+import { Alert, Space, Divider } from "antd";
 import styles from "../styles/Home.module.css";
 import { supabase } from "../utils/supabaseClient";
 import LoggedUser from "../components/LoggedUser";
 
 export default function Trivia() {
+  
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const { isOpen, onToggle } = useDisclosure();
   const [answers, setAnswers] = useState({ questions: [] });
   const [shuffledAnswers, setShuffledAnswers] = useState([]);
@@ -229,9 +232,19 @@ export default function Trivia() {
 
       <br />
       <LoggedUser />
-      <div className={styles.top}>
-        <h3 className={styles.title}>Trivia</h3>
-      </div>
+      {isMobile ? (
+          <>
+            <div style={{ paddingTop: 80, }} >
+              <Divider />
+              <h1> <strong>Trivia</strong></h1>
+              <Divider />
+            </div>
+          </>
+        ) : (
+          <div className={styles.top}>
+            <h3 className={styles.title}>Trivia</h3>
+          </div>
+        )}
       <br />
 
       

@@ -14,7 +14,6 @@ import {
   Center,
   Flex,
   Progress,
-  Link as LinkChakra,
   Drawer,
   DrawerBody,
   DrawerFooter,
@@ -197,20 +196,20 @@ export default function Discovery() {
 
     {
       label: `Type: ${searchFilters.tvType === "0"
-          ? "Documentary"
-          : searchFilters.tvType === "1"
-            ? "News"
-            : searchFilters.tvType === "2"
-              ? "Mini Series"
-              : searchFilters.tvType === "3"
-                ? "Reality"
-                : searchFilters.tvType === "4"
-                  ? "Scripted"
-                  : searchFilters.tvType === "5"
-                    ? "Talk Show"
-                    : searchFilters.tvType === "6"
-                      ? "Videos"
-                      : "All"
+        ? "Documentary"
+        : searchFilters.tvType === "1"
+          ? "News"
+          : searchFilters.tvType === "2"
+            ? "Mini Series"
+            : searchFilters.tvType === "3"
+              ? "Reality"
+              : searchFilters.tvType === "4"
+                ? "Scripted"
+                : searchFilters.tvType === "5"
+                  ? "Talk Show"
+                  : searchFilters.tvType === "6"
+                    ? "Videos"
+                    : "All"
         }`,
       colorScheme: "yellow",
     },

@@ -25,6 +25,11 @@ const MobileNavbar = () => {
     setMenuOpen(!menuOpen);
   };
 
+  // Função para fechar o menu
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
   useEffect(() => {
     let mounted = true;
     async function getInitialSession() {
@@ -74,27 +79,25 @@ const MobileNavbar = () => {
             <SearchBar />
           </ChakraProvider>
 
-          <br/>
-          <br/>
-          <br/>
+          <br />
+          <br />
+          <br />
 
           <Stack direction="row" align="center" justify="space-between">
-            <Link href="/">Home</Link>
-            {!session && <Link href="/signUp">Login</Link>}
+            <Link href="/" onClick={closeMenu}>
+              Home
+            </Link>
+            {!session && (
+              <Link href="/signUp" onClick={closeMenu}>
+                Login
+              </Link>
+            )}
 
             <ChakraProvider>
               {session ? (
                 <p>
                   {session.user.email} <br />
-                  {/* <Center>
-                    <Button
-                      onClick={() => supabase.auth.signOut()}
-                      colorScheme="red"
-                      size="sm"
-                    >
-                      Sair
-                    </Button>
-                  </Center> */}
+                  <></>
                 </p>
               ) : null}
               {/* Resto do seu código */}
@@ -105,47 +108,61 @@ const MobileNavbar = () => {
             </Button>
           </Stack>
 
-       
+
 
           {menuOpen && (
             <Stack spacing={4} mt={4}>
-              <Link href="/watch-today">
-                <span>
-                  <ChevronRightIcon /> What to Watch Today?
-                </span>
+              <Link href="/watch-today" onClick={closeMenu}>
+                
+                  <span>
+                    <ChevronRightIcon /> What to Watch Today?
+                  </span>
+                
               </Link>
-              <Link href="/search-movies">
-                <span>
-                  <ChevronRightIcon /> Discover Movies
-                </span>
+              <Link href="/search-movies" onClick={closeMenu}>
+                
+                  <span>
+                    <ChevronRightIcon /> Discover Movies
+                  </span>
+                
               </Link>
-              <Link href="/search-tvshows">
-                <span>
-                  <ChevronRightIcon /> Discover Tv Shows
-                </span>
+              <Link href="/search-tvshows" onClick={closeMenu}>
+                
+                  <span>
+                    <ChevronRightIcon /> Discover Tv Shows
+                  </span>
+                
               </Link>
-              <Link href="/birthday-movies">
-                <span>
-                  <ChevronRightIcon /> Birthday Movie
-                </span>
+              <Link href="/birthday-movies" onClick={closeMenu}>
+                
+                  <span>
+                    <ChevronRightIcon /> Birthday Movie
+                  </span>
+                
               </Link>
-              <Link href="/trivia">
-                <span>
-                  <ChevronRightIcon /> Trivia
-                </span>
+              <Link href="/trivia" onClick={closeMenu}>
+                
+                  <span>
+                    <ChevronRightIcon /> Trivia
+                  </span>
+                
               </Link>
 
               {session ? (
                 <>
-                  <Link href="/profile">
-                    <span>
-                      <ChevronRightIcon /> Profile
-                    </span>
+                  <Link href="/profile" onClick={closeMenu}>
+                    
+                      <span>
+                        <ChevronRightIcon /> Profile
+                      </span>
+                    
                   </Link>
-                  <Link href="/my-movies-page">
-                    <span>
-                      <ChevronRightIcon /> My Ratings
-                    </span>
+                  <Link href="/my-movies-page" onClick={closeMenu}>
+                    
+                      <span>
+                        <ChevronRightIcon /> My Ratings
+                      </span>
+                    
                   </Link>
                 </>
               ) : null}
