@@ -210,12 +210,13 @@ export default function Movieapi() {
         <div style={{ maxWidth: "480px", margin: "0 auto" }}>
           <ChakraProvider>
             <Box maxW="32rem">
-              <LoggedUser />
+
 
 
               {isMobile ? (
                 <>
                   <div style={{ paddingTop: 80, }} >
+                    <LoggedUser />
                     <Divider />
                     <h1> <strong>What To Watch Today?</strong></h1>
                     <span>

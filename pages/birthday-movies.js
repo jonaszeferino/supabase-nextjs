@@ -183,10 +183,11 @@ export default function Discovery() {
         ></meta>
       </Head>
       <div>
-        <LoggedUser />
+
         {isMobile ? (
           <>
             <div style={{ paddingTop: 80, }} >
+              <LoggedUser />
               <Divider />
               <h1> <strong>Birthday Movie</strong></h1>
               <Divider />
@@ -197,7 +198,7 @@ export default function Discovery() {
             <h3 className={styles.title}>Birthday Movie</h3>
           </div>
         )}
-        
+
         <br />
 
         <div

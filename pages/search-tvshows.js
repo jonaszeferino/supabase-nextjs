@@ -231,12 +231,13 @@ export default function Discovery() {
         <meta name="description" content="movies, tvshows"></meta>
       </Head>
 
-      <LoggedUser />
+
 
 
       {isMobile ? (
         <>
           <div style={{ paddingTop: 80, }} >
+            <LoggedUser />
             <Divider />
             <h1> <strong>Discover TvShows</strong></h1>
             <Divider />

@@ -231,10 +231,11 @@ export default function Trivia() {
       </Center>
 
       <br />
-      <LoggedUser />
+      
       {isMobile ? (
           <>
             <div style={{ paddingTop: 80, }} >
+            <LoggedUser />
               <Divider />
               <h1> <strong>Trivia</strong></h1>
               <Divider />
