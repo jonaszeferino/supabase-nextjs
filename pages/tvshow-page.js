@@ -7,12 +7,13 @@ import { format } from "date-fns";
 import { useRouter } from "next/router";
 import {
   ChakraProvider,
-  Progress,
+
   Table,
   Tbody,
   Tr,
   Td,
   TableContainer,
+  useMediaQuery
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
@@ -20,6 +21,7 @@ import LoggedUser from "../components/LoggedUser";
 import Head from "next/head";
 
 const MoviePage = () => {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const router = useRouter();
   const tvShowId = router.query.tvShowId;
   const [movieIdRequest, setMovieIdRequest] = useState();
@@ -72,8 +74,8 @@ const MoviePage = () => {
             ? dataProviders.results.BR
               ? dataProviders.results.BR.flatrate
                 ? dataProviders.results.BR.flatrate
-                    .map((providerBR) => providerBR.provider_name)
-                    .join(", ")
+                  .map((providerBR) => providerBR.provider_name)
+                  .join(", ")
                 : ""
               : ""
             : "",
@@ -81,8 +83,8 @@ const MoviePage = () => {
             ? dataProviders.results.US
               ? dataProviders.results.US.flatrate
                 ? dataProviders.results.US.flatrate
-                    .map((providerUS) => providerUS.provider_name)
-                    .join(", ")
+                  .map((providerUS) => providerUS.provider_name)
+                  .join(", ")
                 : ""
               : ""
             : "",
@@ -156,7 +158,17 @@ const MoviePage = () => {
         ></meta>
         <meta name="description" content="filmes, series,"></meta>
       </Head>
-      <LoggedUser />
+
+      {isMobile ? (
+        <>
+          <div style={{ paddingTop: 80, }} >
+            <LoggedUser />
+
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
       <span className={styles.title}>{data.originalTitle}</span>
       <br />
       <br />
@@ -198,8 +210,8 @@ const MoviePage = () => {
             max={10}
             colorScheme={getProgressColor(data.average)}
           /> */}
-            <Rate value={data.average} count={10} /><br/>
-           {data.average} 
+          <Rate value={data.average} count={10} /><br />
+          {data.average}
         </ChakraProvider>
       </div>
       <div>
@@ -289,7 +301,7 @@ const MoviePage = () => {
             : status === "To Be Determined"
             ? "A ser determinado"
             : "Desconhecido"} */}
-            {status}
+          {status}
         </span>
       ) : null}
       <ChakraProvider>
@@ -312,7 +324,7 @@ const MoviePage = () => {
                       src={
                         work.poster_path
                           ? "https://image.tmdb.org/t/p/original" +
-                            work.poster_path
+                          work.poster_path
                           : "/callback.png"
                       }
                       alt="poster"

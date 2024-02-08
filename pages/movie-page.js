@@ -17,10 +17,12 @@ import {
   Th,
   Td,
   TableContainer,
+  useMediaQuery
 } from "@chakra-ui/react";
 import Head from "next/head";
 
 const MoviePage = () => {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const router = useRouter();
   const { query } = router.query;
   const movieId = router.query.movieId;
@@ -93,8 +95,8 @@ const MoviePage = () => {
             ? dataProviders.results.BR
               ? dataProviders.results.BR.flatrate
                 ? dataProviders.results.BR.flatrate
-                    .map((providerBR) => providerBR.provider_name)
-                    .join(", ")
+                  .map((providerBR) => providerBR.provider_name)
+                  .join(", ")
                 : ""
               : ""
             : "",
@@ -103,15 +105,15 @@ const MoviePage = () => {
             ? dataProviders.results.US
               ? dataProviders.results.US.flatrate
                 ? dataProviders.results.US.flatrate
-                    .map((providerUS) => providerUS.provider_name)
-                    .join(", ")
+                  .map((providerUS) => providerUS.provider_name)
+                  .join(", ")
                 : ""
               : ""
             : "",
 
           country:
             dataMovies.production_countries &&
-            dataMovies.production_countries[0]
+              dataMovies.production_countries[0]
               ? dataMovies.production_countries[0].name
               : "",
           originalLanguage: dataMovies.original_language,
@@ -162,7 +164,19 @@ const MoviePage = () => {
         ></meta>
         <meta name="description" content="movies, series,"></meta>
       </Head>
-      <LoggedUser />
+
+
+      {isMobile ? (
+        <>
+          <div style={{ paddingTop: 80, }} >
+            <LoggedUser />
+
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
+
       <span className={styles.title}>{data.originalTitle}</span>
       <br />
       <br />
@@ -226,9 +240,9 @@ const MoviePage = () => {
                     {data.budget === 0 || data.budget === null
                       ? null
                       : `${new Intl.NumberFormat("en-US", {
-                          style: "currency",
-                          currency: "USD",
-                        }).format(data.budget)}`}
+                        style: "currency",
+                        currency: "USD",
+                      }).format(data.budget)}`}
                   </Td>
                 </Tr>
                 <Tr>
@@ -284,7 +298,7 @@ const MoviePage = () => {
                 <Tr>
                   <Th>Language</Th>
                   <Td>{data.originalLanguage}</Td>
-  
+
                 </Tr>
                 <Tr>
                   <Th>Release Date</Th>
