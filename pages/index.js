@@ -135,7 +135,15 @@ export default function Home() {
       </Head>
 
       <div>
-        <LoggedUser />
+        {isMobile ? (
+          <div style={{ paddingTop: 80, }}>
+            <LoggedUser />
+          </div>
+        ) : (
+          <LoggedUser />
+        )}
+
+
         <div>
           {isMobile ? (
             <h1 style={{ paddingTop: 80, }}> <strong>Trending Movies of the Week</strong></h1>
