@@ -16,6 +16,7 @@
     "@emotion/react": "^11.11.3",
     "@emotion/sheet": "^1.2.2",
     "@emotion/styled": "^11.11.0",
+    "@formspree/react": "^2.5.1",
     "@mui/icons-material": "^5.15.8",
     "@mui/material": "5.15.8",
     "@popperjs/core": "^2.11.8",
