@@ -78,27 +78,27 @@ const MoviePage = () => {
     });
   };
 
-const apiGetRates = async () => {
-  setIsLoading(true);
-  try {
-    const response = await fetch(`/api/v1/getRateRandomMovie?user_email=${email_user}`, {
- //https://www.watchtodayguide.com/api/v1/getRateRandomMovie?user_email=jonaszeferino%40gmail.com
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log("Chamada Profile ", fetch);
-    const responseData = await response.json();
-    console.log("Response Data:", responseData);
-    setData(responseData);
-    setIsLoading(false);
-    setValueEndDelete(false);
-  } catch (error) {
-    console.error("Error fetching rates:", error);
+  const apiGetRates = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/v1/getRateRandomMovie?user_email=${email_user}`, {
 
-  }
-};
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Chamada Profile ", fetch);
+      const responseData = await response.json();
+      console.log("Response Data:", responseData);
+      setData(responseData);
+      setIsLoading(false);
+      setValueEndDelete(false);
+    } catch (error) {
+      console.error("Error fetching rates:", error);
+
+    }
+  };
   useEffect(() => {
     apiGetRates();
     setValueEndDelete(false);
@@ -175,9 +175,12 @@ const apiGetRates = async () => {
             ></meta>
             <meta name="description" content="filmes, series,"></meta>
           </Head>
-          <LoggedUser />
 
-          {/* <Button onClick={apiGetRates}></Button> */}
+
+          <div style={{ paddingTop: 80, }} >
+            <LoggedUser />
+          </div>
+
 
           <>
             {contextHolder}
@@ -265,8 +268,8 @@ const apiGetRates = async () => {
                           <Image
                             src={
                               movie.poster_path ?
-                                 "https://image.tmdb.org/t/p/original" +
-                                  movie.poster_path
+                                "https://image.tmdb.org/t/p/original" +
+                                movie.poster_path
                                 : "/callback.png"
                             }
                             alt="poster"
@@ -302,7 +305,7 @@ const apiGetRates = async () => {
         </ChakraProvider>
       ) : (
         "Click Log In to load the page content"
-        
+
       )}
     </>
   );

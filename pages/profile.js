@@ -243,10 +243,13 @@ const Profile = () => {
         <meta name="keywords" content="tvshow,watch,review"></meta>
         <meta name="description" content="filmes, series,"></meta>
       </Head>
+
+
+      <div style={{ paddingTop: 80, }} >
       <ChakraProvider>
         {session ? (
           <p>
-            {/* User: {session.user.email} <br /> */}
+
             User: {emailInfo} <br />
             <Button
               onClick={() => supabase.auth.signOut()}
@@ -258,6 +261,7 @@ const Profile = () => {
           </p>
         ) : null}
       </ChakraProvider>
+      </div>
       {isLoading && (
         <Space
           direction="vertical"
