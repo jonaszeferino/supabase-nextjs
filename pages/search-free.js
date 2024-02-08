@@ -17,7 +17,6 @@ import {
   Image,
   TableContainer,
   Table,
-  TableCaption,
   Tbody,
   Tr,
   Td,
@@ -30,7 +29,7 @@ import LoggedUser from "../components/LoggedUser";
 export default function Discovery() {
   const router = useRouter();
   const { query } = router.query;
-  let [movieId, setMovieId] = useState();
+
   let [searchMovies, setSearchMovies] = useState([]);
   const [searchText, setSearchText] = useState(router.query.query || "");
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
@@ -79,7 +78,6 @@ export default function Discovery() {
           setSearchMovieTotalPages(result.total_pages);
           setSearchMovieRealPage(page);
           setSearchMovieTotalResults(result.total_results);
-
           setIsLoading(false);
         })
         .catch((error) => setError(true));
@@ -124,7 +122,7 @@ export default function Discovery() {
           name="keywords"
           content="movies,watch,review,series,filmes"
         ></meta>
-        <meta name="description" content="encontre filmes e series"></meta>
+        <meta name="description" content="find movies, tvshows, persons"></meta>
       </Head>
 
       <br />
@@ -190,7 +188,7 @@ export default function Discovery() {
               {showPerson || showMovies || showTvShows ? (
                 <ChakraProvider>
                   <TableContainer>
-                    <Table variant="simple"> 
+                    <Table variant="simple">
                       <Tbody>
                         <Tr>
                           <Td>

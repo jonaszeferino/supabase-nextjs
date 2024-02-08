@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "../styles/Home.module.css";
 import ErrorPage from "./error-page";
 import Image from "next/image";
@@ -59,10 +59,6 @@ export default function Discovery() {
   // back to the top button
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
 
-  useEffect(() => {
-    apiCall();
-  }, []);
-
   let urlString =
     "https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&sort_by=" +
     searchFilters.ratingSort +
@@ -86,42 +82,53 @@ export default function Discovery() {
     urlString += "&with_genres=" + searchFilters.category;
   }
 
-  const apiCall = (currentPage) => {
-    if (currentPage === "" || isNaN(currentPage)) {
-      currentPage = 1;
-    } else {
-      currentPage = parseInt(currentPage);
-    }
-    const url = urlString + "&page=" + currentPage;
+  const apiCall = useCallback(
+    (currentPage) => {
+      if (currentPage === "" || isNaN(currentPage)) {
+        currentPage = 1;
+      } else {
+        currentPage = parseInt(currentPage);
+      }
+      const url = urlString + "&page=" + currentPage;
 
-    setIsLoading(true);
+      setIsLoading(true);
 
-    fetch(url, {
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
-      }),
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          setError(false);
-          return response.json();
-        } else {
-          throw new Error("Wrong Data");
-        }
+      fetch(url, {
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
+        }),
       })
-      .then(
-        (result) => (
-          setSearchMovies(result.results),
-          setSearchMovieTotalPages(result.total_pages),
-          setSearchMovieRealPage(result.page),
-          setSearchMovieTotalResults(result.total_results),
-          setPage(result.page),
-          setIsLoading(false)
+        .then((response) => {
+          if (response.status === 200) {
+            setError(false);
+            return response.json();
+          } else {
+            throw new Error("Wrong Data");
+          }
+        })
+        .then(
+          (result) => (
+            setSearchMovies(result.results),
+            setSearchMovieTotalPages(result.total_pages),
+            setSearchMovieRealPage(result.page),
+            setSearchMovieTotalResults(result.total_results),
+            setPage(result.page),
+            setIsLoading(false)
+          )
         )
-      )
-      .catch((error) => setError(true));
-  };
+        .catch((error) => setError(true));
+    },
+    [urlString, setIsLoading, setPage]
+  );
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchFilters]);
+
+  useEffect(() => {
+    apiCall(page);
+  }, [page, apiCall]);
 
   const nextPage = (event) => {
     setPage(page + 1), apiCall(page + 1);

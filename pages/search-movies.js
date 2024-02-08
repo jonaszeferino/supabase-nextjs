@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback} from "react";
 
 import styles from "../styles/Home.module.css";
 import ErrorPage from "./error-page";
@@ -35,7 +35,7 @@ import { Rate } from "antd";
 
 export default function Discovery() {
   let [searchMovies, setSearchMovies] = useState([]);
-  //pagination
+  
   let [page, setPage] = useState(1);
   let [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
   let [searchMovieRealPage, setSearchMovieRealPage] = useState("");
@@ -79,7 +79,7 @@ export default function Discovery() {
     urlString += "&with_genres=" + searchFilters.category;
   }
 
-  const apiCall = (currentPage) => {
+  const apiCall =  useCallback ((currentPage) => {
     const url = urlString + "&page=" + currentPage;
 
     setIsLoading(true);
@@ -108,7 +108,7 @@ export default function Discovery() {
         )
       )
       .catch((error) => setError(true));
-  };
+  }, [urlString, setIsLoading, setPage]);
 
   const nextPage = (event) => {
     setPage(page + 1), apiCall(page + 1);
@@ -124,7 +124,7 @@ export default function Discovery() {
 
   useEffect(() => {
     apiCall(page);
-  }, [page]);
+  }, [page, apiCall]);
 
   let totalPages = searchMovieTotalPages;
   let currentPage = searchMovieRealPage;
