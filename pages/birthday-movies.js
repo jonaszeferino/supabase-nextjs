@@ -24,17 +24,19 @@ import {
   Spinner,
   Text,
   useToast,
-  Tooltip as TooltipChakra,
-  CustomCard,
+  useMediaQuery
+
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
 import { Tooltip } from "antd";
 import Link from "next/link";
-import { Rate } from "antd";
+import { Rate, Divider } from "antd";
 
 export default function Discovery() {
+
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   let [searchMovies, setSearchMovies] = useState([]);
 
   let [page, setPage] = useState(1);
@@ -182,9 +184,20 @@ export default function Discovery() {
       </Head>
       <div>
         <LoggedUser />
-        <div className={styles.top}>
-          <h3 className={styles.title}>Birthday Movie</h3>
-        </div>
+        {isMobile ? (
+          <>
+            <div style={{ paddingTop: 80, }} >
+              <Divider />
+              <h1> <strong>Birthday Movie</strong></h1>
+              <Divider />
+            </div>
+          </>
+        ) : (
+          <div className={styles.top}>
+            <h3 className={styles.title}>Birthday Movie</h3>
+          </div>
+        )}
+        
         <br />
 
         <div

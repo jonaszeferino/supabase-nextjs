@@ -25,15 +25,18 @@ import {
   useDisclosure,
   Tag,
   HStack,
+  useMediaQuery
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
 import { Tooltip } from "antd";
 import Link from "next/link";
-import { Rate } from "antd";
+import { Divider, Rate } from "antd";
 
 export default function Discovery() {
+
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
 
@@ -183,9 +186,8 @@ export default function Discovery() {
       colorScheme: "blue",
     },
     {
-      label: `Order: ${
-        searchFilters.ratingSort === "vote_average.desc" ? "Desc" : "Asc"
-      }`,
+      label: `Order: ${searchFilters.ratingSort === "vote_average.desc" ? "Desc" : "Asc"
+        }`,
       colorScheme: "green",
     },
     {
@@ -194,32 +196,30 @@ export default function Discovery() {
     },
 
     {
-      label: `Type: ${
-        searchFilters.tvType === "0"
+      label: `Type: ${searchFilters.tvType === "0"
           ? "Documentary"
           : searchFilters.tvType === "1"
-          ? "News"
-          : searchFilters.tvType === "2"
-          ? "Mini Series"
-          : searchFilters.tvType === "3"
-          ? "Reality"
-          : searchFilters.tvType === "4"
-          ? "Scripted"
-          : searchFilters.tvType === "5"
-          ? "Talk Show"
-          : searchFilters.tvType === "6"
-          ? "Videos"
-          : "All"
-      }`,
+            ? "News"
+            : searchFilters.tvType === "2"
+              ? "Mini Series"
+              : searchFilters.tvType === "3"
+                ? "Reality"
+                : searchFilters.tvType === "4"
+                  ? "Scripted"
+                  : searchFilters.tvType === "5"
+                    ? "Talk Show"
+                    : searchFilters.tvType === "6"
+                      ? "Videos"
+                      : "All"
+        }`,
       colorScheme: "yellow",
     },
 
     {
-      label: `Category: ${
-        genres.find(
-          (genre) => genre.id === parseInt(searchFilters.tvShowCategory, 10)
-        )?.name || "All"
-      }`,
+      label: `Category: ${genres.find(
+        (genre) => genre.id === parseInt(searchFilters.tvShowCategory, 10)
+      )?.name || "All"
+        }`,
       colorScheme: "gray",
     },
   ];
@@ -233,9 +233,22 @@ export default function Discovery() {
       </Head>
 
       <LoggedUser />
-      <div className={styles.top}>
-        <h3 className={styles.title}> Discover Tv Shows</h3>
-      </div>
+
+
+      {isMobile ? (
+        <>
+          <div style={{ paddingTop: 80, }} >
+            <Divider />
+            <h1> <strong>Discover TvShows</strong></h1>
+            <Divider />
+          </div>
+        </>
+      ) : (
+        <div className={styles.top}>
+          <h3 className={styles.title}> Discover Tv Shows</h3>
+        </div>
+      )}
+
       <br />
 
       <div

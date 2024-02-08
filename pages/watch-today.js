@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 import ErrorPage from "./error-page";
 import Head from "next/head";
 import Link from "next/link";
-import { Rate } from "antd";
+import { Rate, Divider } from "antd";
 import TranslationComponent from "../components/translateComponent";
 import TranslationComponentCountryName from "../components/translateComponentCountryName";
 import {
@@ -24,14 +24,16 @@ import {
   TabPanel,
   Skeleton,
   Image,
-  Link as LinkChakra,
+  useMediaQuery
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
 import { supabase } from "../utils/supabaseClient";
 
+
 export default function Movieapi() {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const [movieData, setMovieData] = useState({});
   const [randomMovieId, setRandomMovieId] = useState(null);
   const [isError, setError] = useState(false);
@@ -209,14 +211,31 @@ export default function Movieapi() {
           <ChakraProvider>
             <Box maxW="32rem">
               <LoggedUser />
-              <div className={styles.top}>
-                <h3 className={styles.title}>What To Watch Today?</h3>
-                <span>
-                  {" "}
-                  Click and see the possibilities until you find one to your
-                  liking!
-                </span>
-              </div>
+
+
+              {isMobile ? (
+                <>
+                  <div style={{ paddingTop: 80, }} >
+                    <Divider />
+                    <h1> <strong>What To Watch Today?</strong></h1>
+                    <span>
+                      Click and see the possibilities until you find one to your
+                      liking!
+                    </span>
+
+                    <Divider />
+                  </div>
+                </>
+              ) : (
+                <div className={styles.top}>
+                  <h3 className={styles.title}>What To Watch Today?</h3>
+                  <span>
+                    {" "}
+                    Click and see the possibilities until you find one to your
+                    liking!
+                  </span>
+                </div>
+              )}
               <Button
                 size="md"
                 bg="white"
@@ -285,7 +304,7 @@ export default function Movieapi() {
                             src={
                               movieData.image
                                 ? "https://image.tmdb.org/t/p/original" +
-                                  movieData.image
+                                movieData.image
                                 : "/callback.png"
                             }
                             alt="poster"

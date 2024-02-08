@@ -67,12 +67,21 @@ const MobileNavbar = () => {
           display={{ base: "block", md: "none" }}
         >
           <Center>
-            <Heading>Watch Today Guide</Heading>
+            <Heading as="h3" size="md">Watch Today Guide</Heading>
           </Center>
+
+          <ChakraProvider>
+            <SearchBar />
+          </ChakraProvider>
+
+          <br/>
+          <br/>
+          <br/>
 
           <Stack direction="row" align="center" justify="space-between">
             <Link href="/">Home</Link>
             {!session && <Link href="/signUp">Login</Link>}
+
             <ChakraProvider>
               {session ? (
                 <p>
@@ -95,6 +104,8 @@ const MobileNavbar = () => {
               {menuOpen ? <CloseIcon /> : <HamburgerIcon />}
             </Button>
           </Stack>
+
+       
 
           {menuOpen && (
             <Stack spacing={4} mt={4}>
@@ -141,11 +152,10 @@ const MobileNavbar = () => {
             </Stack>
           )}
         </Box>
+
       </div>
       <div style={{ paddingTop: "100px" }}>
-        <ChakraProvider>
-          <SearchBar />
-        </ChakraProvider>
+
       </div>
     </>
   );

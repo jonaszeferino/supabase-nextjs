@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback} from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 
 import styles from "../styles/Home.module.css";
 import ErrorPage from "./error-page";
@@ -25,17 +25,21 @@ import {
   Tag,
   HStack,
   Spinner,
+  useMediaQuery
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
 import { Tooltip } from "antd";
 import Link from "next/link";
-import { Rate } from "antd";
+import { Divider, Rate } from "antd";
 
 export default function Discovery() {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
   let [searchMovies, setSearchMovies] = useState([]);
-  
+
+
   let [page, setPage] = useState(1);
   let [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
   let [searchMovieRealPage, setSearchMovieRealPage] = useState("");
@@ -79,7 +83,7 @@ export default function Discovery() {
     urlString += "&with_genres=" + searchFilters.category;
   }
 
-  const apiCall =  useCallback ((currentPage) => {
+  const apiCall = useCallback((currentPage) => {
     const url = urlString + "&page=" + currentPage;
 
     setIsLoading(true);
@@ -428,9 +432,8 @@ export default function Discovery() {
       colorScheme: "blue",
     },
     {
-      label: `Order: ${
-        searchFilters.ratingSort === "vote_average.desc" ? "Desc" : "Asc"
-      }`,
+      label: `Order: ${searchFilters.ratingSort === "vote_average.desc" ? "Desc" : "Asc"
+        }`,
       colorScheme: "green",
     },
     {
@@ -442,11 +445,10 @@ export default function Discovery() {
       colorScheme: "yellow",
     },
     {
-      label: `Category: ${
-        genres.find(
-          (genre) => genre.id === parseInt(searchFilters.category, 10)
-        )?.name || "All"
-      }`,
+      label: `Category: ${genres.find(
+        (genre) => genre.id === parseInt(searchFilters.category, 10)
+      )?.name || "All"
+        }`,
       colorScheme: "gray",
     },
   ];
@@ -460,9 +462,21 @@ export default function Discovery() {
       </Head>
       <div>
         <LoggedUser />
-        <div className={styles.top}>
-          <h3 className={styles.title}>Discover Movies</h3>
-        </div>
+
+        {isMobile ? (
+          <>
+            <div style={{ paddingTop: 80, }} >
+              <Divider />
+              <h1> <strong>Discover Movies</strong></h1>
+              <Divider />
+            </div>
+          </>
+        ) : (
+          <div className={styles.top}>
+            <h3 className={styles.title}>Discover Movies</h3>
+          </div>
+        )}
+
         <br />
 
         <div

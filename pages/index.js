@@ -3,15 +3,19 @@ import Image from "next/image";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { useEffect, useState } from "react";
-import { ChakraProvider, Progress } from "@chakra-ui/react";
+import { ChakraProvider, Progress, useMediaQuery } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import { supabase } from "../utils/supabaseClient"; //
-import { Rate } from "antd";
+import { Divider, Rate } from "antd";
 import LoggedUser from "../components/LoggedUser";
-import LoginAlert from "../components/LoginAlert";
+
+
 
 export default function Home() {
+
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
   let [searchMovies, setSearchMovies] = useState([]);
   let [page, setPage] = useState(1);
   let [isError, setError] = useState(false);
@@ -132,12 +136,14 @@ export default function Home() {
 
       <div>
         <LoggedUser />
-        {/* <LoginAlert /> */}
-
         <div>
-          <div className={styles.top}>
-            <h3 className={styles.title}> Trending Movies of the Week</h3>
-          </div>
+          {isMobile ? (
+            <h1 style={{ paddingTop: 80, }}> <strong>Trending Movies of the Week</strong></h1>
+          ) : (
+            <div className={styles.top}>
+              <h3 className={styles.title}>Trending Movies of the Week</h3>
+            </div>
+          )}
           <br />
           <>
             {isLoading ? (
@@ -185,9 +191,22 @@ export default function Home() {
           </>
         </div>
 
-        <div className={styles.top}>
-          <h3 className={styles.title}> Trending TV Shows of the Week</h3>
-        </div>
+
+
+        {isMobile ? (
+          <>
+            <Divider />
+            <h1 style={{ paddingTop: 5, }}> <strong>Trending TV Shows of the Week</strong></h1>
+            <Divider />
+          </>
+        ) : (
+          <div className={styles.top}>
+            <h3 className={styles.title}> Trending TV Shows of the Week</h3>
+          </div>
+        )}
+
+
+
 
         <div className={styles.grid}>
           {searchTv.map((searchtv) => (
