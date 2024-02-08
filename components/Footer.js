@@ -72,7 +72,7 @@ export default function Footer() {
           <Text fontWeight="bold" mb={2}>
             Auth
           </Text>
-          <Link href="/signUp">Login / Sign Up</Link>
+          <Link href="/contact">Contact</Link>
           <Link href="/send-email-password-reset">Password Reset</Link>
           <Link href="/policies">Policy</Link>
           <br />
