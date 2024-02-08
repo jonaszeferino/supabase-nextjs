@@ -173,11 +173,11 @@ export default function Discovery() {
   return (
     <>
       <Head>
-        <title>Discover Movies</title>
-        <meta name="keywords" content="movies,filmes,watch,review"></meta>
+        <title>Birthday Movie</title>
+        <meta name="keywords" content="movies,watch,tvshows"></meta>
         <meta
           name="description"
-          content="find tv shows, movies and today tips"
+          content="Watch movies from your birth year or birthday"
         ></meta>
       </Head>
       <div>
