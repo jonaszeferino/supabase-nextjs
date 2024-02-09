@@ -200,19 +200,16 @@ export default function Movieapi() {
     <>
       <Head>
         <title>What to Watch Today?</title>
-        <meta name="keywords" content="movies,watch,review"></meta>
+        <meta name="keywords" content="movies,watch,review,tip,recommendation"></meta>
         <meta
           name="description"
-          content="Find everything about movies here"
+          content="Find a movie tip here."
         ></meta>
       </Head>
       <div>
         <div style={{ maxWidth: "480px", margin: "0 auto" }}>
           <ChakraProvider>
             <Box maxW="32rem">
-
-
-
               {isMobile ? (
                 <>
                   <div style={{ paddingTop: 80, }} >
@@ -270,10 +267,7 @@ export default function Movieapi() {
                         >{`${movieData.originalTitle}`}</span>
                       ) : (
                         <ChakraProvider>
-                          {/* <Box bg="green.100" p={4}>
-                        <Alert
-                        </Alert>
-                      </Box> */}
+                          <></>
                         </ChakraProvider>
                       )}
                     </span>
@@ -296,32 +290,36 @@ export default function Movieapi() {
                     </div>
                   ) : null}
 
-                  <h1>
-                    <ChakraProvider>
-                      {isLoadingPage === false ? (
-                        <Link href={destino}>
-                          <Image
-                            className={styles.card_image_big}
-                            src={
-                              movieData.image
-                                ? "https://image.tmdb.org/t/p/original" +
-                                movieData.image
-                                : "/callback.png"
-                            }
-                            alt="poster"
-                            width="480"
-                            height="720"
-                          />
-                        </Link>
-                      ) : (
-                        <Skeleton width="480px" height="720px" />
-                      )}
 
-                      {/* <Button colorScheme="purple">
-      <Link href={destino}>Details</Link>
-    </Button> */}
-                    </ChakraProvider>
-                  </h1>
+
+
+                  {isLoadingPage === false ? (
+                    <Link href={destino}>
+                      <span>
+                        <Image
+                          className={ isMobile ? styles.card_image_big_mobile : styles.card_image_big}
+                          src={
+                            movieData.image
+                              ? "https://image.tmdb.org/t/p/original" +
+                              movieData.image
+                              : "/callback.png"
+                          }
+                          alt="poster"
+                          width="480"
+                          height="720"
+                          objectFit="contain"
+                          maxHeight="100%"
+                          maxWidth="100%"
+                        />
+                      </span>
+                    </Link>
+
+                  ) : (
+                    <Skeleton width="480px" height="720px" />
+                  )}
+
+
+
 
                   {movieData.portugueseTitle && (
                     <div style={{ maxWidth: "480px", margin: "0 auto" }}>
