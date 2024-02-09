@@ -147,7 +147,7 @@ export default function Home() {
         <div>
           {isMobile ? (
 
-            <h1 style={{ paddingTop: 50, }}>
+            <h1 style={{ paddingTop: 20, }}>
               <Divider />
               <strong>Trending Movies of the Week</strong>
               <Divider /></h1>
