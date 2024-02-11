@@ -159,8 +159,6 @@ const MobileNavbar = (isLoading, onAuthenticated) => {
             </Button>
           </Stack>
 
-
-
           {menuOpen && (
             <Stack spacing={4} mt={4}>
               <Link href="/watch-today" onClick={closeMenu}>

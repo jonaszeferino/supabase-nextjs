@@ -35,17 +35,14 @@ const MoviePage = () => {
   const [api, contextHolder] = notification.useNotification();
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const [confirmationModeMovieId, setConfirmationModeMovieId] = useState(null);
-
   const showContentMessage = !session && !isMobile;
-
-
 
   const isConfirmationModeForMovie = (movieId) => {
     return confirmationModeMovieId === movieId;
   };
 
 
-  console.log("Estado Email: ", email_user);
+  console.log("Mail State ", email_user);
 
   useEffect(() => {
     let mounted = true;
