@@ -92,13 +92,13 @@ export default function Navbar({ isLoading, onAuthenticated }) {
                   <Link href="/birthday-movies">| Birthday Movie</Link>
                 </li>
                 <li>
-                  <Link href="/trivia">| Trivia</Link>
+                  <Link href="/trivia">| Trivia |</Link>
                 </li>
 
                 <br />
                 {!session ?
                   <li>
-                    <button onClick={onOpen}>| Login |</button>
+                    <button onClick={onOpen}> Login |</button>
                   </li>
                   : null}
 
