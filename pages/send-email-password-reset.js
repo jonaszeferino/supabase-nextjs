@@ -11,10 +11,7 @@ import {
   Center,
   Alert,
   AlertIcon,
-  Link,
   Divider,
-  InputGroup,
-  InputRightElement,
 } from "@chakra-ui/react";
 import Head from "next/head";
 
@@ -45,7 +42,7 @@ export default function PasswordResetPage() {
       <Head>
         <title>Reset Password</title>
         <meta name="keywords" content="tvshow,watch,review"></meta>
-        <meta name="description" content="filmes, series,"></meta>
+        <meta name="description" content="movies, series, tvshows"></meta>
       </Head>
       <></>
       <Center height="100vh">

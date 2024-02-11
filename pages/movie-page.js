@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import { format } from "date-fns";
 import { useRouter } from "next/router";
 import { Rate } from "antd";
 import useBackToTopButton from "../components/backToTopButtonLogic";
@@ -61,7 +60,7 @@ const MoviePage = () => {
       )
       .then(([dataMovies, dataProviders, resCredits]) => {
         if (!Array.isArray(resCredits.crew) || resCredits.crew.length === 0) {
-          console.log("Erro: Dados de créditos inválidos");
+          console.log("Error: credite data inavalid");
           return;
         }
 

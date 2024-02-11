@@ -33,6 +33,7 @@ import LoggedUser from "../components/LoggedUser";
 import { Tooltip } from "antd";
 import Link from "next/link";
 import { Rate, Divider } from "antd";
+import PageTitle from "../components/PageTitle";
 
 export default function Discovery() {
 
@@ -182,137 +183,205 @@ export default function Discovery() {
           content="Watch movies from your birth year or birthday"
         ></meta>
       </Head>
-      <div>
 
-        {isMobile ? (
-          <>
-            <div style={{ paddingTop: 80, }} >
-              <LoggedUser />
-              <Divider />
-              <h1> <strong>Birthday Movie</strong></h1>
-              <Divider />
-            </div>
-          </>
-        ) : (
-          <div className={styles.top}>
-            <h3 className={styles.title}>Birthday Movie</h3>
-          </div>
-        )}
 
-        <br />
+      <PageTitle title="Birthday Movie" isMobile={isMobile} />
 
+      <br />
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <div
           style={{
+            maxWidth: "600px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <div
-            style={{
-              maxWidth: "600px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <ChakraProvider>
-              <Button ref={btnRef} colorScheme="purple" onClick={onOpen}>
-                Put Your Birthday
-              </Button>
-              <br />
+          <ChakraProvider>
+            <Button ref={btnRef} colorScheme="purple" onClick={onOpen}>
+              Put Your Birthday
+            </Button>
+            <br />
 
-              <Drawer
-                isOpen={isOpen}
-                placement="bottom"
-                onClose={onClose}
-                finalFocusRef={btnRef}
-              >
-                <DrawerOverlay />
-                <DrawerContent>
-                  <DrawerCloseButton />
+            <Drawer
+              isOpen={isOpen}
+              placement="bottom"
+              onClose={onClose}
+              finalFocusRef={btnRef}
+            >
+              <DrawerOverlay />
+              <DrawerContent>
+                <DrawerCloseButton />
+                <Center>
+                  <DrawerHeader>Put Your Birthday</DrawerHeader>
+                </Center>
+
+                <DrawerBody>
                   <Center>
-                    <DrawerHeader>Put Your Birthday</DrawerHeader>
+                    <Button
+                      colorScheme="purple"
+                      onClick={() => setType(!type)}
+                    >
+                      Your Day / Your Year
+                    </Button>
                   </Center>
 
-                  <DrawerBody>
+                  <br />
+
+                  <FormControl>
                     <Center>
-                      <Button
-                        colorScheme="purple"
-                        onClick={() => setType(!type)}
-                      >
-                        Your Day / Your Year
-                      </Button>
+                      <Flex align="center">
+                        <Input
+                          isDisabled={!type}
+                          type="date"
+                          value={searchFilters.releaseDateFrom}
+                          onChange={(event) =>
+                            setSearchFilters({
+                              ...searchFilters,
+                              releaseDateFrom: event.target.value,
+                            })
+                          }
+                        />
+
+                        <Box w="20px" />
+                      </Flex>
                     </Center>
+                  </FormControl>
 
-                    <br />
-
-                    <FormControl>
-                      <Center>
-                        <Flex align="center">
-                          <Input
-                            isDisabled={!type}
-                            type="date"
-                            value={searchFilters.releaseDateFrom}
-                            onChange={(event) =>
-                              setSearchFilters({
-                                ...searchFilters,
-                                releaseDateFrom: event.target.value,
-                              })
-                            }
-                          />
-
-                          <Box w="20px" />
-                        </Flex>
-                      </Center>
-                    </FormControl>
-
-                    <br />
-                    <FormControl>
-                      <Center>
-                        <Flex align="center">
-                          <Input
-                            isDisabled={type}
-                            type="number"
-                            min={1900}
-                            max={new Date().getFullYear()}
-                            value={searchFilters.releaseYear}
-                            onChange={handleInputChange}
-                          />
-                          <Box w="20px" />
-                        </Flex>
-                      </Center>
-                      <Center>
-                        {isError && (
-                          <Text style={{ color: "red" }}>{isError}</Text>
-                        )}
-                      </Center>
-                    </FormControl>
-
-                    <br />
-
+                  <br />
+                  <FormControl>
                     <Center>
-                      <Button
-                        size="lg"
-                        colorScheme="purple"
-                        onClick={() => apiCall(page)}
-                      >
-                        Go
-                      </Button>
+                      <Flex align="center">
+                        <Input
+                          isDisabled={type}
+                          type="number"
+                          min={1900}
+                          max={new Date().getFullYear()}
+                          value={searchFilters.releaseYear}
+                          onChange={handleInputChange}
+                        />
+                        <Box w="20px" />
+                      </Flex>
                     </Center>
-                  </DrawerBody>
+                    <Center>
+                      {isError && (
+                        <Text style={{ color: "red" }}>{isError}</Text>
+                      )}
+                    </Center>
+                  </FormControl>
 
-                  <DrawerFooter></DrawerFooter>
-                </DrawerContent>
-              </Drawer>
-            </ChakraProvider>
-          </div>
+                  <br />
+
+                  <Center>
+                    <Button
+                      size="lg"
+                      colorScheme="purple"
+                      onClick={() => apiCall(page)}
+                    >
+                      Go
+                    </Button>
+                  </Center>
+                </DrawerBody>
+
+                <DrawerFooter></DrawerFooter>
+              </DrawerContent>
+            </Drawer>
+          </ChakraProvider>
         </div>
-        <br />
-        <ChakraProvider>{isLoading && <Spinner />}</ChakraProvider>
+      </div>
+      <br />
+      <ChakraProvider>{isLoading && <Spinner />}</ChakraProvider>
 
-        <br />
+      <br />
 
+      {!searchMovies ? (
+        <div>
+          <button
+            onClick={previousPage}
+            disabled={page <= 1}
+            className={styles.card}
+          >
+            Back
+          </button>
+          <button
+            onClick={nextPage}
+            disabled={page >= totalPages}
+            className={styles.card}
+          >
+            Next
+          </button>
+        </div>
+      ) : (
+        ""
+      )}
+      <span className={styles.spantext}>
+        {isLoading ? (
+          <ChakraProvider>
+            <Progress size="xs" isIndeterminate />{" "}
+          </ChakraProvider>
+        ) : null}
+      </span>
+      {isError === true ? (
+        <ErrorPage message={`Verify Credentials`}></ErrorPage>
+      ) : (
+        <div className={styles.grid}>
+          {searchMovies.map((search) => (
+            <div key={search.id} style={{ marginBottom: "10px" }}>
+              <ChakraProvider>
+                <Link
+                  href={{
+                    pathname: "/movie-page",
+                    query: { movieId: search.id },
+                  }}
+                >
+                  <Tooltip
+                    title="More"
+                    style={{
+                      color: "white",
+                      borderColor: "purple",
+                      background: "purple",
+                    }}
+                  >
+                    <Image
+                      className={styles.card_image}
+                      src={
+                        search.poster_path
+                          ? `https://image.tmdb.org/t/p/original${search.poster_path}`
+                          : "/callback.png"
+                      }
+                      alt="poster"
+                      width={240}
+                      height={360}
+                    />
+                  </Tooltip>
+                </Link>
+              </ChakraProvider>
+
+              <div style={{ maxWidth: "240px", margin: "10px" }}>
+                <ChakraProvider>
+                  <Progress
+                    size="lg"
+                    value={search.vote_average}
+                    max={10}
+                    colorScheme={getProgressColor(search.vote_average)}
+                  />
+                  {search.vote_average} <Rate value={1} count={1} />
+                </ChakraProvider>
+              </div>
+              <br />
+            </div>
+          ))}
+        </div>
+      )}
+
+      <span className={styles.spantext}>
         {!searchMovies ? (
           <div>
             <button
@@ -333,132 +402,51 @@ export default function Discovery() {
         ) : (
           ""
         )}
-        <span className={styles.spantext}>
-          {isLoading ? (
-            <ChakraProvider>
-              <Progress size="xs" isIndeterminate />{" "}
-            </ChakraProvider>
-          ) : null}
-        </span>
-        {isError === true ? (
-          <ErrorPage message={`Verify Credentials`}></ErrorPage>
-        ) : (
-          <div className={styles.grid}>
-            {searchMovies.map((search) => (
-              <div key={search.id} style={{ marginBottom: "10px" }}>
-                <ChakraProvider>
-                  <Link
-                    href={{
-                      pathname: "/movie-page",
-                      query: { movieId: search.id },
-                    }}
-                  >
-                    <Tooltip
-                      title="More"
-                      style={{
-                        color: "white",
-                        borderColor: "purple",
-                        background: "purple",
-                      }}
-                    >
-                      <Image
-                        className={styles.card_image}
-                        src={
-                          search.poster_path
-                            ? `https://image.tmdb.org/t/p/original${search.poster_path}`
-                            : "/callback.png"
-                        }
-                        alt="poster"
-                        width={240}
-                        height={360}
-                      />
-                    </Tooltip>
-                  </Link>
-                </ChakraProvider>
-
-                <div style={{ maxWidth: "240px", margin: "10px" }}>
-                  <ChakraProvider>
-                    <Progress
-                      size="lg"
-                      value={search.vote_average}
-                      max={10}
-                      colorScheme={getProgressColor(search.vote_average)}
-                    />
-                    {search.vote_average} <Rate value={1} count={1} />
-                  </ChakraProvider>
-                </div>
-                <br />
-              </div>
-            ))}
-          </div>
-        )}
-
-        <span className={styles.spantext}>
-          {!searchMovies ? (
-            <div>
-              <button
-                onClick={previousPage}
-                disabled={page <= 1}
-                className={styles.card}
-              >
-                Back
-              </button>
-              <button
-                onClick={nextPage}
-                disabled={page >= totalPages}
-                className={styles.card}
-              >
-                Next
-              </button>
-            </div>
-          ) : (
-            ""
-          )}
-          <br />
-          {!searchMovies ? (
-            <div>
-              <span className={styles.spantext}>Total Pages {totalPages} </span>{" "}
-              <span className={styles.spantext}>Page {currentPage}</span>{" "}
-              <span className={styles.spantext}>
-                Total Results: {totalResults}
-              </span>{" "}
-            </div>
-          ) : (
-            ""
-          )}
-        </span>
-
-        {searchMovieTotalResults > 0 ? (
-          <span>
-            <button
-              onClick={previousPage}
-              disabled={page <= 1}
-              className={styles.button}
-            >
-              Back
-            </button>
-            <span className={styles.button}>
-              {currentPage} / {totalPages}
-            </span>
-            <button
-              onClick={nextPage}
-              disabled={page >= totalPages}
-              className={styles.button}
-            >
-              Next
-            </button>
-            <br />
-            <br />
+        <br />
+        {!searchMovies ? (
+          <div>
+            <span className={styles.spantext}>Total Pages {totalPages} </span>{" "}
+            <span className={styles.spantext}>Page {currentPage}</span>{" "}
             <span className={styles.spantext}>
               Total Results: {totalResults}
             </span>{" "}
-          </span>
+          </div>
         ) : (
           ""
         )}
+      </span>
 
-        {!totalResults ? <span className={styles.spantext}></span> : ""}
-      </div>
+      {searchMovieTotalResults > 0 ? (
+        <span>
+          <button
+            onClick={previousPage}
+            disabled={page <= 1}
+            className={styles.button}
+          >
+            Back
+          </button>
+          <span className={styles.button}>
+            {currentPage} / {totalPages}
+          </span>
+          <button
+            onClick={nextPage}
+            disabled={page >= totalPages}
+            className={styles.button}
+          >
+            Next
+          </button>
+          <br />
+          <br />
+          <span className={styles.spantext}>
+            Total Results: {totalResults}
+          </span>{" "}
+        </span>
+      ) : (
+        ""
+      )}
+
+      {!totalResults ? <span className={styles.spantext}></span> : ""}
+
       {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
     </>
   );

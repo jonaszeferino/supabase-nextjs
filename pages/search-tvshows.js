@@ -32,6 +32,7 @@ import LoggedUser from "../components/LoggedUser";
 import { Tooltip } from "antd";
 import Link from "next/link";
 import { Divider, Rate } from "antd";
+import PageTitle from "../components/PageTitle";
 
 export default function Discovery() {
 
@@ -231,23 +232,7 @@ export default function Discovery() {
         <meta name="description" content="movies, tvshows"></meta>
       </Head>
 
-
-
-
-      {isMobile ? (
-        <>
-          <div style={{ paddingTop: 80, }} >
-            <LoggedUser />
-            <Divider />
-            <h1> <strong>Discover TvShows</strong></h1>
-            <Divider />
-          </div>
-        </>
-      ) : (
-        <div className={styles.top}>
-          <h3 className={styles.title}> Discover Tv Shows</h3>
-        </div>
-      )}
+      <PageTitle title="Discover TvShows" isMobile={isMobile} />
 
       <br />
 

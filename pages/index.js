@@ -9,6 +9,8 @@ import BackToTopButton from "../components/backToTopButton";
 import { supabase } from "../utils/supabaseClient"; //
 import { Divider, Rate } from "antd";
 import LoggedUser from "../components/LoggedUser";
+import PageTitle from "../components/PageTitle";
+
 
 
 
@@ -145,17 +147,10 @@ export default function Home() {
 
 
         <div>
-          {isMobile ? (
 
-            <h1 style={{ paddingTop: 20, }}>
-              <Divider />
-              <strong>Trending Movies of the Week</strong>
-              <Divider /></h1>
-          ) : (
-            <div className={styles.top}>
-              <h3 className={styles.title}>Trending Movies of the Week</h3>
-            </div>
-          )}
+          <PageTitle title="Trending Movies of the Week" isMobile={isMobile} />
+
+
           <br />
           <>
             {isLoading ? (
@@ -205,17 +200,7 @@ export default function Home() {
 
 
 
-        {isMobile ? (
-          <>
-            <Divider />
-            <h1 style={{ paddingTop: 5, }}> <strong>Trending TV Shows of the Week</strong></h1>
-            <Divider />
-          </>
-        ) : (
-          <div className={styles.top}>
-            <h3 className={styles.title}> Trending TV Shows of the Week</h3>
-          </div>
-        )}
+        <PageTitle title="Trending TvShows of the Week" isMobile={isMobile} />
 
 
 

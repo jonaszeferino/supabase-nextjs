@@ -33,13 +33,11 @@ import LoggedUser from "../components/LoggedUser";
 import { Tooltip } from "antd";
 import Link from "next/link";
 import { Divider, Rate } from "antd";
+import PageTitle from "../components/PageTitle";
 
 export default function Discovery() {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
-
   let [searchMovies, setSearchMovies] = useState([]);
-
-
   let [page, setPage] = useState(1);
   let [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
   let [searchMovieRealPage, setSearchMovieRealPage] = useState("");
@@ -463,20 +461,7 @@ export default function Discovery() {
       <div>
 
 
-        {isMobile ? (
-          <>
-            <div style={{ paddingTop: 80, }} >
-              <LoggedUser />
-              <Divider />
-              <h1> <strong>Discover Movies</strong></h1>
-              <Divider />
-            </div>
-          </>
-        ) : (
-          <div className={styles.top}>
-            <h3 className={styles.title}>Discover Movies</h3>
-          </div>
-        )}
+      <PageTitle title="Discover Movies" isMobile={isMobile} />
 
         <br />
 

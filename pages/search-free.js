@@ -21,6 +21,7 @@ import {
   Tr,
   Td,
 } from "@chakra-ui/react";
+import PageTitle from "../components/PageTitle";
 
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
@@ -129,9 +130,8 @@ export default function Discovery() {
       <div>
         <LoggedUser />
 
-        <div className={styles.top}>
-          <h3 className={styles.title}>Free Search</h3>
-        </div>
+        <PageTitle title="Search Free" isMobile={isMobile} />
+
         <br />
         <ChakraProvider>
           <Center>

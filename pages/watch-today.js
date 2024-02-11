@@ -30,6 +30,7 @@ import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import LoggedUser from "../components/LoggedUser";
 import { supabase } from "../utils/supabaseClient";
+import PageTitle from "../components/PageTitle";
 
 
 export default function Movieapi() {
@@ -210,30 +211,12 @@ export default function Movieapi() {
         <div style={{ maxWidth: "480px", margin: "0 auto" }}>
           <ChakraProvider>
             <Box maxW="32rem">
-              {isMobile ? (
-                <>
-                  <div style={{ paddingTop: 80, }} >
-                    <LoggedUser />
-                    <Divider />
-                    <h1> <strong>What To Watch Today?</strong></h1>
-                    <span>
-                      Click and see the possibilities until you find one to your
-                      liking!
-                    </span>
 
-                    <Divider />
-                  </div>
-                </>
-              ) : (
-                <div className={styles.top}>
-                  <h3 className={styles.title}>What To Watch Today?</h3>
-                  <span>
-                    {" "}
-                    Click and see the possibilities until you find one to your
-                    liking!
-                  </span>
-                </div>
-              )}
+
+              <PageTitle title="What To Watch Today?" isMobile={isMobile} />
+              <span>Click and see the possibilities until you find one to your liking!</span>
+
+
               <Button
                 size="md"
                 bg="white"
@@ -297,7 +280,7 @@ export default function Movieapi() {
                     <Link href={destino}>
                       <span>
                         <Image
-                          className={ isMobile ? styles.card_image_big_mobile : styles.card_image_big}
+                          className={isMobile ? styles.card_image_big_mobile : styles.card_image_big}
                           src={
                             movieData.image
                               ? "https://image.tmdb.org/t/p/original" +

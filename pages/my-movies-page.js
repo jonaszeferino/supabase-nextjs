@@ -13,6 +13,7 @@ import {
   Button,
   Spinner,
   Image,
+  useMediaQuery
 } from "@chakra-ui/react";
 import { Rate } from "antd";
 import { supabase } from "../utils/supabaseClient";
@@ -31,6 +32,7 @@ const MoviePage = () => {
   const [session, setSession] = useState(null);
   const [email_user, setEmail_user] = useState();
   const [api, contextHolder] = notification.useNotification();
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   console.log("Estado Email: ", email_user);
 
@@ -180,6 +182,7 @@ const MoviePage = () => {
           <div style={{ paddingTop: 80, }} >
             <LoggedUser />
           </div>
+
 
 
           <>

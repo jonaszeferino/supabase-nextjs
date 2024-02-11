@@ -17,9 +17,12 @@ import { Alert, Space, Divider } from "antd";
 import styles from "../styles/Home.module.css";
 import { supabase } from "../utils/supabaseClient";
 import LoggedUser from "../components/LoggedUser";
+import PageTitle from "../components/PageTitle";
+import Head from "next/head";
+
 
 export default function Trivia() {
-  
+
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const { isOpen, onToggle } = useDisclosure();
   const [answers, setAnswers] = useState({ questions: [] });
@@ -226,29 +229,13 @@ export default function Trivia() {
 
   return (
     <div>
-      <Center>
-        <Text style={{ margin: "10px" }}></Text>
-      </Center>
+      <Head>
+        <title>Trivia</title>
+        <meta name="keywords" content="movies, watch, tv shows, trivia" />
+        <meta name="description" content="Test your knowledge in movies." />
+      </Head>
 
-      <br />
-      
-      {isMobile ? (
-          <>
-            <div style={{ paddingTop: 80, }} >
-            <LoggedUser />
-              <Divider />
-              <h1> <strong>Trivia</strong></h1>
-              <Divider />
-            </div>
-          </>
-        ) : (
-          <div className={styles.top}>
-            <h3 className={styles.title}>Trivia</h3>
-          </div>
-        )}
-      <br />
-
-      
+      <PageTitle title="Trivia" isMobile={isMobile} />
 
       <ChakraProvider>
         <Box>
