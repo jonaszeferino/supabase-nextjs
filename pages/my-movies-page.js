@@ -167,23 +167,20 @@ const MoviePage = () => {
 
   return (
     <>
-      {session ? (
+      {session && !isMobile ? (
         <ChakraProvider>
           <Head>
             <title>My Reviews</title>
             <meta
               name="keywords"
-              content="tvshow,watch,review, series, filmes"
+              content="tvshow,watch, series, movies"
             ></meta>
-            <meta name="description" content="filmes, series,"></meta>
+            <meta name="description" content="Movies, TvShows My Rating Movies Tips"></meta>
           </Head>
-
 
           <div style={{ paddingTop: 80, }} >
             <LoggedUser />
           </div>
-
-
 
           <>
             {contextHolder}
@@ -303,6 +300,149 @@ const MoviePage = () => {
                   </Tbody>
                 </Table>
               </TableContainer>
+            )}
+          </div>
+        </ChakraProvider>
+      ) : (
+        "Click Log In to load the page content"
+
+      )}
+
+      {session && isMobile ? (
+        <ChakraProvider>
+          <Head>
+            <title>My Reviews</title>
+            <meta
+              name="keywords"
+              content="tvshow,watch, series, movies"
+            ></meta>
+            <meta name="description" content="Movies, TvShows My Rating Movies Tips"></meta>
+          </Head>
+
+          <div style={{ paddingTop: 80, }} >
+            <LoggedUser />
+          </div>
+
+          <>
+            {contextHolder}
+            <Space></Space>
+          </>
+          <div
+            style={{
+              maxWidth: "1500px",
+              margin: "0 auto",
+              wordBreak: "break-word",
+            }}
+          >
+            <h1>My Likes</h1>
+            {valueStartDelete ? (
+              <h1>
+                Deleting Selected Record <Spinner size="xl" />
+              </h1>
+            ) : null}
+
+            {valueEndDelete ? <h1>Deleted record</h1> : null}
+
+            {isLoading ? (
+              <Spinner size="xl" />
+            ) : (
+              <div style={{ maxWidth: "100%", overflowX: "auto" }}>
+                <TableContainer>
+                  <Table variant="simple">
+                    <TableCaption>Movie Likes</TableCaption>
+                    <Thead>
+                      <Tr>
+                        <Th>Movie</Th>
+                        <Th>Date</Th>
+                        <Th>Rating</Th>
+                        <Th>Poster</Th>
+                        <Th>
+                          {isConfirmationMode ? (
+                            <>
+                              <Button
+                                onClick={apiDeleteRates}
+                                colorScheme="red"
+                                marginRight={2}
+                              >
+                                Confirm
+                              </Button>
+                              <Button
+                                onClick={() => setIsConfirmationMode(false)}
+                              >
+                                Close
+                              </Button>
+                            </>
+                          ) : (
+                            <Button
+                              onClick={() => setIsConfirmationMode(true)}
+                              isDisabled={selectedMovie === null}
+                              colorScheme={
+                                selectedMovie !== null ? "red" : "gray"
+                              }
+                            >
+                              Delete
+                            </Button>
+                          )}
+                        </Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {data.map((movie) => (
+                        <Tr key={movie.movieId}>
+                          <Td>
+                            {movie.original_title}
+                            <br />
+                          </Td>
+                          <Td>
+                            {new Date(movie.like_date).toLocaleDateString()}
+                          </Td>
+                          <Td>
+                            <Rate
+                              onChange={(rating) => {
+                                setSelectedAlterMovie(movie.movie_id);
+                                apiPutRates(movie.movie_id, rating);
+                              }}
+                              value={movie.rating_by_user || 0}
+                              count={10}
+                            />
+                          </Td>
+                          <Td>
+                            <Image
+                              src={
+                                movie.poster_path ?
+                                  "https://image.tmdb.org/t/p/original" +
+                                  movie.poster_path
+                                  : "/callback.png"
+                              }
+                              alt="poster"
+                              width={60}
+                              height={90}
+                              style={{
+                                objectFit: "contain",
+                                maxHeight: "100%",
+                                maxWidth: "100%",
+                              }}
+                            />
+                          </Td>
+                          <Td>
+                            <Checkbox
+                              onChange={() =>
+                                setSelectedMovie((prevSelectedMovie) =>
+                                  prevSelectedMovie === movie.movie_id
+                                    ? null
+                                    : movie.movie_id
+                                )
+                              }
+                              isChecked={selectedMovie === movie.movie_id}
+                              isDisabled={isConfirmationMode}
+                            />
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+              </div>
             )}
           </div>
         </ChakraProvider>
