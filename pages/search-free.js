@@ -13,18 +13,12 @@ import {
   HStack,
   Tooltip,
   Image,
-  TableContainer,
-  Table,
-  Tbody,
-  Tr,
-  Td,
   useMediaQuery
 } from "@chakra-ui/react";
 import PageTitle from "../components/PageTitle";
-
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
-import LoggedUser from "../components/LoggedUser";
+
 
 export default function Discovery() {
   const router = useRouter();
@@ -128,9 +122,13 @@ export default function Discovery() {
 
       <br />
       <div>
-        <LoggedUser />
 
-        <PageTitle title="Search Free" isMobile={isMobile} />
+        <PageTitle
+          title="Search Free"
+          isMobile={isMobile}
+          showLoggedUser={true}
+        />
+
 
         <br />
         <ChakraProvider>
@@ -187,38 +185,38 @@ export default function Discovery() {
             <div key={search.id}>
               {showPerson || showMovies || showTvShows ? (
                 <ChakraProvider>
-                  <TableContainer>
-                    <Table variant="simple">
-                      <Tbody>
-                        <Tr>
-                          <Td>
-                            {search.media_type === "person" && showPerson
-                              ? search.name
-                              : null}
-                            {search.media_type === "movie" && showMovies
-                              ? search.title
-                              : null}
-                            {search.media_type === "tv" && showTvShows
-                              ? search.name
-                              : null}
-                          </Td>
-                        </Tr>
-                        <Tr>
-                          <Td>
-                            {search.media_type === "person" && showPerson
-                              ? search.known_for_department
-                              : null}
-                            {search.media_type === "movie" && showMovies
-                              ? "Movie"
-                              : null}
-                            {search.media_type === "tv" && showTvShows
-                              ? "TvShow"
-                              : null}
-                          </Td>
-                        </Tr>
-                      </Tbody>
-                    </Table>
-                  </TableContainer>
+
+
+
+
+                  <Text style={{ maxWidth: "768px" }}>
+                    {search.media_type === "person" && showPerson
+                      ? search.name
+                      : null}
+                    {search.media_type === "movie" && showMovies
+                      ? search.title
+                      : null}
+                    {search.media_type === "tv" && showTvShows
+                      ? search.name
+                      : null}
+                  </Text>
+
+
+                  <Text style={{ maxWidth: "768px" }}>
+                    {search.media_type === "person" && showPerson
+                      ? search.known_for_department
+                      : null}
+                    {search.media_type === "movie" && showMovies
+                      ? "Movie"
+                      : null}
+                    {search.media_type === "tv" && showTvShows
+                      ? "TvShow"
+                      : null}
+                  </Text>
+
+
+
+
                 </ChakraProvider>
               ) : null}
 

@@ -241,7 +241,7 @@ const Profile = () => {
       <Head>
         <title>Profile</title>
         <meta name="keywords" content="tvshow,watch,review"></meta>
-        <meta name="description" content="filmes, series,"></meta>
+        <meta name="description" content="Movies, TvShows Profile Page"></meta>
       </Head>
 
 
@@ -256,7 +256,7 @@ const Profile = () => {
               colorScheme="red"
               size="sm"
             >
-              Close
+              Sign Out
             </Button>
           </p>
         ) : null}
@@ -280,7 +280,7 @@ const Profile = () => {
         <Box p={4} style={{ maxWidth: "400px", margin: "0 auto" }}>
           {!isLoading && (
             <>
-              <Heading size="lg" mb={4}>
+              <Heading size="lg" mb={4} style={{ color: "#7657be" }}>
                 Profile{" "}
               </Heading>
               {newUser && (
