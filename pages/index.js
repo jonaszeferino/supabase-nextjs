@@ -17,6 +17,7 @@ import PageTitle from "../components/PageTitle";
 export default function Home() {
 
   const [isMobile] = useMediaQuery('(max-width: 768px)');
+  const [showLoggedUser, setShowLoggedUser] = useState(true)
 
   let [searchMovies, setSearchMovies] = useState([]);
   let [page, setPage] = useState(1);
@@ -137,18 +138,12 @@ export default function Home() {
       </Head>
 
       <div>
-        {isMobile ? (
-          <div style={{ paddingTop: 80, }}>
-            <LoggedUser />
-          </div>
-        ) : (
-          <LoggedUser />
-        )}
-
-
         <div>
 
           <PageTitle title="Trending Movies of the Week" isMobile={isMobile} />
+
+          <PageTitle title="Trending Movies of the Week" isMobile={isMobile} showLoggedUser={false} />
+
 
 
           <br />
