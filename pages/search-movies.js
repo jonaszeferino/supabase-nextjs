@@ -461,7 +461,11 @@ export default function Discovery() {
       <div>
 
 
-      <PageTitle title="Discover Movies" isMobile={isMobile} />
+      <PageTitle
+          title="Discover Movies"
+          isMobile={isMobile}
+          showLoggedUser={true} 
+        />
 
         <br />
 

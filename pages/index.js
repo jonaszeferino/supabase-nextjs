@@ -6,9 +6,8 @@ import { useEffect, useState } from "react";
 import { ChakraProvider, Progress, useMediaQuery } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
-import { supabase } from "../utils/supabaseClient"; //
-import { Divider, Rate } from "antd";
-import LoggedUser from "../components/LoggedUser";
+import { supabase } from "../utils/supabaseClient";
+import { Rate } from "antd";
 import PageTitle from "../components/PageTitle";
 
 
@@ -140,18 +139,13 @@ export default function Home() {
 
       <div>
         <div>
-          {/* Quero que aqui mostre a parte do Logged */}
+
           <PageTitle
             title="Trending Movies of the Week"
             isMobile={isMobile}
-            showLoggedUser={showLoggedUser} // Mostra o LoggedUser
+            showLoggedUser={showLoggedUser}
           />
-
-
-
-
-
-          <br />
+       <br />
           <>
             {isLoading ? (
               <ChakraProvider>
@@ -200,11 +194,11 @@ export default function Home() {
 
 
 
-        {/* Quero que aqui não mostre a parte do Logged */}
+        
         <PageTitle
           title="Trending TvShows of the Week"
           isMobile={isMobile}
-          showLoggedUser={false} // Não mostra o LoggedUser
+          showLoggedUser={false} 
         />
 
 

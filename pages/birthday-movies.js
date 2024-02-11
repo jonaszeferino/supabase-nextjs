@@ -185,7 +185,11 @@ export default function Discovery() {
       </Head>
 
 
-      <PageTitle title="Birthday Movie" isMobile={isMobile} />
+      <PageTitle
+          title="Birthday Movie"
+          isMobile={isMobile}
+          showLoggedUser={true} 
+        />
 
       <br />
 

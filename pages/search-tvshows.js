@@ -232,7 +232,11 @@ export default function Discovery() {
         <meta name="description" content="movies, tvshows"></meta>
       </Head>
 
-      <PageTitle title="Discover TvShows" isMobile={isMobile} />
+      <PageTitle
+          title="Discover TvShows"
+          isMobile={isMobile}
+          showLoggedUser={true} 
+        />
 
       <br />
 
