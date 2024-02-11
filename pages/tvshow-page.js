@@ -148,15 +148,18 @@ const MoviePage = () => {
       .catch((error) => setError(true));
   };
 
+  const metaDescription = `TvShow Page ${data.originalTitle ? data.originalTitle : 'TvSHows'}`;
+
+
   return (
     <>
       <Head>
         <title>Tv Show {data.originalTitle ? data.originalTitle : null}</title>
         <meta
           name="keywords"
-          content="tvshow,watch,review, series, filmes"
+          content={metaDescription}
         ></meta>
-        <meta name="description" content="filmes, series,"></meta>
+        <meta name="description" content={metaDescription}></meta>
       </Head>
 
       {isMobile ? (
@@ -167,7 +170,7 @@ const MoviePage = () => {
           </div>
         </>
       ) : (
-        <></>
+        <><LoggedUser /></>
       )}
       <span className={styles.title}>{data.originalTitle}</span>
       <br />

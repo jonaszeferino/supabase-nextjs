@@ -163,8 +163,6 @@ const MoviePage = () => {
         ></meta>
         <meta name="description" content="movies, series,"></meta>
       </Head>
-
-
       {isMobile ? (
         <>
           <div style={{ paddingTop: 80, }} >
@@ -173,7 +171,7 @@ const MoviePage = () => {
           </div>
         </>
       ) : (
-        <></>
+        <><LoggedUser /></>
       )}
 
       <span className={styles.title}>{data.originalTitle}</span>
