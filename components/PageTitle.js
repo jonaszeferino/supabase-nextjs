@@ -1,4 +1,11 @@
-function PageTitle({ title, isMobile, showLoggedUser }) {
+import { Divider } from "antd";
+import LoggedUser from "../components/LoggedUser";
+import { useMediaQuery } from "@chakra-ui/react";
+
+function PageTitle({ title, isMobile: isMobileProp, showLoggedUser }) {
+  const [isMobileInternal] = useMediaQuery('(max-width: 768px)');
+  const isMobile = isMobileProp !== undefined ? isMobileProp : isMobileInternal;
+
   return (
     <>
       {showLoggedUser && (
@@ -29,3 +36,5 @@ function PageTitle({ title, isMobile, showLoggedUser }) {
     </>
   );
 }
+
+export default PageTitle;
