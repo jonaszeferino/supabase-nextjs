@@ -9,11 +9,7 @@ function PageTitle({ title, isMobile: isMobileProp, showLoggedUser }) {
 
   return (
     <>
-      {showLoggedUser && (
-        <div>
-          <LoggedUser />
-        </div>
-      )}
+
       {isMobile ? (
         <>
           <div style={{ paddingTop: 80 }}>
@@ -27,9 +23,14 @@ function PageTitle({ title, isMobile: isMobileProp, showLoggedUser }) {
         </>
       ) : (
         <>
+          {showLoggedUser && (
+            <div>
+              <LoggedUser />
+            </div>
+          )}
           <Divider style={{ boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.25)" }} />
           <h1 style={{ fontSize: 40 }}>
-          <div style={{ color: "#7657be" }}><strong>{title}</strong></div>
+            <div style={{ color: "#7657be" }}><strong>{title}</strong></div>
           </h1>
           <Divider style={{ boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.25)" }} />
         </>
