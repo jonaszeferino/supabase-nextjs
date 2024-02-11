@@ -53,11 +53,11 @@ export default function PasswordResetPage() {
           width="100%"
           position="relative"
         >
-          <Heading as="h1" size="xl" textAlign="center" mb={4}>
+          <Heading as="h1" size="xl" textAlign="center" mb={4} style={{ color: "#7657be" }}>
             Password Reset{" "}
           </Heading>
           <FormControl>
-            <FormLabel>Email</FormLabel>
+            <FormLabel style={{ color: "#7657be" }}>Email</FormLabel>
             <Input
               type="email"
               onChange={(e) => setEmail(e.target.value)}
@@ -69,7 +69,7 @@ export default function PasswordResetPage() {
           <Center>
             <Button
               onClick={() => handlePasswordLinkReset()}
-              colorScheme="green"
+              style={{ color: "#7657be" }}
               size="sm"
             >
               Send a Link

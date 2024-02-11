@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-
-import { getSiteUrl, supabase } from "../utils/supabaseClient";
-
+import { supabase } from "../utils/supabaseClient";
 import {
   Box,
   Heading,
@@ -19,11 +17,13 @@ import {
   InputGroup,
   Image,
   InputRightElement,
-
+  useMediaQuery
 } from "@chakra-ui/react";
 import { FaGoogle, FaEyeSlash, FaEye } from "react-icons/fa";
 
+
 export default function Auth() {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const router = useRouter();
   const siteUrl = router.asPath;
   let siteUrlComplete = "https://www.watchtodayguide.com" + siteUrl;
@@ -50,7 +50,7 @@ export default function Auth() {
           redirectTo: siteUrlComplete,
         },
       });
-        setAlertMessage("Check your Email");
+      setAlertMessage("Check your Email");
       if (user) {
         console.log("User successfully registered:", user);
         setAlertMessage("Check your Email");
@@ -161,8 +161,9 @@ export default function Auth() {
         </ChakraProvider>
       </>
       <Center>
-      <Link href="/">
-          <Image
+        <Link href="/">
+
+          {isMobile ? <div style={{ padding: "60px" }}></div> : <Image
             src="/logo_11.png"
             alt="poster"
             width="160"
@@ -173,7 +174,7 @@ export default function Auth() {
               marginBottom: "2px",
               marginTop: "2px",
             }}
-          />
+          /> }
         </Link>
       </Center>
       <Center height="60vh">
@@ -185,11 +186,11 @@ export default function Auth() {
           position="relative"
           marginTop={5}
         >
-          <Heading as="h1" size="xl" textAlign="center" mb={4}>
+          <Heading as="h1" size="xl" textAlign="center" mb={4} style={{ color: "#7657be" }}>
             {isSignUp ? "Sign Up" : "Login"}
           </Heading>
           <FormControl>
-            <FormLabel>Email</FormLabel>
+            <FormLabel style={{ color: "#7657be" }}>Email</FormLabel>
             <Input
               type="email"
               onChange={(e) => setEmail(e.target.value)}
@@ -197,7 +198,7 @@ export default function Auth() {
             />
           </FormControl>
           <FormControl mt={4}>
-            <FormLabel>Password</FormLabel>
+            <FormLabel style={{ color: "#7657be" }}>Password</FormLabel>
             <InputGroup>
               <Input
                 type={showPassword ? "text" : "password"}
@@ -218,7 +219,7 @@ export default function Auth() {
           </FormControl>
 
           <Link
-            color="teal.500"
+            style={{ color: "#7657be" }}
             href="https://www.watchtodayguide.com/send-email-password-reset"
           >
             Forgot your password?
@@ -228,9 +229,10 @@ export default function Auth() {
             {isSignUp && (
               <Button
                 mt={4}
-                colorScheme="teal"
+
                 size="md"
                 onClick={handleSignUp}
+                style={{ color: "#7657be" }}
               >
                 Sign Up
               </Button>
@@ -238,7 +240,7 @@ export default function Auth() {
             {!isSignUp && (
               <Button
                 mt={4}
-                colorScheme="teal"
+                style={{ color: "#7657be" }}
                 size="md"
                 onClick={handleSignIn}
               >
@@ -257,13 +259,11 @@ export default function Auth() {
               </Alert>
             </ChakraProvider>
           )}
-
-          {/* Link para to change between Sign In e Sign Up */}
           <Divider my={4} />
           <Center>
             <Button
               mt={4}
-              colorScheme="blue"
+              style={{ color: "#7657be" }}
               size="md"
               leftIcon={<FaGoogle />}
               onClick={handleGoogleSignIn}
@@ -273,7 +273,7 @@ export default function Auth() {
           </Center>
           <br />
           <Center>
-            <Link onClick={changeForm} cursor="pointer">
+            <Link onClick={changeForm} cursor="pointer" style={{ color: "#7657be" }}>
               {isSignUp
                 ? "Already have an account? Log In!"
                 : "New here? Sign Up!"}

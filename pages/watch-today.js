@@ -28,7 +28,6 @@ import {
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
-import LoggedUser from "../components/LoggedUser";
 import { supabase } from "../utils/supabaseClient";
 import PageTitle from "../components/PageTitle";
 
@@ -219,7 +218,7 @@ export default function Movieapi() {
                 showLoggedUser={true}
               />
               <span>Click and see the possibilities until you find one to your liking!</span>
-
+<br/>
 
               <Button
                 size="md"

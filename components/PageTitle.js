@@ -15,7 +15,7 @@ function PageTitle({ title, isMobile: isMobileProp, showLoggedUser }) {
           <div style={{ paddingTop: 80 }}>
             {showLoggedUser && <LoggedUser />}
           </div>
-          <h1 style={{ paddingTop: 20 }}>
+          <h1 style={{ paddingTop: 20,fontSize: 30  }}>
             <Divider />
             <div style={{ color: "#7657be" }}><strong>{title}</strong></div>
             <Divider />
