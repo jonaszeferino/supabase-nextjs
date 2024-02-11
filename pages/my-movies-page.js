@@ -36,6 +36,9 @@ const MoviePage = () => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const [confirmationModeMovieId, setConfirmationModeMovieId] = useState(null);
 
+  const showContentMessage = !session && !isMobile;
+
+
 
   const isConfirmationModeForMovie = (movieId) => {
     return confirmationModeMovieId === movieId;
@@ -175,6 +178,11 @@ const MoviePage = () => {
 
   return (
     <>
+        {showContentMessage && (
+      <p style={{ textAlign: "center" }}>
+        Click Log In to load the page content
+      </p>
+    )}
       {session && !isMobile ? (
         <ChakraProvider>
           <Head>
@@ -312,7 +320,7 @@ const MoviePage = () => {
           </div>
         </ChakraProvider>
       ) : (
-        "Click Log In to load the page content"
+        null
 
       )}
 
@@ -455,7 +463,7 @@ const MoviePage = () => {
           </div>
         </ChakraProvider>
       ) : (
-        "Click Log In to load the page content"
+        null
 
       )}
     </>
