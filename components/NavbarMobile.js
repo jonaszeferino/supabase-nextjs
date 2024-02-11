@@ -103,7 +103,7 @@ const MobileNavbar = (isLoading, onAuthenticated) => {
               <ModalOverlay />
               <ModalContent style={{ background: "white" }}>
                 <ModalHeader>
-                  Login
+                  Close
                   <IconButton
                     icon={<FaTimes />}
                     colorScheme="gray"
