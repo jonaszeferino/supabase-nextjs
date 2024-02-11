@@ -83,6 +83,7 @@ export default function Auth() {
         throw error;
       }
       setAlertMessage("User Logging In..");
+      router.push("/"); 
       console.log(user);
       console.log(session);
     } catch (e) {
