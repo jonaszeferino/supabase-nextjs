@@ -162,11 +162,11 @@ export default function Auth() {
         </ChakraProvider>
       </>
 
-      <Center height="60vh">
+      <Center height="70vh">
         <Box
           p={2}
-          borderWidth="1px"
-          maxW="400px"
+          borderWidth="2px"
+          maxW="350px"
           width="100%"
           position="relative"
           marginTop={5}
