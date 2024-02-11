@@ -29,7 +29,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
   const [session, setSession] = useState(null);
   const router = useRouter();
 
-  // Session Verify
+  
   useEffect(() => {
     let mounted = true;
     async function getInitialSession() {
@@ -121,6 +121,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
                       </ModalBody>
                     </ModalContent>
                   </Modal>
+        
                   <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay />
                     <ModalContent style={{ background: "white" }}>

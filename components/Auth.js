@@ -83,7 +83,7 @@ export default function Auth() {
         throw error;
       }
       setAlertMessage("User Logging In..");
-      router.push("/"); 
+      router.push("/");
       console.log(user);
       console.log(session);
     } catch (e) {
@@ -161,23 +161,7 @@ export default function Auth() {
           </Center>
         </ChakraProvider>
       </>
-      <Center>
-        <Link href="/">
 
-          {isMobile ? <div style={{ padding: "60px" }}></div> : <Image
-            src="/logo_11.png"
-            alt="poster"
-            width="160"
-            height="160"
-            mt={10}
-            style={{
-              display: "block",
-              marginBottom: "2px",
-              marginTop: "2px",
-            }}
-          /> }
-        </Link>
-      </Center>
       <Center height="60vh">
         <Box
           p={2}

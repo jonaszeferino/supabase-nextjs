@@ -22,7 +22,7 @@ import { useRouter } from "next/router";
 import { supabase } from "../utils/supabaseClient";
 import { FaTimes } from "react-icons/fa";
 
-const MobileNavbar = ( isLoading, onAuthenticated) => {
+const MobileNavbar = (isLoading, onAuthenticated) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -97,55 +97,52 @@ const MobileNavbar = ( isLoading, onAuthenticated) => {
               Home
             </Link>
             {!session ?
-              <li>
-                <button onClick={onOpen}> Login |</button>
-              </li>
+              <button onClick={onOpen}> <strong>Login</strong> </button>
               : null}
+            <Modal isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent style={{ background: "white" }}>
+                <ModalHeader>
+                  Login
+                  <IconButton
+                    icon={<FaTimes />}
+                    colorScheme="gray"
+                    variant="ghost"
+                    ml="auto"
+                    onClick={onClose}
+                  />
+                </ModalHeader>
+                <ModalBody>
+                  <Auth onClose={onClose} />
+                </ModalBody>
+              </ModalContent>
+            </Modal>
 
-<li>
-                  <Modal isOpen={isOpen} onClose={onClose}>
-                    <ModalOverlay />
-                    <ModalContent style={{ background: "white" }}>
-                      <ModalHeader>
-                        Login
-                        <IconButton
-                          icon={<FaTimes />}
-                          colorScheme="gray"
-                          variant="ghost"
-                          ml="auto"
-                          onClick={onClose}
-                        />
-                      </ModalHeader>
-                      <ModalBody>
-                        <Auth onClose={onClose} />
-                      </ModalBody>
-                    </ModalContent>
-                  </Modal>
-        
-                  <Modal isOpen={isOpen} onClose={onClose}>
-                    <ModalOverlay />
-                    <ModalContent style={{ background: "white" }}>
-                      <ModalHeader>
-                        Login{" "}
-                        <IconButton
-                          icon={<FaTimes />}
-                          colorScheme="gray"
-                          variant="ghost"
-                          position="absolute"
-                          top="0"
-                          right="0"
-                          onClick={onClose}
-                        />
-                      </ModalHeader>
-                      <ModalBody>
-                        <Auth
-                          onAuthenticated={onAuthenticated}
-                          onClose={onClose}
-                        />
-                      </ModalBody>
-                    </ModalContent>
-                  </Modal>
-                </li>
+            <Modal isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent style={{ background: "white" }}>
+                <ModalHeader>
+                  Login
+                  <IconButton
+                    icon={<FaTimes />}
+                    colorScheme="gray"
+                    variant="ghost"
+                    position="absolute"
+                    top="0"
+                    right="0"
+                    onClick={onClose}
+                  />
+                </ModalHeader>
+                <ModalBody>
+                  <Auth
+                    onAuthenticated={onAuthenticated}
+                    onClose={onClose}
+                  />
+                </ModalBody>
+              </ModalContent>
+            </Modal>
+
+
 
             <ChakraProvider>
               {session ? (
@@ -154,7 +151,7 @@ const MobileNavbar = ( isLoading, onAuthenticated) => {
                   <></>
                 </p>
               ) : null}
-              
+
             </ChakraProvider>
 
             <Button onClick={toggleMenu}>
