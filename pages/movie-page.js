@@ -151,6 +151,7 @@ const MoviePage = () => {
       return "gray";
     }
   }
+const metaDescription = `Movie Page ${data.originalTitle ? data.originalTitle : 'Movies'}`;
 
   return (
     <>
@@ -159,19 +160,21 @@ const MoviePage = () => {
         <title>Movie {data.originalTitle ? data.originalTitle : null}</title>
         <meta
           name="keywords"
-          content="tvshow,watch,review, series, filmes"
+          content={metaDescription}
         ></meta>
-        <meta name="description" content="movies, series,"></meta>
+        <meta name="description" content={metaDescription}></meta>
       </Head>
+    
       {isMobile ? (
         <>
           <div style={{ paddingTop: 80, }} >
             <LoggedUser />
-
           </div>
         </>
       ) : (
-        <><LoggedUser /></>
+        <>
+          <LoggedUser />
+        </>
       )}
 
       <span className={styles.title}>{data.originalTitle}</span>
@@ -206,18 +209,12 @@ const MoviePage = () => {
       </div>
       <div style={{ maxWidth: "480px", margin: "0 auto" }}>
         <ChakraProvider>
-          {/* <Progress
-            size="lg"
-            value={data.average}
-            max={10}
-            colorScheme={getProgressColor(data.average)}
-          /> */}
-          <Rate value={data.average} count={10} />
+          <Rate value={data.average} count={10} disabled />
           <br />
           {data.average}
         </ChakraProvider>
       </div>
-      {/* Tabela aqui para baixo */}
+      
       <br />
       <div
         style={{ maxWidth: "480px", margin: "0 auto", wordBreak: "break-word" }}

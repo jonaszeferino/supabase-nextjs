@@ -6,9 +6,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
 import {
-  ChakraProvider,
-
-  Table,
+  ChakraProvider,Table,
   Tbody,
   Tr,
   Td,
@@ -136,7 +134,7 @@ const MoviePage = () => {
           return response.json();
         } else {
           setError(true);
-          throw console.log("Erro 1");
+          throw console.log("Error");
         }
       })
       .then((result) => {
@@ -166,7 +164,6 @@ const MoviePage = () => {
         <>
           <div style={{ paddingTop: 80, }} >
             <LoggedUser />
-
           </div>
         </>
       ) : (
@@ -207,20 +204,13 @@ const MoviePage = () => {
       </div>
       <div style={{ maxWidth: "480px", margin: "0 auto" }}>
         <ChakraProvider>
-          {/* <Progress
-            
-            value={data.average}
-            max={10}
-            colorScheme={getProgressColor(data.average)}
-          /> */}
-          <Rate value={data.average} count={10} /><br />
+
+          <Rate value={data.average} count={10} disabled /><br />
           {data.average}
         </ChakraProvider>
       </div>
       <div>
         <br />
-
-        {/* Tabela aqui para baixo */}
         <div
           style={{
             maxWidth: "480px",
@@ -241,10 +231,10 @@ const MoviePage = () => {
                     <Td
                       style={{
                         whiteSpace: "pre-wrap",
-                        maxWidth: "480px", // Defina um valor apropriado para o tamanho máximo
+                        maxWidth: "480px",
                       }}
                     >
-                      {data.overview ? data.overview : "Sem infos"}
+                      {data.overview ? data.overview : "No infos"}
                     </Td>
                   </Tr>
                   <Tr>
@@ -266,9 +256,11 @@ const MoviePage = () => {
                   <Tr>
                     <Td>First Episode on-air</Td>
                     <Td>
-                      {data.firstEpisodeToAir
+
+                      {data.firstEpisodeToAir}
+                      {/* {data.firstEpisodeToAir
                         ? format(new Date(data.firstEpisodeToAir), "MM/dd/yyyy")
-                        : ""}
+                        : ""} */}
                     </Td>
                   </Tr>
                   <Tr>
@@ -291,19 +283,7 @@ const MoviePage = () => {
       {showStatus ? (
         <span>
           Tv Show Status{" "}
-          {/* {status === "Returning Series"
-            ? "Em andamento"
-            : status === "Ended"
-            ? "Encerrada"
-            : status === "In Production"
-            ? "Em produção"
-            : status === "Canceled"
-            ? "Cancelada"
-            : status === "Pilot"
-            ? "Em fase piloto"
-            : status === "To Be Determined"
-            ? "A ser determinado"
-            : "Desconhecido"} */}
+
           {status}
         </span>
       ) : null}
@@ -350,7 +330,7 @@ const MoviePage = () => {
                       <br />
                     </div>
                   </div>
-                ) : null // Renderiza nulo se season_number for igual a 0
+                ) : null
             )}
         </div>
         {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
