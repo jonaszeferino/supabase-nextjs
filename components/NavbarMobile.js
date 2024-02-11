@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Auth from "./Auth";
 import {
   Box,
   Button,
@@ -7,15 +8,23 @@ import {
   Heading,
   Center,
   ChakraProvider,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  IconButton,
+  ModalBody
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 import { useRouter } from "next/router";
 import { supabase } from "../utils/supabaseClient";
+import { FaTimes } from "react-icons/fa";
 
-const MobileNavbar = () => {
-  const { isOpen, onToggle } = useDisclosure();
+const MobileNavbar = ( isLoading, onAuthenticated) => {
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [session, setSession] = useState();
@@ -87,11 +96,56 @@ const MobileNavbar = () => {
             <Link href="/" onClick={closeMenu}>
               Home
             </Link>
-            {!session && (
-              <Link href="/signUp" onClick={closeMenu}>
-                Login
-              </Link>
-            )}
+            {!session ?
+              <li>
+                <button onClick={onOpen}> Login |</button>
+              </li>
+              : null}
+
+<li>
+                  <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay />
+                    <ModalContent style={{ background: "white" }}>
+                      <ModalHeader>
+                        Login
+                        <IconButton
+                          icon={<FaTimes />}
+                          colorScheme="gray"
+                          variant="ghost"
+                          ml="auto"
+                          onClick={onClose}
+                        />
+                      </ModalHeader>
+                      <ModalBody>
+                        <Auth onClose={onClose} />
+                      </ModalBody>
+                    </ModalContent>
+                  </Modal>
+        
+                  <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay />
+                    <ModalContent style={{ background: "white" }}>
+                      <ModalHeader>
+                        Login{" "}
+                        <IconButton
+                          icon={<FaTimes />}
+                          colorScheme="gray"
+                          variant="ghost"
+                          position="absolute"
+                          top="0"
+                          right="0"
+                          onClick={onClose}
+                        />
+                      </ModalHeader>
+                      <ModalBody>
+                        <Auth
+                          onAuthenticated={onAuthenticated}
+                          onClose={onClose}
+                        />
+                      </ModalBody>
+                    </ModalContent>
+                  </Modal>
+                </li>
 
             <ChakraProvider>
               {session ? (
@@ -100,7 +154,7 @@ const MobileNavbar = () => {
                   <></>
                 </p>
               ) : null}
-              {/* Resto do seu código */}
+              
             </ChakraProvider>
 
             <Button onClick={toggleMenu}>
@@ -113,56 +167,56 @@ const MobileNavbar = () => {
           {menuOpen && (
             <Stack spacing={4} mt={4}>
               <Link href="/watch-today" onClick={closeMenu}>
-                
-                  <span>
-                    <ChevronRightIcon /> What to Watch Today?
-                  </span>
-                
+
+                <span>
+                  <ChevronRightIcon /> What to Watch Today?
+                </span>
+
               </Link>
               <Link href="/search-movies" onClick={closeMenu}>
-                
-                  <span>
-                    <ChevronRightIcon /> Discover Movies
-                  </span>
-                
+
+                <span>
+                  <ChevronRightIcon /> Discover Movies
+                </span>
+
               </Link>
               <Link href="/search-tvshows" onClick={closeMenu}>
-                
-                  <span>
-                    <ChevronRightIcon /> Discover Tv Shows
-                  </span>
-                
+
+                <span>
+                  <ChevronRightIcon /> Discover Tv Shows
+                </span>
+
               </Link>
               <Link href="/birthday-movies" onClick={closeMenu}>
-                
-                  <span>
-                    <ChevronRightIcon /> Birthday Movie
-                  </span>
-                
+
+                <span>
+                  <ChevronRightIcon /> Birthday Movie
+                </span>
+
               </Link>
               <Link href="/trivia" onClick={closeMenu}>
-                
-                  <span>
-                    <ChevronRightIcon /> Trivia
-                  </span>
-                
+
+                <span>
+                  <ChevronRightIcon /> Trivia
+                </span>
+
               </Link>
 
               {session ? (
                 <>
                   <Link href="/profile" onClick={closeMenu}>
-                    
-                      <span>
-                        <ChevronRightIcon /> Profile
-                      </span>
-                    
+
+                    <span>
+                      <ChevronRightIcon /> Profile
+                    </span>
+
                   </Link>
                   <Link href="/my-movies-page" onClick={closeMenu}>
-                    
-                      <span>
-                        <ChevronRightIcon /> My Ratings
-                      </span>
-                    
+
+                    <span>
+                      <ChevronRightIcon /> My Ratings
+                    </span>
+
                   </Link>
                 </>
               ) : null}
