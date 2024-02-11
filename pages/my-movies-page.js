@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {
+import {  
   ChakraProvider,
   TableContainer,
   Table,
@@ -391,8 +391,8 @@ const MoviePage = () => {
                                     : "/callback.png"
                                 }
                                 alt="poster"
-                                width={60}
-                                height={90}
+                                width={90}
+                                height={120}
                                 style={{
                                   objectFit: "contain",
                                   maxHeight: "100%",
