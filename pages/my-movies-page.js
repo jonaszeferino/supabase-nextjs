@@ -13,7 +13,8 @@ import {
   Button,
   Spinner,
   Image,
-  useMediaQuery
+  useMediaQuery,
+  Center
 } from "@chakra-ui/react";
 import { Rate } from "antd";
 import { supabase } from "../utils/supabaseClient";
@@ -369,13 +370,10 @@ const MoviePage = () => {
                       {data.map((movie) => (
                         <Tr key={movie.movieId}>
                           <Td>
-
                             {movie.original_title}
                             <br />
                             {new Date(movie.like_date).toLocaleDateString()}
                             <br />
-
-
                             <Rate
                               onChange={(rating) => {
                                 setSelectedAlterMovie(movie.movie_id);
@@ -385,23 +383,23 @@ const MoviePage = () => {
                               count={10}
                               disabled={isConfirmationModeForMovie(movie.movie_id)}
                             />
-
-
-                            <Image
-                              src={
-                                movie.poster_path ?
-                                  "https://image.tmdb.org/t/p/original" + movie.poster_path
-                                  : "/callback.png"
-                              }
-                              alt="poster"
-                              width={60}
-                              height={90}
-                              style={{
-                                objectFit: "contain",
-                                maxHeight: "100%",
-                                maxWidth: "100%",
-                              }}
-                            />
+                            <Center>
+                              <Image
+                                src={
+                                  movie.poster_path ?
+                                    "https://image.tmdb.org/t/p/original" + movie.poster_path
+                                    : "/callback.png"
+                                }
+                                alt="poster"
+                                width={60}
+                                height={90}
+                                style={{
+                                  objectFit: "contain",
+                                  maxHeight: "100%",
+                                  maxWidth: "100%",
+                                }}
+                              />
+                            </Center>
 
 
                             <Checkbox
