@@ -329,35 +329,8 @@ const Profile = () => {
               )}
 
               <VStack>
-                {/* <FormControl>
-                  <FormLabel>
-                    <Select
-                      name="profileImage"
-                      value={selectedImage}
-                      onChange={(e) => setSelectedImage(e.target.value)}
-                    >
-                      {Object.entries(imageOptions).map(
-                        ([label, imagePath]) => (
-                          <option key={imagePath} value={imagePath}>
-                            {label}
-                          </option>
-                        )
-                      )}
-                    </Select>
-
-                    <Center>
-                      <Image
-                        src={selectedImage ? userData?.avatar : selectedImage}
-                        alt="Profile Image"
-                      />
-                    </Center>
-                    <Center>
-                      <Image src={userData?.avatar} alt="Profile Image" />
-                    </Center>
-                  </FormLabel>
-                </FormControl> */}
-
-                <FormControl>
+     
+               <FormControl style={{ color: "#7657be" }}>
                   <FormLabel style={{ fontWeight: "bold" }}>E-mail:</FormLabel>
                   <Text
                     style={{
