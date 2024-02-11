@@ -328,9 +328,9 @@ const Profile = () => {
                 </div>
               )}
 
-              <VStack>
+              <VStack style={{ color: "#7657be" }}>
      
-               <FormControl style={{ color: "#7657be" }}>
+               <FormControl>
                   <FormLabel style={{ fontWeight: "bold" }}>E-mail:</FormLabel>
                   <Text
                     style={{
