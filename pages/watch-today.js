@@ -214,7 +214,7 @@ export default function Movieapi() {
 
 
               <PageTitle
-                title="Birthday Movie"
+                title="What To Watch Today?"
                 isMobile={isMobile}
                 showLoggedUser={true}
               />
