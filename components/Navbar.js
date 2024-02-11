@@ -96,9 +96,12 @@ export default function Navbar({ isLoading, onAuthenticated }) {
                 </li>
 
                 <br />
-                <li>
-                  <button onClick={onOpen}>| Login |</button>
-                </li>
+                {!session ?
+                  <li>
+                    <button onClick={onOpen}>| Login |</button>
+                  </li>
+                  : null}
+
                 <li>
                   <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay />
