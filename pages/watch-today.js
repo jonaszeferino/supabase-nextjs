@@ -213,7 +213,11 @@ export default function Movieapi() {
             <Box maxW="32rem">
 
 
-              <PageTitle title="What To Watch Today?" isMobile={isMobile} />
+              <PageTitle
+                title="Birthday Movie"
+                isMobile={isMobile}
+                showLoggedUser={true}
+              />
               <span>Click and see the possibilities until you find one to your liking!</span>
 
 

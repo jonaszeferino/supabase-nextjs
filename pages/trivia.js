@@ -235,7 +235,11 @@ export default function Trivia() {
         <meta name="description" content="Test your knowledge in movies." />
       </Head>
 
-      <PageTitle title="Trivia" isMobile={isMobile} />
+      <PageTitle
+          title="Trivia"
+          isMobile={isMobile}
+          showLoggedUser={true} 
+        />
 
       <ChakraProvider>
         <Box>
