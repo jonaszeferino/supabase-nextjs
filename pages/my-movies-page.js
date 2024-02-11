@@ -33,6 +33,13 @@ const MoviePage = () => {
   const [email_user, setEmail_user] = useState();
   const [api, contextHolder] = notification.useNotification();
   const [isMobile] = useMediaQuery('(max-width: 768px)');
+  const [confirmationModeMovieId, setConfirmationModeMovieId] = useState(null);
+
+
+  const isConfirmationModeForMovie = (movieId) => {
+    return confirmationModeMovieId === movieId;
+  };
+
 
   console.log("Estado Email: ", email_user);
 
@@ -347,56 +354,28 @@ const MoviePage = () => {
               <Spinner size="xl" />
             ) : (
               <div style={{ maxWidth: "100%", overflowX: "auto" }}>
+
+
+                {/* <div>Mobile version</div> */}
                 <TableContainer>
                   <Table variant="simple">
                     <TableCaption>Movie Likes</TableCaption>
                     <Thead>
                       <Tr>
-                        <Th>Movie</Th>
-                        <Th>Date</Th>
-                        <Th>Rating</Th>
-                        <Th>Poster</Th>
-                        <Th>
-                          {isConfirmationMode ? (
-                            <>
-                              <Button
-                                onClick={apiDeleteRates}
-                                colorScheme="red"
-                                marginRight={2}
-                              >
-                                Confirm
-                              </Button>
-                              <Button
-                                onClick={() => setIsConfirmationMode(false)}
-                              >
-                                Close
-                              </Button>
-                            </>
-                          ) : (
-                            <Button
-                              onClick={() => setIsConfirmationMode(true)}
-                              isDisabled={selectedMovie === null}
-                              colorScheme={
-                                selectedMovie !== null ? "red" : "gray"
-                              }
-                            >
-                              Delete
-                            </Button>
-                          )}
-                        </Th>
+                        <Th>Movie / Date / Rating / Poster / Delete</Th>
                       </Tr>
                     </Thead>
                     <Tbody>
                       {data.map((movie) => (
                         <Tr key={movie.movieId}>
                           <Td>
+
                             {movie.original_title}
                             <br />
-                          </Td>
-                          <Td>
                             {new Date(movie.like_date).toLocaleDateString()}
-                          </Td>
-                          <Td>
+                            <br />
+
+
                             <Rate
                               onChange={(rating) => {
                                 setSelectedAlterMovie(movie.movie_id);
@@ -404,14 +383,14 @@ const MoviePage = () => {
                               }}
                               value={movie.rating_by_user || 0}
                               count={10}
+                              disabled={isConfirmationModeForMovie(movie.movie_id)}
                             />
-                          </Td>
-                          <Td>
+
+
                             <Image
                               src={
                                 movie.poster_path ?
-                                  "https://image.tmdb.org/t/p/original" +
-                                  movie.poster_path
+                                  "https://image.tmdb.org/t/p/original" + movie.poster_path
                                   : "/callback.png"
                               }
                               alt="poster"
@@ -423,22 +402,53 @@ const MoviePage = () => {
                                 maxWidth: "100%",
                               }}
                             />
-                          </Td>
-                          <Td>
+
+
                             <Checkbox
-                              onChange={() =>
-                                setSelectedMovie((prevSelectedMovie) =>
-                                  prevSelectedMovie === movie.movie_id
-                                    ? null
-                                    : movie.movie_id
-                                )
-                              }
+                              onChange={() => {
+                                if (selectedMovie === movie.movie_id) {
+                                  setSelectedMovie(null);
+                                  setConfirmationModeMovieId(null);
+                                } else {
+                                  setSelectedMovie(movie.movie_id);
+                                  setConfirmationModeMovieId(null);
+                                }
+                              }}
                               isChecked={selectedMovie === movie.movie_id}
-                              isDisabled={isConfirmationMode}
+                              isDisabled={confirmationModeMovieId === movie.movie_id}
                             />
+
+
+                            <br />
+                            <br />
+
+
+                            {confirmationModeMovieId === movie.movie_id ? (
+                              <>
+                                <Button
+                                  onClick={apiDeleteRates}
+                                  colorScheme="red"
+                                  marginRight={2}
+                                >
+                                  Confirm
+                                </Button>
+                                <Button onClick={() => setConfirmationModeMovieId(null)}>
+                                  Close
+                                </Button>
+                              </>
+                            ) : (
+                              <Button
+                                onClick={() => setConfirmationModeMovieId(movie.movie_id)}
+                                isDisabled={selectedMovie !== movie.movie_id || confirmationModeMovieId}
+                                colorScheme="red"
+                              >
+                                Delete
+                              </Button>
+                            )}
                           </Td>
                         </Tr>
                       ))}
+
                     </Tbody>
                   </Table>
                 </TableContainer>
