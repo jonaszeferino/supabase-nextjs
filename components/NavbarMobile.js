@@ -117,33 +117,6 @@ const MobileNavbar = (isLoading, onAuthenticated) => {
                 </ModalBody>
               </ModalContent>
             </Modal>
-
-            <Modal isOpen={isOpen} onClose={onClose}>
-              <ModalOverlay />
-              <ModalContent style={{ background: "white" }}>
-                <ModalHeader>
-                  Login
-                  <IconButton
-                    icon={<FaTimes />}
-                    colorScheme="gray"
-                    variant="ghost"
-                    position="absolute"
-                    top="0"
-                    right="0"
-                    onClick={onClose}
-                  />
-                </ModalHeader>
-                <ModalBody>
-                  <Auth
-                    onAuthenticated={onAuthenticated}
-                    onClose={onClose}
-                  />
-                </ModalBody>
-              </ModalContent>
-            </Modal>
-
-
-
             <ChakraProvider>
               {session ? (
                 <p>
