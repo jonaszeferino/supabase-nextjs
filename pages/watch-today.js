@@ -238,7 +238,7 @@ export default function Movieapi() {
         {isLoading ? <Progress size="xs" isIndeterminate /> : null}
         <br />
         {isError === true ? (
-          <ErrorPage message={`Deleted Movie`}></ErrorPage>
+          null
         ) : (
           <ChakraProvider>
             <div>
