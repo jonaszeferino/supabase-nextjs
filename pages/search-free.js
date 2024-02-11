@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
-import ErrorPage from "./error-page";
-//import Image from "next/image";
 import Head from "next/head";
 import {
   Box,
@@ -20,6 +18,7 @@ import {
   Tbody,
   Tr,
   Td,
+  useMediaQuery
 } from "@chakra-ui/react";
 import PageTitle from "../components/PageTitle";
 
@@ -30,6 +29,7 @@ import LoggedUser from "../components/LoggedUser";
 export default function Discovery() {
   const router = useRouter();
   const { query } = router.query;
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   let [searchMovies, setSearchMovies] = useState([]);
   const [searchText, setSearchText] = useState(router.query.query || "");
