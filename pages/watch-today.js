@@ -467,44 +467,41 @@ export default function Movieapi() {
                         </Center>
                       </ChakraProvider>
 
-                      <ChakraProvider>
-                        <Center>
-                          <span>
-                            <div>
-                              <h1>Rate This Tip</h1>
-                              <Rate
-                                onChange={handleRateChange}
-                                value={starValue}
-                                disabled={isRatingSubmitted}
-                                count={10}
-                              />
-                              <br />
-                              <Button
-                                onClick={() => {
-                                  handleRatingSubmit();
-                                  inserLike();
-                                }}
-                                disabled={isRatingSubmitted}
-                              >
-                                Submit Rating
-                              </Button>
-                              {isRatingSubmitted && (
-                                <p>Rating submitted successfully!</p>
-                              )}
-                            </div>
-                          </span>
-                        </Center>
-                      </ChakraProvider>
 
-                      <br />
-                      {likeThanks && <span>Thanks 😀 </span>}
                     </div>
                   )}
 
+                  <ChakraProvider>
+                    <Center>
+                      <span>
+                        <div>
+                          <h1>Rate This Tip</h1>
+                          <Rate
+                            onChange={handleRateChange}
+                            value={starValue}
+                            disabled={isRatingSubmitted}
+                            count={10}
+                          />
+                          <br />
+                          <Button
+                            onClick={() => {
+                              handleRatingSubmit();
+                              inserLike();
+                            }}
+                            disabled={isRatingSubmitted}
+                          >
+                            Submit Rating
+                          </Button>
+                          {isRatingSubmitted && (
+                            <p>Rating submitted successfully!</p>
+                          )}
+                        </div>
+                      </span>
+                    </Center>
+                  </ChakraProvider>
 
-
-
-
+                  <br />
+                  {likeThanks && <span>Thanks 😀 </span>}
 
                   {showBackToTopButton && (
                     <BackToTopButton onClick={scrollToTop} />
