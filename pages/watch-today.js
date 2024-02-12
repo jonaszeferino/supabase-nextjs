@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "../styles/Home.module.css";
-import ErrorPage from "./error-page";
 import Head from "next/head";
 import Link from "next/link";
 import { Rate, Divider } from "antd";
@@ -24,7 +23,10 @@ import {
   TabPanel,
   Skeleton,
   Image,
-  useMediaQuery
+  useMediaQuery,
+  Center,
+  Stack,
+
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
@@ -46,6 +48,7 @@ export default function Movieapi() {
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
   const [session, setSession] = useState(null);
   const [email_user, setEmail_user] = useState(null);
+  const [searchingMovie, setSearchingMovie] = useState(false); // Ajuste: inicializando com false
 
   useEffect(() => {
     if (isError) {
@@ -91,16 +94,15 @@ export default function Movieapi() {
   }, []);
 
   const apiCall = () => {
+    setIsLoading(true);
+    setSearchingMovie(true);
+
     if (!isError && posterRef.current) {
       posterRef.current.scrollIntoView({ behavior: "smooth" });
     }
-    setRandomMovieId(Math.floor(Math.random() * 560000));
-    setIsLoading(true);
     setError(false);
-    setLikeDisable(false);
-    setLikeThanks(false);
-    setIsRatingSubmitted(false);
-    setStarValue(0);
+    setRandomMovieId(Math.floor(Math.random() * 560000)); // Geramos um novo ID de filme
+
 
     const url = `https://api.themoviedb.org/3/movie/${randomMovieId}`;
 
@@ -114,37 +116,43 @@ export default function Movieapi() {
         if (response.ok) {
           return response.json();
         } else {
-          setError(true);
           throw new Error(response.statusText);
         }
       })
       .then((result) => {
-        setMovieData({
-          budget: result.budget,
-          originalTitle: result.original_title,
-          portugueseTitle: result.title,
-          overview: result.overview,
-          average: result.vote_average,
-          releaseDate: result.release_date,
-          image: result.poster_path,
-          country: result.production_countries[0].name,
-          ratingCount: result.vote_count,
-          popularity: result.popularity,
-          gender: result.genres.map((genre) => genre.name),
-          languages: result.spoken_languages[0].name,
-          adult: result.adult,
-          movieId: result.id,
-          originalLanguage: result.original_language,
-          statusMovie: result.status,
-        });
-        setIsLoading(false);
-        setError(false);
+        if (result && result.id) {
+          const movieResult = {
+            budget: result.budget,
+            originalTitle: result.original_title,
+            portugueseTitle: result.title,
+            overview: result.overview,
+            average: result.vote_average,
+            releaseDate: result.release_date,
+            image: result.poster_path,
+            country: result.production_countries[0].name,
+            ratingCount: result.vote_count,
+            popularity: result.popularity,
+            gender: result.genres.map((genre) => genre.name),
+            languages: result.spoken_languages[0].name,
+            adult: result.adult,
+            movieId: result.id,
+            originalLanguage: result.original_language,
+            statusMovie: result.status,
+          };
+          setMovieData(movieResult);
+        } else {
+          setSearchingMovie(true);
+          setIsLoading(false);
+        }
       })
       .catch((error) => {
         setError(true);
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };
+
 
   let destino = `/movie-page?movieId=${movieData.movieId}`;
 
@@ -207,18 +215,17 @@ export default function Movieapi() {
         ></meta>
       </Head>
       <div>
+
         <div style={{ maxWidth: "480px", margin: "0 auto" }}>
           <ChakraProvider>
             <Box maxW="32rem">
-
-
               <PageTitle
                 title="What To Watch Today?"
                 isMobile={isMobile}
                 showLoggedUser={true}
               />
               <span>Click and see the possibilities until you find one to your liking!</span>
-<br/>
+              <br />
 
               <Button
                 size="md"
@@ -277,9 +284,15 @@ export default function Movieapi() {
                   ) : null}
 
 
-
-
-                  {isLoadingPage === false ? (
+                  {(isLoading || !movieData.portugueseTitle) ? (
+                    <ChakraProvider>
+                      <Center>
+                        <Stack>
+                          <Skeleton height='720px' width='480px' />
+                        </Stack>
+                      </Center>
+                    </ChakraProvider>
+                  ) : (
                     <Link href={destino}>
                       <span>
                         <Image
@@ -299,9 +312,6 @@ export default function Movieapi() {
                         />
                       </span>
                     </Link>
-
-                  ) : (
-                    <Skeleton width="480px" height="720px" />
                   )}
 
 
