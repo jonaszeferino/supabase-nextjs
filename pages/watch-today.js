@@ -26,6 +26,7 @@ import {
   useMediaQuery,
   Center,
   Stack,
+  Text
 
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
@@ -49,8 +50,15 @@ export default function Movieapi() {
   const [session, setSession] = useState(null);
   const [email_user, setEmail_user] = useState(null);
   const [searchingMovie, setSearchingMovie] = useState(false); // Ajuste: inicializando com false
+  const [isFetchingMovie, setIsFetchingMovie] = useState(false); // Add a new state for controlling the visibility of the skeleton
+  const [firstTime, setFirstTime] = useState(false);
+
+  useEffect(() => { apiCall(), setFirstTime(true) }
+    , []);
+
 
   useEffect(() => {
+
     if (isError) {
       const fetchData = async () => {
         apiCall();
@@ -94,15 +102,9 @@ export default function Movieapi() {
   }, []);
 
   const apiCall = () => {
-    setIsLoading(true);
-    setSearchingMovie(true);
-
-    if (!isError && posterRef.current) {
-      posterRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    setIsFetchingMovie(true);
     setError(false);
-    setRandomMovieId(Math.floor(Math.random() * 560000)); // Geramos um novo ID de filme
-
+    setRandomMovieId(Math.floor(Math.random() * 560000));
 
     const url = `https://api.themoviedb.org/3/movie/${randomMovieId}`;
 
@@ -139,17 +141,22 @@ export default function Movieapi() {
             originalLanguage: result.original_language,
             statusMovie: result.status,
           };
+          setFirstTime(false)
           setMovieData(movieResult);
         } else {
-          setSearchingMovie(true);
+          setIsFetchingMovie(false); // If movie data is not found, set isFetchingMovie to false
           setIsLoading(false);
+          setFirstTime(false)
         }
       })
       .catch((error) => {
         setError(true);
+        setFirstTime(false)
       })
       .finally(() => {
         setIsLoading(false);
+        setFirstTime(false)
+        setIsFetchingMovie(false); // Finally, set isFetchingMovie to false after API call is completed
       });
   };
 
@@ -216,31 +223,42 @@ export default function Movieapi() {
       </Head>
       <div>
 
-        <div style={{ maxWidth: "480px", margin: "0 auto" }}>
-          <ChakraProvider>
+        <ChakraProvider>
+          <Center>
             <Box maxW="32rem">
               <PageTitle
                 title="What To Watch Today?"
                 isMobile={isMobile}
                 showLoggedUser={true}
               />
-              <span>Click and see the possibilities until you find one to your liking!</span>
+              <span>Here You Gonna Show You Random Movie Tips - If Dont Like Try Again!</span>
               <br />
 
-              <Button
-                size="md"
-                bg="white"
-                color="black"
-                borderColor="gray"
-                borderWidth="1px"
-                mt="24px"
-                onClick={apiCall}
-              >
-                Go
-              </Button>
             </Box>
-          </ChakraProvider>
-        </div>
+          </Center>
+        </ChakraProvider>
+
+        {firstTime ?
+          <ChakraProvider>
+            <Center>
+              <Text><strong>...Searching Movies</strong></Text>
+
+            </Center>
+          </ChakraProvider> : null}
+        <ChakraProvider>
+          <Button
+            size="md"
+            bg="white"
+            color="black"
+            borderColor="gray"
+            borderWidth="1px"
+            mt="24px"
+            onClick={apiCall}
+          >
+            Go
+          </Button>
+        </ChakraProvider>
+
 
         {isLoading ? <Progress size="xs" isIndeterminate /> : null}
         <br />
@@ -284,168 +302,210 @@ export default function Movieapi() {
                   ) : null}
 
 
-                  {(isLoading || !movieData.portugueseTitle) ? (
-                    <ChakraProvider>
-                      <Center>
-                        <Stack>
-                          <Skeleton height='720px' width='480px' />
-                        </Stack>
-                      </Center>
-                    </ChakraProvider>
-                  ) : (
-                    <Link href={destino}>
-                      <span>
-                        <Image
-                          className={isMobile ? styles.card_image_big_mobile : styles.card_image_big}
-                          src={
-                            movieData.image
-                              ? "https://image.tmdb.org/t/p/original" +
-                              movieData.image
-                              : "/callback.png"
-                          }
-                          alt="poster"
-                          width="480"
-                          height="720"
-                          objectFit="contain"
-                          maxHeight="100%"
-                          maxWidth="100%"
-                        />
-                      </span>
-                    </Link>
-                  )}
-
-
-
-
-                  {movieData.portugueseTitle && (
-                    <div style={{ maxWidth: "480px", margin: "0 auto" }}>
+                  {isFetchingMovie || !movieData.portugueseTitle ? (
+                    <>
                       <ChakraProvider>
-                        <TableContainer>
-                          <Table size="sm">
-                            <Thead>
-                              <Tr>
-                                <Td
-                                  style={{
-                                    fontFamily: "Helvetica Neue, sans-serif",
-                                  }}
-                                >
-                                  Title
-                                </Td>
-                                <Td
-                                  style={{
-                                    fontFamily: "Helvetica Neue, sans-serif",
-                                  }}
-                                >
-                                  {movieData.portugueseTitle}
-                                </Td>
-                              </Tr>
-                            </Thead>
-                            <Tbody></Tbody>
-                          </Table>
-                          <Tabs size="md" variant="enclosed">
-                            <TabList>
-                              <Tab
-                                style={{
-                                  fontFamily: "Helvetica Neue, sans-serif",
-                                }}
-                              >
-                                Average
-                              </Tab>
-                              <Tab
-                                style={{
-                                  fontFamily: "Helvetica Neue, sans-serif",
-                                }}
-                              >
-                                Country
-                              </Tab>
-                              <Tab
-                                style={{
-                                  fontFamily: "Helvetica Neue, sans-serif",
-                                }}
-                              >
-                                Language
-                              </Tab>
-                              <Tab
-                                style={{
-                                  fontFamily: "Helvetica Neue, sans-serif",
-                                }}
-                              >
-                                Genre
-                              </Tab>
-                            </TabList>
-                            <TabPanels>
-                              <TabPanel
-                                style={{
-                                  fontFamily: "Helvetica Neue, sans-serif",
-                                }}
-                              >
-                                {`${movieData.average} `}
-                              </TabPanel>
-                              <TabPanel>
-                                <TranslationComponentCountryName
-                                  text={movieData.country}
-                                  language="en"
-                                />
-                              </TabPanel>
-                              <TabPanel>
-                                <TranslationComponent
-                                  text={movieData.originalLanguage}
-                                  language="en"
-                                />
-                              </TabPanel>
-                              <TabPanel
-                                style={{
-                                  fontFamily: "Helvetica Neue, sans-serif",
-                                }}
-                              >
-                                {" "}
-                                {movieData.gender &&
-                                  movieData.gender.length > 0 &&
-                                  movieData.gender.map((gender, index) => (
-                                    <span key={gender}>
-                                      {gender}
-                                      {index !== movieData.gender.length - 1
-                                        ? ", "
-                                        : ""}
-                                    </span>
-                                  ))}
-                              </TabPanel>
-                            </TabPanels>
-                          </Tabs>
-                        </TableContainer>
+                        <Center>
+                          <Stack>
+                            <Skeleton height='720px' width='480px' />
+                          </Stack>
+                        </Center>
                       </ChakraProvider>
+
+                      <ChakraProvider>
+
+                        <Stack>
+
+                          <br />
+                          <Center>
+                            <Skeleton width='400px' height='5' />
+                          </Center>
+                          <Center>
+                            <Skeleton width='400px' height='5' />
+                          </Center>
+                          <span></span>
+                          <Center>
+                            <Skeleton width='60px' height='5' />
+                          </Center>
+                          <br />
+                          <Center>
+                            <Skeleton width='120px' height='5' />
+                          </Center>
+                          <Center>
+                            <Skeleton width='200px' height='5' />
+                          </Center>
+                          <Center>
+                            <Skeleton width='120px' height='5' />
+                          </Center>
+                          <br />
+
+                        </Stack>
+
+
+                      </ChakraProvider>
+                    </>
+
+                  ) : (
+                    <div>
+                      <ChakraProvider>
+                        <Link href={destino}>
+                          <Center>
+                            <span>
+                              <Image
+                                className={isMobile ? styles.card_image_big_mobile : styles.card_image_big}
+                                src={
+                                  movieData.image
+                                    ? "https://image.tmdb.org/t/p/original" + movieData.image
+                                    : "/callback.png"
+                                }
+                                alt="poster"
+                                width="480"
+                                height="720"
+                                objectFit="contain"
+                                maxHeight="100%"
+                                maxWidth="100%"
+                              />
+                            </span>
+                          </Center>
+                        </Link>
+                      </ChakraProvider>
+                      <ChakraProvider>
+                        <Center>
+                          <TableContainer>
+                            <Table size="sm">
+                              <Thead>
+                                <Tr>
+                                  <Td
+                                    style={{
+                                      fontFamily: "Helvetica Neue, sans-serif",
+                                    }}
+                                  >
+                                    Title
+                                  </Td>
+                                  <Td
+                                    style={{
+                                      fontFamily: "Helvetica Neue, sans-serif",
+                                    }}
+                                  >
+                                    {movieData.portugueseTitle}
+                                  </Td>
+                                </Tr>
+                              </Thead>
+                              <Tbody></Tbody>
+                            </Table>
+                            <Tabs size="md">
+                              <TabList>
+                                <Tab
+                                  style={{
+                                    fontFamily: "Helvetica Neue, sans-serif",
+                                  }}
+                                >
+                                  Average
+                                </Tab>
+                                <Tab
+                                  style={{
+                                    fontFamily: "Helvetica Neue, sans-serif",
+                                  }}
+                                >
+                                  Country
+                                </Tab>
+                                <Tab
+                                  style={{
+                                    fontFamily: "Helvetica Neue, sans-serif",
+                                  }}
+                                >
+                                  Language
+                                </Tab>
+                                <Tab
+                                  style={{
+                                    fontFamily: "Helvetica Neue, sans-serif",
+                                  }}
+                                >
+                                  Genre
+                                </Tab>
+                              </TabList>
+                              <TabPanels>
+                                <TabPanel
+                                  style={{
+                                    fontFamily: "Helvetica Neue, sans-serif",
+                                  }}
+                                >
+                                  {`${movieData.average} `}
+                                </TabPanel>
+
+
+                                <TabPanel>
+                                  <TranslationComponentCountryName
+                                    text={movieData.country}
+                                    language="en"
+                                  />
+                                </TabPanel>
+                                <TabPanel>
+                                  <TranslationComponent
+                                    text={movieData.originalLanguage}
+                                    language="en"
+                                  />
+                                </TabPanel>
+                                <TabPanel
+                                  style={{
+                                    fontFamily: "Helvetica Neue, sans-serif",
+                                  }}
+                                >
+                                  {" "}
+                                  {movieData.gender &&
+                                    movieData.gender.length > 0 &&
+                                    movieData.gender.map((gender, index) => (
+                                      <span key={gender}>
+                                        {gender}
+                                        {index !== movieData.gender.length - 1 ? ", " : ""}
+                                      </span>
+                                    ))}
+                                </TabPanel>
+                              </TabPanels>
+                            </Tabs>
+                          </TableContainer>
+                        </Center>
+                      </ChakraProvider>
+
+                      <ChakraProvider>
+                        <Center>
+                          <span>
+                            <div>
+                              <h1>Rate This Tip</h1>
+                              <Rate
+                                onChange={handleRateChange}
+                                value={starValue}
+                                disabled={isRatingSubmitted}
+                                count={10}
+                              />
+                              <br />
+                              <Button
+                                onClick={() => {
+                                  handleRatingSubmit();
+                                  inserLike();
+                                }}
+                                disabled={isRatingSubmitted}
+                              >
+                                Submit Rating
+                              </Button>
+                              {isRatingSubmitted && (
+                                <p>Rating submitted successfully!</p>
+                              )}
+                            </div>
+                          </span>
+                        </Center>
+                      </ChakraProvider>
+
+                      <br />
+                      {likeThanks && <span>Thanks 😀 </span>}
                     </div>
                   )}
 
-                  {movieData.portugueseTitle && (
-                    <span>
-                      <div>
-                        <h1>Rate This Tip</h1>
 
-                        <Rate
-                          onChange={handleRateChange}
-                          value={starValue}
-                          disabled={isRatingSubmitted}
-                          count={10}
-                        />
-                        <br />
-                        <Button
-                          onClick={() => {
-                            handleRatingSubmit();
-                            inserLike();
-                          }}
-                          disabled={isRatingSubmitted}
-                        >
-                          Submit Rating
-                        </Button>
-                        {isRatingSubmitted && (
-                          <p>Rating submitted successfully!</p>
-                        )}
-                      </div>
-                    </span>
-                  )}
-                  <br />
-                  {likeThanks && <span>Thanks 😀 </span>}
+
+
+
+
                   {showBackToTopButton && (
                     <BackToTopButton onClick={scrollToTop} />
                   )}
@@ -465,7 +525,7 @@ export default function Movieapi() {
             </div>
           </ChakraProvider>
         )}
-      </div>
+      </div >
     </>
   );
 }
