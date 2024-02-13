@@ -300,22 +300,17 @@ export default function Movieapi() {
                       <br />
                     </div>
                   ) : null}
-
-
                   {isFetchingMovie || !movieData.portugueseTitle ? (
                     <>
                       <ChakraProvider>
                         <Center>
                           <Stack>
-                            <Skeleton height='720px' width='480px' />
+                            <Skeleton height='720px' width='480px' startColor='pink.500' endColor='purple.500' />
                           </Stack>
                         </Center>
                       </ChakraProvider>
-
                       <ChakraProvider>
-
                         <Stack>
-
                           <br />
                           <Center>
                             <Skeleton width='400px' height='5' />
@@ -338,10 +333,7 @@ export default function Movieapi() {
                             <Skeleton width='120px' height='5' />
                           </Center>
                           <br />
-
                         </Stack>
-
-
                       </ChakraProvider>
                     </>
 
@@ -466,11 +458,8 @@ export default function Movieapi() {
                           </TableContainer>
                         </Center>
                       </ChakraProvider>
-
-
                     </div>
                   )}
-
                   <ChakraProvider>
                     <Center>
                       <span>

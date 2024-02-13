@@ -28,7 +28,6 @@ import {
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
-import LoggedUser from "../components/LoggedUser";
 import { Tooltip } from "antd";
 import Link from "next/link";
 import { Divider, Rate } from "antd";
@@ -43,16 +42,18 @@ export default function Discovery() {
   const [searchFilters, setSearchFilters] = useState({
     voteCount: 1000,
     ratingSort: "vote_average.desc",
-    releaseDateFrom: 1900,
+    //vote_average.lte=5
+    //vote_average.gte=5
+
+    decade: 1900,
     releaseDateTo: 2025,
-    tvType: "All",
+    average: "All",
     category: "All",
   });
 
   const [searchMovies, setSearchMovies] = useState([]);
   const [searchMovieTotalResults, setSearchMovieTotalResults] = useState("");
   const [genres, setGenres] = useState([]);
-
   //pagination
   const [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
   const [searchMovieRealPage, setSearchMovieRealPage] = useState("");
@@ -62,27 +63,63 @@ export default function Discovery() {
   // back to the top button
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
 
-  let urlString =
-    "https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&sort_by=" +
-    searchFilters.ratingSort +
-    "&first_air_date.gte=" +
-    searchFilters.releaseDateFrom +
-    "-01-01&first_air_date.lte=" +
-    searchFilters.releaseDateTo +
-    "-12-31" +
-    "&include_null_first_air_dates=false" +
-    "&vote_count.gte=" +
-    searchFilters.voteCount;
 
-  if (searchFilters.tvType === "All") {
-    urlString;
+  // nessa url eu busco filmes por década - recupera o numero de paginas ou seja -
+  
+  // 1 monta a busca - 3 tipos -
+      // 1.1 Por decada 
+      // 1.1.1 - Decadas com nome + contemporaneos
+      // 1.2 Por Qualidade - Melhores e Piores
+      // 1.3 Toda a Base
+  // 2 Verifica o numero de paginas de resultado
+  // 3 escolhe a página aleatoriamente
+  // 4 Transforma o id dos filmes num grupo
+  // 5 Nesse grupo escolhe aleatoriamente 1 filme
+  // 6 Faz a chamada direta no filme
+
+
+  // nesse aqui verifica toda a base de filmes
+  let urlNew =
+    "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US"
+    + "&page=" + { page } + "&primary_release_date.gte=1900-01-01&primary_release_date.lte=2025-12-31&sort_by=popularity.desc"
+
+  console.log("URL: Toda Base: ", urlNew)
+
+
+  // nesse aqui verifica a base pela década dos filmes
+  let urlNew2 =
+    "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US"
+    + "&page=" + { page }
+    + "&primary_release_date.gte="
+    + searchFilters.decade + "-01-01&primary_release_date.lte="
+    + searchFilters.decade + "-12-31&sort_by=popularity.desc"
+
+  console.log("URL:Verifica por década: ", urlNew2)
+
+  // nesse aqui verifica melhores ou piores filmes com mais de 500 votos
+  let urlNew3 =
+    "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page="
+    + 1
+    + "&primary_release_date.gte=1900-01-01&primary_release_date.lte=2024-12-31&sort_by=popularity.asc"
+    + "&vote_average.lte=5"
+    + "&vote_count.gte=500"
+
+  console.log("ULR Verifica pela qualidade: ", urlNew3)
+  const randomicNumber1 = Math.floor(Math.random() * 2000) + 1;
+  const randomicNumber2 = Math.floor(Math.random() * 2000) + 1;
+  const randomicNumber3 = Math.floor(Math.random() * 2000) + 1;
+
+
+
+  if (searchFilters.average === "All") {
+    urlNew;
   } else {
-    urlString += "&with_type=" + searchFilters.tvType;
+    urlNew += "&with_type=" + searchFilters.average;
   }
   if (searchFilters.category === "All") {
-    urlString;
+    urlNew;
   } else {
-    urlString += "&with_genres=" + searchFilters.category;
+    urlNew += "&with_genres=" + searchFilters.category;
   }
 
   const apiCall = useCallback(
@@ -92,7 +129,7 @@ export default function Discovery() {
       } else {
         currentPage = parseInt(currentPage);
       }
-      const url = urlString + "&page=" + currentPage;
+      const url = urlNew + "&page=" + currentPage;
 
       setIsLoading(true);
 
@@ -122,7 +159,7 @@ export default function Discovery() {
         )
         .catch((error) => setError(true));
     },
-    [urlString, setIsLoading, setPage]
+    [urlNew, setIsLoading, setPage]
   );
 
   useEffect(() => {
@@ -191,26 +228,15 @@ export default function Discovery() {
       colorScheme: "green",
     },
     {
-      label: `Year: ${searchFilters.releaseDateFrom}-${searchFilters.releaseDateTo}`,
+      label: `Year: ${searchFilters.decade}-${searchFilters.releaseDateTo}`,
       colorScheme: "red",
     },
 
     {
-      label: `Type: ${searchFilters.tvType === "0"
-        ? "Documentary"
-        : searchFilters.tvType === "1"
-          ? "News"
-          : searchFilters.tvType === "2"
-            ? "Mini Series"
-            : searchFilters.tvType === "3"
-              ? "Reality"
-              : searchFilters.tvType === "4"
-                ? "Scripted"
-                : searchFilters.tvType === "5"
-                  ? "Talk Show"
-                  : searchFilters.tvType === "6"
-                    ? "Videos"
-                    : "All"
+      label: `Average: ${searchFilters.average === "&vote_average.lte=5"
+        ? "Worst"
+        : searchFilters.average === "&vote_average.lte"
+          ? "Best" : "All"
         }`,
       colorScheme: "yellow",
     },
@@ -227,12 +253,12 @@ export default function Discovery() {
   return (
     <>
       <Head>
-        <title>Discover Tv Shows</title>
+        <title>What To Watch Today?</title>
         <meta name="keywords" content="tvshow,watch,review"></meta>
         <meta name="description" content="movies, tvshows"></meta>
       </Head>
       <PageTitle
-        title="Discover TvShows"
+        title="What To Watch Today?"
         isMobile={isMobile}
         showLoggedUser={true}
       />
@@ -278,25 +304,40 @@ export default function Discovery() {
                 <DrawerHeader>Select Filters</DrawerHeader>
 
                 <DrawerBody>
-                  <FormLabel htmlFor="orderby">Order By</FormLabel>
+                  <FormLabel htmlFor="orderby">Movies By Decade</FormLabel>
                   <Select
-                    id="ordenation"
-                    placeholder="Ordenation"
+                    id="Decade"
+                    placeholder="Choise Decade"
                     type="text"
                     isRequired={true}
-                    value={searchFilters.ratingSort}
+                    value={searchFilters.decade}
                     onChange={(event) =>
                       setSearchFilters({
                         ...searchFilters,
-                        ratingSort: event.target.value,
+                        decade: event.target.value,
                       })
                     }
                   >
-                    <option value="vote_average.asc">
-                      From Worst Rating to Best
+                    <option value="1920">
+                      Roaring Twenties
                     </option>
-                    <option value="vote_average.desc">
-                      From Best Rating to Worst
+                    <option value="1930">
+                      Great Depression Era
+                    </option>
+                    <option value="1940">
+                      World War II Era
+                    </option>
+                    <option value="1950">
+                      Post-War Boom
+                    </option>
+                    <option value="1960">
+                      Swinging Sixties
+                    </option>
+                    <option value="1970">
+                      Me Decade
+                    </option>
+                    <option value="1910">
+                      Contemporary
                     </option>
                   </Select>
 
@@ -330,15 +371,15 @@ export default function Discovery() {
 
                   <FormControl>
                     <Center>
-                      <FormLabel>Initial and Final Year</FormLabel>
+                      <FormLabel>Decada</FormLabel>
                     </Center>
                     <Flex align="center">
                       <Select
-                        value={searchFilters.releaseDateFrom}
+                        value={searchFilters.decade}
                         onChange={(event) =>
                           setSearchFilters({
                             ...searchFilters,
-                            releaseDateFrom: event.target.value,
+                            decade: event.target.value,
                           })
                         }
                       >
@@ -368,25 +409,19 @@ export default function Discovery() {
                   </FormControl>
 
                   <br />
-                  <FormLabel>Tv Show Type</FormLabel>
-
+                  <FormLabel>Best or Worst</FormLabel>
                   <Select
-                    value={searchFilters.tvType}
+                    value={searchFilters.average}
                     onChange={(event) =>
                       setSearchFilters({
                         ...searchFilters,
-                        tvType: event.target.value,
+                        average: event.target.value,
                       })
                     }
                   >
-                    <option value="">All</option>
-                    <option value="0">Documentary</option>
-                    <option value="1">News</option>
-                    <option value="2">Mini Series</option>
-                    <option value="3">Reality</option>
-                    <option value="4">Scripted</option>
-                    <option value="5">Talk Show</option>
-                    <option value="6">Videos</option>
+                    <option value="">Choice Avarege</option>
+                    <option value="&vote_average.lte=5">Worst</option>
+                    <option value="&vote_average.gte=5">Best</option>
                   </Select>
 
                   <br />
