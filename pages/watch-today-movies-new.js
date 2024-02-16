@@ -4,15 +4,12 @@ import ErrorPage from "./error-page";
 import Image from "next/image";
 import Head from "next/head";
 import {
-  Box,
   Button,
-  FormControl,
   FormLabel,
   Select,
   Spinner,
   ChakraProvider,
   Center,
-  Flex,
   Progress,
   Drawer,
   DrawerBody,
@@ -22,15 +19,27 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
-  Tag,
-  HStack,
-  useMediaQuery
+  useMediaQuery,
+  Stack,
+  Skeleton,
+  TableContainer,
+  Table,
+  Thead,
+  Tr,
+  Td,
+  Tbody,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel
+
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import { Tooltip } from "antd";
 import Link from "next/link";
-import { Divider, Rate } from "antd";
+import { Rate } from "antd";
 import PageTitle from "../components/PageTitle";
 
 export default function Discovery() {
@@ -41,17 +50,15 @@ export default function Discovery() {
 
   const [searchFilters, setSearchFilters] = useState({
     voteCount: 1000,
-    ratingSort: "vote_average.desc",
-    //vote_average.lte=5
-    //vote_average.gte=5
-
-    decade: 1900,
-    releaseDateTo: 2025,
-    average: "All",
+    decade: 2000,
+    average: "",
     category: "All",
   });
 
+
   const [searchMovies, setSearchMovies] = useState([]);
+  const [movieData, setMovieData] = useState([])
+  const [searchMovies2, setSearchMovies2] = useState([]);
   const [searchMovieTotalResults, setSearchMovieTotalResults] = useState("");
   const [genres, setGenres] = useState([]);
   //pagination
@@ -62,77 +69,120 @@ export default function Discovery() {
   const [isLoading, setIsLoading] = useState(false);
   // back to the top button
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
+  //new filters
+  const [showAllFilter, setShowAllFilter] = useState(false)
+  const [showDecadeFilter, setShowDecadeFilter] = useState(false)
+  const [showAverageFilter, setShowAverageFilter] = useState(false)
+  const [movieId, setMovieId] = useState()
+  const [moviePageRandom, setMoviePageRandom] = useState()
 
-
-  // nessa url eu busco filmes por década - recupera o numero de paginas ou seja -
-  
-  // 1 monta a busca - 3 tipos -
-      // 1.1 Por decada 
-      // 1.1.1 - Decadas com nome + contemporaneos
-      // 1.2 Por Qualidade - Melhores e Piores
-      // 1.3 Toda a Base
-  // 2 Verifica o numero de paginas de resultado
-  // 3 escolhe a página aleatoriamente
-  // 4 Transforma o id dos filmes num grupo
-  // 5 Nesse grupo escolhe aleatoriamente 1 filme
-  // 6 Faz a chamada direta no filme
-
-
-  // nesse aqui verifica toda a base de filmes
   let urlNew =
-    "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US"
-    + "&page=" + { page } + "&primary_release_date.gte=1900-01-01&primary_release_date.lte=2025-12-31&sort_by=popularity.desc"
-
-  console.log("URL: Toda Base: ", urlNew)
-
-
-  // nesse aqui verifica a base pela década dos filmes
+    "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&primary_release_date.gte=1900-01-01&primary_release_date.lte=2025-12-31&sort_by=popularity.desc"
   let urlNew2 =
-    "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US"
-    + "&page=" + { page }
-    + "&primary_release_date.gte="
-    + searchFilters.decade + "-01-01&primary_release_date.lte="
-    + searchFilters.decade + "-12-31&sort_by=popularity.desc"
-
-  console.log("URL:Verifica por década: ", urlNew2)
-
-  // nesse aqui verifica melhores ou piores filmes com mais de 500 votos
+    "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&primary_release_date.gte="
+    + searchFilters.decade + "&sort_by=popularity.desc"
   let urlNew3 =
-    "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page="
-    + 1
+    "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US"
     + "&primary_release_date.gte=1900-01-01&primary_release_date.lte=2024-12-31&sort_by=popularity.asc"
-    + "&vote_average.lte=5"
+    + searchFilters.average
     + "&vote_count.gte=500"
 
-  console.log("ULR Verifica pela qualidade: ", urlNew3)
-  const randomicNumber1 = Math.floor(Math.random() * 2000) + 1;
-  const randomicNumber2 = Math.floor(Math.random() * 2000) + 1;
-  const randomicNumber3 = Math.floor(Math.random() * 2000) + 1;
+  let urlString
 
-
-
-  if (searchFilters.average === "All") {
-    urlNew;
+  if (showAllFilter) {
+    urlString = urlNew;
+    console.log("Todo o Catalogo")
+  } else if (showDecadeFilter) {
+    urlString = urlNew2;
+    console.log("Decadas")
+  } else if (showAverageFilter) {
+    urlString = urlNew3;
+    console.log("Por Bons e Ruins")
   } else {
-    urlNew += "&with_type=" + searchFilters.average;
+    urlString = urlNew;
+    console.log("Todo o Catalogo")
   }
-  if (searchFilters.category === "All") {
-    urlNew;
-  } else {
-    urlNew += "&with_genres=" + searchFilters.category;
-  }
+  console.log("Url Escolhida", urlString)
 
-  const apiCall = useCallback(
-    (currentPage) => {
-      if (currentPage === "" || isNaN(currentPage)) {
-        currentPage = 1;
-      } else {
-        currentPage = parseInt(currentPage);
-      }
-      const url = urlNew + "&page=" + currentPage;
 
-      setIsLoading(true);
 
+  const apiCall = useCallback(() => {
+    fetch(urlString, {
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
+      }),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          setError(false);
+          return response.json();
+        } else {
+          throw new Error("Wrong Data");
+        }
+      })
+      .then((result) => {
+        setSearchMovies(result.results);
+        setSearchMovieTotalPages(result.total_pages);
+        setIsLoading(false);
+        let maxLimit = Math.min(result.total_pages, 500);
+
+        maxLimit = result.total_pages < 500 ? result.total_pages : 500;
+
+        const randomicNumber = Math.floor(Math.random() * maxLimit) + 1;
+        setMoviePageRandom(randomicNumber);
+      })
+      .catch((error) => setError(true));
+  }, [urlNew, urlNew2, urlNew3]);
+
+  let urlStringWithPage = urlString + "&page=" + moviePageRandom
+  console.log("Url Montada ", urlStringWithPage)
+
+  useEffect(() => { apiCall2() }
+    , [urlStringWithPage]);
+
+
+  const apiCall2 = () => {
+    console.log("Chamou a apiCall2")
+    fetch(urlStringWithPage, {
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
+      }),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          setError(false);
+          return response.json();
+        } else {
+          throw new Error("Wrong Data");
+        }
+      })
+      .then((result) => {
+        setSearchMovies(result.results);
+        setSearchMovieTotalPages(result.total_pages);
+        setPage(result.page);
+        setIsLoading(false);
+
+        const movieIds = result.results.map((movie) => movie.id);
+        const arrayLength = movieIds.length;
+
+        if (arrayLength > 0) {
+          const randomIndex = Math.floor(Math.random() * arrayLength);
+          const randomMovieId = movieIds[randomIndex];
+          setMovieId(randomMovieId);
+        } else {
+          console.log("O array de IDs de filmes está vazio.");
+        }
+      })
+      .catch((error) => setError(true));
+  };
+
+
+
+  useEffect(() => {
+    const apiCall3 = () => {
+      const url = `https://api.themoviedb.org/3/movie/${movieId}`;
       fetch(url, {
         headers: new Headers({
           "Content-Type": "application/json",
@@ -140,46 +190,51 @@ export default function Discovery() {
         }),
       })
         .then((response) => {
-          if (response.status === 200) {
-            setError(false);
+          if (response.ok) {
             return response.json();
           } else {
-            throw new Error("Wrong Data");
+            throw new Error(response.statusText);
           }
         })
-        .then(
-          (result) => (
-            setSearchMovies(result.results),
-            setSearchMovieTotalPages(result.total_pages),
-            setSearchMovieRealPage(result.page),
-            setSearchMovieTotalResults(result.total_results),
-            setPage(result.page),
-            setIsLoading(false)
-          )
-        )
-        .catch((error) => setError(true));
-    },
-    [urlNew, setIsLoading, setPage]
-  );
+        .then((result) => {
+          if (result && result.id) {
+            const movieResult = {
+              budget: result.budget,
+              originalTitle: result.original_title,
+              portugueseTitle: result.title,
+              overview: result.overview,
+              average: result.vote_average,
+              releaseDate: result.release_date,
+              image: result.poster_path,
+              country: result.production_countries[0].name,
+              ratingCount: result.vote_count,
+              popularity: result.popularity,
+              gender: result.genres.map((genre) => genre.name),
+              languages: result.spoken_languages[0].name,
+              adult: result.adult,
+              movieId: result.id,
+              originalLanguage: result.original_language,
+              statusMovie: result.status,
+            };
 
-  useEffect(() => {
-    setPage(1);
-  }, [searchFilters]);
+            setMovieData(movieResult);
+          } else {
+            // If movie data is not found, set isFetchingMovie to false
+            setIsLoading(false);
+          }
+        })
+        .catch((error) => {
+          setError(true);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    };
 
-  useEffect(() => {
-    apiCall(page);
-  }, [page, apiCall]);
-
-  const nextPage = (event) => {
-    setPage(page + 1), apiCall(page + 1);
-  };
-  const previousPage = (event) => {
-    setPage(page - 1), apiCall();
-  };
-
-  let totalPages = searchMovieTotalPages;
-  let currentPage = searchMovieRealPage;
-  let totalResults = searchMovieTotalResults;
+    if (movieId) {
+      apiCall3();
+    }
+  }, [movieId]);
 
   function getProgressColor(progressValue) {
     if (progressValue >= 0.1 && progressValue <= 3.999) {
@@ -195,74 +250,28 @@ export default function Discovery() {
     }
   }
 
-  useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        const response = await fetch(
-          "https://api.themoviedb.org/3/genre/tv/list",
-          {
-            headers: new Headers({
-              "Content-Type": "application/json",
-              Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
-            }),
-          }
-        );
-        const data = await response.json();
-        setGenres(data.genres);
-      } catch (error) {
-        console.error("Error fetching genres:", error);
-      }
-    };
-
-    fetchGenres();
-  }, []);
-
-  const selectedFiltersTags = [
-    {
-      label: `Vote: +${searchFilters.voteCount}`,
-      colorScheme: "blue",
-    },
-    {
-      label: `Order: ${searchFilters.ratingSort === "vote_average.desc" ? "Desc" : "Asc"
-        }`,
-      colorScheme: "green",
-    },
-    {
-      label: `Year: ${searchFilters.decade}-${searchFilters.releaseDateTo}`,
-      colorScheme: "red",
-    },
-
-    {
-      label: `Average: ${searchFilters.average === "&vote_average.lte=5"
-        ? "Worst"
-        : searchFilters.average === "&vote_average.lte"
-          ? "Best" : "All"
-        }`,
-      colorScheme: "yellow",
-    },
-
-    {
-      label: `Category: ${genres.find(
-        (genre) => genre.id === parseInt(searchFilters.tvShowCategory, 10)
-      )?.name || "All"
-        }`,
-      colorScheme: "gray",
-    },
-  ];
+  const handleAllFilter = () => {
+    setShowAllFilter(!showAllFilter);
+  };
+  const handleDecadeFilter = () => {
+    setShowDecadeFilter(!showDecadeFilter);
+  };
+  const handleAverageFilter = () => {
+    setShowAverageFilter(!showAverageFilter);
+  };
 
   return (
     <>
       <Head>
         <title>What To Watch Today?</title>
         <meta name="keywords" content="tvshow,watch,review"></meta>
-        <meta name="description" content="movies, tvshows"></meta>
+        <meta name="description" content="movies, movies, tips"></meta>
       </Head>
       <PageTitle
         title="What To Watch Today?"
         isMobile={isMobile}
         showLoggedUser={true}
       />
-
       <br />
       <div
         style={{
@@ -285,13 +294,7 @@ export default function Discovery() {
             </Button>
 
             <br />
-            <HStack>
-              {selectedFiltersTags.map((tag, index) => (
-                <Tag key={index} colorScheme={tag.colorScheme}>
-                  {tag.label}
-                </Tag>
-              ))}
-            </HStack>
+
             <Drawer
               isOpen={isOpen}
               placement="right"
@@ -302,79 +305,55 @@ export default function Discovery() {
               <DrawerContent>
                 <DrawerCloseButton />
                 <DrawerHeader>Select Filters</DrawerHeader>
-
                 <DrawerBody>
-                  <FormLabel htmlFor="orderby">Movies By Decade</FormLabel>
-                  <Select
-                    id="Decade"
-                    placeholder="Choise Decade"
-                    type="text"
-                    isRequired={true}
-                    value={searchFilters.decade}
-                    onChange={(event) =>
-                      setSearchFilters({
-                        ...searchFilters,
-                        decade: event.target.value,
-                      })
-                    }
-                  >
-                    <option value="1920">
-                      Roaring Twenties
-                    </option>
-                    <option value="1930">
-                      Great Depression Era
-                    </option>
-                    <option value="1940">
-                      World War II Era
-                    </option>
-                    <option value="1950">
-                      Post-War Boom
-                    </option>
-                    <option value="1960">
-                      Swinging Sixties
-                    </option>
-                    <option value="1970">
-                      Me Decade
-                    </option>
-                    <option value="1910">
-                      Contemporary
-                    </option>
-                  </Select>
+                  <Center>
+                    <Tooltip label="Enable/Disable Movies">
+                      <Button
+                        colorScheme={showDecadeFilter ? "green" : "gray"}
+                        onClick={handleDecadeFilter}
+                        isDisabled={showAverageFilter || showAllFilter}
+                      >
+                        By Decades
+                      </Button>
+                    </Tooltip>
+                  </Center>
+                  <br />
+
+                  <Center>
+                    <Tooltip label="Enable/Disable Movies">
+                      <Button
+                        colorScheme={showAverageFilter ? "green" : "gray"}
+                        onClick={handleAverageFilter}
+                        isDisabled={showAllFilter || showDecadeFilter}
+                      >
+                        Bests & Worsts
+                      </Button>
+                    </Tooltip>
+                  </Center>
 
                   <br />
 
-                  <FormLabel>Minimum Vote Count</FormLabel>
-
-                  <Select
-                    id="votes"
-                    placeholder="Number of Votes"
-                    type="number"
-                    isRequired={true}
-                    value={searchFilters.voteCount}
-                    onChange={(event) =>
-                      setSearchFilters({
-                        ...searchFilters,
-                        voteCount: event.target.value,
-                      })
-                    }
-                  >
-                    <option value="0">0 Votes</option>
-                    <option value="50">More than 50</option>
-                    <option value="100">More than 100</option>
-                    <option value="200">More than 200</option>
-                    <option value="500">More than 500</option>
-                    <option value="1000">More than 1000</option>
-                    <option value="5000">More than 5000</option>
-                  </Select>
+                  <Center>
+                    <Tooltip label="Enable/Disable Movies">
+                      <Button
+                        colorScheme={showAllFilter ? "green" : "gray"}
+                        onClick={handleAllFilter}
+                        isDisabled={showAverageFilter || showDecadeFilter}
+                      >
+                        All Catalog
+                      </Button>
+                    </Tooltip>
+                  </Center>
 
                   <br />
-
-                  <FormControl>
-                    <Center>
-                      <FormLabel>Decada</FormLabel>
-                    </Center>
-                    <Flex align="center">
+                  {showDecadeFilter ?
+                    <>
+                      <FormLabel htmlFor="orderby">Movies By Decade</FormLabel>
                       <Select
+                        id="Decade"
+                        placeholder="Choise Decade"
+                        type="text"
+                        isRequired={true}
                         value={searchFilters.decade}
                         onChange={(event) =>
                           setSearchFilters({
@@ -383,69 +362,50 @@ export default function Discovery() {
                           })
                         }
                       >
-                        {Array.from({ length: 2025 - 1900 + 1 }, (_, index) => (
-                          <option key={index} value={1900 + index}>
-                            {1900 + index}
-                          </option>
-                        ))}
-                      </Select>
-                      <Box w="20px" />
+                        <option value="1920-01-01&primary_release_date.lte=1929-12-31">
+                          Roaring Twenties
+                        </option>
+                        <option value="1930-01-01&primary_release_date.lte=1939-12-31">
+                          Great Depression Era
+                        </option>
+                        <option value="1940-01-01&primary_release_date.lte=1949-12-31">
+                          World War II Era
+                        </option>
+                        <option value="1950-01-01&primary_release_date.lte=1959-12-31">
+                          Post-War Boom
+                        </option>
+                        <option value="1960-01-01&primary_release_date.lte=1969-12-31">
+                          Swinging Sixties
+                        </option>
+                        <option value="1970-01-01&primary_release_date.lte=1979-12-31">
+                          Me Decade
+                        </option>
+                        <option value="1980-01-01&primary_release_date.lte=1989-12-31">
+                          80's & Today
+                        </option>
+                        <option value="1900-01-01&primary_release_date.lte=2025-12-31">
+                          All time
+                        </option>
+                      </Select></> : null}
+
+                  {showAverageFilter ?
+                    <>
+                      <FormLabel>Best or Worst</FormLabel>
                       <Select
-                        value={searchFilters.releaseDateTo}
+                        value={searchFilters.average}
                         onChange={(event) =>
                           setSearchFilters({
                             ...searchFilters,
-                            releaseDateTo: event.target.value,
+                            average: event.target.value,
                           })
                         }
                       >
-                        {Array.from({ length: 2025 - 1900 + 1 }, (_, index) => (
-                          <option key={index} value={1900 + index}>
-                            {1900 + index}
-                          </option>
-                        ))}
+                        <option value="">Choice Avarege</option>
+                        <option value="&vote_average.lte=5">Worst</option>
+                        <option value="&vote_average.gte=5">Best</option>
                       </Select>
-                    </Flex>
-                  </FormControl>
+                    </> : null}
 
-                  <br />
-                  <FormLabel>Best or Worst</FormLabel>
-                  <Select
-                    value={searchFilters.average}
-                    onChange={(event) =>
-                      setSearchFilters({
-                        ...searchFilters,
-                        average: event.target.value,
-                      })
-                    }
-                  >
-                    <option value="">Choice Avarege</option>
-                    <option value="&vote_average.lte=5">Worst</option>
-                    <option value="&vote_average.gte=5">Best</option>
-                  </Select>
-
-                  <br />
-
-                  <FormLabel htmlFor="tcShowCategory">
-                    Tv Show Category
-                  </FormLabel>
-                  <Select
-                    id="movieCategory"
-                    placeholder="Select Category"
-                    value={searchFilters.category}
-                    onChange={(event) =>
-                      setSearchFilters({
-                        ...searchFilters,
-                        category: event.target.value,
-                      })
-                    }
-                  >
-                    {genres.map((genre) => (
-                      <option key={genre.id} value={genre.id}>
-                        {genre.name}
-                      </option>
-                    ))}
-                  </Select>
                   <br />
                   <Center>
                     <Button size="lg" colorScheme="purple" onClick={apiCall}>
@@ -453,14 +413,7 @@ export default function Discovery() {
                     </Button>
                   </Center>
                 </DrawerBody>
-
                 <DrawerFooter>
-                  {/* <Button variant="outline" mr={3} onClick={onClose}>
-                    Cancel
-                  </Button>
-                  <Button variant="outline" onClick={apiCall}>
-                    Go
-                  </Button> */}
                 </DrawerFooter>
               </DrawerContent>
             </Drawer>
@@ -472,98 +425,255 @@ export default function Discovery() {
 
       <ChakraProvider>{isLoading && <Spinner />}</ChakraProvider>
 
-      {isError === true ? (
-        <ErrorPage message={`Verify your credentials`}></ErrorPage>
-      ) : (
-        <div className={styles.grid}>
-          {searchMovies.map((search) => (
-            <div key={search.id}>
-              <ChakraProvider>
-                {/* <Link as={`/tvshow-page?tvShowId=${search.id}`}> */}
 
-                <Link
-                  href={{
-                    pathname: "/tvshow-page",
-                    query: { tvShowId: search.id },
-                  }}
-                >
-                  <Tooltip
-                    title="More"
-                    style={{
-                      color: "white",
-                      borderColor: "purple",
-                      background: "purple",
-                    }}
-                  >
-                    <Image
-                      className={styles.card_image}
-                      src={
-                        search.poster_path
-                          ? `https://image.tmdb.org/t/p/original${search.poster_path}`
-                          : `/callback.png`
-                      }
-                      alt="poster"
-                      width={240}
-                      height={360}
-                    />
-                  </Tooltip>
-                </Link>
-              </ChakraProvider>
+      <ChakraProvider>
+        <div>
 
-              <div style={{ maxWidth: "240px", margin: "5px" }}>
+          <div>
+            <h1>
+              <br />
+              <span className={styles.title}>
+                {movieData.originalTitle ? (
+                  <span
+                    className={styles.title}
+                  >{`${movieData.originalTitle}`}</span>
+                ) : (
+                  <ChakraProvider>
+                    <></>
+                  </ChakraProvider>
+                )}
+              </span>
+              <br />
+              {movieData.portugueseTitle ? (
+                <span>{movieData.average}/10</span>
+              ) : null}
+              <br />
+            </h1>
+            {movieData.portugueseTitle ? (
+              <div style={{ maxWidth: "480px", margin: "0 auto" }}>
                 <ChakraProvider>
                   <Progress
-                    size="lg"
-                    value={search.vote_average}
+                    value={movieData.average}
                     max={10}
-                    colorScheme={getProgressColor(search.vote_average)}
+                    colorScheme={getProgressColor(movieData.average)}
                   />
-                  {search.vote_average} <Rate value={1} count={1} />
+                </ChakraProvider>
+                <br />
+              </div>
+            ) : null}
+            {!movieData.portugueseTitle ? (
+              <>
+                <ChakraProvider>
+                  <Center>
+                    <Stack>
+                      <Skeleton height='720px' width='480px' startColor='pink.500' endColor='purple.500' />
+                    </Stack>
+                  </Center>
+                </ChakraProvider>
+                <ChakraProvider>
+                  <Stack>
+                    <br />
+                    <Center>
+                      <Skeleton width='400px' height='5' />
+                    </Center>
+                    <Center>
+                      <Skeleton width='400px' height='5' />
+                    </Center>
+                    <span></span>
+                    <Center>
+                      <Skeleton width='60px' height='5' />
+                    </Center>
+                    <br />
+                    <Center>
+                      <Skeleton width='120px' height='5' />
+                    </Center>
+                    <Center>
+                      <Skeleton width='200px' height='5' />
+                    </Center>
+                    <Center>
+                      <Skeleton width='120px' height='5' />
+                    </Center>
+                    <br />
+                  </Stack>
+                </ChakraProvider>
+              </>
+
+            ) : (
+              <div>
+                <ChakraProvider>
+                  <Link href="/">
+                    <Center>
+                      <span>
+                        <Image
+                          className={isMobile ? styles.card_image_big_mobile : styles.card_image_big}
+                          src={
+                            movieData.image
+                              ? "https://image.tmdb.org/t/p/original" + movieData.image
+                              : "/callback.png"
+                          }
+                          alt="poster"
+                          width="480"
+                          height="720"
+                          objectFit="contain"
+                          maxHeight="100%"
+                          maxWidth="100%"
+                        />
+                      </span>
+                    </Center>
+                  </Link>
+                </ChakraProvider>
+                <ChakraProvider>
+                  <Center>
+                    <TableContainer>
+                      <Table size="sm">
+                        <Thead>
+                          <Tr>
+                            <Td
+                              style={{
+                                fontFamily: "Helvetica Neue, sans-serif",
+                              }}
+                            >
+                              Title
+                            </Td>
+                            <Td
+                              style={{
+                                fontFamily: "Helvetica Neue, sans-serif",
+                              }}
+                            >
+                              {movieData.portugueseTitle}
+                            </Td>
+                          </Tr>
+                        </Thead>
+                        <Tbody></Tbody>
+                      </Table>
+                      <Tabs size="md">
+                        <TabList>
+                          <Tab
+                            style={{
+                              fontFamily: "Helvetica Neue, sans-serif",
+                            }}
+                          >
+                            Average
+                          </Tab>
+                          <Tab
+                            style={{
+                              fontFamily: "Helvetica Neue, sans-serif",
+                            }}
+                          >
+                            Country
+                          </Tab>
+                          <Tab
+                            style={{
+                              fontFamily: "Helvetica Neue, sans-serif",
+                            }}
+                          >
+                            Language
+                          </Tab>
+                          <Tab
+                            style={{
+                              fontFamily: "Helvetica Neue, sans-serif",
+                            }}
+                          >
+                            Genre
+                          </Tab>
+                        </TabList>
+                        <TabPanels>
+                          <TabPanel
+                            style={{
+                              fontFamily: "Helvetica Neue, sans-serif",
+                            }}
+                          >
+                            {`${movieData.average} `}
+                          </TabPanel>
+
+
+                          <TabPanel>
+
+                            {movieData.country}
+
+
+                          </TabPanel>
+                          <TabPanel>
+
+                            {movieData.originalLanguage}
+
+                          </TabPanel>
+                          <TabPanel
+                            style={{
+                              fontFamily: "Helvetica Neue, sans-serif",
+                            }}
+                          >
+                            {" "}
+                            {movieData.gender &&
+                              movieData.gender.length > 0 &&
+                              movieData.gender.map((gender, index) => (
+                                <span key={gender}>
+                                  {gender}
+                                  {index !== movieData.gender.length - 1 ? ", " : ""}
+                                </span>
+                              ))}
+                          </TabPanel>
+                        </TabPanels>
+                      </Tabs>
+                    </TableContainer>
+                  </Center>
                 </ChakraProvider>
               </div>
-              <br />
-            </div>
-          ))}
+            )}
+            {/* <ChakraProvider>
+              <Center>
+                <span>
+                  <div>
+                    <h1>Rate This Tip</h1>
+                    <Rate
+                      onChange={handleRateChange}
+                      value={starValue}
+                      disabled={isRatingSubmitted}
+                      count={10}
+                    />
+                    <br />
+                    <Button
+                      onClick={() => {
+                        handleRatingSubmit();
+                        inserLike();
+                      }}
+                      disabled={isRatingSubmitted}
+                    >
+                      Submit Rating
+                    </Button>
+                    {isRatingSubmitted && (
+                      <p>Rating submitted successfully!</p>
+                    )}
+                  </div>
+                </span>
+              </Center>
+            </ChakraProvider> */}
+
+            <br />
+            {/* {likeThanks && <span>Thanks 😀 </span>} */}
+
+            {/* {showBackToTopButton && (
+              <BackToTopButton onClick={scrollToTop} />
+            )} */}
+            {movieData.portugueseTitle && (
+              <ChakraProvider>
+                <Button
+                  colorScheme="purple"
+                  onClick={apiCall}
+                  className={styles.button}
+                >
+                  Try Again
+                </Button>
+              </ChakraProvider>
+            )}
+          </div>
+
         </div>
-      )}
+      </ChakraProvider>
 
-      {searchMovieTotalResults > 0 ? (
-        <span>
-          <button
-            onClick={previousPage}
-            disabled={page <= 1}
-            className={styles.button}
-          >
-            Back
-          </button>
-          <span className={styles.button}>
-            {currentPage} / {totalPages}
-          </span>
-          <button
-            onClick={nextPage}
-            disabled={page >= totalPages}
-            className={styles.button}
-          >
-            Next
-          </button>
-          <br />
-          <br />
-          <span className={styles.spantext}>
-            Total Results: {totalResults}
-          </span>{" "}
-        </span>
-      ) : (
-        ""
-      )}
 
-      {!totalResults ? (
-        <span>
-          {/* Escolha os filtros acima, e clique em Verificar para uma consulta de
-            acordo com o seu desejo! */}
-        </span>
-      ) : (
-        ""
-      )}
+
+
 
       {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
     </>

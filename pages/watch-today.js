@@ -41,15 +41,13 @@ export default function Movieapi() {
   const [randomMovieId, setRandomMovieId] = useState(null);
   const [isError, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLikeDisabled, setLikeDisable] = useState(false);
   const [likeThanks, setLikeThanks] = useState(false);
-  const [dateNow, setDatenow] = useState(new Date());
   const [starValue, setStarValue] = useState(0);
   const [isRatingSubmitted, setIsRatingSubmitted] = useState(false);
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
   const [session, setSession] = useState(null);
   const [email_user, setEmail_user] = useState(null);
-  const [searchingMovie, setSearchingMovie] = useState(false); // Ajuste: inicializando com false
+  // Ajuste: inicializando com false
   const [isFetchingMovie, setIsFetchingMovie] = useState(false); // Add a new state for controlling the visibility of the skeleton
   const [firstTime, setFirstTime] = useState(false);
 
