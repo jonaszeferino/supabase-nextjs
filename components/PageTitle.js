@@ -30,7 +30,7 @@ function PageTitle({ title, isMobile: isMobileProp, showLoggedUser }) {
           )}
           <Divider style={{ boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.25)" }} />
           <h1 style={{ fontSize: 40 }}>
-            <div style={{ color: "#7657be" }}><strong>{title}</strong></div>
+            <div style={{ color: "#7657be",  backgroundColor: "#C5D8EB", padding: "20px", margin: "-20px" }}><strong>{title}</strong></div>
           </h1>
           <Divider style={{ boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.25)" }} />
         </>

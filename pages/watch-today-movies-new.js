@@ -10,7 +10,6 @@ import {
   Spinner,
   ChakraProvider,
   Center,
-  Progress,
   Drawer,
   DrawerBody,
   DrawerFooter,
@@ -55,15 +54,12 @@ export default function Discovery() {
     category: "All",
   });
 
-
+  const [showOverview, setShowOverview] = useState(false)
   const [searchMovies, setSearchMovies] = useState([]);
   const [movieData, setMovieData] = useState([])
-  const [searchMovies2, setSearchMovies2] = useState([]);
-  const [searchMovieTotalResults, setSearchMovieTotalResults] = useState("");
   const [genres, setGenres] = useState([]);
   //pagination
   const [searchMovieTotalPages, setSearchMovieTotalPages] = useState("");
-  const [searchMovieRealPage, setSearchMovieRealPage] = useState("");
   const [page, setPage] = useState(1);
   const [isError, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -76,12 +72,12 @@ export default function Discovery() {
   const [movieId, setMovieId] = useState()
   const [moviePageRandom, setMoviePageRandom] = useState()
 
-  let urlNew =
+  let urlAll =
     "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&primary_release_date.gte=1900-01-01&primary_release_date.lte=2025-12-31&sort_by=popularity.desc"
-  let urlNew2 =
+  let urlDecades =
     "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&primary_release_date.gte="
     + searchFilters.decade + "&sort_by=popularity.desc"
-  let urlNew3 =
+  let urlBestWorst =
     "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US"
     + "&primary_release_date.gte=1900-01-01&primary_release_date.lte=2024-12-31&sort_by=popularity.asc"
     + searchFilters.average
@@ -90,21 +86,15 @@ export default function Discovery() {
   let urlString
 
   if (showAllFilter) {
-    urlString = urlNew;
-    console.log("Todo o Catalogo")
+    urlString = urlAll;
   } else if (showDecadeFilter) {
-    urlString = urlNew2;
-    console.log("Decadas")
+    urlString = urlDecades;
   } else if (showAverageFilter) {
-    urlString = urlNew3;
-    console.log("Por Bons e Ruins")
+    urlString = urlBestWorst;
   } else {
-    urlString = urlNew;
-    console.log("Todo o Catalogo")
+    urlString = urlAll;
   }
-  console.log("Url Escolhida", urlString)
-
-
+  console.log("Url", urlString)
 
   const apiCall = useCallback(() => {
     fetch(urlString, {
@@ -133,17 +123,16 @@ export default function Discovery() {
         setMoviePageRandom(randomicNumber);
       })
       .catch((error) => setError(true));
-  }, [urlNew, urlNew2, urlNew3]);
+  }, [urlAll, urlDecades, urlBestWorst]);
 
   let urlStringWithPage = urlString + "&page=" + moviePageRandom
-  console.log("Url Montada ", urlStringWithPage)
+  console.log("Url Final ", urlStringWithPage)
 
   useEffect(() => { apiCall2() }
     , [urlStringWithPage]);
 
-
   const apiCall2 = () => {
-    console.log("Chamou a apiCall2")
+
     fetch(urlStringWithPage, {
       headers: new Headers({
         "Content-Type": "application/json",
@@ -172,12 +161,11 @@ export default function Discovery() {
           const randomMovieId = movieIds[randomIndex];
           setMovieId(randomMovieId);
         } else {
-          console.log("O array de IDs de filmes está vazio.");
+          console.log("Array of ids is empty.");
         }
       })
       .catch((error) => setError(true));
   };
-
 
 
   useEffect(() => {
@@ -211,7 +199,6 @@ export default function Discovery() {
               popularity: result.popularity,
               gender: result.genres.map((genre) => genre.name),
               languages: result.spoken_languages[0].name,
-              adult: result.adult,
               movieId: result.id,
               originalLanguage: result.original_language,
               statusMovie: result.status,
@@ -219,7 +206,7 @@ export default function Discovery() {
 
             setMovieData(movieResult);
           } else {
-            // If movie data is not found, set isFetchingMovie to false
+
             setIsLoading(false);
           }
         })
@@ -259,6 +246,9 @@ export default function Discovery() {
   const handleAverageFilter = () => {
     setShowAverageFilter(!showAverageFilter);
   };
+  const handleShowOverview = () => {
+    setShowOverview(!showOverview);
+  };
 
   return (
     <>
@@ -272,7 +262,7 @@ export default function Discovery() {
         isMobile={isMobile}
         showLoggedUser={true}
       />
-      <br />
+
       <div
         style={{
           display: "flex",
@@ -292,12 +282,9 @@ export default function Discovery() {
             <Button ref={btnRef} colorScheme="purple" onClick={onOpen}>
               Select Filters
             </Button>
-
-            <br />
-
             <Drawer
               isOpen={isOpen}
-              placement="right"
+              placement="rigth"
               onClose={onClose}
               finalFocusRef={btnRef}
             >
@@ -318,7 +305,6 @@ export default function Discovery() {
                     </Tooltip>
                   </Center>
                   <br />
-
                   <Center>
                     <Tooltip label="Enable/Disable Movies">
                       <Button
@@ -330,9 +316,7 @@ export default function Discovery() {
                       </Button>
                     </Tooltip>
                   </Center>
-
                   <br />
-
                   <Center>
                     <Tooltip label="Enable/Disable Movies">
                       <Button
@@ -344,7 +328,6 @@ export default function Discovery() {
                       </Button>
                     </Tooltip>
                   </Center>
-
                   <br />
                   {showDecadeFilter ?
                     <>
@@ -381,9 +364,18 @@ export default function Discovery() {
                           Me Decade
                         </option>
                         <option value="1980-01-01&primary_release_date.lte=1989-12-31">
-                          80's & Today
+                          80's
                         </option>
-                        <option value="1900-01-01&primary_release_date.lte=2025-12-31">
+                        <option value="1990-01-01&primary_release_date.lte=1999-12-31">
+                          90's
+                        </option>
+                        <option value="2000-01-01&primary_release_date.lte=2009-12-31">
+                          00's
+                        </option>
+                        <option value="2010-01-01&primary_release_date.lte=2059-12-31">
+                          00's & Today
+                        </option>
+                        <option value="1900-01-01&primary_release_date.lte=2059-12-31">
                           All time
                         </option>
                       </Select></> : null}
@@ -419,208 +411,206 @@ export default function Discovery() {
             </Drawer>
           </ChakraProvider>
           <br />
-          <br />
+
         </div>
       </div>
 
       <ChakraProvider>{isLoading && <Spinner />}</ChakraProvider>
-
-
       <ChakraProvider>
         <div>
 
-          <div>
-            <h1>
-              <br />
-              <span className={styles.title}>
-                {movieData.originalTitle ? (
-                  <span
-                    className={styles.title}
-                  >{`${movieData.originalTitle}`}</span>
-                ) : (
-                  <ChakraProvider>
-                    <></>
-                  </ChakraProvider>
-                )}
-              </span>
-              <br />
-              {movieData.portugueseTitle ? (
-                <span>{movieData.average}/10</span>
-              ) : null}
-              <br />
-            </h1>
-            {movieData.portugueseTitle ? (
-              <div style={{ maxWidth: "480px", margin: "0 auto" }}>
-                <ChakraProvider>
-                  <Progress
-                    value={movieData.average}
-                    max={10}
-                    colorScheme={getProgressColor(movieData.average)}
-                  />
-                </ChakraProvider>
-                <br />
-              </div>
-            ) : null}
-            {!movieData.portugueseTitle ? (
-              <>
-                <ChakraProvider>
-                  <Center>
-                    <Stack>
-                      <Skeleton height='720px' width='480px' startColor='pink.500' endColor='purple.500' />
-                    </Stack>
-                  </Center>
-                </ChakraProvider>
-                <ChakraProvider>
+
+          {!movieData.portugueseTitle ? (
+            <>
+              <ChakraProvider>
+                <Center>
                   <Stack>
-                    <br />
-                    <Center>
-                      <Skeleton width='400px' height='5' />
-                    </Center>
-                    <Center>
-                      <Skeleton width='400px' height='5' />
-                    </Center>
-                    <span></span>
-                    <Center>
-                      <Skeleton width='60px' height='5' />
-                    </Center>
-                    <br />
-                    <Center>
-                      <Skeleton width='120px' height='5' />
-                    </Center>
-                    <Center>
-                      <Skeleton width='200px' height='5' />
-                    </Center>
-                    <Center>
-                      <Skeleton width='120px' height='5' />
-                    </Center>
-                    <br />
+                    <Skeleton height='720px' width='480px' startColor='pink.500' endColor='purple.500' />
                   </Stack>
-                </ChakraProvider>
-              </>
-
-            ) : (
-              <div>
-                <ChakraProvider>
-                  <Link href="/">
-                    <Center>
-                      <span>
-                        <Image
-                          className={isMobile ? styles.card_image_big_mobile : styles.card_image_big}
-                          src={
-                            movieData.image
-                              ? "https://image.tmdb.org/t/p/original" + movieData.image
-                              : "/callback.png"
-                          }
-                          alt="poster"
-                          width="480"
-                          height="720"
-                          objectFit="contain"
-                          maxHeight="100%"
-                          maxWidth="100%"
-                        />
-                      </span>
-                    </Center>
-                  </Link>
-                </ChakraProvider>
-                <ChakraProvider>
+                </Center>
+              </ChakraProvider>
+              <ChakraProvider>
+                <Stack>
+                  <br />
                   <Center>
-                    <TableContainer>
-                      <Table size="sm">
-                        <Thead>
-                          <Tr>
-                            <Td
-                              style={{
-                                fontFamily: "Helvetica Neue, sans-serif",
-                              }}
-                            >
-                              Title
-                            </Td>
-                            <Td
-                              style={{
-                                fontFamily: "Helvetica Neue, sans-serif",
-                              }}
-                            >
-                              {movieData.portugueseTitle}
-                            </Td>
-                          </Tr>
-                        </Thead>
-                        <Tbody></Tbody>
-                      </Table>
-                      <Tabs size="md">
-                        <TabList>
-                          <Tab
-                            style={{
-                              fontFamily: "Helvetica Neue, sans-serif",
-                            }}
-                          >
-                            Average
-                          </Tab>
-                          <Tab
-                            style={{
-                              fontFamily: "Helvetica Neue, sans-serif",
-                            }}
-                          >
-                            Country
-                          </Tab>
-                          <Tab
-                            style={{
-                              fontFamily: "Helvetica Neue, sans-serif",
-                            }}
-                          >
-                            Language
-                          </Tab>
-                          <Tab
-                            style={{
-                              fontFamily: "Helvetica Neue, sans-serif",
-                            }}
-                          >
-                            Genre
-                          </Tab>
-                        </TabList>
-                        <TabPanels>
-                          <TabPanel
-                            style={{
-                              fontFamily: "Helvetica Neue, sans-serif",
-                            }}
-                          >
-                            {`${movieData.average} `}
-                          </TabPanel>
-
-
-                          <TabPanel>
-
-                            {movieData.country}
-
-
-                          </TabPanel>
-                          <TabPanel>
-
-                            {movieData.originalLanguage}
-
-                          </TabPanel>
-                          <TabPanel
-                            style={{
-                              fontFamily: "Helvetica Neue, sans-serif",
-                            }}
-                          >
-                            {" "}
-                            {movieData.gender &&
-                              movieData.gender.length > 0 &&
-                              movieData.gender.map((gender, index) => (
-                                <span key={gender}>
-                                  {gender}
-                                  {index !== movieData.gender.length - 1 ? ", " : ""}
-                                </span>
-                              ))}
-                          </TabPanel>
-                        </TabPanels>
-                      </Tabs>
-                    </TableContainer>
+                    <Skeleton width='400px' height='5' />
                   </Center>
-                </ChakraProvider>
-              </div>
-            )}
-            {/* <ChakraProvider>
+                  <Center>
+                    <Skeleton width='400px' height='5' />
+                  </Center>
+                  <span></span>
+                  <Center>
+                    <Skeleton width='60px' height='5' />
+                  </Center>
+                  <br />
+                  <Center>
+                    <Skeleton width='120px' height='5' />
+                  </Center>
+                  <Center>
+                    <Skeleton width='200px' height='5' />
+                  </Center>
+                  <Center>
+                    <Skeleton width='120px' height='5' />
+                  </Center>
+                  <br />
+                </Stack>
+              </ChakraProvider>
+            </>
+
+          ) : (
+            <div>
+              <ChakraProvider>
+                <Link href="/">
+                  <Center>
+                    <span>
+                      <Image
+                        className={isMobile ? styles.card_image_big_mobile : styles.card_image_big}
+                        src={
+                          movieData.image
+                            ? "https://image.tmdb.org/t/p/original" + movieData.image
+                            : "/callback.png"
+                        }
+                        alt="poster"
+                        width="480"
+                        height="720"
+                        objectFit="contain"
+                        maxHeight="100%"
+                        maxWidth="100%"
+                      />
+                    </span>
+                  </Center>
+                </Link>
+              </ChakraProvider>
+              <ChakraProvider>
+                <Center>
+                  <TableContainer>
+                    <Table size="sm">
+                      <Thead>
+                        <Tr>
+                          <Td
+                            style={{
+                              fontFamily: "Helvetica Neue, sans-serif",
+                            }}
+                          >
+                            Title
+                          </Td>
+                          <Td
+                            style={{
+                              fontFamily: "Helvetica Neue, sans-serif",
+                            }}
+                          >
+                            {movieData.portugueseTitle}
+                          </Td>
+                        </Tr>
+                      </Thead>
+                      <Tbody></Tbody>
+                    </Table>
+                    <Tabs size="md">
+                      <TabList>
+                        <Tab
+                          style={{
+                            fontFamily: "Helvetica Neue, sans-serif",
+                          }}
+                        >
+                          Average
+                        </Tab>
+                        <Tab
+                          style={{
+                            fontFamily: "Helvetica Neue, sans-serif",
+                          }}
+                        >
+                          Country
+                        </Tab>
+                        <Tab
+                          style={{
+                            fontFamily: "Helvetica Neue, sans-serif",
+                          }}
+                        >
+                          Language
+                        </Tab>
+                        <Tab
+                          style={{
+                            fontFamily: "Helvetica Neue, sans-serif",
+                          }}
+                        >
+                          Genre
+                        </Tab>
+                        <Tab
+                          style={{
+                            fontFamily: "Helvetica Neue, sans-serif",
+                          }}
+                        >
+                          Overview
+                        </Tab>
+                      </TabList>
+                      <TabPanels>
+                        <TabPanel
+                          style={{
+                            fontFamily: "Helvetica Neue, sans-serif",
+                          }}
+                        >
+                          {`${movieData.average} `}
+                        </TabPanel>
+
+
+                        <TabPanel>
+
+                          {movieData.country}
+
+
+                        </TabPanel>
+                        <TabPanel>
+
+                          {movieData.originalLanguage}
+
+                        </TabPanel>
+                        <TabPanel
+                          style={{
+                            fontFamily: "Helvetica Neue, sans-serif",
+                          }}
+                        >
+                          {" "}
+                          {movieData.gender &&
+                            movieData.gender.length > 0 &&
+                            movieData.gender.map((gender, index) => (
+                              <span key={gender}>
+                                {gender}
+                                {index !== movieData.gender.length - 1 ? ", " : ""}
+                              </span>
+                            ))}
+                        </TabPanel>
+                        <TabPanel style={{
+                          whiteSpace: "pre-wrap",
+                          maxWidth: "480px",
+                        }}>
+                          <Center>
+                            <Button
+                              colorScheme={showOverview ? "green" : "gray"}
+                              onClick={handleShowOverview}
+
+                            >
+                              Show Overview
+                              <br />
+
+                            </Button>
+                          </Center>
+
+                          {showOverview ?
+
+                            <span> {movieData.overview ? movieData.overview : "No Infos"}</span>
+
+                            : null}
+
+                        </TabPanel>
+
+                      </TabPanels>
+                    </Tabs>
+                  </TableContainer>
+                </Center>
+              </ChakraProvider>
+            </div>
+          )}
+          {/* <ChakraProvider>
               <Center>
                 <span>
                   <div>
@@ -649,33 +639,34 @@ export default function Discovery() {
               </Center>
             </ChakraProvider> */}
 
-            <br />
-            {/* {likeThanks && <span>Thanks 😀 </span>} */}
+          <br />
+          {/* {likeThanks && <span>Thanks 😀 </span>} */}
 
-            {/* {showBackToTopButton && (
+          {/* {showBackToTopButton && (
               <BackToTopButton onClick={scrollToTop} />
             )} */}
-            {movieData.portugueseTitle && (
-              <ChakraProvider>
-                <Button
-                  colorScheme="purple"
-                  onClick={apiCall}
-                  className={styles.button}
-                >
-                  Try Again
-                </Button>
-              </ChakraProvider>
-            )}
-          </div>
-
+          {movieData.portugueseTitle && (
+            <ChakraProvider>
+              <Button
+                colorScheme="purple"
+                onClick={apiCall}
+                className={styles.button}
+              >
+                Try Again
+              </Button>
+            </ChakraProvider>
+          )}
         </div>
-      </ChakraProvider>
+
+
+      </ChakraProvider >
 
 
 
 
 
-      {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
+      {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />
+      }
     </>
   );
 }
