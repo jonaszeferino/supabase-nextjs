@@ -502,8 +502,8 @@ export default function Discovery() {
               <ChakraProvider>
                 <Box> <strong>Choose Your Filters</strong></Box>
                 <Center>
-                  <Stack>
-                    <Skeleton height='720px' width='480px' startColor='pink.500' endColor='purple.500' />
+                  <Stack spacing={4} justify="center" align="center">
+                    <Skeleton height={{ base: '360px', md: '720px' }} width={{ base: '280px', md: '480px' }} startColor='pink.500' endColor='purple.500' />
                   </Stack>
                 </Center>
               </ChakraProvider>
@@ -515,15 +515,15 @@ export default function Discovery() {
                   <Center>
                     <span>
                       <Image
-                        className={isMobile ? styles.card_image_big_mobile : styles.card_image_big}
+                        className={isMobile ? styles.card_image_mobile : styles.card_image_desktop}
                         src={
                           movieData.image
                             ? "https://image.tmdb.org/t/p/original" + movieData.image
                             : "/callback.png"
                         }
                         alt="poster"
-                        width="480"
-                        height="720"
+                        width={isMobile ? "240" : "480"}
+                        height={isMobile ? "360" : "720"}
                         objectFit="contain"
                         maxHeight="100%"
                         maxWidth="100%"
@@ -532,6 +532,9 @@ export default function Discovery() {
                   </Center>
                 </Link>
               </ChakraProvider>
+
+
+
               <ChakraProvider>
                 <Center>
                   <TableContainer>
@@ -570,15 +573,9 @@ export default function Discovery() {
                             fontFamily: "Helvetica Neue, sans-serif",
                           }}
                         >
-                          Country
+                          Ctry - Lang
                         </Tab>
-                        <Tab
-                          style={{
-                            fontFamily: "Helvetica Neue, sans-serif",
-                          }}
-                        >
-                          Language
-                        </Tab>
+
                         <Tab
                           style={{
                             fontFamily: "Helvetica Neue, sans-serif",
@@ -603,11 +600,9 @@ export default function Discovery() {
                           {`${movieData.average} `}
                         </TabPanel>
                         <TabPanel>
-                          {movieData.country}
+                          {movieData.country} - {movieData.originalLanguage}
                         </TabPanel>
-                        <TabPanel>
-                          {movieData.originalLanguage}
-                        </TabPanel>
+
                         <TabPanel
                           style={{
                             fontFamily: "Helvetica Neue, sans-serif",
