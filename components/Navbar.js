@@ -167,7 +167,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
                               <Link href="/profile">Data</Link>
                             </MenuItem>
                             <MenuItem>
-                              <Link href="/my-movies-page">My Ratings</Link>
+                              <Link href="/my-movies-page">My Tip Ratings</Link>
                             </MenuItem>
                           </MenuList>
                         </>
