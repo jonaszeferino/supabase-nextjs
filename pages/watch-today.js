@@ -402,16 +402,16 @@ export default function Discovery() {
                           Me Decade
                         </option>
                         <option value="1980-01-01&primary_release_date.lte=1989-12-31">
-                          80's
+                          80&apos;s
                         </option>
                         <option value="1990-01-01&primary_release_date.lte=1999-12-31">
-                          90's
+                          90&apos;s
                         </option>
                         <option value="2000-01-01&primary_release_date.lte=2009-12-31">
-                          00's
+                          00&apos;s
                         </option>
                         <option value="2010-01-01&primary_release_date.lte=2059-12-31">
-                          00's & Today
+                          00&apos;s & Today
                         </option>
                         <option value="1900-01-01&primary_release_date.lte=2059-12-31">
                           All time
