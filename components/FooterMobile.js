@@ -37,7 +37,7 @@ export default function FooterMobile() {
         </Center>
         <Box>
           <Text color="white" fontSize="sm">
-            What to Watch Today? &copy; Jonas Zeferino - 2023{" "}
+            Watch Today Guide &copy; Jonas Zeferino - 2023{" "}
           </Text>
           <Text color="white" fontSize="sm">
             Powered By:
