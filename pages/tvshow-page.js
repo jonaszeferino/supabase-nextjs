@@ -6,7 +6,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
 import {
-  ChakraProvider,Table,
+  ChakraProvider, Table,
   Tbody,
   Tr,
   Td,
@@ -316,17 +316,19 @@ const MoviePage = () => {
                     />
                     <br />
                     <div>
-                      <Link
-                        href={{
-                          pathname: "/tvshow-seasons-page",
-                          query: {
-                            tvShowId: tvShowId,
-                            tvShowSeasonId: work.season_number,
-                          },
-                        }}
-                      >
-                        Episodes
-                      </Link>
+                      <button className={styles.button}>
+                        <Link
+                          href={{
+                            pathname: "/tvshow-seasons-page",
+                            query: {
+                              tvShowId: tvShowId,
+                              tvShowSeasonId: work.season_number,
+                            },
+                          }}
+                        >
+                          Episodes
+                        </Link>
+                      </button>
                       <br />
                     </div>
                   </div>

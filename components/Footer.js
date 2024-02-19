@@ -18,7 +18,7 @@ export default function Footer() {
           <Text fontWeight="bold" mb={2}>
             Watch Today Guide
           </Text>
-          <Text>&copy; Jonas Zeferino 2024</Text>
+          <Text>&copy; The Only Apps - 2024</Text>
 
           <HStack spacing={2}>
             <Text>Powered by</Text>

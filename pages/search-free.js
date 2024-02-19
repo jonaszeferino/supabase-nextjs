@@ -222,6 +222,7 @@ export default function Discovery() {
 
               {showTvShows && search.media_type == "tv" ? (
                 <ChakraProvider>
+
                   <Link
                     href={{
                       pathname: "/tvshow-page",
@@ -249,6 +250,7 @@ export default function Discovery() {
                       />
                     </Tooltip>
                   </Link>
+
                 </ChakraProvider>
               ) : null}
 

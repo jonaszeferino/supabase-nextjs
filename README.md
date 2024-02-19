@@ -14,22 +14,23 @@ The project's name originates from the page where, upon clicking a button, an al
 ## External APIs
 - TMDb - The Movie Database
 - Supabase - Authentication tools
+- Trivia from: https://the-trivia-api.com
 
 ## Internal API
  - CRUD (Create, Read, Update, Delete) operations
  - Utilizes GET, PUT, POST, DELETE methods (about rating suggestions list)
 
 ## Databases
-- Supabase - Email signups (PostgreSQL)
+- Supabase - Email Signups (PostgreSQL)
 - MongoDB - Rating suggestions
 
 ## Extra Features
 - Back-to-top buttons
 - Search bar
-- Translation of components into Portuguese
 - Unique navigation bars for mobile and web applications
 - Pagination
-- Sugestions on SearchBar
+- Contact Form using: https://formspree.io/
+- Footer and Navbar with Mobile and Desktop styles
 
 ## Authentication
 - Complete functions with Supabase
@@ -37,10 +38,12 @@ The project's name originates from the page where, upon clicking a button, an al
 - Sign-up
 - Reset password
 - Social login
+- Redirect to Origin Page
 
 ## Languages
-- Brazilian Portuguese
+- English
 
 ## Hosting
-- Vercel (conected to gitHub)
-- https://watch-today-nextjs.vercel.app/
+- Vercel (conected to gitHub) - 
+- DNS on Hostinger
+- https://www.watchtodayguide.com/

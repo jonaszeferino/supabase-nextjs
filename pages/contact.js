@@ -21,9 +21,9 @@ function ContactForm() {
   return (
     <ChakraProvider>
       <Center>
-        <Box maxW="900px" mt="4">
+        <Box maxW="900px" mt="9">
           <form onSubmit={handleSubmit}>
-            <FormControl id="name" isRequired>
+            <FormControl id="name" isRequired maxW="900px" width="100%">
               <FormLabel>Your Name</FormLabel>
               <Input type="text" name="name" />
               <ValidationError
@@ -33,7 +33,7 @@ function ContactForm() {
               />
             </FormControl>
 
-            <FormControl id="email" isRequired mt={4}>
+            <FormControl id="email" isRequired maxW="900px" width="100%">
               <FormLabel>Email Address</FormLabel>
               <Input type="email" name="email" />
               <ValidationError
@@ -43,7 +43,7 @@ function ContactForm() {
               />
             </FormControl>
 
-            <FormControl id="message" isRequired mt={4}>
+            <FormControl id="message" isRequired maxW="900px" width="100%">
               <FormLabel>Message</FormLabel>
               <Textarea name="message" />
               <ValidationError
@@ -55,7 +55,7 @@ function ContactForm() {
 
             <Button
               mt={4}
-              colorScheme="teal"
+              colorScheme="purple"
               isLoading={state.submitting}
               type="submit"
             >

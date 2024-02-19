@@ -11,8 +11,6 @@ import { Rate } from "antd";
 import PageTitle from "../components/PageTitle";
 
 
-
-
 export default function Home() {
 
   const [isMobile] = useMediaQuery('(max-width: 768px)');
@@ -145,7 +143,7 @@ export default function Home() {
             isMobile={isMobile}
             showLoggedUser={showLoggedUser}
           />
-       <br />
+          <br />
           <>
             {isLoading ? (
               <ChakraProvider>
@@ -191,19 +189,11 @@ export default function Home() {
             </div>
           </>
         </div>
-
-
-
-        
         <PageTitle
           title="Trending TvShows of the Week"
           isMobile={isMobile}
-          showLoggedUser={false} 
+          showLoggedUser={false}
         />
-
-
-
-
         <div className={styles.grid}>
           {searchTv.map((searchtv) => (
             <div key={searchtv.id} style={{ marginBottom: "20px" }}>

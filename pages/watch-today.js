@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 import styles from "../styles/Home.module.css";
-import ErrorPage from "./error-page";
 import Image from "next/image";
 import Head from "next/head";
 import {
@@ -511,7 +510,12 @@ export default function Discovery() {
           ) : (
             <div>
               <ChakraProvider>
-                <Link href="/">
+                <Link href={{
+                  pathname: "/movie-page",
+                  query: { movieId: movieData.movieId },
+                }}>
+
+
                   <Center>
                     <span>
                       <Image

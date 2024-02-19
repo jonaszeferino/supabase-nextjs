@@ -27,12 +27,14 @@ import {
   InputRightElement,
   Text,
   IconButton,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
 import Providers from "../components/countries";
 import LoggedUser from "../components/LoggedUser";
 import Head from "next/head";
+import PageTitle from "../components/PageTitle";
 
 const MoviePage = () => {
   const router = useRouter();
@@ -55,6 +57,7 @@ const MoviePage = () => {
   const [error, setError] = useState("");
 
   const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const Clean = () => {
     setIsLoading(true);
@@ -238,14 +241,11 @@ const MoviePage = () => {
           ></meta>
           <meta name="description" content="filmes, series,"></meta>
         </Head>
-
-        <LoggedUser />
-        <div className={styles.top}>
-          <h3 className={styles.title}>Where Is My Movie?</h3>
-        </div>
-        <br />
-        <br />
-        <br />
+        <PageTitle
+          title="Where Is My Movie?"
+          isMobile={isMobile}
+          showLoggedUser={true}
+        />
         <div
           style={{
             maxWidth: "500px",
