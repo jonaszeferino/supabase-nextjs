@@ -466,9 +466,7 @@ export default function Discovery() {
           isMobile={isMobile}
           showLoggedUser={true} 
         />
-
         <br />
-
         <div
           style={{
             display: "flex",

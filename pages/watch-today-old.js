@@ -68,7 +68,7 @@ export default function Movieapi() {
   const posterRef = useRef(null);
 
   useEffect(() => {
-    let mounted = true;
+      let mounted = true;
     async function getInitialSession() {
       try {
         const {

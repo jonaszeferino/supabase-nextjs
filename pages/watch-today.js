@@ -42,6 +42,7 @@ import { Tooltip } from "antd";
 import Link from "next/link";
 import { Rate } from "antd";
 import PageTitle from "../components/PageTitle";
+import { supabase } from "../utils/supabaseClient";
 
 export default function Discovery() {
 
@@ -77,6 +78,43 @@ export default function Discovery() {
   const [starValue, setStarValue] = useState(0);
   const [isRatingSubmitted, setIsRatingSubmitted] = useState(false);
 
+  // Session Necesary to put inter
+  const [session, setSession] = useState()
+  const [user_email, setEmail_user] = useState()
+
+
+  useEffect(() => {
+    let mounted = true;
+    async function getInitialSession() {
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        console.log("Session:", session);
+        if (mounted) {
+          if (session) {
+            setSession(session);
+            setEmail_user(session.user.email);
+          }
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("Error getting session:", error);
+      }
+    }
+    getInitialSession();
+    const { subscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        console.log("Auth State Change:", session);
+        setSession(session);
+      }
+    );
+    return () => {
+      mounted = false;
+      subscription?.unsubscribe();
+    };
+  }, []);
+
 
   let urlAll =
     "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&primary_release_date.gte=1900-01-01&primary_release_date.lte=2025-12-31&sort_by=popularity.desc"
@@ -103,6 +141,8 @@ export default function Discovery() {
   console.log("Url", urlString)
 
   const apiCall = useCallback(() => {
+    setIsRatingSubmitted(false)
+    setStarValue(0)
     setIsLoading(true)
     fetch(urlString, {
       headers: new Headers({
@@ -245,27 +285,32 @@ export default function Discovery() {
   }
 
   const inserLike = async () => {
+    console.log("Like Insert Call");
+    const requestData = {
+      movie_id: movieData.movieId,
+      poster_path: movieData.image,
+      original_title: movieData.originalTitle,
+      portuguese_title: movieData.portugueseTitle,
+      vote_average_by_provider: movieData.average,
+      rating_by_user: starValue,
+      user_email: user_email ? user_email : "movietoday@gmail.com",
+    };
+    console.log("Request Data:", requestData); // Adicione este console.log para visualizar os dados enviados
+
     try {
       const response = await fetch("/api/v1/postRateRandomMovie", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          movie_id: movieData.movieId,
-          poster_path: movieData.image,
-          original_title: movieData.originalTitle,
-          portuguese_title: movieData.portugueseTitle,
-          vote_average_by_provider: movieData.average,
-          rating_by_user: starValue,
-          user_email: email_user,
-        }),
+        body: JSON.stringify(requestData),
       });
       return;
     } catch (error) {
       console.error(error);
     }
   };
+
 
   const handleAllFilter = () => {
     setShowAllFilter(!showAllFilter);
@@ -285,7 +330,6 @@ export default function Discovery() {
   };
   const handleRatingSubmit = () => {
     setIsRatingSubmitted(true);
-    setStarValue(0);
   };
 
   return (
@@ -417,7 +461,6 @@ export default function Discovery() {
                           All time
                         </option>
                       </Select></> : null}
-
                   {showAverageFilter ?
                     <>
                       <FormLabel>Best or Worst</FormLabel>
@@ -435,14 +478,12 @@ export default function Discovery() {
                         <option value="&vote_average.gte=5">Best</option>
                       </Select>
                     </> : null}
-
                   <br />
                   <Center>
                     <Button size="lg" colorScheme="purple" onClick={apiCall}>
                       Go
                     </Button>
                   </Center>
-
                   {isLoading ? <Progress size='xs' isIndeterminate /> : null}
                 </DrawerBody>
                 <DrawerFooter>
@@ -451,30 +492,22 @@ export default function Discovery() {
             </Drawer>
           </ChakraProvider>
           <br />
-
         </div>
       </div>
-
       <ChakraProvider>{isLoading && <Spinner />}</ChakraProvider>
       <ChakraProvider>
         <div>
-
-
           {!movieData.portugueseTitle ? (
             <>
               <ChakraProvider>
-
                 <Box> <strong>Choose Your Filters</strong></Box>
-
                 <Center>
                   <Stack>
                     <Skeleton height='720px' width='480px' startColor='pink.500' endColor='purple.500' />
                   </Stack>
                 </Center>
               </ChakraProvider>
-
             </>
-
           ) : (
             <div>
               <ChakraProvider>
@@ -569,18 +602,11 @@ export default function Discovery() {
                         >
                           {`${movieData.average} `}
                         </TabPanel>
-
-
                         <TabPanel>
-
                           {movieData.country}
-
-
                         </TabPanel>
                         <TabPanel>
-
                           {movieData.originalLanguage}
-
                         </TabPanel>
                         <TabPanel
                           style={{
@@ -609,18 +635,12 @@ export default function Discovery() {
                             >
                               Show Overview
                               <br />
-
                             </Button>
                           </Center>
-
                           {showOverview ?
-
                             <span> {movieData.overview ? movieData.overview : "No Infos"}</span>
-
                             : null}
-
                         </TabPanel>
-
                       </TabPanels>
                     </Tabs>
                   </TableContainer>
@@ -628,7 +648,6 @@ export default function Discovery() {
               </ChakraProvider>
             </div>
           )}
-
           {movieData.portugueseTitle ?
             <ChakraProvider>
               <Center>
@@ -652,23 +671,14 @@ export default function Discovery() {
                       Submit Rating
                     </Button>
                     {isRatingSubmitted && (
-                      <Tooltip label="See Your Rating Tips In Your Rating">
-                        <div>
-                          <Link href="/my-movies-page">My Tip Ratings</Link>
-                          <p>Rating submitted successfully!</p>
-                        </div>
-                      </Tooltip>
+                      <p>Rating submitted successfully!</p>
                     )}
                   </div>
                 </span>
               </Center>
             </ChakraProvider>
             : null}
-
-
           <br />
-
-
           {showBackToTopButton && (
             <BackToTopButton onClick={scrollToTop} />
           )}
@@ -684,14 +694,7 @@ export default function Discovery() {
             </ChakraProvider>
           )}
         </div>
-
-
       </ChakraProvider >
-
-
-
-
-
       {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />
       }
     </>
