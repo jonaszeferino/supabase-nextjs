@@ -483,6 +483,7 @@ export default function Discovery() {
                       Go
                     </Button>
                   </Center>
+                  <br/>
                   {isLoading ? <Progress size='xs' isIndeterminate /> : null}
                 </DrawerBody>
                 <DrawerFooter>
