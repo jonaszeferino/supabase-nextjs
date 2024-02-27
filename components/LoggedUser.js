@@ -31,6 +31,7 @@ const LoggedUser = () => {
     };
   }, []);
 
+
   console.log(session);
 
   return (
@@ -38,6 +39,9 @@ const LoggedUser = () => {
       {session ? (
         <p>
           User: {session.user.email} <br />
+
+
+
           <Button
             onClick={() => supabase.auth.signOut()}
             colorScheme="red"
