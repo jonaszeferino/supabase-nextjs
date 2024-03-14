@@ -19,6 +19,7 @@ import {
   useMediaQuery
 } from "@chakra-ui/react";
 import Head from "next/head";
+import { Flag, Segment } from 'semantic-ui-react'
 
 const MoviePage = () => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
@@ -151,7 +152,7 @@ const MoviePage = () => {
       return "gray";
     }
   }
-const metaDescription = `Movie Page ${data.originalTitle ? data.originalTitle : 'Movies'}`;
+  const metaDescription = `Movie Page ${data.originalTitle ? data.originalTitle : 'Movies'}`;
 
   return (
     <>
@@ -164,7 +165,7 @@ const metaDescription = `Movie Page ${data.originalTitle ? data.originalTitle : 
         ></meta>
         <meta name="description" content={metaDescription}></meta>
       </Head>
-    
+
       {isMobile ? (
         <>
           <div style={{ paddingTop: 80, }} >
@@ -214,7 +215,7 @@ const metaDescription = `Movie Page ${data.originalTitle ? data.originalTitle : 
           {data.average}
         </ChakraProvider>
       </div>
-      
+
       <br />
       <div
         style={{ maxWidth: "480px", margin: "0 auto", wordBreak: "break-word" }}
@@ -287,12 +288,15 @@ const metaDescription = `Movie Page ${data.originalTitle ? data.originalTitle : 
                 </Tr>
                 <Tr>
                   <Th>Country of Origin</Th>
-                  <Td>{data.country}</Td>
+                  <Td>{data.country}    <Segment>
+
+
+                    <Flag name={data.country} />
+                  </Segment></Td>
                 </Tr>
                 <Tr>
                   <Th>Language</Th>
                   <Td>{data.originalLanguage}</Td>
-
                 </Tr>
                 <Tr>
                   <Th>Release Date</Th>
