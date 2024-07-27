@@ -59,7 +59,7 @@ function PasswordReset() {
         </Head>
         <LoggedUser />
       </>
-      <Center height="100vh">
+      <Center height="500vh">
         <Box
           p={4}
           borderWidth="1px"

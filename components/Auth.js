@@ -17,13 +17,12 @@ import {
   InputGroup,
   Image,
   InputRightElement,
-  useMediaQuery
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { FaGoogle, FaEyeSlash, FaEye } from "react-icons/fa";
 
-
 export default function Auth() {
-  const [isMobile] = useMediaQuery('(max-width: 768px)');
+  const [isMobile] = useMediaQuery("(max-width: 768px)");
   const router = useRouter();
   const siteUrl = router.asPath;
   let siteUrlComplete = "https://www.watchtodayguide.com" + siteUrl;
@@ -161,7 +160,6 @@ export default function Auth() {
           </Center>
         </ChakraProvider>
       </>
-
       <Center height="70vh">
         <Box
           p={2}
@@ -171,7 +169,13 @@ export default function Auth() {
           position="relative"
           marginTop={5}
         >
-          <Heading as="h1" size="xl" textAlign="center" mb={4} style={{ color: "#7657be" }}>
+          <Heading
+            as="h1"
+            size="xl"
+            textAlign="center"
+            mb={4}
+            style={{ color: "#7657be" }}
+          >
             {isSignUp ? "Sign Up" : "Login"}
           </Heading>
           <FormControl>
@@ -214,7 +218,6 @@ export default function Auth() {
             {isSignUp && (
               <Button
                 mt={4}
-
                 size="md"
                 onClick={handleSignUp}
                 style={{ color: "#7657be" }}
@@ -258,7 +261,11 @@ export default function Auth() {
           </Center>
           <br />
           <Center>
-            <Link onClick={changeForm} cursor="pointer" style={{ color: "#7657be" }}>
+            <Link
+              onClick={changeForm}
+              cursor="pointer"
+              style={{ color: "#7657be" }}
+            >
               {isSignUp
                 ? "Already have an account? Log In!"
                 : "New here? Sign Up!"}

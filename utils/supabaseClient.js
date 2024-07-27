@@ -15,4 +15,8 @@ export const getSiteUrl = (currentPath = '/') => {
           `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${currentPath}`);
     
     return siteUrl.endsWith('/') ? siteUrl : `${siteUrl}/`;
+
   };
+
+
+  //https://rrhfyxdwlhjgylmsveid.supabase.co/auth/v1/callback
