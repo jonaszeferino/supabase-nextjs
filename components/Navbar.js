@@ -69,6 +69,8 @@ export default function Navbar({ isLoading, onAuthenticated }) {
               display: "block",
               marginBottom: "2px",
               marginTop: "2px",
+              filter: "drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2))", // Usando drop-shadow para contornar a imagem
+              pointerEvents: "none", // Adicionando esta linha para desativar o hover
             }}
           />
         </Link>
@@ -91,16 +93,7 @@ export default function Navbar({ isLoading, onAuthenticated }) {
                 <li>
                   <Link href="/birthday-movies">| Birthday Movie |</Link>
                 </li>
-                {/* <li>
-                  <Link href="/trivia">| Trivia |</Link>
-                </li> */}
-
-                <br />
-                {/* {!session ?
-                  <li>
-                    <button onClick={onOpen}> Login |</button>
-                  </li>
-                  : null} */}
+      
 
                 <li>
                   <Modal isOpen={isOpen} onClose={onClose}>
@@ -146,35 +139,6 @@ export default function Navbar({ isLoading, onAuthenticated }) {
                     </ModalContent>
                   </Modal>
                 </li>
-
-                {session ? (
-                  <li>
-                    Profile
-                    <Menu>
-                      {({ isOpen }) => (
-                        <>
-                          <MenuButton
-                            isActive={isOpen}
-                            as={Button}
-                            rightIcon={<ChevronDownIcon />}
-                          >
-                            {""}
-                          </MenuButton>
-                          <MenuList
-                            style={{ background: "#7657be", padding: "10px" }}
-                          >
-                            <MenuItem>
-                              <Link href="/profile">Data</Link>
-                            </MenuItem>
-                            <MenuItem>
-                              <Link href="/my-movies-page">My Tip Ratings</Link>
-                            </MenuItem>
-                          </MenuList>
-                        </>
-                      )}
-                    </Menu>
-                  </li>
-                ) : null}
               </ul>
             </ul>
           </ul>

@@ -2,32 +2,37 @@
 .navbar {
   list-style-type: none;
   font-family: "JetBrains Mono", monospace;
-  font-size: large; /* Alterado de 'large' para 'x-large' */
+  font-size: x-large; /* Aumentado o tamanho da fonte para 'x-large' */
   display: flex;
-  background-color: #7657be;
+  background-color: #957bd2;
   /* padding: 20px 10px; */
   padding: 20px 10px 8px 8px; /* Reduce bottom padding */
 
   margin-top: 0%;
   text-align: center;
   justify-content: center;
-  color: aliceblue;
+  color: rgb(0, 0, 0); /* Alterado para preto */
 }
 
 .navbar a {
   list-style-type: none;
   /* color: rgb(24, 22, 22); */
-  color: aliceblue;
+  color: rgb(0, 0, 0); /* Alterado para preto */
   margin-right: 1em;
   text-decoration: none;
   transition: 0.3s;
   text-align: center;
+  font-weight: bold; /* Adicionado para deixar o texto em negrito */
+  text-shadow: 0.5px 0.5px 0 rgba(255, 255, 255, 1), 
+               -0.5px -0.5px 0 rgba(255, 255, 255, 1), 
+               0.5px -0.5px 0 rgba(255, 255, 255, 1), 
+               -0.5px 0.5px 0 rgba(255, 255, 255, 1); /* Sombra sólida reduzida */
 }
 
 .navbar a:hover {
   list-style-type: none;
-  color: rgb(206, 206, 206);
-  text-align: center;
+  color: rgb(50, 50, 50); /* Alterado para um tom de cinza mais escuro ao passar o mouse */
+  /* background-color: rgba(255, 255, 255, 0.5); */ /* Removido a sombra branca no fundo */
 }
 
 
