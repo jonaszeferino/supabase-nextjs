@@ -648,7 +648,7 @@ export default function Discovery() {
               </ChakraProvider>
             </div>
           )}
-          {movieData.portugueseTitle ?
+          {/* {movieData.portugueseTitle ?
             <ChakraProvider>
               <Center>
                 <span>
@@ -677,7 +677,9 @@ export default function Discovery() {
                 </span>
               </Center>
             </ChakraProvider>
-            : null}
+
+
+            : null} */}
           <br />
           {showBackToTopButton && (
             <BackToTopButton onClick={scrollToTop} />

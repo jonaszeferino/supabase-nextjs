@@ -58,7 +58,7 @@ export default function Footer() {
           </Text>
           <Link href="/search-free?query=">Free Search</Link>
           <Link href="/where-is-my-movie">Where Is My Movie?</Link>
-          <Link href="/trivia">Trivia</Link>
+          {/* <Link href="/trivia">Trivia</Link> */}
         </VStack>
 
         <VStack
@@ -70,10 +70,10 @@ export default function Footer() {
           marginRight={5}
         >
           <Text fontWeight="bold" mb={2}>
-            Auth
+            Policy
           </Text>
           <Link href="/contact">Contact</Link>
-          <Link href="/send-email-password-reset">Password Reset</Link>
+          {/* <Link href="/send-email-password-reset">Password Reset</Link> */}
           <Link href="/policies">Policy</Link>
           <br />
           <br />

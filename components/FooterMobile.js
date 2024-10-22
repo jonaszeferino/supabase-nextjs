@@ -18,7 +18,7 @@ export default function FooterMobile() {
                 router.pathname === "/birthday-movies" ? "Birthday Movies" :
                 router.pathname === "/movie-page" ? "Movie Page" :
                 router.pathname === "/tvshow-page" ? "TvShow Page" :
-                router.pathname === "/trivia" ? "Trivia" :
+                // router.pathname === "/trivia" ? "Trivia" :
                 router.pathname === "/tvshow-season-page" ? "TvShow Seasons" :
                 router.pathname === "/watch-today" ? "What To Watch Today?" :
                 router.pathname === "/watch-today" ? "What To Watch Today?" :

@@ -1,132 +1,116 @@
-import react, { useState, useEffect } from "react";
-import { supabase } from "../utils/supabaseClient";
-import {
-  Box,
-  Heading,
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
-  ChakraProvider,
-  Center,
-  Alert,
-  AlertIcon,
-  Link,
-  Divider,
-  InputGroup,
-  InputRightElement,
-} from "@chakra-ui/react";
-import { FaGoogle, FaEyeSlash, FaEye } from "react-icons/fa";
-import LoggedUser from "../components/LoggedUser";
-import Head from "next/head";
+'use client'
+import React, { useState } from 'react';
+import { Flex, Box, Button, Link, ChakraProvider, Divider, Image, FormControl, FormLabel, Input, Center, useMediaQuery, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Alert, AlertIcon } from '@chakra-ui/react';
+import { supabase } from '../utils/supabaseClient';
 
-function PasswordReset() {
-  const [email, setEmail] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
-  const [session, setSession] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
+const Login: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isMobile] = useMediaQuery("(max-width: 768px)");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+  const handleSubmit = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    console.log('Formulário enviado:', { email, password });
   };
 
   const handlePasswordReset = async () => {
-    setAlertMessage("");
+    setAlertMessage('');
     try {
-      const { error } = await supabase.auth.updateUser({
-        password: newPassword,
-      });
+      const { error } = await supabase.auth.api.resetPasswordForEmail(resetEmail);
       if (error) {
         throw error;
       }
-      setAlertMessage("Password Changed");
-    } catch (e) {
+      setAlertMessage('Email de redefinição de senha enviado');
+    } catch (e: any) {
       setAlertMessage(e.message);
     }
   };
 
   return (
     <ChakraProvider>
-      <>
-        <Head>
-          <title>Password Reset</title>
-          <meta
-            name="keywords"
-            content="movies,watch,review,series,filmes"
-          ></meta>
-          <meta name="description" content="find movies and tvshows"></meta>
-        </Head>
-        <LoggedUser />
-      </>
-      <Center height="500vh">
-        <Box
-          p={4}
-          borderWidth="1px"
-          maxW="400px"
-          width="100%"
-          position="relative"
-        >
-          <Heading as="h1" size="xl" textAlign="center" mb={4}>
-            Password Reset{" "}
-          </Heading>
-          <FormControl>
-            <FormLabel>Email</FormLabel>
-            <Input
-              type="email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-            />
-          </FormControl>
-          <FormControl mt={4}>
-            <FormLabel>Password</FormLabel>
-            <InputGroup>
-              <Input
-                type={showPassword ? "text" : "password"}
-                onChange={(e) => setNewPassword(e.target.value)}
-                value={newPassword}
-              />
-              <InputRightElement width="3rem">
-                <Button
-                  h="1.5rem"
-                  size="sm"
-                  onClick={togglePasswordVisibility}
-                  tabIndex="-1"
-                >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-          </FormControl>
-          <br />
+      <Flex justify="center" align="center" h="100vh">
+        <Box w="50%" p={8}>
           <Center>
-            <Button
-              onClick={() => handlePasswordReset()}
-              colorScheme="green"
-              size="sm"
-            >
-              Reset
-            </Button>
+            <Box as="form" onSubmit={handleSubmit}>
+              <FormControl>
+                <FormLabel htmlFor="email">Email</FormLabel>
+                <Input
+                  w={400}
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  variant="flushed"
+                  borderRadius={10}
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel htmlFor="password">Senha</FormLabel>
+                <Input
+                  w={400}
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  variant="flushed"
+                  borderRadius={10}
+                />
+              </FormControl>
+              <Link onClick={() => setIsModalOpen(true)}>Esqueceu a senha?</Link>
+              <br />
+              <Button mt={8} type="submit" colorScheme="blue">
+                Entrar
+              </Button>
+            </Box>
           </Center>
-          <br />
-          {alertMessage && (
-            <ChakraProvider>
-              <Alert status="info">
-                <AlertIcon />
-                {/* {alertMessage === "Email not confirmed"
-                  ? "E-mail Não Confirmado"
-                  : alertMessage} */}
-                  {alertMessage}
-              </Alert>
-            </ChakraProvider>
-          )}
-          <br />
-          <Divider my={4} />
-          <br />
         </Box>
-      </Center>
+        <Box w="50%" bg="#01377D" h="100%" p={8}>
+          <Flex justify="center" align="center" h="100%">
+            <Image src="/car_trade_logo_oficial.png" w={400} alt="Logo" />
+          </Flex>
+        </Box>
+      </Flex>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Redefinir Senha</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <FormControl>
+              <FormLabel htmlFor="reset-email">Email</FormLabel>
+              <Input
+                id="reset-email"
+                type="email"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+                variant="flushed"
+                borderRadius={10}
+              />
+            </FormControl>
+            {alertMessage && (
+              <Alert status="info" mt={4}>
+                <AlertIcon />
+                {alertMessage}
+              </Alert>
+            )}
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handlePasswordReset}>
+              Enviar Email
+            </Button>
+            <Button variant="ghost" onClick={() => setIsModalOpen(false)}>
+              Fechar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </ChakraProvider>
   );
-}
+};
 
-export default PasswordReset;
+export default Login;

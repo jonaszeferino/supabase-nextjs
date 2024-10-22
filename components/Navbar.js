@@ -89,18 +89,18 @@ export default function Navbar({ isLoading, onAuthenticated }) {
                   <Link href="/search-tvshows">| Discover Tv Shows</Link>
                 </li>
                 <li>
-                  <Link href="/birthday-movies">| Birthday Movie</Link>
+                  <Link href="/birthday-movies">| Birthday Movie |</Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link href="/trivia">| Trivia |</Link>
-                </li>
+                </li> */}
 
                 <br />
-                {!session ?
+                {/* {!session ?
                   <li>
                     <button onClick={onOpen}> Login |</button>
                   </li>
-                  : null}
+                  : null} */}
 
                 <li>
                   <Modal isOpen={isOpen} onClose={onClose}>

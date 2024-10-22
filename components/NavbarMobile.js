@@ -96,9 +96,12 @@ const MobileNavbar = (isLoading, onAuthenticated) => {
             <Link href="/" onClick={closeMenu}>
               Home
             </Link>
-            {!session ?
+          
+            {/* {!session ?
               <button onClick={onOpen}> <strong>Login</strong> </button>
-              : null}
+              : null} */}
+
+
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
               <ModalContent style={{ background: "white" }}>
@@ -162,13 +165,13 @@ const MobileNavbar = (isLoading, onAuthenticated) => {
                 </span>
 
               </Link>
-              <Link href="/trivia" onClick={closeMenu}>
+              {/* <Link href="/trivia" onClick={closeMenu}>
 
                 <span>
                   <ChevronRightIcon /> Trivia
                 </span>
 
-              </Link>
+              </Link> */}
 
               {session ? (
                 <>
