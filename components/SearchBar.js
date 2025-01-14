@@ -79,7 +79,7 @@ const SearchBar = ({ isLoading, showSearchBar = true }) => {
           <>
             <InputGroup
               flex="1"
-              width={isMobile ? "80%" : "100%"}
+              width={isMobile ? "80%" : "650px"}
               flexDirection="column"
             >
               <Center>
@@ -93,7 +93,7 @@ const SearchBar = ({ isLoading, showSearchBar = true }) => {
                   border="none"
                   mt="18px"
                   type="search"
-                  placeholder="Movies, Tvshows, Person"
+                  placeholder="Movies, Tvshows, Persons"
                   value={searchText}
                   onChange={handleInputChange}
                   onKeyDown={handleKeyDown}
