@@ -42,6 +42,7 @@ export default function Navbar({ isLoading }) {
         zIndex={1000}
         boxShadow={isScrolled ? "md" : "none"}
         transition="all 0.3s ease-in-out"
+        p={2}
       >
         {/* SearchBar com transição */}
         <Box
@@ -65,7 +66,7 @@ export default function Navbar({ isLoading }) {
           mt={isScrolled ? -10 : -5}
           px={3}
           py={isScrolled ? -1 : -4} // Reduzido o padding vertical quando navbar está pequeno
-          bg="purple.100"
+          bg="purple.100"          
         >
           {/* Logo */}
           <Link href="/">
