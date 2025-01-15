@@ -171,7 +171,10 @@ const MoviePage = () => {
       try {
         const response = await fetch("https://ipapi.co/country/");
         const country = await response.text();
-        setSelectedCountry(country); // Atualiza o estado com o país do usuário
+        // Verifica se selectedCountry ainda é o valor padrão
+        if (selectedCountry === "US") {
+          setSelectedCountry(country); // Atualiza o estado com o país do usuário
+        }
       } catch (error) {
         console.error("Erro ao obter o país do usuário:", error);
       }
@@ -184,6 +187,12 @@ const MoviePage = () => {
       fetchMovieData(movieId);
     }
   }, [movieId]);
+
+  useEffect(() => {
+    if (movieIdRequest) {
+      fetchMovieData(movieIdRequest); // Chama a função para buscar dados ao mudar o país
+    }
+  }, [selectedCountry]); // Adiciona selectedCountry como dependência
 
   const fetchMovieData = async (movieId) => {
     setIsLoading(true);
