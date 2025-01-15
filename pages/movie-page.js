@@ -16,214 +16,285 @@ import {
   Th,
   Td,
   TableContainer,
-  useMediaQuery
+  Select,
+  Box,
+  useMediaQuery,
+  Flex,
+  Text,
 } from "@chakra-ui/react";
 import Head from "next/head";
-import { Flag, Segment } from 'semantic-ui-react'
+import { Flag } from "semantic-ui-react";
+
+const providers = {
+  AD: "Andorra",
+  AE: "United Arab Emirates",
+  AF: "Afghanistan",
+  AG: "Antigua and Barbuda",
+  AL: "Albania",
+  AO: "Angola",
+  AR: "Argentina",
+  AT: "Austria",
+  AU: "Australia",
+  BA: "Bosnia and Herzegovina",
+  BE: "Belgium",
+  BF: "Burkina Faso",
+  BG: "Bulgaria",
+  BH: "Bahrain",
+  BO: "Bolivia",
+  BR: "Brazil",
+  BS: "Bahamas",
+  BT: "Bhutan",
+  BZ: "Belize",
+  CA: "Canada",
+  CD: "Democratic Republic of the Congo",
+  CH: "Switzerland",
+  CI: "Ivory Coast",
+  CL: "Chile",
+  CM: "Cameroon",
+  CO: "Colombia",
+  CR: "Costa Rica",
+  CV: "Cape Verde",
+  CU: "Cuba",
+  DM: "Dominica",
+  DE: "Germany",
+  DK: "Denmark",
+  DO: "Dominican Republic",
+  DZ: "Algeria",
+  EC: "Ecuador",
+  EE: "Estonia",
+  EG: "Egypt",
+  ER: "Eritrea",
+  ES: "Spain",
+  FJ: "Fiji",
+  FI: "Finland",
+  FR: "France",
+  GB: "United Kingdom",
+  GG: "Guernsey",
+  GH: "Ghana",
+  GI: "Gibraltar",
+  GQ: "Equatorial Guinea",
+  GT: "Guatemala",
+  HN: "Honduras",
+  HR: "Croatia",
+  HU: "Hungary",
+  ID: "Indonesia",
+  IE: "Ireland",
+  IL: "Israel",
+  IN: "India",
+  IQ: "Iraq",
+  IT: "Italy",
+  JP: "Japan",
+  KE: "Kenya",
+  KI: "Kiribati",
+  KP: "North Korea",
+  KR: "South Korea",
+  KW: "Kuwait",
+  LA: "Laos",
+  LB: "Lebanon",
+  LC: "Saint Lucia",
+  LT: "Lithuania",
+  LU: "Luxembourg",
+  LV: "Latvia",
+  LY: "Libya",
+  MA: "Morocco",
+  MC: "Monaco",
+  MG: "Madagascar",
+  MH: "Marshall Islands",
+  MK: "North Macedonia",
+  ML: "Mali",
+  MV: "Maldives",
+  MU: "Mauritius",
+  MW: "Malawi",
+  MX: "Mexico",
+  MY: "Malaysia",
+  MZ: "Mozambique",
+  NR: "Nauru",
+  NE: "Niger",
+  NG: "Nigeria",
+  NI: "Nicaragua",
+  NL: "Netherlands",
+  NO: "Norway",
+  NZ: "New Zealand",
+  OM: "Oman",
+  PA: "Panama",
+  PE: "Peru",
+  PH: "Philippines",
+  PL: "Poland",
+  PT: "Portugal",
+  PW: "Palau",
+  PY: "Paraguay",
+  QA: "Qatar",
+  RO: "Romania",
+  RS: "Serbia",
+  RU: "Russia",
+  SA: "Saudi Arabia",
+  SB: "Solomon Islands",
+  SG: "Singapore",
+  SI: "Slovenia",
+  SK: "Slovakia",
+  ST: "Sao Tome and Principe",
+  SV: "El Salvador",
+  TD: "Chad",
+  TH: "Thailand",
+  TN: "Tunisia",
+  TO: "Tonga",
+  TR: "Turkey",
+  TV: "Tuvalu",
+  TZ: "Tanzania",
+  UA: "Ukraine",
+  UG: "Uganda",
+  US: "United States",
+  UY: "Uruguay",
+  VC: "Saint Vincent and the Grenadines",
+  VE: "Venezuela",
+  VU: "Vanuatu",
+  WS: "Samoa",
+  YE: "Yemen",
+  ZA: "South Africa",
+  ZM: "Zambia",
+  ZW: "Zimbabwe",
+};
 
 const MoviePage = () => {
-  const [isMobile] = useMediaQuery('(max-width: 768px)');
+  const [isMobile] = useMediaQuery("(max-width: 768px)");
   const router = useRouter();
-  const { query } = router.query;
-  const movieId = router.query.movieId;
-  const [movieIdRequest, setMovieIdRequest] = useState();
+  const { movieId } = router.query;
+  const [movieIdRequest, setMovieIdRequest] = useState(movieId);
   const [data, setData] = useState({});
+  const [selectedCountry, setSelectedCountry] = useState("US");
   const [isLoading, setIsLoading] = useState(true);
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
 
   useEffect(() => {
-    setMovieIdRequest(movieId);
-    Promise.all([
-      fetch(`https://api.themoviedb.org/3/movie/${movieIdRequest}`, {
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
-        }),
-      }),
-      fetch(
-        `https://api.themoviedb.org/3/movie/${movieIdRequest}/watch/providers`,
-        {
-          headers: new Headers({
-            "Content-Type": "application/json",
-            Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
-          }),
-        }
-      ),
-      fetch(`https://api.themoviedb.org/3/movie/${movieIdRequest}/credits`, {
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
-        }),
-      }),
-    ])
-      .then(([resMovie, resProviders, resCredits]) =>
-        Promise.all([resMovie.json(), resProviders.json(), resCredits.json()])
-      )
-      .then(([dataMovies, dataProviders, resCredits]) => {
-        if (!Array.isArray(resCredits.crew) || resCredits.crew.length === 0) {
-          console.log("Error: credite data inavalid");
-          return;
-        }
+    // Função para obter o país do usuário
+    const getUserCountry = async () => {
+      try {
+        const response = await fetch("https://ipapi.co/country/");
+        const country = await response.text();
+        setSelectedCountry(country); // Atualiza o estado com o país do usuário
+      } catch (error) {
+        console.error("Erro ao obter o país do usuário:", error);
+      }
+    };
 
-        const directors = resCredits.crew
-          .filter((member) => member.job === "Director")
-          .map((director) => {
-            return {
-              id: director.id,
-              name: director.name,
-            };
-          });
+    getUserCountry(); // Chama a função ao montar o componente
 
-        setData({
-          directors: directors && directors.length > 0 ? directors : null,
-          budget: dataMovies.budget,
-          originalTitle: dataMovies.original_title,
-          portugueseTitle: dataMovies.title,
-          poster_path: dataMovies.poster_path,
-          overview: dataMovies.overview,
-          average: dataMovies.vote_average,
-          releaseDate: dataMovies.release_date,
-          image: dataMovies.poster_path,
-          ratingCount: dataMovies.vote_count,
-          popularity: dataMovies.popularity,
-          gender: dataMovies.genres
-            ? dataMovies.genres.map((genre) => genre.name).join(", ")
-            : "",
-          adult: dataMovies.adult,
-          imdb: dataMovies.imdb_id,
-          providersBR: dataProviders.results
-            ? dataProviders.results.BR
-              ? dataProviders.results.BR.flatrate
-                ? dataProviders.results.BR.flatrate
-                  .map((providerBR) => providerBR.provider_name)
-                  .join(", ")
-                : ""
-              : ""
-            : "",
-
-          providersUS: dataProviders.results
-            ? dataProviders.results.US
-              ? dataProviders.results.US.flatrate
-                ? dataProviders.results.US.flatrate
-                  .map((providerUS) => providerUS.provider_name)
-                  .join(", ")
-                : ""
-              : ""
-            : "",
-
-          country:
-            dataMovies.production_countries &&
-              dataMovies.production_countries[0]
-              ? dataMovies.production_countries[0].name
-              : "",
-          originalLanguage: dataMovies.original_language,
-        });
-        setIsLoading(false);
-      });
-  }, [movieId, movieIdRequest]);
-
-  if (isLoading) {
-    return (
-      <p>
-        {" "}
-        <ChakraProvider>
-          <Progress size="xs" isIndeterminate />
-        </ChakraProvider>
-      </p>
-    );
-  }
-
-  let poster = "/callback.png";
-
-  if (data.poster_path) {
-    poster = "https://image.tmdb.org/t/p/original" + data.poster_path;
-  }
-
-  function getProgressColor(progressValue) {
-    if (progressValue >= 0.1 && progressValue <= 3.999) {
-      return "red";
-    } else if (progressValue >= 4.0 && progressValue <= 5.999) {
-      return "yellow";
-    } else if (progressValue >= 6 && progressValue <= 7.999) {
-      return "green";
-    } else if (progressValue >= 8 && progressValue <= 10) {
-      return "blue";
-    } else {
-      return "gray";
+    if (movieId) {
+      setMovieIdRequest(movieId);
+      fetchMovieData(movieId);
     }
-  }
-  const metaDescription = `Movie Page ${data.originalTitle ? data.originalTitle : 'Movies'}`;
+  }, [movieId]);
+
+  const fetchMovieData = async (movieId) => {
+    setIsLoading(true);
+
+    const [resMovie, resProviders, resCredits] = await Promise.all([
+      fetch(`https://api.themoviedb.org/3/movie/${movieId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
+        },
+      }),
+      fetch(`https://api.themoviedb.org/3/movie/${movieId}/watch/providers`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
+        },
+      }),
+      fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
+        },
+      }),
+    ]);
+
+    const [dataMovies, dataProviders, resCreditsData] = await Promise.all([
+      resMovie.json(),
+      resProviders.json(),
+      resCredits.json(),
+    ]);
+
+    const directors = resCreditsData.crew
+      .filter((member) => member.job === "Director")
+      .map((director) => ({
+        id: director.id,
+        name: director.name,
+      }));
+
+    const providersForSelectedCountry =
+      dataProviders.results[selectedCountry]?.flatrate || [];
+
+    setData({
+      ...dataMovies,
+      directors: directors.length > 0 ? directors : null,
+      providers: providersForSelectedCountry,
+      country:
+        dataMovies.production_countries && dataMovies.production_countries[0]
+          ? dataMovies.production_countries[0].name
+          : "",
+    });
+    setIsLoading(false);
+  };
+
+  const handleCountryChange = (event) => {
+    setSelectedCountry(event.target.value);
+  };
+
+  const metaDescription = `Movie Page ${
+    data.original_title ? data.original_title : "Movies"
+  }`;
 
   return (
     <>
-      {" "}
       <Head>
-        <title>Movie {data.originalTitle ? data.originalTitle : null}</title>
-        <meta
-          name="keywords"
-          content={metaDescription}
-        ></meta>
+        <title>Movie {data.original_title || ""}</title>
+        <meta name="keywords" content={metaDescription}></meta>
         <meta name="description" content={metaDescription}></meta>
       </Head>
 
       {isMobile ? (
-        <>
-          <div style={{ paddingTop: 80, }} >
-            <LoggedUser />
-          </div>
-        </>
-      ) : (
-        <>
+        <Box pt={10}>
           <LoggedUser />
-        </>
+        </Box>
+      ) : (
+        <LoggedUser />
       )}
 
-      <span className={styles.title}>{data.originalTitle}</span>
-      <br />
-      <br />
-      <br />
-      <div>
+      <h1 className={styles.title}>{data.original_title}</h1>
+      <Box maxW="480px" mx="auto">
         {isLoading ? (
-          <div>
-            <ChakraProvider>
-              <Progress size="xs" isIndeterminate />
-            </ChakraProvider>
-          </div>
+          <ChakraProvider>
+            <Progress size="xs" isIndeterminate />
+          </ChakraProvider>
         ) : (
-          <span>
-            <Image
-              className={styles.card_image_big}
-              src={
-                poster
-                  ? `https://image.tmdb.org/t/p/original${poster}`
-                  : "/callback.png"
-              }
-              alt="poster"
-              width="480"
-              height="720"
-              objectFit="contain"
-              maxHeight="100%"
-              maxWidth="100%"
-            />
-          </span>
+          <Image
+            className={styles.card_image_big}
+            src={`https://image.tmdb.org/t/p/original${data.poster_path || ""}`}
+            alt="poster"
+            width={480}
+            height={720}
+            objectFit="contain"
+          />
         )}
-      </div>
-      <div style={{ maxWidth: "480px", margin: "0 auto" }}>
-        <ChakraProvider>
-          <Rate value={data.average} count={10} disabled />
-          <br />
-          {data.average}
-        </ChakraProvider>
-      </div>
-
-      <br />
-      <div
-        style={{ maxWidth: "480px", margin: "0 auto", wordBreak: "break-word" }}
-      >
+      </Box>
+      <Box maxW="480px" mx="auto" mt={6}>
         <ChakraProvider>
           <TableContainer>
             <Table size="sm">
               <Tbody>
+
+              <Tr>
+                  <Th>Overview</Th>
+                  <Td
+                    style={{
+                      whiteSpace: "pre-wrap",
+                      maxWidth: "480px",
+                    }}
+                  >
+                    {data.overview ? data.overview : "No Infos"}
+                  </Td> 
+                </Tr>
                 <Tr>
                   <Th>
                     {data.budget === 0 || data.budget === null
@@ -233,29 +304,39 @@ const MoviePage = () => {
                   <Td>
                     {" "}
                     {data.budget === 0 || data.budget === null
-                      ? null
+                      ? "No Budget Info"
                       : `${new Intl.NumberFormat("en-US", {
                         style: "currency",
                         currency: "USD",
                       }).format(data.budget)}`}
                   </Td>
                 </Tr>
+             
                 <Tr>
-                  <Th>Overview</Th>
-                  <Td
-                    style={{
-                      whiteSpace: "pre-wrap",
-                      maxWidth: "480px",
-                    }}
-                  >
-                    {data.overview ? data.overview : "No Infos"}
-                  </Td>
+                  <Th>Country of Origin</Th>
+                  <Td>{data.country}</Td>
                 </Tr>
                 <Tr>
-                  <Th>Direction</Th>
+                  <Th>Language</Th>
+                  <Td>{data.original_language}</Td>
+                </Tr>
+                <Tr>
+                  <Th>Release Date</Th>
+                  <Td>{data.release_date}</Td>
+                </Tr>
+                <Tr>
+                  <Th>Popularity</Th>
+                  <Td>{data.popularity}</Td>
+                </Tr>
+                <Tr>
+                  <Th>IMDB</Th>
+                  <Td>https://www.imdb.com/title/{data.imdb}</Td>
+                </Tr>
+                <Tr>
+                  <Th>Directors</Th>
                   <Td>
                     {data.directors ? (
-                      <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                      <ul>
                         {data.directors.map((director, index) => (
                           <li key={index}>
                             <Link
@@ -264,82 +345,62 @@ const MoviePage = () => {
                                 query: { personId: director.id },
                               }}
                             >
-                              <strong>{director.name}</strong>
+                              {director.name}
                             </Link>
                           </li>
                         ))}
                       </ul>
                     ) : (
-                      "No Informations"
+                      "No directors available"
                     )}
                   </Td>
                 </Tr>
                 <Tr>
-                  <Th>Rating Count</Th>
-                  <Td>{data.ratingCount}</Td>
-                </Tr>
-                <Tr>
-                  <Th>Average</Th>
-                  <Td>{data.average}</Td>
-                </Tr>
-                <Tr>
-                  <Th>IMDB</Th>
-                  <Td>https://www.imdb.com/title/{data.imdb}</Td>
-                </Tr>
-                <Tr>
-                  <Th>Country of Origin</Th>
-                  <Td>{data.country}    <Segment>
-
-
-                    <Flag name={data.country} />
-                  </Segment></Td>
-                </Tr>
-                <Tr>
-                  <Th>Language</Th>
-                  <Td>{data.originalLanguage}</Td>
-                </Tr>
-                <Tr>
-                  <Th>Release Date</Th>
+                  <Th>
+                    <Select
+                      placeholder="Select a Country"
+                      value={selectedCountry}
+                      onChange={handleCountryChange}
+                      ml={0}
+                    >
+                      {Object.entries(providers)
+                        .sort((a, b) => a[1].localeCompare(b[1]))
+                        .map(([code, name]) => (
+                          <option key={code} value={code}>
+                            {name}
+                          </option>
+                        ))}
+                    </Select>
+                  </Th>
                   <Td>
-                    {data.releaseDate}
-                    {/* {data.releaseDate
-                      ? format(new Date(data.releaseDate), " MM/dd/yyyy")
-                      : ""} */}
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Th>Popularity</Th>
-                  <Td>{data.popularity}</Td>
-                </Tr>
-                <Tr>
-                  <Th>Gender</Th>
-                  <Td
-                    style={{
-                      whiteSpace: "pre-wrap",
-                      maxWidth: "480px",
-                    }}
-                  >
-                    {data.gender}
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Th>Streamings USA</Th>
-                  <Td
-                    style={{
-                      whiteSpace: "pre-wrap",
-                      maxWidth: "480px",
-                    }}
-                  >
-                    {data.providersUS}
+                    {Array.isArray(data.providers) &&
+                    data.providers.length > 0 ? (
+                      <Flex flexWrap="wrap">
+                        {data.providers.map((provider, index) => (
+                          <Box key={index} p={2} textAlign="center">
+                            <Image
+                              src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
+                              alt={provider.provider_name}
+                              width={50}
+                              height={50}
+                              style={{ borderRadius: "5px" }}
+                            />
+                            <Text fontSize="sm">{provider.provider_name}</Text>
+                          </Box>
+                        ))}
+                      </Flex>
+                    ) : (
+                      "No providers available"
+                    )}
                   </Td>
                 </Tr>
               </Tbody>
             </Table>
           </TableContainer>
         </ChakraProvider>
-        <div />
-        {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
-      </div>
+      </Box>
+
+      {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
     </>
   );
 };

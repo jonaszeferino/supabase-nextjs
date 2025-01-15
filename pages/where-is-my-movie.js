@@ -33,14 +33,8 @@ import PageTitle from "../components/PageTitle";
 
 const MoviePage = () => {
   const router = useRouter();
-  const [movieIdRequest, setMovieIdRequest] = useState(null);
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [exibirTabela, setExibirTabela] = useState(false);
-  const [exibirTabelaRent, setExibirTabelaRent] = useState(false);
-  const [exibirTabelaBuy, setExibirTabelaBuy] = useState(false);
-  const [exibirTabelaFree, setExibirTabelaFree] = useState(false);
-  const [exibirTabelaAds, setExibirTabelaAds] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("PT");
   const [showAllTables, setShowAllTables] = useState(false);
   const [movieIdSearch, setMovieIdSearch] = useState(null);
@@ -58,17 +52,13 @@ const MoviePage = () => {
 
   const Clean = () => {
     setIsLoading(true);
-    setExibirTabela(false);
-    setExibirTabelaRent(false);
-    setExibirTabelaBuy(false);
-    setExibirTabelaFree(false);
-    setExibirTabelaAds(false);
-    setShowAllTables(false);
   };
 
   const providers = {
     AD: "Andorra",
     AE: "United Arab Emirates",
+    AF: "Afghanistan",
+    AG: "Antigua and Barbuda",
     AL: "Albania",
     AO: "Angola",
     AR: "Argentina",
@@ -81,6 +71,8 @@ const MoviePage = () => {
     BH: "Bahrain",
     BO: "Bolivia",
     BR: "Brazil",
+    BS: "Bahamas",
+    BT: "Bhutan",
     BZ: "Belize",
     CA: "Canada",
     CD: "Democratic Republic of the Congo",
@@ -91,7 +83,8 @@ const MoviePage = () => {
     CO: "Colombia",
     CR: "Costa Rica",
     CV: "Cape Verde",
-    CZ: "Czech Republic",
+    CU: "Cuba",
+    DM: "Dominica",
     DE: "Germany",
     DK: "Denmark",
     DO: "Dominican Republic",
@@ -99,13 +92,16 @@ const MoviePage = () => {
     EC: "Ecuador",
     EE: "Estonia",
     EG: "Egypt",
+    ER: "Eritrea",
     ES: "Spain",
+    FJ: "Fiji",
     FI: "Finland",
     FR: "France",
     GB: "United Kingdom",
     GG: "Guernsey",
     GH: "Ghana",
     GI: "Gibraltar",
+    GQ: "Equatorial Guinea",
     GT: "Guatemala",
     HN: "Honduras",
     HR: "Croatia",
@@ -116,25 +112,32 @@ const MoviePage = () => {
     IN: "India",
     IQ: "Iraq",
     IT: "Italy",
-    JO: "Jordan",
     JP: "Japan",
     KE: "Kenya",
+    KI: "Kiribati",
+    KP: "North Korea",
     KR: "South Korea",
     KW: "Kuwait",
+    LA: "Laos",
     LB: "Lebanon",
+    LC: "Saint Lucia",
     LT: "Lithuania",
     LU: "Luxembourg",
     LV: "Latvia",
     LY: "Libya",
     MA: "Morocco",
+    MC: "Monaco",
     MG: "Madagascar",
+    MH: "Marshall Islands",
     MK: "North Macedonia",
     ML: "Mali",
+    MV: "Maldives",
     MU: "Mauritius",
     MW: "Malawi",
     MX: "Mexico",
     MY: "Malaysia",
     MZ: "Mozambique",
+    NR: "Nauru",
     NE: "Niger",
     NG: "Nigeria",
     NI: "Nicaragua",
@@ -147,27 +150,34 @@ const MoviePage = () => {
     PH: "Philippines",
     PL: "Poland",
     PT: "Portugal",
+    PW: "Palau",
     PY: "Paraguay",
     QA: "Qatar",
     RO: "Romania",
     RS: "Serbia",
     RU: "Russia",
     SA: "Saudi Arabia",
-    SE: "Sweden",
+    SB: "Solomon Islands",
     SG: "Singapore",
     SI: "Slovenia",
     SK: "Slovakia",
+    ST: "Sao Tome and Principe",
     SV: "El Salvador",
     TD: "Chad",
     TH: "Thailand",
     TN: "Tunisia",
+    TO: "Tonga",
     TR: "Turkey",
+    TV: "Tuvalu",
     TZ: "Tanzania",
     UA: "Ukraine",
     UG: "Uganda",
     US: "United States",
     UY: "Uruguay",
+    VC: "Saint Vincent and the Grenadines",
     VE: "Venezuela",
+    VU: "Vanuatu",
+    WS: "Samoa",
     YE: "Yemen",
     ZA: "South Africa",
     ZM: "Zambia",
@@ -292,10 +302,8 @@ const MoviePage = () => {
   if (data.poster_path) {
     poster = "https://image.tmdb.org/t/p/original" + data.poster_path;
   }
-  // Função para lidar com a mudança de país
   const handleCountryChange = (event) => {
     setSelectedCountry(event.target.value);
-    // Resetando os estados relevantes
     setMovieIdSearch(null); // Zera o ID do filme selecionado
     setResultSearchMovie([]); // Limpa os resultados da busca
     setTotals(""); // Zera os totais
@@ -340,7 +348,7 @@ const MoviePage = () => {
                 required
               >
                 <option value="" disabled>
-                  Selecione um país
+                  Select one conutry
                 </option>
                 {Object.entries(providers)
                   .sort((a, b) => a[1].localeCompare(b[1]))
@@ -357,7 +365,7 @@ const MoviePage = () => {
                     if (selectedCountry) {
                       apiCall();
                     } else {
-                      alert("Por favor, selecione um país.");
+                      alert("Please, select one country.");
                     }
                   }}
                 >
@@ -376,22 +384,6 @@ const MoviePage = () => {
               ""
             )}
           </Text>
-          {/* <div>
-            <label htmlFor="country-select">Country Select:</label>
-            <select
-              id="country-select"
-              onChange={handleCountryChange}
-              value={selectedCountry}
-            >
-              {Object.entries(providers)
-                .sort((a, b) => a[1].localeCompare(b[1]))
-                .map(([code, name]) => (
-                  <option key={code} value={code}>
-                    {name}
-                  </option>
-                ))}
-            </select>
-          </div> */}
           {totals > 0 ? (
             <Table>
               <Thead>
@@ -488,64 +480,6 @@ const MoviePage = () => {
         {Object.keys(data).length > 0 && (
           <ChakraProvider>
             <br />
-            {/* <span>
-              Click on the types below to check the complete lists by countries.
-            </span> */}
-
-            {/* <div
-              style={{
-                maxWidth: "480px",
-                margin: "0 auto",
-                wordBreak: "break-word",
-              }}
-            >
-              <Center>
-                <Stack direction="row" spacing={2}>
-                  <Button
-                    onClick={handleExibirTabela}
-                    colorScheme={exibirTabela ? "gray" : "purple"}
-                    color={exibirTabela ? "black" : "white"}
-                  >
-                    {exibirTabela ? "Streaming" : "Streaming"}
-                  </Button>
-                  <Button
-                    onClick={handleExibirTabelaRent}
-                    colorScheme={exibirTabelaRent ? "gray" : "blue"}
-                    color={exibirTabelaRent ? "black" : "white"}
-                  >
-                    {exibirTabelaRent ? "To Rent" : "To Rent"}
-                  </Button>
-                  <Button
-                    onClick={handleExibirTabelaBuy}
-                    colorScheme={exibirTabelaBuy ? "gray" : "purple"}
-                    color={exibirTabelaBuy ? "black" : "white"}
-                  >
-                    {exibirTabelaBuy ? "Buy" : "Buy"}
-                  </Button>
-                </Stack>
-              </Center>
-              <br />
-              <Center>
-                <Stack direction="row" spacing={2}>
-                  <Button
-                    onClick={handleExibirTabelaAds}
-                    colorScheme={exibirTabelaAds ? "gray" : "blue"}
-                    color={exibirTabelaAds ? "black" : "white"}
-                  >
-                    {exibirTabelaAds ? "Free With Adds" : "Free With Adds"}
-                  </Button>
-                  <Button
-                    onClick={handleExibirTabelaFree}
-                    colorScheme={exibirTabelaFree ? "gray" : "purple"}
-                    color={exibirTabelaFree ? "black" : "white"}
-                  >
-                    {exibirTabelaFree ? "Free" : "Free"}
-                  </Button>
-                </Stack>
-              </Center>
-            </div> */}
-
-            {/* Exibindo todas as tabelas sem necessidade de clicar */}
             <TableContainer p={4}>
               <Table size="sm">
                 <Tbody>
@@ -629,20 +563,6 @@ const MoviePage = () => {
         <div />
         {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
       </div>
-      {/* <div>
-        <label htmlFor="country-select">Escolha um país:</label>
-        <select
-          id="country-select"
-          onChange={handleCountryChange}
-          value={selectedCountry}
-        >
-          {providers.map((provider) => (
-            <option key={provider} value={provider}>
-              {provider}
-            </option>
-          ))}
-        </select>
-      </div> */}
     </>
   );
 };

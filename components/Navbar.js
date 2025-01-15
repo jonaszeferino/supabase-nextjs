@@ -44,7 +44,6 @@ export default function Navbar({ isLoading }) {
         transition="all 0.3s ease-in-out"
         p={2}
       >
-        {/* SearchBar com transição */}
         <Box
           bg="purple.100"
           p={2}
@@ -58,22 +57,20 @@ export default function Navbar({ isLoading }) {
             <SearchBar isLoading={isLoading} />
           </Center>
         </Box>
-
-        {/* Navbar */}
         <Flex
           align="center"
           justify="center"
           mt={isScrolled ? -10 : -5}
           px={3}
-          py={isScrolled ? -1 : -4} // Reduzido o padding vertical quando navbar está pequeno
-          bg="purple.100"          
+          py={isScrolled ? -1 : -4} 
+          bg="purple.150"          
         >
-          {/* Logo */}
+
           <Link href="/">
             <Image
               src="/logo_10.png"
               alt="logo"
-              height={isScrolled ? "80px" : "180px"} // Reduzido para 80px quando navbar está pequeno
+              height={isScrolled ? "80px" : "180px"}
               marginTop={isScrolled ? "0" : "10px"}
               objectFit="contain"
               transition="height 0.8s ease, margin-top 0.8s ease"
@@ -81,7 +78,6 @@ export default function Navbar({ isLoading }) {
             />
           </Link>
 
-          {/* Navigation Links */}
           <HStack spacing={6}>
             {[
               "Home",
@@ -98,7 +94,7 @@ export default function Navbar({ isLoading }) {
                 bg="purple.500"
                 color="white"
                 _hover={{
-                  bg: "purple.100",
+                  bg: "purple.150",
                 }}
                 transition="background-color 0.3s ease-in-out"
               >
