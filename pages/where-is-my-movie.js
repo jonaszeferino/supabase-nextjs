@@ -1,30 +1,22 @@
 import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { SearchIcon } from "@chakra-ui/icons";
-
 import {
   ChakraProvider,
-  Center,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableContainer,
-  Button,
-  Stack,
   Input,
-  Box,
-  Checkbox,
   InputGroup,
   InputRightElement,
   Text,
-  IconButton,
-  useMediaQuery,
+  Box,
+  Center,
+  Spinner,
+  Button
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
@@ -32,162 +24,268 @@ import Head from "next/head";
 import PageTitle from "../components/PageTitle";
 
 const MoviePage = () => {
-  const router = useRouter();
-  const [data, setData] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [selectedLanguage, setSelectedLanguage] = useState("PT");
-  const [showAllTables, setShowAllTables] = useState(false);
+  const [data, setData] = useState({ providers: {} });
+  const [isLoading, setIsLoading] = useState(false);
   const [movieIdSearch, setMovieIdSearch] = useState(null);
   const [totals, setTotals] = useState("");
-  const [showPoster, setShowPoster] = useState(false);
-
   const [movieSearchQuery, setMovieSearchQuery] = useState("");
   const [movieResultSearchMovie, setResultSearchMovie] = useState([]);
-  const [error, setError] = useState("");
-
-  const { showBackToTopButton, scrollToTop } = useBackToTopButton(); // tranformado num hook
-  const [isMobile] = useMediaQuery("(max-width: 768px)");
-
-  const [selectedCountry, setSelectedCountry] = useState("BR"); // Estado para o país selecionado
-
-  const Clean = () => {
-    setIsLoading(true);
-  };
+  const { showBackToTopButton, scrollToTop } = useBackToTopButton();
 
   const providers = {
-    AD: "Andorra",
-    AE: "United Arab Emirates",
     AF: "Afghanistan",
-    AG: "Antigua and Barbuda",
+    AX: "Aland Islands",
     AL: "Albania",
-    AO: "Angola",
-    AR: "Argentina",
-    AT: "Austria",
-    AU: "Australia",
-    BA: "Bosnia and Herzegovina",
-    BE: "Belgium",
-    BF: "Burkina Faso",
-    BG: "Bulgaria",
-    BH: "Bahrain",
-    BO: "Bolivia",
-    BR: "Brazil",
-    BS: "Bahamas",
-    BT: "Bhutan",
-    BZ: "Belize",
-    CA: "Canada",
-    CD: "Democratic Republic of the Congo",
-    CH: "Switzerland",
-    CI: "Ivory Coast",
-    CL: "Chile",
-    CM: "Cameroon",
-    CO: "Colombia",
-    CR: "Costa Rica",
-    CV: "Cape Verde",
-    CU: "Cuba",
-    DM: "Dominica",
-    DE: "Germany",
-    DK: "Denmark",
-    DO: "Dominican Republic",
     DZ: "Algeria",
+    AS: "American Samoa",
+    AD: "Andorra",
+    AO: "Angola",
+    AI: "Anguilla",
+    AQ: "Antarctica",
+    AG: "Antigua and Barbuda",
+    AR: "Argentina",
+    AM: "Armenia",
+    AW: "Aruba",
+    AU: "Australia",
+    AT: "Austria",
+    AZ: "Azerbaijan",
+    BS: "Bahamas",
+    BH: "Bahrain",
+    BD: "Bangladesh",
+    BB: "Barbados",
+    BY: "Belarus",
+    BE: "Belgium",
+    BZ: "Belize",
+    BJ: "Benin",
+    BM: "Bermuda",
+    BT: "Bhutan",
+    BO: "Bolivia",
+    BQ: "Bonaire, Sint Eustatius and Saba",
+    BA: "Bosnia and Herzegovina",
+    BW: "Botswana",
+    BV: "Bouvet Island",
+    BR: "Brazil",
+    IO: "British Indian Ocean Territory",
+    BN: "Brunei Darussalam",
+    BG: "Bulgaria",
+    BF: "Burkina Faso",
+    BI: "Burundi",
+    CV: "Cabo Verde",
+    KH: "Cambodia",
+    CM: "Cameroon",
+    CA: "Canada",
+    KY: "Cayman Islands",
+    CF: "Central African Republic",
+    TD: "Chad",
+    CL: "Chile",
+    CN: "China",
+    CX: "Christmas Island",
+    CC: "Cocos (Keeling) Islands",
+    CO: "Colombia",
+    KM: "Comoros",
+    CG: "Congo",
+    CD: "Congo (Democratic Republic of the)",
+    CK: "Cook Islands",
+    CR: "Costa Rica",
+    CI: "Côte d'Ivoire",
+    HR: "Croatia",
+    CU: "Cuba",
+    CW: "Curaçao",
+    CY: "Cyprus",
+    CZ: "Czechia",
+    DK: "Denmark",
+    DJ: "Djibouti",
+    DM: "Dominica",
+    DO: "Dominican Republic",
     EC: "Ecuador",
-    EE: "Estonia",
     EG: "Egypt",
+    SV: "El Salvador",
+    GQ: "Equatorial Guinea",
     ER: "Eritrea",
-    ES: "Spain",
+    EE: "Estonia",
+    SZ: "Eswatini",
+    ET: "Ethiopia",
+    FK: "Falkland Islands (Malvinas)",
+    FO: "Faroe Islands",
     FJ: "Fiji",
     FI: "Finland",
     FR: "France",
-    GB: "United Kingdom",
-    GG: "Guernsey",
+    GF: "French Guiana",
+    PF: "French Polynesia",
+    TF: "French Southern Territories",
+    GA: "Gabon",
+    GM: "Gambia",
+    GE: "Georgia",
+    DE: "Germany",
     GH: "Ghana",
     GI: "Gibraltar",
-    GQ: "Equatorial Guinea",
+    GR: "Greece",
+    GL: "Greenland",
+    GD: "Grenada",
+    GP: "Guadeloupe",
+    GU: "Guam",
     GT: "Guatemala",
+    GG: "Guernsey",
+    GN: "Guinea",
+    GW: "Guinea-Bissau",
+    GY: "Guyana",
+    HT: "Haiti",
+    HM: "Heard Island and McDonald Islands",
+    VA: "Holy See",
     HN: "Honduras",
-    HR: "Croatia",
+    HK: "Hong Kong",
     HU: "Hungary",
-    ID: "Indonesia",
-    IE: "Ireland",
-    IL: "Israel",
+    IS: "Iceland",
     IN: "India",
+    ID: "Indonesia",
+    IR: "Iran (Islamic Republic of)",
     IQ: "Iraq",
+    IE: "Ireland",
+    IM: "Isle of Man",
+    IL: "Israel",
     IT: "Italy",
+    JM: "Jamaica",
     JP: "Japan",
+    JE: "Jersey",
+    JO: "Jordan",
+    KZ: "Kazakhstan",
     KE: "Kenya",
     KI: "Kiribati",
-    KP: "North Korea",
-    KR: "South Korea",
+    KP: "Korea (Democratic People's Republic of)",
+    KR: "Korea (Republic of)",
     KW: "Kuwait",
-    LA: "Laos",
+    KG: "Kyrgyzstan",
+    LA: "Lao People's Democratic Republic",
+    LV: "Latvia",
     LB: "Lebanon",
-    LC: "Saint Lucia",
+    LS: "Lesotho",
+    LR: "Liberia",
+    LY: "Libya",
+    LI: "Liechtenstein",
     LT: "Lithuania",
     LU: "Luxembourg",
-    LV: "Latvia",
-    LY: "Libya",
-    MA: "Morocco",
-    MC: "Monaco",
+    MO: "Macao",
     MG: "Madagascar",
-    MH: "Marshall Islands",
-    MK: "North Macedonia",
-    ML: "Mali",
-    MV: "Maldives",
-    MU: "Mauritius",
     MW: "Malawi",
-    MX: "Mexico",
     MY: "Malaysia",
+    MV: "Maldives",
+    ML: "Mali",
+    MT: "Malta",
+    MH: "Marshall Islands",
+    MQ: "Martinique",
+    MR: "Mauritania",
+    MU: "Mauritius",
+    YT: "Mayotte",
+    MX: "Mexico",
+    FM: "Micronesia (Federated States of)",
+    MD: "Moldova (Republic of)",
+    MC: "Monaco",
+    MN: "Mongolia",
+    ME: "Montenegro",
+    MS: "Montserrat",
+    MA: "Morocco",
     MZ: "Mozambique",
+    MM: "Myanmar",
+    NA: "Namibia",
     NR: "Nauru",
+    NP: "Nepal",
+    NL: "Netherlands",
+    NC: "New Caledonia",
+    NZ: "New Zealand",
+    NI: "Nicaragua",
     NE: "Niger",
     NG: "Nigeria",
-    NI: "Nicaragua",
-    NL: "Netherlands",
+    NU: "Niue",
+    NF: "Norfolk Island",
+    MK: "North Macedonia",
+    MP: "Northern Mariana Islands",
     NO: "Norway",
-    NZ: "New Zealand",
     OM: "Oman",
+    PK: "Pakistan",
+    PW: "Palau",
+    PS: "Palestine, State of",
     PA: "Panama",
+    PG: "Papua New Guinea",
+    PY: "Paraguay",
     PE: "Peru",
     PH: "Philippines",
+    PN: "Pitcairn",
     PL: "Poland",
     PT: "Portugal",
-    PW: "Palau",
-    PY: "Paraguay",
+    PR: "Puerto Rico",
     QA: "Qatar",
     RO: "Romania",
-    RS: "Serbia",
-    RU: "Russia",
-    SA: "Saudi Arabia",
-    SB: "Solomon Islands",
-    SG: "Singapore",
-    SI: "Slovenia",
-    SK: "Slovakia",
-    ST: "Sao Tome and Principe",
-    SV: "El Salvador",
-    TD: "Chad",
-    TH: "Thailand",
-    TN: "Tunisia",
-    TO: "Tonga",
-    TR: "Turkey",
-    TV: "Tuvalu",
-    TZ: "Tanzania",
-    UA: "Ukraine",
-    UG: "Uganda",
-    US: "United States",
-    UY: "Uruguay",
+    RU: "Russian Federation",
+    RW: "Rwanda",
+    RE: "Réunion",
+    BL: "Saint Barthélemy",
+    SH: "Saint Helena, Ascension and Tristan da Cunha",
+    KN: "Saint Kitts and Nevis",
+    LC: "Saint Lucia",
+    MF: "Saint Martin (French part)",
+    PM: "Saint Pierre and Miquelon",
     VC: "Saint Vincent and the Grenadines",
-    VE: "Venezuela",
-    VU: "Vanuatu",
     WS: "Samoa",
-    YE: "Yemen",
+    SM: "San Marino",
+    ST: "Sao Tome and Principe",
+    SA: "Saudi Arabia",
+    SN: "Senegal",
+    RS: "Serbia",
+    SC: "Seychelles",
+    SL: "Sierra Leone",
+    SG: "Singapore",
+    SX: "Sint Maarten (Dutch part)",
+    SK: "Slovakia",
+    SI: "Slovenia",
+    SB: "Solomon Islands",
+    SO: "Somalia",
     ZA: "South Africa",
+    GS: "South Georgia and the South Sandwich Islands",
+    SS: "South Sudan",
+    ES: "Spain",
+    LK: "Sri Lanka",
+    SD: "Sudan",
+    SR: "Suriname",
+    SE: "Sweden",
+    CH: "Switzerland",
+    SY: "Syrian Arab Republic",
+    TW: "Taiwan",
+    TJ: "Tajikistan",
+    TZ: "Tanzania",
+    TH: "Thailand",
+    TL: "Timor-Leste",
+    TG: "Togo",
+    TK: "Tokelau",
+    TO: "Tonga",
+    TT: "Trinidad and Tobago",
+    TN: "Tunisia",
+    TR: "Turkey",
+    TM: "Turkmenistan",
+    TC: "Turks and Caicos Islands",
+    TV: "Tuvalu",
+    UG: "Uganda",
+    UA: "Ukraine",
+    AE: "United Arab Emirates",
+    GB: "United Kingdom",
+    US: "United States",
+    UM: "United States Minor Outlying Islands",
+    UY: "Uruguay",
+    UZ: "Uzbekistan",
+    VU: "Vanuatu",
+    VE: "Venezuela",
+    VN: "Viet Nam",
+    VG: "Virgin Islands (British)",
+    VI: "Virgin Islands (U.S.)",
+    WF: "Wallis and Futuna",
+    EH: "Western Sahara",
+    YE: "Yemen",
     ZM: "Zambia",
     ZW: "Zimbabwe",
   };
 
   const apiCall = () => {
-    Clean();
-    const url = `https://api.themoviedb.org/3/search/movie?query=${movieSearchQuery}&include_adult=false`;
     setIsLoading(true);
+    const url = `https://api.themoviedb.org/3/search/movie?query=${movieSearchQuery}&include_adult=false`;
 
     fetch(url, {
       headers: {
@@ -197,37 +295,38 @@ const MoviePage = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          setError(false);
           return response.json();
         } else {
-          throw new Error("Dados Incorretos");
+          throw new Error("Invalid Data");
         }
       })
       .then((result) => {
         setResultSearchMovie(result.results);
         setTotals(result.total_results);
+        setIsLoading(false);
       })
       .catch((error) => {
-        setError(error.message);
+        console.error(error);
+        setIsLoading(false);
       });
   };
 
-  const fetchData = () => {
-    setTotals("");
+  const fetchData = (movieId) => {
+    setIsLoading(true);
     Promise.all([
-      fetch(`https://api.themoviedb.org/3/movie/${movieIdSearch}`, {
-        headers: new Headers({
+      fetch(`https://api.themoviedb.org/3/movie/${movieId}`, {
+        headers: {
           "Content-Type": "application/json",
           Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
-        }),
+        },
       }),
       fetch(
-        `https://api.themoviedb.org/3/movie/${movieIdSearch}/watch/providers`,
+        `https://api.themoviedb.org/3/movie/${movieId}/watch/providers`,
         {
-          headers: new Headers({
+          headers: {
             "Content-Type": "application/json",
             Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
-          }),
+          },
         }
       ),
     ])
@@ -235,169 +334,132 @@ const MoviePage = () => {
         Promise.all([resMovie.json(), resProviders.json()])
       )
       .then(([dataMovies, dataProviders]) => {
-        setTotals({
-          total_results: dataProviders.total_results,
-        }),
-          setData({
-            budget: dataMovies.budget,
-            originalTitle: dataMovies.original_title,
-            portugueseTitle: dataMovies.title,
-            poster_path: dataMovies.poster_path,
-            gender: dataMovies.genres
-              ? dataMovies.genres.map((genre) => genre.name).join(", ")
-              : "",
-            providers: Object.keys(providers).reduce((acc, provider) => {
-              if (dataProviders.results && dataProviders.results[provider]) {
-                if (dataProviders.results[provider].flatrate) {
-                  acc[provider] = dataProviders.results[provider].flatrate
-                    .map((providerItem) => providerItem.provider_name)
-                    .join(", ");
-                } else {
-                  acc[provider] = "";
-                }
-
-                if (dataProviders.results[provider].rent) {
-                  acc[provider + "_rent"] = dataProviders.results[provider].rent
-                    .map((providerItem) => providerItem.provider_name)
-                    .join(", ");
-                } else {
-                  acc[provider + "_rent"] = "";
-                }
-
-                if (dataProviders.results[provider].ads) {
-                  acc[provider + "_ads"] = dataProviders.results[provider].ads
-                    .map((providerItem) => providerItem.provider_name)
-                    .join(", ");
-                } else {
-                  acc[provider + "_ads"] = "";
-                }
-
-                if (dataProviders.results[provider].free) {
-                  acc[provider + "_free"] = dataProviders.results[provider].free
-                    .map((providerItem) => providerItem.provider_name)
-                    .join(", ");
-                } else {
-                  acc[provider + "_free"] = "";
-                }
-
-                if (dataProviders.results[provider].buy) {
-                  acc[provider + "_buy"] = dataProviders.results[provider].buy
-                    .map((providerItem) => providerItem.provider_name)
-                    .join(", ");
-                } else {
-                  acc[provider + "_buy"] = "";
-                }
-              }
-
-              return acc;
-            }, {}),
-          });
-
+        setData({
+          budget: dataMovies.budget,
+          originalTitle: dataMovies.original_title,
+          poster_path: dataMovies.poster_path,
+          gender: dataMovies.genres
+            ? dataMovies.genres.map((genre) => genre.name).join(", ")
+            : "N/A",
+          providers: dataProviders.results || {},
+        });
+        setResultSearchMovie([]);
         setIsLoading(false);
       });
   };
 
-  let poster = "/callback.png";
+  const getSortedProviders = () => {
+    return Object.entries(data.providers)
+      .sort(([a], [b]) => (providers[a] || a).localeCompare(providers[b] || b))
+      .map(([countryCode, providerData]) => {
+        const rows = [];
 
-  if (data.poster_path) {
-    poster = "https://image.tmdb.org/t/p/original" + data.poster_path;
-  }
-  const handleCountryChange = (event) => {
-    setSelectedCountry(event.target.value);
-    setMovieIdSearch(null); // Zera o ID do filme selecionado
-    setResultSearchMovie([]); // Limpa os resultados da busca
-    setTotals(""); // Zera os totais
-    setData({}); // Limpa os dados do filme
-    setError(""); // Limpa qualquer erro anterior
+        ["flatrate", "rent", "buy", "ads", "free"].forEach((category) => {
+          if (providerData?.[category] && Array.isArray(providerData[category])) {
+            providerData[category].forEach((provider) => {
+              rows.push(
+                <Tr key={`${countryCode}-${category}-${provider.provider_id}`}>
+                  <Td>{providers[countryCode] || countryCode}</Td>
+                  <Td>
+                    {category.charAt(0).toUpperCase() + category.slice(1) ===
+                    "Flatrate"
+                      ? "Subscription"
+                      : category.charAt(0).toUpperCase() + category.slice(1)}
+                  </Td>
+                  <Td>
+                    {provider.logo_path ? (
+                      <Image
+                        src={`https://image.tmdb.org/t/p/w92${provider.logo_path}`}
+                        alt={provider.provider_name}
+                        width={70}
+                        height={70}
+                      />
+                    ) : (
+                      provider.provider_name
+                    )}
+                  </Td>
+                </Tr>
+              );
+            });
+          }
+        });
+
+        return rows;
+      })
+      .flat();
   };
+
+  const poster =
+    data.poster_path &&
+    `https://image.tmdb.org/t/p/original${data.poster_path}`;
 
   return (
     <>
       <ChakraProvider>
         <Head>
           <title>Onde está meu filme</title>
-          <meta
-            name="keywords"
-            content="tvshow,watch,review, series, filmes"
-          ></meta>
-          <meta name="description" content="filmes, series,"></meta>
+          <meta name="keywords" content="tvshow,watch,review,series,filmes" />
+          <meta name="description" content="filmes,series" />
         </Head>
-        <PageTitle
-          title="Where Is My Movie?"
-          isMobile={isMobile}
-          showLoggedUser={true}
-        />
-        <div
-          style={{
-            maxWidth: "500px",
-            margin: "0 auto",
-            wordBreak: "break-word",
-          }}
-        >
-          <InputGroup>
-            <Stack direction="row" spacing={2} align="center">
-              <Input
-                placeholder="Movie Name"
-                value={movieSearchQuery}
-                onChange={(e) => setMovieSearchQuery(e.target.value)}
+        <PageTitle title="Where Is My Movie?" />
+        {movieIdSearch && data.originalTitle && !isLoading && (
+          <Box textAlign="center" my={4}>
+            <Center>
+              <Image
+                src={poster || "/callback.png"}
+                alt={data.originalTitle}
+                width={300}
+                height={450}
+                style={{ borderRadius: "10px" }}
               />
-              <select
-                id="country-select"
-                onChange={handleCountryChange}
-                value={selectedCountry}
-                required
-              >
-                <option value="" disabled>
-                  Select one conutry
-                </option>
-                {Object.entries(providers)
-                  .sort((a, b) => a[1].localeCompare(b[1]))
-                  .map(([code, name]) => (
-                    <option key={code} value={code}>
-                      {name}
-                    </option>
-                  ))}
-              </select>
-              <InputRightElement width="auto">
-                <Button
-                  colorScheme="purple"
-                  onClick={() => {
-                    if (selectedCountry) {
-                      apiCall();
-                    } else {
-                      alert("Please, select one country.");
-                    }
-                  }}
-                >
-                  Go
-                </Button>
-              </InputRightElement>
-            </Stack>
+            </Center>
+            <Text mt={2} fontSize="4xl" fontWeight="bold">
+              {data.originalTitle}
+            </Text>
+            <Text>{data.gender}</Text>
+          </Box>
+        )}
+        <div style={{ maxWidth: "500px", margin: "0 auto", wordBreak: "break-word" }}>
+          <InputGroup>
+            <Input
+              placeholder="Movie Name"
+              value={movieSearchQuery}
+              onChange={(e) => setMovieSearchQuery(e.target.value)}
+            />
+            <InputRightElement width="auto">
+              <Button colorScheme="purple" onClick={apiCall}>
+                Search
+              </Button>
+            </InputRightElement>
           </InputGroup>
           <Text>
-            {totals === 0 ? (
+            {totals === 0 && !isLoading ? (
               <>
                 No Results: <strong>{movieSearchQuery}</strong> - Try Another
                 Term!
               </>
-            ) : (
-              ""
-            )}
+            ) : null}
           </Text>
-          {totals > 0 ? (
+          {isLoading && <Center><Spinner size="lg" color="purple.500" /></Center>}
+          {!isLoading && movieResultSearchMovie.length > 0 && (
             <Table>
               <Thead>
                 <Tr>
                   <Th>Title</Th>
-                  <Th>Title Original</Th>
+                  <Th>Original Title</Th>
                   <Th>Poster</Th>
-                  <Th>Select</Th>
                 </Tr>
               </Thead>
-
               <Tbody>
                 {movieResultSearchMovie.map((movie) => (
-                  <Tr key={movie.id}>
+                  <Tr
+                    key={movie.id}
+                    onClick={() => {
+                      setMovieIdSearch(movie.id);
+                      fetchData(movie.id);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
                     <Td>{movie.title}</Td>
                     <Td>{movie.original_title}</Td>
                     <Td>
@@ -405,164 +467,38 @@ const MoviePage = () => {
                         <Image
                           src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
                           alt="Poster"
-                          width="240"
-                          height="360"
+                          width={240}
+                          height={360}
                         />
                       ) : (
                         <Image
                           src="/callback.png"
                           alt="Placeholder"
-                          width="240"
-                          height="360"
+                          width={240}
+                          height={360}
                         />
                       )}
-                    </Td>
-
-                    <Td>
-                      <Checkbox
-                        isChecked={movieIdSearch === movie.id}
-                        onChange={() => {
-                          setMovieIdSearch(movie.id);
-                        }}
-                      />
                     </Td>
                   </Tr>
                 ))}
               </Tbody>
             </Table>
-          ) : null}
-          {totals > 0 ? (
-            <Button colorScheme="purple" onClick={fetchData}>
-              Streamings
-            </Button>
-          ) : null}
+          )}
         </div>
-      </ChakraProvider>{" "}
-      <span className={styles.title}>{data.originalTitle}</span>
-      <br />
-      <br />
-      <div style={{ maxWidth: "480px", margin: "0 auto" }}></div>
-      <br />
-      <Box>
-        {showAllTables ? (
-          <Box></Box>
-        ) : (
-          <Box>
-            {Object.keys(data).length > 0 && (
-              <Box>
-                {poster != null ? (
-                  <Image
-                    className={styles.card_image_big}
-                    src={poster}
-                    alt="poster"
-                    width={480}
-                    height={720}
-                  />
-                ) : (
-                  <Image
-                    className={styles.card_image_big}
-                    src="/callback.png"
-                    alt="poster"
-                    width={480}
-                    height={720}
-                  />
-                )}
-              </Box>
-            )}
-          </Box>
+        {Object.keys(data.providers).length > 0 && (
+          <Table>
+            <Thead>
+              <Tr>
+                <Th>Country</Th>
+                <Th>Type</Th>
+                <Th>Streaming</Th>
+              </Tr>
+            </Thead>
+            <Tbody>{getSortedProviders()}</Tbody>
+          </Table>
         )}
-      </Box>
-      {/* Tabela aqui para baixo */}
-      <br />
-      <div
-        style={{ maxWidth: "480px", margin: "0 auto", wordBreak: "break-word" }}
-      >
-        {Object.keys(data).length > 0 && (
-          <ChakraProvider>
-            <br />
-            <TableContainer p={4}>
-              <Table size="sm">
-                <Tbody>
-                  <Tr>
-                    <Th>Streaming:</Th>
-                    <Td>
-                      {data.providers && data.providers[selectedCountry]
-                        ? data.providers[selectedCountry]
-                        : "No service available in this country"}
-                    </Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-            </TableContainer>
-
-            <TableContainer p={4}>
-              <Table size="sm">
-                <Tbody>
-                  <Tr>
-                    <Th>To Rent:</Th>
-                    <Td>
-                      {data.providers &&
-                      data.providers[selectedCountry + "_rent"]
-                        ? data.providers[selectedCountry + "_rent"]
-                        : "No service available in this country"}
-                    </Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-            </TableContainer>
-
-            <TableContainer p={4}>
-              <Table size="sm">
-                <Tbody>
-                  <Tr>
-                    <Th>Buy:</Th>
-                    <Td>
-                      {data.providers &&
-                      data.providers[selectedCountry + "_buy"]
-                        ? data.providers[selectedCountry + "_buy"]
-                        : "No service available in this country"}
-                    </Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-            </TableContainer>
-
-            <TableContainer p={4}>
-              <Table size="sm">
-                <Tbody>
-                  <Tr>
-                    <Th>Free With Ads:</Th>
-                    <Td>
-                      {data.providers &&
-                      data.providers[selectedCountry + "_ads"]
-                        ? data.providers[selectedCountry + "_ads"]
-                        : "No service available in this country"}
-                    </Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-            </TableContainer>
-
-            <TableContainer p={4}>
-              <Table size="sm">
-                <Tbody>
-                  <Tr>
-                    <Th>Free:</Th>
-                    <Td>
-                      {data.providers &&
-                      data.providers[selectedCountry + "_free"]
-                        ? data.providers[selectedCountry + "_free"]
-                        : "No service available in this country"}
-                    </Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </ChakraProvider>
-        )}
-        <div />
         {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
-      </div>
+      </ChakraProvider>
     </>
   );
 };

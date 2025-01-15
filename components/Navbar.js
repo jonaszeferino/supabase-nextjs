@@ -80,11 +80,12 @@ export default function Navbar({ isLoading }) {
 
           <HStack spacing={6}>
             {[
-              "Home",
+              
               "Search Movies",
               "Search TvShows",
               "Watch Today",
               "Birthday Movies",
+              "Where is My Movie"
             ].map((label, index) => (
               <Button
                 key={index}
