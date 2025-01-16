@@ -9,6 +9,8 @@ import BackToTopButton from "../components/backToTopButton";
 import { supabase } from "../utils/supabaseClient";
 import { Rate } from "antd";
 import PageTitle from "../components/PageTitle";
+import GoogleAd from "../components/GoogleAd";
+
 
 
 export default function Home() {
@@ -143,6 +145,7 @@ export default function Home() {
             isMobile={isMobile}
             showLoggedUser={showLoggedUser}
           />
+          <GoogleAd adSlot="1234567890" />
           <br />
           <>
             {isLoading ? (
@@ -231,6 +234,8 @@ export default function Home() {
             </div>
           ))}
         </div>
+        <GoogleAd adSlot="1234567890" /> {/* Substitua pelo Ad Slot correto */}
+
 
         {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
       </div>

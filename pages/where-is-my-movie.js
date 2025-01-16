@@ -384,7 +384,7 @@ const MoviePage = () => {
     <>
       <ChakraProvider>
         <Head>
-          <title>Onde está meu filme</title>
+          <title>Where is my movie</title>
           <meta name="keywords" content="tvshow,watch,review,series,filmes" />
           <meta name="description" content="filmes,series" />
         </Head>
