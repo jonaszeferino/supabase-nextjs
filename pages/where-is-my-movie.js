@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import {
@@ -16,7 +16,8 @@ import {
   Box,
   Center,
   Spinner,
-  Button
+  Button,
+  Select,
 } from "@chakra-ui/react";
 import useBackToTopButton from "../components/backToTopButtonLogic";
 import BackToTopButton from "../components/backToTopButton";
@@ -30,6 +31,8 @@ const MoviePage = () => {
   const [totals, setTotals] = useState("");
   const [movieSearchQuery, setMovieSearchQuery] = useState("");
   const [movieResultSearchMovie, setResultSearchMovie] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState("All");
+  const [selectedType, setSelectedType] = useState("All");
   const { showBackToTopButton, scrollToTop } = useBackToTopButton();
 
   const providers = {
@@ -318,8 +321,8 @@ const MoviePage = () => {
         headers: {
           "Content-Type": "application/json",
           Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
-        },
-      }),
+        }
+      }), 
       fetch(
         `https://api.themoviedb.org/3/movie/${movieId}/watch/providers`,
         {
@@ -348,45 +351,29 @@ const MoviePage = () => {
       });
   };
 
-  const getSortedProviders = () => {
+  const getFilteredProviders = () => {
     return Object.entries(data.providers)
-      .sort(([a], [b]) => (providers[a] || a).localeCompare(providers[b] || b))
-      .map(([countryCode, providerData]) => {
-        const rows = [];
-
-        ["flatrate", "rent", "buy", "ads", "free"].forEach((category) => {
-          if (providerData?.[category] && Array.isArray(providerData[category])) {
-            providerData[category].forEach((provider) => {
-              rows.push(
-                <Tr key={`${countryCode}-${category}-${provider.provider_id}`}>
-                  <Td>{providers[countryCode] || countryCode}</Td>
-                  <Td>
-                    {category.charAt(0).toUpperCase() + category.slice(1) ===
-                    "Flatrate"
-                      ? "Subscription"
-                      : category.charAt(0).toUpperCase() + category.slice(1)}
-                  </Td>
-                  <Td>
-                    {provider.logo_path ? (
-                      <Image
-                        src={`https://image.tmdb.org/t/p/w92${provider.logo_path}`}
-                        alt={provider.provider_name}
-                        width={70}
-                        height={70}
-                      />
-                    ) : (
-                      provider.provider_name
-                    )}
-                  </Td>
-                </Tr>
-              );
-            });
-          }
-        });
-
-        return rows;
-      })
-      .flat();
+      .filter(([countryCode]) =>
+        selectedCountry === "All" ? true : countryCode === selectedCountry
+      )
+      .flatMap(([countryCode, providerData]) =>
+        ["flatrate", "rent", "buy", "ads", "free"]
+          .filter((category) =>
+            selectedType === "All" ? true : category === selectedType
+          )
+          .flatMap((category) =>
+            providerData?.[category]?.map((provider) => ({
+              country: providers[countryCode] || countryCode,
+              type:
+                category.charAt(0).toUpperCase() + category.slice(1) ===
+                "Flatrate"
+                  ? "Subscription"
+                  : category.charAt(0).toUpperCase() + category.slice(1),
+              providerName: provider.provider_name,
+              logoPath: provider.logo_path,
+            })) || []
+          )
+      );
   };
 
   const poster =
@@ -432,6 +419,7 @@ const MoviePage = () => {
               </Button>
             </InputRightElement>
           </InputGroup>
+          <br/>
           <Text>
             {totals === 0 && !isLoading ? (
               <>
@@ -486,16 +474,63 @@ const MoviePage = () => {
           )}
         </div>
         {Object.keys(data.providers).length > 0 && (
-          <Table>
-            <Thead>
-              <Tr>
-                <Th>Country</Th>
-                <Th>Type</Th>
-                <Th>Streaming</Th>
-              </Tr>
-            </Thead>
-            <Tbody>{getSortedProviders()}</Tbody>
-          </Table>
+          <>
+            <Box display="flex" justifyContent="space-between" mb={4}>
+              <Select
+                placeholder="Filter by Country"
+                onChange={(e) => setSelectedCountry(e.target.value)}
+                width="48%"
+              >
+                <option value="All">All</option>
+                {Object.keys(providers).map((code) => (
+                  <option key={code} value={code}>
+                    {providers[code]}
+                  </option>
+                ))}
+              </Select>
+              <Select
+                placeholder="Filter by Type"
+                onChange={(e) => setSelectedType(e.target.value)}
+                width="48%"
+              >
+                <option value="All">All</option>
+                <option value="flatrate">Subscription</option>
+                <option value="rent">Rent</option>
+                <option value="buy">Buy</option>
+                <option value="ads">Free with Ads</option>
+                <option value="free">Free</option>
+              </Select>
+            </Box>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Country</Th>
+                  <Th>Type</Th>
+                  <Th>Streaming</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {getFilteredProviders().map((provider, index) => (
+                  <Tr key={index}>
+                    <Td>{provider.country}</Td>
+                    <Td>{provider.type}</Td>
+                    <Td>
+                      {provider.logoPath ? (
+                        <Image
+                          src={`https://image.tmdb.org/t/p/w92${provider.logoPath}`}
+                          alt={provider.providerName}
+                          width={70}
+                          height={70}
+                        />
+                      ) : (
+                        provider.providerName
+                      )}
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </>
         )}
         {showBackToTopButton && <BackToTopButton onClick={scrollToTop} />}
       </ChakraProvider>
