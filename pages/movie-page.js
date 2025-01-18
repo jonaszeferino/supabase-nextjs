@@ -172,6 +172,7 @@ const MoviePage = () => {
         const response = await fetch("https://ipapi.co/country/");
         const country = await response.text();
         setSelectedCountry(country); // Atualiza o estado com o país do usuário
+        fetchProvidersForCountry(movieIdRequest, country); // Chama a função para buscar provedores após obter o país
       } catch (error) {
         console.error("Erro ao obter o país do usuário:", error);
       }
@@ -188,14 +189,8 @@ const MoviePage = () => {
   const fetchMovieData = async (movieId) => {
     setIsLoading(true);
 
-    const [resMovie, resProviders, resCredits] = await Promise.all([
+    const [resMovie, resCredits] = await Promise.all([
       fetch(`https://api.themoviedb.org/3/movie/${movieId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
-        },
-      }),
-      fetch(`https://api.themoviedb.org/3/movie/${movieId}/watch/providers`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
@@ -209,9 +204,8 @@ const MoviePage = () => {
       }),
     ]);
 
-    const [dataMovies, dataProviders, resCreditsData] = await Promise.all([
+    const [dataMovies, resCreditsData] = await Promise.all([
       resMovie.json(),
-      resProviders.json(),
       resCredits.json(),
     ]);
 
@@ -222,23 +216,39 @@ const MoviePage = () => {
         name: director.name,
       }));
 
-    const providersForSelectedCountry =
-      dataProviders.results[selectedCountry]?.flatrate || [];
-
-    setData({
+    // Atualiza os dados do filme
+    setData((prevData) => ({
+      ...prevData,
       ...dataMovies,
       directors: directors.length > 0 ? directors : null,
-      providers: providersForSelectedCountry,
-      country:
-        dataMovies.production_countries && dataMovies.production_countries[0]
-          ? dataMovies.production_countries[0].name
-          : "",
-    });
+    }));
+
     setIsLoading(false);
   };
 
+  // Nova função para buscar provedores com base no país selecionado
+  const fetchProvidersForCountry = async (movieId, country) => {
+    const resProviders = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/watch/providers`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: process.env.NEXT_PUBLIC_TMDB_BEARER,
+      },
+    });
+
+    const dataProviders = await resProviders.json();
+    const providersForSelectedCountry =
+      dataProviders.results[country]?.flatrate || [];
+
+    setData((prevData) => ({
+      ...prevData,
+      providers: providersForSelectedCountry,
+    }));
+  };
+
   const handleCountryChange = (event) => {
-    setSelectedCountry(event.target.value);
+    const newCountry = event.target.value;
+    setSelectedCountry(newCountry);
+    fetchProvidersForCountry(movieIdRequest, newCountry); // Chama a nova função para buscar provedores
   };
 
   const metaDescription = `Movie Page ${
@@ -248,7 +258,7 @@ const MoviePage = () => {
   return (
     <>
       <Head>
-        <title>Movie {data.original_title || ""}</title>
+        <title>Movie: {data.original_title || ""}</title>
         <meta name="keywords" content={metaDescription}></meta>
         <meta name="description" content={metaDescription}></meta>
       </Head>
