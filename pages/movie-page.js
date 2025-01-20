@@ -236,13 +236,20 @@ const MoviePage = () => {
     });
 
     const dataProviders = await resProviders.json();
-    const providersForSelectedCountry =
-      dataProviders.results[country]?.flatrate || [];
+    
+    // Verifica se há provedores disponíveis para o país
+    const providersForSelectedCountry = dataProviders.results[country]?.flatrate || null;
 
     setData((prevData) => ({
       ...prevData,
       providers: providersForSelectedCountry,
     }));
+
+    // Se não houver provedores, você pode definir uma mensagem ou estado
+    if (!providersForSelectedCountry) {
+      console.log("Não há provedores disponíveis para o país selecionado.");
+      // Aqui você pode definir um estado para mostrar uma mensagem na interface, se necessário
+    }
   };
 
   const handleCountryChange = (event) => {

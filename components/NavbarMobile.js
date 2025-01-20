@@ -1,205 +1,112 @@
 import { useState, useEffect } from "react";
-import Auth from "./Auth";
 import {
   Box,
   Button,
   Stack,
-  useDisclosure,
-  Heading,
   Center,
   ChakraProvider,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  IconButton,
-  ModalBody
+  Image,
 } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
-import { useRouter } from "next/router";
-import { supabase } from "../utils/supabaseClient";
-import { FaTimes } from "react-icons/fa";
 
-const MobileNavbar = (isLoading, onAuthenticated) => {
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const MobileNavbar = ({ isLoading }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [session, setSession] = useState();
-  const router = useRouter();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(true);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
-  // Função para fechar o menu
   const closeMenu = () => {
     setMenuOpen(false);
   };
 
   useEffect(() => {
-    let mounted = true;
-    async function getInitialSession() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (mounted) {
-        if (session) {
-          setSession(session);
-        }
-      }
-    }
-    getInitialSession();
-    const { subscription } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-      }
-    );
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+      setShowSearchBar(window.scrollY <= 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
     return () => {
-      mounted = false;
-      subscription?.unsubscribe();
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   return (
-    <>
-      <div
-        style={{
-          position: "fixed",
-          top: "0",
-          left: "0",
-          right: "0",
-          zIndex: "999",
-        }}
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 999 }}>
+      <Box
+        bg="purple.500"
+        color="white"
+        p={4}
+        display={{ base: "block", md: "none" }}
+        transition="all 0.3s ease"
+        height={isScrolled ? "60px" : "145px"}
+        boxShadow={isScrolled ? "md" : "none"}
       >
+        <Center>
+          <Image
+            src="/logo_12.png"
+            alt="Logo"
+            height={isScrolled ? "60px" : "90px"}
+            transition="height 0.3s ease"
+            marginTop={-4}
+            marginBottom={0}
+          />
+        </Center>
         <Box
-          bg="purple.500"
-          color="white"
-          p={4}
-          display={{ base: "block", md: "none" }}
+          opacity={showSearchBar ? 1 : 0}
+          transform={showSearchBar ? "translateY(0)" : "translateY(-20px)"}
+          transition="opacity 0.6s ease, transform 0.6s ease"
+          marginTop={-4}
+          padding={-2}
         >
           <Center>
-            <Heading as="h3" size="md">Watch Today Guide</Heading>
-          </Center>
-
-          <ChakraProvider>
-            <SearchBar />
-          </ChakraProvider>
-
-          <br />
-          <br />
-          <br />
-
-          <Stack direction="row" align="center" justify="space-between">
-            <Link href="/" onClick={closeMenu}>
-              Home
-            </Link>
-          
-            {/* {!session ?
-              <button onClick={onOpen}> <strong>Login</strong> </button>
-              : null} */}
-
-
-            <Modal isOpen={isOpen} onClose={onClose}>
-              <ModalOverlay />
-              <ModalContent style={{ background: "white" }}>
-                <ModalHeader>
-                  Close
-                  <IconButton
-                    icon={<FaTimes />}
-                    colorScheme="gray"
-                    variant="ghost"
-                    ml="auto"
-                    onClick={onClose}
-                  />
-                </ModalHeader>
-                <ModalBody>
-                  <Auth onClose={onClose} />
-                </ModalBody>
-              </ModalContent>
-            </Modal>
             <ChakraProvider>
-              {session ? (
-                <p>
-                  {session.user.email} <br />
-                  <></>
-                </p>
-              ) : null}
-
+              <SearchBar isLoading={isLoading} style={{ backgroundColor: 'gray', marginTop: '-10px', width: '300px' }} />
             </ChakraProvider>
-
-            <Button onClick={toggleMenu}>
-              {menuOpen ? <CloseIcon /> : <HamburgerIcon />}
-            </Button>
-          </Stack>
-
-          {menuOpen && (
-            <Stack spacing={4} mt={4}>
-              <Link href="/watch-today" onClick={closeMenu}>
-
-                <span>
-                  <ChevronRightIcon /> What to Watch Today?
-                </span>
-
-              </Link>
-              <Link href="/search-movies" onClick={closeMenu}>
-
-                <span>
-                  <ChevronRightIcon /> Discover Movies
-                </span>
-
-              </Link>
-              <Link href="/search-tvshows" onClick={closeMenu}>
-
-                <span>
-                  <ChevronRightIcon /> Discover Tv Shows
-                </span>
-
-              </Link>
-              <Link href="/birthday-movies" onClick={closeMenu}>
-
-                <span>
-                  <ChevronRightIcon /> Birthday Movie
-                </span>
-
-              </Link>
-              {/* <Link href="/trivia" onClick={closeMenu}>
-
-                <span>
-                  <ChevronRightIcon /> Trivia
-                </span>
-
-              </Link> */}
-
-              {session ? (
-                <>
-                  <Link href="/profile" onClick={closeMenu}>
-
-                    <span>
-                      <ChevronRightIcon /> Profile
-                    </span>
-
-                  </Link>
-                  <Link href="/my-movies-page" onClick={closeMenu}>
-
-                    <span>
-                      <ChevronRightIcon /> My Ratings
-                    </span>
-
-                  </Link>
-                </>
-              ) : null}
-            </Stack>
-          )}
+          </Center>
         </Box>
 
-      </div>
-      <div style={{ paddingTop: "100px" }}>
+        <Stack direction="row" align="center" justify="space-between" mt={-30}>
+          <Link href="/" onClick={closeMenu}>
+            Home
+          </Link>
 
-      </div>
-    </>
+          <Button onClick={toggleMenu}>
+            {menuOpen ? <CloseIcon /> : <HamburgerIcon />}
+          </Button>
+        </Stack>
+
+        {menuOpen && (
+          <Stack
+            spacing={4}
+            mt={14}
+            bg="purple.500"
+            p={4}
+            borderRadius="md"
+            boxShadow="md"
+          >
+            <Link href="/watch-today" onClick={closeMenu}>
+              What to Watch Today?
+            </Link>
+            <Link href="/search-movies" onClick={closeMenu}>
+              Discover Movies
+            </Link>
+            <Link href="/search-tvshows" onClick={closeMenu}>
+              Discover TV Shows
+            </Link>
+            <Link href="/birthday-movies" onClick={closeMenu}>
+              Birthday Movie
+            </Link>
+          </Stack>
+        )}
+      </Box>
+    </div>
   );
 };
 
